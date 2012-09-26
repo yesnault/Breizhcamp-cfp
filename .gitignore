@@ -4,3 +4,13 @@
 *.jar
 *.war
 *.ear
+
+
+# IDE Files #
+.settings/
+.classpath
+/.project
+*.iml
+*.ipr
+*.iws
+.idea/
