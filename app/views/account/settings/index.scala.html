@@ -1,0 +1,25 @@
+@(user: User)(content: Html)
+
+@main(user) {
+
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span2">
+            <ul class="breadcrumb">
+                <li>
+                    <a href="@controllers.account.settings.routes.Password.index">@Messages("password")</a>
+                </li>
+                <li>
+                    <a href="@controllers.account.settings.routes.Email.index">@Messages("email")</a>
+                </li>
+            </ul>
+        </div>
+        <div class="span10">
+            @content
+        </div>
+    </div>
+</div>
+
+
+}
