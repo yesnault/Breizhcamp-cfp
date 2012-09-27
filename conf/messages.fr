@@ -91,3 +91,6 @@ mail.reset.fail.message=Bonjour, <br><br> Vous (ou quelqu'un d'autre) a saisi vo
 
 mail.reset.confirm.subject=BreizhCamp CFP - Changement de mot de passe
 mail.reset.confirm.message=Bonjour, <br><br> Votre mot de passe a été changé.
+
+admin=Admin
+admin.users.manage=Utilisateurs

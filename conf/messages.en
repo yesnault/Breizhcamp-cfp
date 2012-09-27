@@ -66,3 +66,6 @@ mail.reset.fail.message=You (or someone else) entered this email address when tr
 
 mail.reset.confirm.subject=BreizhCamp CFP - New password
 mail.reset.confirm.message=Hello, <br><br> Your password has been reset.
+
+admin=Admin
+admin.users.manage=Users

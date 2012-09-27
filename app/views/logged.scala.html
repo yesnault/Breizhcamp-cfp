@@ -1,6 +1,16 @@
 @(user: User)
 
 @if(user != null) {
+	@if(user.admin) {
+	    <div class="btn-group pull-right">
+			<a class="btn" href="#"><i class="icon-wrench"></i>@Messages("admin")</a>
+	        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+	        <ul class="dropdown-menu">
+	        	<li><a href="#"><i class="icon-user"></i>@Messages("admin.users.manage")</a></li>
+	        </ul>
+	    </div>
+	}
+
     <div class="btn-group pull-right">
         <a class="btn" href="#"><i class="icon-user"></i> @user.fullname</a>
         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
