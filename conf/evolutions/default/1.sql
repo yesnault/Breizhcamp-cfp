@@ -21,6 +21,7 @@ create table user (
   password_hash             varchar(255),
   date_creation             timestamp,
   validated                 boolean,
+  admin                     boolean,
   constraint uq_user_email unique (email),
   constraint uq_user_fullname unique (fullname),
   constraint pk_user primary key (id))
