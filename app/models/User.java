@@ -1,6 +1,7 @@
 package models;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -78,6 +79,10 @@ public class User extends Model {
     public static User findByConfirmationToken(String token) {
         return find.where().eq("confirmationToken", token).findUnique();
     }
+
+	public static List<User> findAll() {
+		return find.all();
+	}
 
     /**
      * Authenticate a User, from a email and clear password.
