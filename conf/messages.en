@@ -69,3 +69,5 @@ mail.reset.confirm.message=Hello, <br><br> Your password has been reset.
 
 admin=Admin
 admin.users.manage=Users
+admin.users.manage.user=User
+admin.users.manage.email=Email

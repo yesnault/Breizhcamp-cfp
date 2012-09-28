@@ -2,6 +2,19 @@
 
 @main(user) {
 
-    Admin users
+	<table class="table table-bordered table-striped">
+		<tr>
+			<th>@Messages("admin.users.manage.user")</th>
+			<th>@Messages("admin.users.manage.email")</th>
+			<th>@Messages("admin")</th>
+		</tr>
+		@for(oneUser <- users) {
+			<tr>
+				<td>@oneUser.fullname</td>
+				<td>@oneUser.email</td>
+				<td><input type="checkbox" @if(oneUser.admin) {checked="checked"}/></td>
+	    	</tr>
+	    }
+    </table>
 
 }

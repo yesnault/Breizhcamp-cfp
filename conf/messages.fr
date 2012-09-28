@@ -94,3 +94,5 @@ mail.reset.confirm.message=Bonjour, <br><br> Votre mot de passe a été changé.
 
 admin=Admin
 admin.users.manage=Utilisateurs
+admin.users.manage.user=Utilisateur
+admin.users.manage.email=Email
