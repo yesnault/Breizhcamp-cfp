@@ -33,6 +33,7 @@ logout=Déconnexion
 password=Mot de passe
 error.technical=Erreur Technique, veuillez retenter
 validate=Valider
+cancel=Annuler
 reset=Valider
 
 account.not.validated.check.mail=Votre compte n'est pas validé, vérifiez vos emails...
@@ -91,3 +92,8 @@ mail.reset.fail.message=Bonjour, <br><br> Vous (ou quelqu'un d'autre) a saisi vo
 
 mail.reset.confirm.subject=BreizhCamp CFP - Changement de mot de passe
 mail.reset.confirm.message=Bonjour, <br><br> Votre mot de passe a été changé.
+
+admin=Admin
+admin.users.manage=Utilisateurs
+admin.users.manage.user=Utilisateur
+admin.users.manage.email=Email

@@ -8,6 +8,7 @@ logout=Logout
 password=Password
 error.technical=Technical Error, please Retry
 validate=Validate
+cancel=Cancel
 reset=Reset
 
 account.not.validated.check.mail=Account not validated. Check your emails.
@@ -66,3 +67,8 @@ mail.reset.fail.message=You (or someone else) entered this email address when tr
 
 mail.reset.confirm.subject=BreizhCamp CFP - New password
 mail.reset.confirm.message=Hello, <br><br> Your password has been reset.
+
+admin=Admin
+admin.users.manage=Users
+admin.users.manage.user=User
+admin.users.manage.email=Email

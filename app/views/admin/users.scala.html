@@ -1,0 +1,35 @@
+@(users: List[User], user: User)
+
+@import helper._
+@import helper.twitterBootstrap._
+
+@main(user) {
+
+	
+	@helper.form(action = routes.Admin.submitUsers) {
+		<table class="table table-bordered table-striped">
+			<tr>
+				<th>@Messages("admin.users.manage.user")</th>
+				<th>@Messages("admin.users.manage.email")</th>
+				<th>@Messages("admin")</th>
+			</tr>
+			@for(oneUser <- users) {
+				<tr>
+					<td>@oneUser.fullname</td>
+					<td>@oneUser.email<input type="hidden" name="email" value="@oneUser.email"/></td>
+					<td><input type="checkbox" name="@oneUser.email" @if(oneUser.admin) {checked="checked"}/></td>
+		    	</tr>
+		    }
+	    </table>
+	    
+	    
+
+	    <div class="form-actions">
+	        <input type="submit" class="btn btn-primary" value="@Messages("validate")">
+	        <input type="button" class="btn" onClick="document.location.href='@routes.Application.index()'"
+	        	value="@Messages("cancel")"/>
+	    </div>
+    
+    }
+
+}
