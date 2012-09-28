@@ -33,6 +33,7 @@ logout=Déconnexion
 password=Mot de passe
 error.technical=Erreur Technique, veuillez retenter
 validate=Valider
+cancel=Annuler
 reset=Valider
 
 account.not.validated.check.mail=Votre compte n'est pas validé, vérifiez vos emails...

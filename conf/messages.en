@@ -8,6 +8,7 @@ logout=Logout
 password=Password
 error.technical=Technical Error, please Retry
 validate=Validate
+cancel=Cancel
 reset=Reset
 
 account.not.validated.check.mail=Account not validated. Check your emails.
