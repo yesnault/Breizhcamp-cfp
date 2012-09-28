@@ -3,6 +3,15 @@
 
 # --- !Ups
 
+create table talk (
+  id                        bigint not null,
+  title                     varchar(255),
+  description               varchar(255),
+  speaker_id                bigint,
+  constraint uq_talk_title unique (title),
+  constraint pk_talk primary key (id))
+;
+
 create table token (
   token                     varchar(255) not null,
   user_id                   bigint,
@@ -27,10 +36,14 @@ create table user (
   constraint pk_user primary key (id))
 ;
 
+create sequence talk_seq;
+
 create sequence token_seq;
 
 create sequence user_seq;
 
+alter table talk add constraint fk_talk_speaker_1 foreign key (speaker_id) references user (id) on delete restrict on update restrict;
+create index ix_talk_speaker_1 on talk (speaker_id);
 
 
 
@@ -38,11 +51,15 @@ create sequence user_seq;
 
 SET REFERENTIAL_INTEGRITY FALSE;
 
+drop table if exists talk;
+
 drop table if exists token;
 
 drop table if exists user;
 
 SET REFERENTIAL_INTEGRITY TRUE;
+
+drop sequence if exists talk_seq;
 
 drop sequence if exists token_seq;
 
