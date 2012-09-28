@@ -72,3 +72,5 @@ admin=Admin
 admin.users.manage=Users
 admin.users.manage.user=User
 admin.users.manage.email=Email
+
+home.message=Welcome on the BreizhCamp's Call For Paper site.
