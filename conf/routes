@@ -27,13 +27,15 @@ GET     /reset/ask                  controllers.account.Reset.ask()
 POST    /reset/ask                  controllers.account.Reset.runAsk()
 
 # Resets the password using the password.
-GET     /reset/:token          controllers.account.Reset.reset(token:String)
-POST    /reset/:token          controllers.account.Reset.runReset(token:String)
+GET     /reset/:token               controllers.account.Reset.reset(token:String)
+POST    /reset/:token               controllers.account.Reset.runReset(token:String)
 
-GET     /email/:token          controllers.account.settings.Email.validateEmail(token:String)
+GET     /email/:token               controllers.account.settings.Email.validateEmail(token:String)
 
-GET		/admin/users			controllers.Admin.users()
-POST		/admin/submitusers		controllers.Admin.submitUsers()
+GET	    /admin/users                controllers.Admin.users()
+POST    /admin/submitusers          controllers.Admin.submitUsers()
+
+GET     /talks/submit               controllers.talks.SubmitTalk.index()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
