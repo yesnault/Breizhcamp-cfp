@@ -38,7 +38,7 @@ public class SubmitTalk extends Controller {
 		
 		talk.save();
 		
-		return ok(views.html.dashboard.index.render(user));
+		return ManageTalks.index();
 	}
 
 }
