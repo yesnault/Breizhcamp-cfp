@@ -1,42 +1,7 @@
 @(user: User, idTalk:Long, talkForm: Form[models.Talk])
 
-@import helper._
-
-@main(user) {
-
-	 <div class="span3">
-        &nbsp;
-    </div>
-
-    <div class="span12">
-        <div class="well">
-            <h3>@Messages("talks.new")</h3>
-            @form(controllers.talks.routes.ManageTalks.save(idTalk)) {
-				<fieldset>
-				    @inputText(
-				        talkForm("title"),
-				        'placeholder -> Messages("talks.title"),
-				        'class -> "input-xxlarge",
-				        '_label -> null
-				    )
-				    @textarea(
-				        talkForm("description"),
-				        'placeholder -> Messages("talks.description"),
-				        'class -> "input-xxlarge",
-				        'rows -> 10,
-				        '_label -> null
-				    )
-				</fieldset>
-				
-				@if(flash.get("error") != null) {
-					<span class="label label-important">@flash.get("error")</span>
-				}
-				
-				<div class="form-actions">
-				    <input type="submit" class="btn btn-primary" value="@Messages("validate")">
-				    <input type="button" class="btn" onClick="document.location.href='@controllers.talks.routes.ManageTalks.index()'" value="@Messages("cancel")">
-				</div>
-			}
-        </div>
-    </div>
-}
+@views.html.talks.common.talkForm(
+	user,
+	controllers.talks.routes.ManageTalks.save(idTalk),
+	talkForm,
+	talkForm.get().title)
