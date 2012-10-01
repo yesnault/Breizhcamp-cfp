@@ -51,17 +51,17 @@ public class ManageTalks extends Controller {
 		dbTalk.title = formTalk.title;
 		dbTalk.description = formTalk.description;
 		dbTalk.save();
-		
-		
-		return index();
+
+        flash("success", Messages.get("talks.edit.success", dbTalk.title));
+		return redirect(controllers.talks.routes.ManageTalks.index());
 	}
 	
 	public static Result delete(Long idTalk) {
 		Talk talk = Talk.find.byId(idTalk);
 		
 		talk.delete();
-		
-		return index();
+        flash("success", Messages.get("talks.delete.success", talk.title));
+		return redirect(controllers.talks.routes.ManageTalks.index());
 	}
 
 }

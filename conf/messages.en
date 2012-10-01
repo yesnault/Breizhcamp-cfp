@@ -82,3 +82,7 @@ talks.manage=Manage your talks
 talks.new=New talk
 talks.title=Title
 talks.description=Description
+talks.delete.confirm=Are you sure you want to delete the talk {0}?
+talks.add.success=Talk {0} added successfully.
+talks.edit.success=Talk {0} updated successfully.
+talks.delete.success=Talk {0} deleted successfully.

@@ -37,8 +37,9 @@ public class SubmitTalk extends Controller {
 		}
 		
 		talk.save();
-		
-		return ManageTalks.index();
+
+        flash("success", Messages.get("talks.add.success", talk.title));
+        return redirect(controllers.talks.routes.ManageTalks.index());
 	}
 
 }
