@@ -55,5 +55,13 @@ public class ManageTalks extends Controller {
 		
 		return index();
 	}
+	
+	public static Result delete(Long idTalk) {
+		Talk talk = Talk.find.byId(idTalk);
+		
+		talk.delete();
+		
+		return index();
+	}
 
 }
