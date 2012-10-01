@@ -20,6 +20,6 @@ public class Index extends Controller {
      * @return index settings
      */
     public static Result index() {
-        return Password.index();
+        return Account.index();
     }
 }

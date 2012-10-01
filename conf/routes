@@ -14,6 +14,7 @@ GET     /settings/password          controllers.account.settings.Password.index(
 POST    /settings/password          controllers.account.settings.Password.runPassword()
 GET     /settings/email             controllers.account.settings.Email.index()
 POST    /settings/email             controllers.account.settings.Email.runEmail()
+GET     /settings/account           controllers.account.settings.Account.index()
 
 # Registers the user, sending an email to confirm the account.
 GET     /signup                     controllers.account.Signup.create()

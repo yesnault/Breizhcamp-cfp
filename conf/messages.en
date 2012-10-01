@@ -10,6 +10,7 @@ error.technical=Technical Error, please Retry
 validate=Validate
 cancel=Cancel
 reset=Reset
+account=Profile
 
 account.not.validated.check.mail=Account not validated. Check your emails.
 account.successfully.validated=Account successfully validated

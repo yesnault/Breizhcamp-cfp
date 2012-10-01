@@ -4,6 +4,7 @@ package models.utils;
  * User: yesnault
  * Date: 25/01/12
  */
+@SuppressWarnings("serial")
 public class AppException extends Exception {
 
     public AppException() {

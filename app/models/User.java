@@ -17,6 +17,7 @@ import play.db.ebean.Model;
  * User: yesnault
  * Date: 20/01/12
  */
+@SuppressWarnings("serial")
 @Entity
 public class User extends Model {
 

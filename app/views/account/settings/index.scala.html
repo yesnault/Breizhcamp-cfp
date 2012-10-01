@@ -1,4 +1,4 @@
-@(user: User)(content: Html)
+@(user: User, active: String)(content: Html)
 
 @main(user) {
 
@@ -8,10 +8,31 @@
         <div class="span2">
             <ul class="breadcrumb">
                 <li>
-                    <a href="@controllers.account.settings.routes.Password.index">@Messages("password")</a>
+                	@if(!"account".equals(active)) {
+                    <a href="@controllers.account.settings.routes.Account.index">
+                    }
+                    	@Messages("account")
+                	@if(!"account".equals(active)) {
+                    </a>
+                    }
                 </li>
                 <li>
-                    <a href="@controllers.account.settings.routes.Email.index">@Messages("email")</a>
+                	@if(!"password".equals(active)) {
+                    <a href="@controllers.account.settings.routes.Password.index">
+                    }
+                    	@Messages("password")
+                	@if(!"password".equals(active)) {
+                    </a>
+                    }
+                </li>
+                <li>
+                	@if(!"email".equals(active)) {
+                    <a href="@controllers.account.settings.routes.Email.index">
+                    }
+                    	@Messages("email")
+                	@if(!"email".equals(active)) {
+                    </a>
+                    }
                 </li>
             </ul>
         </div>

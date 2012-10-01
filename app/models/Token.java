@@ -23,6 +23,7 @@ import java.util.UUID;
  * @author wsargent
  * @since 5/15/12
  */
+@SuppressWarnings("serial")
 @Entity
 public class Token extends Model {
     // Reset tokens will expire after a day.
@@ -57,8 +58,7 @@ public class Token extends Model {
     public String email;
 
     // -- Queries
-    @SuppressWarnings("unchecked")
-    public static Model.Finder<String, Token> find = new Finder(String.class, Token.class);
+    public static Model.Finder<String, Token> find = new Finder<String, Token>(String.class, Token.class);
 
     /**
      * Retrieve a token by id and type.
@@ -143,8 +143,8 @@ public class Token extends Model {
         String message = null;
         String toMail = null;
 
-        // Should use reverse routing here.
-        String urlString = urlString = "http://" + externalServer + "/" + type.urlPath + "/" + token.token;
+        // FIXME Should use reverse routing here.
+        String urlString = "http://" + externalServer + "/" + type.urlPath + "/" + token.token;
         URL url = new URL(urlString); // validate the URL
 
         switch (type) {
