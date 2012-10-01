@@ -35,6 +35,8 @@ GET     /email/:token               controllers.account.settings.Email.validateE
 GET	    /admin/users                controllers.Admin.users()
 POST    /admin/submitusers          controllers.Admin.submitUsers()
 
+GET     /admin/talks/list           controllers.talks.AdminTalks.list()
+
 GET     /talks/submit               controllers.talks.SubmitTalk.index()
 POST    /talks/submit/save          controllers.talks.SubmitTalk.save()
 

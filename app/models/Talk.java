@@ -9,7 +9,6 @@ import javax.persistence.ManyToOne;
 
 import play.data.format.Formats;
 import play.data.validation.Constraints;
-
 import play.db.ebean.Model;
 
 @Entity

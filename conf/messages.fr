@@ -99,9 +99,12 @@ admin.users.manage=Utilisateurs
 admin.users.manage.user=Utilisateur
 admin.users.manage.email=Email
 
+admin.talks.see=Liste des talks
+
 home.message=Bienvenue sur le site du Call For Paper du BreihCamp.
 
 talks=Talks
+talks.speaker=Speaker
 talks.submit=Soumettre un talk
 talks.manage=Gérer vos talks
 talks.new=Nouveau talk

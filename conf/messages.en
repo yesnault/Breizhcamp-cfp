@@ -74,9 +74,12 @@ admin.users.manage=Users
 admin.users.manage.user=User
 admin.users.manage.email=Email
 
+admin.talks.see=Talks' list
+
 home.message=Welcome on the BreizhCamp's Call For Paper site.
 
 talks=Talks
+talks.speaker=Speaker
 talks.submit=Submit a talk
 talks.manage=Manage your talks
 talks.new=New talk
