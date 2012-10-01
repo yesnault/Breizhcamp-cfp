@@ -26,12 +26,27 @@ public class AdminTalks extends Controller {
 		List<Talk> talks = Talk.find.all(); 
 		
 		// FIXME (find a better solution...) 
-		// Fetch all user of talks
+		// Fetch all speakers of talks
 		for (Talk talk : talks) {
 			talk.speaker.fullname.toString();
 		}
 		
 		return ok(list.render(user, talks));
+	}
+	
+	public static Result seeTalk(Long idTalk) {
+		User user = User.findByEmail(request().username());
+		if (!user.admin) {
+			return GO_INDEX;
+		}
+		
+		Talk talk = Talk.find.byId(idTalk);
+
+		// FIXME (find a better solution...) 
+		// Fetch speaker of talk.
+		talk.speaker.fullname.toString();
+		
+		return ok(seeTalk.render(user, talk));
 	}
 
 }

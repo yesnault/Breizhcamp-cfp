@@ -36,6 +36,7 @@ GET	    /admin/users                controllers.Admin.users()
 POST    /admin/submitusers          controllers.Admin.submitUsers()
 
 GET     /admin/talks/list           controllers.talks.AdminTalks.list()
+GET     /admin/talks/see/:idTalk    controllers.talks.AdminTalks.seeTalk(idTalk:Long)
 
 GET     /talks/submit               controllers.talks.SubmitTalk.index()
 POST    /talks/submit/save          controllers.talks.SubmitTalk.save()

@@ -100,6 +100,7 @@ admin.users.manage.user=Utilisateur
 admin.users.manage.email=Email
 
 admin.talks.see=Liste des talks
+admin.talks.submit.by=Soumis par {0}
 
 home.message=Bienvenue sur le site du Call For Paper du BreihCamp.
 

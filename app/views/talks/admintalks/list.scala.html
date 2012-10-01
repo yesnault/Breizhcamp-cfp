@@ -13,7 +13,7 @@
 		 	@for(oneTalk <- talks) {
 		 		<tr>
 		 			<td>@oneTalk.speaker.fullname</td>
-		 			<td>@oneTalk.title</td>
+		 			<td><a href="@controllers.talks.routes.AdminTalks.seeTalk(oneTalk.id)">@oneTalk.title</a></td>
 		 		</tr>
 		 	}
 		 </table>
