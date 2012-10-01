@@ -1,0 +1,24 @@
+@(user: User, talks: List[Talk])
+
+@import helper._
+
+@main(user) {
+
+    <div class="span8">
+		 <table class="table table-bordered table-striped">
+		 	<tr>
+		 		<th class="span8">@Messages("talks.title")</th>
+		 		<th/>
+		 		<th/>
+		 	</tr>
+		 	@for(oneTalk <- talks) {
+		 		<tr>
+		 			<td>@oneTalk.title</td>
+		 			<td><a href="#"><i class="icon-pencil"></i></a></td>
+		 			<td><a href="#"><i class="icon-remove"></i></a></td>
+		 		</tr>
+		 	}
+		 </table>
+	 </div>
+
+}

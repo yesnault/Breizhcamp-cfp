@@ -1,5 +1,7 @@
 package models;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -35,5 +37,9 @@ public class Talk extends Model {
 	
 	public static Talk findByTitle(String title) {
 		return find.where().eq("title", title).findUnique();
+	}
+	
+	public static List<Talk> findBySpeaker(User speaker) {
+		return find.where().eq("speaker", speaker).findList();
 	}
 }
