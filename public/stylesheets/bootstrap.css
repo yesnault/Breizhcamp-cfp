@@ -2870,8 +2870,8 @@ input[type="submit"].btn.btn-mini {
 .nav li.dropdown.open .caret,
 .nav li.dropdown.open.active .caret,
 .nav li.dropdown.open a:hover .caret {
-  border-top-color: #ffffff;
-  border-bottom-color: #ffffff;
+  border-top-color: #000000;
+  border-bottom-color: #000000;
   opacity: 1;
   filter: alpha(opacity=100);
 }
@@ -3289,8 +3289,8 @@ input[type="submit"].btn.btn-mini {
 }
 .navbar .nav li.dropdown .dropdown-toggle .caret,
 .navbar .nav li.dropdown.open .caret {
-  border-top-color: #ffffff;
-  border-bottom-color: #ffffff;
+  border-top-color: #000000;
+  border-bottom-color: #000000;
 }
 .navbar .nav li.dropdown.active .caret {
   opacity: 1;

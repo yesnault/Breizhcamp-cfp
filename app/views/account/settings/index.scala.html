@@ -1,24 +1,39 @@
-@(user: User)(content: Html)
-
-@main(user) {
+@(user: User, active: String)(content: Html) @main(user) {
 
 
 <div class="container-fluid">
-    <div class="row-fluid">
-        <div class="span2">
-            <ul class="breadcrumb">
-                <li>
-                    <a href="@controllers.account.settings.routes.Password.index">@Messages("password")</a>
-                </li>
-                <li>
-                    <a href="@controllers.account.settings.routes.Email.index">@Messages("email")</a>
-                </li>
-            </ul>
-        </div>
-        <div class="span10">
-            @content
-        </div>
-    </div>
+	<div class="row-fluid">
+		<div class="span2 breadcrumb">
+			<img src="@user.getAvatar()?s=100" /><br />
+			<br/>
+			@if(!"account".equals(active)) {
+				<a href="@controllers.account.settings.routes.Account.index">
+			}
+					@Messages("account")
+			@if(!"account".equals(active)) {
+				</a>
+			}
+			<br />
+			
+			@if(!"password".equals(active)) {
+				<a href="@controllers.account.settings.routes.Password.index">
+			}
+					@Messages("password")
+			@if(!"password".equals(active)) {
+				</a>
+			}
+			<br />
+			
+			@if(!"email".equals(active)) { 
+				<a href="@controllers.account.settings.routes.Email.index">
+			}
+					@Messages("email")
+			@if(!"email".equals(active)) {
+				</a>
+			}
+		</div>
+		<div class="span10">@content</div>
+	</div>
 </div>
 
 

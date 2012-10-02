@@ -1,0 +1,25 @@
+@(user: User, talks: List[Talk])
+
+@import helper._
+
+@main(user) {
+
+	@wflash()
+
+    <div class="span8">
+		 <table class="table table-bordered table-striped">
+		 	<tr>
+		 		<th class="span8">@Messages("talks.title")</th>
+		 		<th/>
+		 		<th/>
+		 	</tr>
+		 	@for(oneTalk <- talks) {
+		 		<tr>
+		 			<td>@oneTalk.title</td>
+		 			<td><a href="@controllers.talks.routes.ManageTalks.edit(oneTalk.id)"><i class="icon-pencil"></i></a></td>
+		 			<td><a href="@controllers.talks.routes.ManageTalks.delete(oneTalk.id)" onclick="return confirm('@Messages("talks.delete.confirm", oneTalk.title)')"><i class="icon-remove"></i></a></td>
+		 		</tr>
+		 	}
+		 </table>
+	 </div>
+}

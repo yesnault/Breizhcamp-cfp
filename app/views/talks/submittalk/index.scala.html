@@ -1,0 +1,7 @@
+@(user: User, talkForm: Form[models.Talk])
+
+@views.html.talks.common.talkForm(
+	user,
+	controllers.talks.routes.SubmitTalk.save(),
+	talkForm,
+	Messages("talks.new"))

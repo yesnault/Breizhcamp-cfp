@@ -35,6 +35,7 @@ error.technical=Erreur Technique, veuillez retenter
 validate=Valider
 cancel=Annuler
 reset=Valider
+account=Profil
 
 account.not.validated.check.mail=Votre compte n'est pas validé, vérifiez vos emails...
 account.successfully.validated=Votre compte est validé
@@ -44,6 +45,7 @@ youve.been.logged.out=Vous avez été déconnecté
 error.sending.email=Erreur lors de l'envoi du mail
 error.sending.confirm.email=Erreur lors de l'envoi du mail de confirmation
 error.email.already.exist=Cette adresse mail est déjà utilisée
+error.talk.already.exist=Ce talk existe déjà
 error.account.already.validated=Votre compte est déjà validé
 error.unknown.email=Adresse mail inconnue
 error.confirm=Error lors de la confirmation de votre inscription
@@ -52,6 +54,15 @@ error.expiredmaillink=Cette demande de ré-initialisation d'adresse mail est pé
 
 account.settings.password=Cliquez sur Valider pour recevoir les instructions par mail.
 account.settings.email=Entrez votre nouvelle adresse mail et Valider pour recevoir les instructions par mail.
+
+account.update.title=Profile
+account.description=Description/Bio
+account.avatar=Avatar
+account.lien.list=Liste de vos liens
+account.lien.label=Libellé
+account.lien.url=URL
+account.lien.delete=Supprimer ce lien
+account.lien.delete.confirm=Êtes vous sûr de vouloir supprimer le lien {0}?
 
 signin.signin=Se Connecter
 signin.your.email=Votre adresse mail
@@ -98,4 +109,19 @@ admin.users.manage=Utilisateurs
 admin.users.manage.user=Utilisateur
 admin.users.manage.email=Email
 
+admin.talks.see=Liste des talks
+admin.talks.submit.by=Soumis par {0}
+
 home.message=Bienvenue sur le site du Call For Paper du BreihCamp.
+
+talks=Talks
+talks.speaker=Speaker
+talks.submit=Soumettre un talk
+talks.manage=Gérer vos talks
+talks.new=Nouveau talk
+talks.title=Titre
+talks.description=Description
+talks.delete.confirm=Êtes vous sûr de vouloir supprimer les talks {0}?
+talks.add.success=Le talk {0} a bien été ajouté.
+talks.edit.success=Le talk {0} a bien été modifié.
+talks.delete.success=Le talk {0} a bien été supprimé. 

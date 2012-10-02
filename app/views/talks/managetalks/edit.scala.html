@@ -1,0 +1,7 @@
+@(user: User, idTalk:Long, talkForm: Form[models.Talk])
+
+@views.html.talks.common.talkForm(
+	user,
+	controllers.talks.routes.ManageTalks.save(idTalk),
+	talkForm,
+	talkForm.get().title)

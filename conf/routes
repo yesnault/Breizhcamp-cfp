@@ -14,6 +14,9 @@ GET     /settings/password          controllers.account.settings.Password.index(
 POST    /settings/password          controllers.account.settings.Password.runPassword()
 GET     /settings/email             controllers.account.settings.Email.index()
 POST    /settings/email             controllers.account.settings.Email.runEmail()
+GET     /settings/account           controllers.account.settings.Account.index()
+POST    /settings/account           controllers.account.settings.Account.save()
+GET     /settings/lien/remove/:id   controllers.account.settings.Account.deleteLink(id:Long)
 
 # Registers the user, sending an email to confirm the account.
 GET     /signup                     controllers.account.Signup.create()
@@ -27,13 +30,24 @@ GET     /reset/ask                  controllers.account.Reset.ask()
 POST    /reset/ask                  controllers.account.Reset.runAsk()
 
 # Resets the password using the password.
-GET     /reset/:token          controllers.account.Reset.reset(token:String)
-POST    /reset/:token          controllers.account.Reset.runReset(token:String)
+GET     /reset/:token               controllers.account.Reset.reset(token:String)
+POST    /reset/:token               controllers.account.Reset.runReset(token:String)
 
-GET     /email/:token          controllers.account.settings.Email.validateEmail(token:String)
+GET     /email/:token               controllers.account.settings.Email.validateEmail(token:String)
 
-GET		/admin/users			controllers.Admin.users()
-POST		/admin/submitusers		controllers.Admin.submitUsers()
+GET	    /admin/users                controllers.Admin.users()
+POST    /admin/submitusers          controllers.Admin.submitUsers()
+
+GET     /admin/talks/list           controllers.talks.AdminTalks.list()
+GET     /admin/talks/see/:idTalk    controllers.talks.AdminTalks.seeTalk(idTalk:Long)
+
+GET     /talks/submit               controllers.talks.SubmitTalk.index()
+POST    /talks/submit/save          controllers.talks.SubmitTalk.save()
+
+GET     /talks/manage               controllers.talks.ManageTalks.index()
+GET     /talks/edit/:idTalk         controllers.talks.ManageTalks.edit(idTalk:Long)
+POST    /talks/save/:idTalk         controllers.talks.ManageTalks.save(idTalk:Long)
+GET     /talks/delete/:idTalk       controllers.talks.ManageTalks.delete(idTalk:Long)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
