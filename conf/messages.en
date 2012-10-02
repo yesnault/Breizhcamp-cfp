@@ -33,6 +33,11 @@ account.settings.password=Enter your new email adress. Click OK to receive instr
 account.update.title=Profil
 account.description=Description/Bio
 account.avatar=Avatar
+account.lien.list=List of your links
+account.lien.label=Label
+account.lien.url=URL
+account.lien.delete=Delete this link
+account.lien.delete.confirm=Are you sure you want to delete the link {0}?
 
 signin.signin=Sign In
 signin.your.email=Your email address

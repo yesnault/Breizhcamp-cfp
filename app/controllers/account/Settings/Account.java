@@ -1,5 +1,11 @@
 package controllers.account.settings;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import models.Lien;
 import models.User;
 
@@ -24,33 +30,87 @@ public class Account extends Controller {
         
         Form<AccountForm> accountForm = form(AccountForm.class).fill(AccountForm.fromUser(user));
         
-        return ok(account.render(user, accountForm));
+        List<Form<Lien>> liensForms = new ArrayList<Form<Lien>>();
+        
+        for (Lien lien : user.getLiens()) {
+        	liensForms.add(form(Lien.class).fill(lien));
+        }
+        
+        Form<Lien> newLink = form(Lien.class);
+        
+        return ok(account.render(user, accountForm, liensForms, newLink));
+    }
+    
+    public static Result deleteLink(Long idLink) {
+    	
+    	Lien lien = Lien.find.byId(idLink);
+    	lien.delete();
+    	
+    	return redirect(controllers.account.settings.routes.Account.index());
     }
     
     public static Result save() {
         User user = User.findByEmail(request().username());
         
         Form<AccountForm> accountForm = form(AccountForm.class).bindFromRequest();
+
+
+        List<Form<Lien>> liensForms = new ArrayList<Form<Lien>>();
+        
+        int countLien = 0;
+        
+        String[] labels = request().body().asFormUrlEncoded().get("label");
+        String[] urls = request().body().asFormUrlEncoded().get("url");
+        
+        for (countLien = 0; countLien < user.getLiens().size(); countLien++) {
+        	Map<String, String> data = new HashMap<String, String>(2);
+        	data.put("label", labels[countLien]);
+        	data.put("url", urls[countLien]);
+        	liensForms.add(form(Lien.class).bind(data));
+        }
+
+    	Map<String, String> data = new HashMap<String, String>(2);
+    	data.put("label", labels[countLien]);
+    	data.put("url", urls[countLien]);
+
+        Form<Lien> newLink = form(Lien.class).bind(data);
+
+        
+        if (newLink.hasErrors()
+        		&& (labels[countLien].length() > 0
+        			|| urls[countLien].length() > 0)) {
+        	return badRequest(account.render(user, accountForm, liensForms, newLink));
+        } else if (newLink.hasErrors()) {
+        	newLink.errors().clear();
+        }
         
         if (accountForm.hasErrors()) {
-        	return badRequest(account.render(user, accountForm));
+        	return badRequest(account.render(user, accountForm, liensForms, newLink));
+        }
+        
+        for (Form<Lien> oneLienForm : liensForms) {
+        	if (oneLienForm.hasErrors()) {
+            	return badRequest(account.render(user, accountForm, liensForms, newLink));
+        	}
+        }
+        
+        for (Lien oneLien : user.getLiens()) {
+        	Form<Lien> lienForm = liensForms.remove(0);
+        	oneLien.label = lienForm.get().label;
+        	oneLien.url = lienForm.get().url;
         }
         
         user.description = accountForm.get().description;
-        user.save();
         
+        if (labels[countLien].length() > 0
+    			|| urls[countLien].length() > 0) {
+        	Lien lien = newLink.get();
+        	user.getLiens().add(lien);
+        }
+        
+        user.save();
+                
         return redirect(controllers.account.settings.routes.Account.index());	
-    }
-    
-    public static Result getLiens(Long idUser) {
-    	ObjectNode result = Json.newObject();
-    	ArrayNode liensJson = result.putArray("liens");
-    	for (Lien lien : User.find.byId(idUser).getLiens()) {
-    		ObjectNode lienJson = liensJson.addObject();
-    		lienJson.put("label", lien.label);
-    		lienJson.put("url", lien.url.toString());
-    	}
-    	return ok(result);
     }
     
     public static class AccountForm {

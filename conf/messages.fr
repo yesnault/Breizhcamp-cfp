@@ -58,6 +58,11 @@ account.settings.email=Entrez votre nouvelle adresse mail et Valider pour recevo
 account.update.title=Profile
 account.description=Description/Bio
 account.avatar=Avatar
+account.lien.list=Liste de vos liens
+account.lien.label=Libellé
+account.lien.url=URL
+account.lien.delete=Supprimer ce lien
+account.lien.delete.confirm=Êtes vous sûr de vouloir supprimer le lien {0}?
 
 signin.signin=Se Connecter
 signin.your.email=Votre adresse mail

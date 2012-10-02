@@ -6,8 +6,8 @@
 create table lien (
   id                        bigint not null,
   user_id                   bigint not null,
-  label                     varchar(50),
-  url                       varchar(50),
+  label                     varchar(255),
+  url                       varchar(255),
   constraint pk_lien primary key (id))
 ;
 
