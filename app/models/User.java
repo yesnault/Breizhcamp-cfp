@@ -1,11 +1,16 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import org.apache.commons.codec.digest.DigestUtils;
 
 import models.utils.AppException;
 import models.utils.Hash;
@@ -47,6 +52,31 @@ public class User extends Model {
     public Boolean validated = false;
 
 	public Boolean admin = false;
+	
+	public String description;
+	
+	@OneToMany( cascade = CascadeType.ALL)
+	public List<Lien> liens;
+	
+	public List<Lien> getLiens() {
+		if (liens == null) {
+			liens = new ArrayList<Lien>();
+		}
+		return liens;
+	}
+	
+	
+	private transient String avatar; 
+
+	private final static String GRAVATAR_URL = "http://www.gravatar.com/avatar/";
+	
+	public String getAvatar() {
+		if (avatar == null) {
+			String emailHash = DigestUtils.md5Hex(email.toLowerCase().trim());
+			avatar = GRAVATAR_URL + emailHash + ".jpg";
+		}
+		return avatar;
+	}
 
     // -- Queries (long id, user.class)
     public static Model.Finder<Long, User> find = new Model.Finder<Long, User>(Long.class, User.class);

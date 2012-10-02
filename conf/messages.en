@@ -30,6 +30,10 @@ error.expiredmaillink=This mail change has expired.
 account.settings.password=Click OK to receive instructions by mail.
 account.settings.password=Enter your new email adress. Click OK to receive instructions on this new mail.
 
+account.update.title=Profil
+account.description=Description/Bio
+account.avatar=Avatar
+
 signin.signin=Sign In
 signin.your.email=Your email address
 signin.your.password=Your password

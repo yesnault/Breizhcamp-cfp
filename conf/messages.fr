@@ -55,6 +55,10 @@ error.expiredmaillink=Cette demande de ré-initialisation d'adresse mail est pé
 account.settings.password=Cliquez sur Valider pour recevoir les instructions par mail.
 account.settings.email=Entrez votre nouvelle adresse mail et Valider pour recevoir les instructions par mail.
 
+account.update.title=Profile
+account.description=Description/Bio
+account.avatar=Avatar
+
 signin.signin=Se Connecter
 signin.your.email=Votre adresse mail
 signin.your.password=Votre mot de passe
