@@ -20,14 +20,13 @@
     		
     		@for(comment <- talk.comments) {
     			<div class="well">
-    				<img src="@comment.author.getAvatar()?s=20"/> @comment.author.fullname
+    				<img src="@comment.author.getAvatar()?s=40"/> @comment.author.fullname<br/>
     				@comment.comment
-    				
     			</div>
     		}
     		
     		<div class="well">
-    			@form(controllers.talks.routes.AdminTalks.saveComment(talk.id), 'class -> "form-inline") {
+    			@form(controllers.talks.routes.SeeTalks.saveComment(talk.id), 'class -> "form-inline") {
    					<input type="text" name="comment" placeholder="@Messages("talks.comment.new")"/>
    					<input type="submit" class="btn btn-primary" value="@Messages("validate")">
     			}
