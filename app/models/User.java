@@ -53,6 +53,7 @@ public class User extends Model {
 
 	public Boolean admin = false;
 	
+	@Column(length = 2000)
 	public String description;
 	
 	@OneToMany( cascade = CascadeType.ALL)

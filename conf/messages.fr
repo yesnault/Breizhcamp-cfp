@@ -125,3 +125,5 @@ talks.delete.confirm=Êtes vous sûr de vouloir supprimer les talks {0}?
 talks.add.success=Le talk {0} a bien été ajouté.
 talks.edit.success=Le talk {0} a bien été modifié.
 talks.delete.success=Le talk {0} a bien été supprimé. 
+talks.questions=Questions/Réponses
+talks.comment.new=Nouveau commentaire

@@ -14,6 +14,26 @@
     			@talk.description
     		<p>
     	</div>
+    	
+    	<div class="well">
+    		<h3>@Messages("talks.questions")</h3>
+    		
+    		@for(comment <- talk.comments) {
+    			<div class="well">
+    				<img src="@comment.author.getAvatar()?s=20"/> @comment.author.fullname
+    				@comment.comment
+    				
+    			</div>
+    		}
+    		
+    		<div class="well">
+    			@form(controllers.talks.routes.AdminTalks.saveComment(talk.id), 'class -> "form-inline") {
+   					<input type="text" name="comment" placeholder="@Messages("talks.comment.new")"/>
+   					<input type="submit" class="btn btn-primary" value="@Messages("validate")">
+    			}
+    		</div>
+    		
+    	</div>
     </div>
 
 }

@@ -12,7 +12,7 @@
 		 	</tr>
 		 	@for(oneTalk <- talks) {
 		 		<tr>
-		 			<td>@oneTalk.speaker.fullname</td>
+		 			<td><img src="@oneTalk.speaker.getAvatar()?s=16"/> @oneTalk.speaker.fullname</td>
 		 			<td><a href="@controllers.talks.routes.AdminTalks.seeTalk(oneTalk.id)">@oneTalk.title</a></td>
 		 		</tr>
 		 	}

@@ -2,20 +2,14 @@ package controllers.account.settings;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import models.Lien;
 import models.User;
-
-import org.codehaus.jackson.node.ArrayNode;
-import org.codehaus.jackson.node.ObjectNode;
-
 import play.data.Form;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
-import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
