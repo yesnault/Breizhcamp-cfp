@@ -18,11 +18,13 @@ public class Lien extends Model {
     @Constraints.Required
     @Formats.NonEmpty
     @Constraints.MaxLength(50)
+    @Column(length = 50)
     public String label;
 
     @Constraints.Required
     @Formats.NonEmpty
     @Constraints.MaxLength(200)
+    @Column(length = 200)
     public String url;
 
     public static Model.Finder<Long, Lien> find = new Model.Finder<Long, Lien>(Long.class, Lien.class);

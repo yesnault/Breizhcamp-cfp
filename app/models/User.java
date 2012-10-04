@@ -53,6 +53,7 @@ public class User extends Model {
 
 	public Boolean admin = false;
 	
+	@Column(length = 2000)
 	public String description;
 	
 	@OneToMany( cascade = CascadeType.ALL)
@@ -139,6 +140,10 @@ public class User extends Model {
     public void changePassword(String password) throws AppException {
         this.passwordHash = Hash.createPassword(password);
         this.save();
+    }
+    
+    public static List<User> findAllAdmin() {
+    	return find.where().eq("admin", Boolean.TRUE).findList();
     }
 
     /**

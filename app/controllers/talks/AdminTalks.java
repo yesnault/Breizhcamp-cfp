@@ -7,9 +7,9 @@ import models.User;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
+import views.html.talks.admintalks.list;
 import controllers.Secured;
 import controllers.routes;
-import views.html.talks.admintalks.*;
 
 
 @Security.Authenticated(Secured.class)
@@ -32,21 +32,6 @@ public class AdminTalks extends Controller {
 		}
 		
 		return ok(list.render(user, talks));
-	}
-	
-	public static Result seeTalk(Long idTalk) {
-		User user = User.findByEmail(request().username());
-		if (!user.admin) {
-			return GO_INDEX;
-		}
-		
-		Talk talk = Talk.find.byId(idTalk);
-
-		// FIXME (find a better solution...) 
-		// Fetch speaker of talk.
-		talk.speaker.fullname.toString();
-		
-		return ok(seeTalk.render(user, talk));
 	}
 
 }
