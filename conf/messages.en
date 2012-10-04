@@ -102,3 +102,6 @@ talks.edit.success=Talk {0} updated successfully.
 talks.delete.success=Talk {0} deleted successfully.
 talks.questions=Questions/Answers
 talks.comment.new=New comment
+
+talks.comment.new.mail.subject=New comment on talk {0}
+talks.comment.new.mail.message=Hello,<br/><br/>A new comment was posted on talk {0} by {1} :<br/><i>{2}</i>

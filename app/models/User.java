@@ -141,6 +141,10 @@ public class User extends Model {
         this.passwordHash = Hash.createPassword(password);
         this.save();
     }
+    
+    public static List<User> findAllAdmin() {
+    	return find.where().eq("admin", Boolean.TRUE).findList();
+    }
 
     /**
      * Confirms an account.

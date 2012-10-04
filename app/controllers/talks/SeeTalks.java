@@ -38,12 +38,13 @@ public class SeeTalks extends Controller {
 		}
 		String commentForm = request().body().asFormUrlEncoded().get("comment")[0];
 		
-		if (commentForm.length() > 0 && commentForm.length() > 140) {
+		if (commentForm.length() > 0 && commentForm.length() <= 140) {
 			Comment comment = new Comment();
 			comment.author = user;
 			comment.comment = commentForm;
 			comment.talk = talk;
 			comment.save();
+			comment.sendMail();
 		}
 		return redirect(controllers.talks.routes.SeeTalks.seeTalk(idTalk));
 	}
