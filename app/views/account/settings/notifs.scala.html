@@ -1,0 +1,38 @@
+@(user: User,
+	notifsForm: Form[controllers.account.settings.Notifs.NotifsForm])
+
+@import helper._
+@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapCheckbox.render) }
+
+@index(user, "notifs") {
+
+	<div class="span12">
+		<div class="well">
+			@form(controllers.account.settings.routes.Notifs.save()) {
+			
+				<fieldset>
+					<legend>@Messages("notifs.notifOn")</legend>
+				    @checkbox(
+				        notifsForm("notifOnMyTalk"),
+				        '_label -> Messages("notifs.notifOnMyTalk")
+				    )
+				    @if(user.admin) {
+					    @checkbox(
+					        notifsForm("notifAdminOnAllTalk"),
+					        '_label -> Messages("notifs.notifAdminOnAllTalk")
+					    )
+					    @checkbox(
+					        notifsForm("notifAdminOnTalkWithComment"),
+					        '_label -> Messages("notifs.notifAdminOnTalkWithComment")
+					    )
+				    }
+				</fieldset>
+		
+				<div class="form-actions">
+					<input type="submit" class="btn btn-primary" value="@Messages("validate")">
+				</div>
+			}
+		</div>
+	</div>
+
+}

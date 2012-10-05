@@ -11,6 +11,7 @@ validate=Validate
 cancel=Cancel
 reset=Reset
 account=Profile
+notifs=Notifications
 
 account.not.validated.check.mail=Account not validated. Check your emails.
 account.successfully.validated=Account successfully validated
@@ -29,6 +30,11 @@ error.expiredmaillink=This mail change has expired.
 
 account.settings.password=Click OK to receive instructions by mail.
 account.settings.password=Enter your new email adress. Click OK to receive instructions on this new mail.
+
+notifs.notifOn=Notifications by mail for new comments :
+notifs.notifOnMyTalk=on my talks.
+notifs.notifAdminOnAllTalk=on all talks.
+notifs.notifAdminOnTalkWithComment=on talks with comments by me.
 
 account.update.title=Profil
 account.description=Description/Bio
