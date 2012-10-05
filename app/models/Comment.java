@@ -1,7 +1,9 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -39,9 +41,9 @@ public class Comment extends Model {
     
     public void sendMail() {
     	List<String> emails = new ArrayList<String>();
-    	addMailIfNotAuthor(talk.speaker, emails);
+    	addMailIfNotAuthorAndWantReceive(talk.speaker, emails);
     	for (User admin : User.findAllAdmin()) {
-    		addMailIfNotAuthor(admin, emails);
+    		addMailIfNotAuthorAndWantReceive(admin, emails);
     	}
     	
     	String subjet = Messages.get("talks.comment.new.mail.subject", talk.title);
@@ -51,10 +53,45 @@ public class Comment extends Model {
     	
     }
     
-    private void addMailIfNotAuthor(User contact, List<String> emails) {
-    	if (!contact.equals(author)) {
-    		emails.add(contact.email);
-    	}
-    }
+    private void addMailIfNotAuthorAndWantReceive(User contact, List<String> emails) {
+		if (isNotAuthor(contact)
+				&& wantReceive(contact)) {
+			emails.add(contact.email);
+		}
+	}
+
+	private boolean wantReceive(User contact) {
+		return isSpeakerOfTalkAndWantReceive(contact)
+				|| isAdminAndWantReceiveAll(contact) || isAdminAndHasCommentAndWantReceive(contact);
+	}
+
+	private boolean isAdminAndHasCommentAndWantReceive(User contact) {
+		return contact.admin && contact.hasNotifAdminOnTalkWithComment()
+				&& getAuthorsOfComments().contains(contact.id);
+	}
+
+	private boolean isAdminAndWantReceiveAll(User contact) {
+		return contact.admin && contact.hasNotifAdminOnAllTalk();
+	}
+
+	private boolean isSpeakerOfTalkAndWantReceive(User contact) {
+		return contact.equals(talk.speaker) && contact.hasNotifOnMyTalk();
+	}
+
+	private boolean isNotAuthor(User contact) {
+		return !contact.equals(author);
+	}
+    
+    private Set<Long> authorsOfComments = null;
+    
+    private Set<Long> getAuthorsOfComments() {
+    	if (authorsOfComments == null) {
+	    	authorsOfComments = new HashSet<Long>();
+	    	for (Comment otherComment : talk.comments) {
+	    		authorsOfComments.add(otherComment.author.id);
+	    	}
+		}
+		return authorsOfComments;
+	}
 
 }
