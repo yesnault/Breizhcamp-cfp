@@ -16,6 +16,8 @@ GET     /settings/email             controllers.account.settings.Email.index()
 POST    /settings/email             controllers.account.settings.Email.runEmail()
 GET     /settings/account           controllers.account.settings.Account.index()
 POST    /settings/account           controllers.account.settings.Account.save()
+GET     /settings/notifs            controllers.account.settings.Notifs.index()
+POST    /settings/notifs            controllers.account.settings.Notifs.save()
 GET     /settings/lien/remove/:id   controllers.account.settings.Account.deleteLink(id:Long)
 
 # Registers the user, sending an email to confirm the account.
