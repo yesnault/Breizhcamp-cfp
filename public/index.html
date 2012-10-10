@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en" ng-app="breizhCampCFP">
+<head>
+  <meta charset="utf-8">
+  <title>BreizhCamp CFP</title>
+  <link rel="stylesheet" href="/assets/stylesheets/app.css"/>
+  <link rel="stylesheet" media="screen" href="/assets/stylesheets/bootstrap.css">
+</head>
+<body>
+  <div class="navbar">
+  	<div class="navbar-inner">
+  	  <div class="container-fluid">
+  	    <a class="brand" href="/">BreizhCamp CFP</a>
+  	    <div class="nav-collapse">
+  	      <ul class="nav">
+  	        <li><a href="/">Home</a>
+  	      </ul>
+  	    </div>
+  	  </div>
+  	</div>
+  </div>
+
+  <div class="container" ng-view></div>
+
+  <div>Angular seed app: v<span app-version></span></div>
+
+  <!-- In production use:
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.min.js"></script>
+  -->
+  <script src="/assets/javascripts/lib/angular/angular.min.js"></script>
+  <script src="/assets/javascripts/angular/app.js"></script>
+  <script src="/assets/javascripts/angular/services.js"></script>
+  <script src="/assets/javascripts/angular/controllers.js"></script>
+  <script src="/assets/javascripts/angular/filters.js"></script>
+  <script src="/assets/javascripts/angular/directives.js"></script>
+  <script src="/assets/javascripts/lib/jquery-1.7.1.min.js"></script>
+</body>
+</html>

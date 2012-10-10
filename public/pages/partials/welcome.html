@@ -1,0 +1,63 @@
+<div class="row">
+	<div class="span3">Bienvenue sur le site du Call For Paper du BreizhCamp.</div>
+	<div class="span8">
+		<div class="well">
+			<h3>Se connecter</h3>
+			<form action="/login" method="POST" class="form-vertical">
+				<fieldset>
+					<div class="control-group">
+						<label class="control-label" for="email"></label>
+						<div class="controls">
+							<input type="text" id="email" name="email" value placeholder="Adresse mail">
+							<p class="help-inline">Votre adresse mail</p>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="password"></label>
+						<div class="controls">
+							<input type="password" id="password" name="password" value="" placeholder="Mot de passe">
+							<p class="help-inline">Votre mot de passe</p>
+						</div>
+					</div>
+				</fieldset>
+				<div class="form-actions">
+					<input type="submit" class="btn btn-primary" value="Se Connecter"> <small><a href="/reset/ask">Mot de passe oubli&eacute; ?</a></small>
+				</div>
+			</form>
+		</div>
+
+		<div class="well">
+			<h3>Nouveau ?</h3>
+			<form action="/signup" method="POST">
+				<fieldset>
+					<div class="control-group ">
+						<label class="control-label" for="email"></label>
+						<div class="controls">
+							<input type="text" id="email" name="email" value="" placeholder="Adresse mail">
+							<p class="help-inline">Obligatoire</p>
+						</div>
+					</div>
+					<div class="control-group ">
+						<label class="control-label" for="fullname"></label>
+						<div class="controls">
+							<input type="text" id="fullname" name="fullname" value="" placeholder="Nom Complet">
+							<p class="help-inline">Obligatoire</p>
+						</div>
+					</div>
+					<div class="control-group ">
+						<label class="control-label" for="inputPassword"></label>
+						<div class="controls">
+							<input type="password" id="inputPassword" name="inputPassword" value="" placeholder="Mot de passe">
+							<p class="help-inline">Obligatoire</p>
+						</div>
+					</div>
+					<h6>G&eacute;n&eacute;rer un mot de passe</h6>
+					<input type="text" name="passwordGenerated" />
+				</fieldset>
+				<div class="form-actions">
+					<input type="submit" class="btn primary" value="Inscription">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
