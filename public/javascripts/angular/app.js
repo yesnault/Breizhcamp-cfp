@@ -5,5 +5,6 @@
 angular.module('breizhCampCFP', ['breizhCampCFP.filters', 'breizhCampCFP.services', 'breizhCampCFP.directives']).
   config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/login', {templateUrl: '/assets/pages/partials/login.html', controller: LoginCtrl});
+    $routeProvider.when('/dashboard', {templateUrl: '/assets/pages/partials/dashboard.html', controller: LoginCtrl});
     $routeProvider.otherwise({redirectTo: '/login'});
   }]);
