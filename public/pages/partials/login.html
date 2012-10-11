@@ -1,27 +1,28 @@
 <div class="row">
 	<div class="span3">Bienvenue sur le site du Call For Paper du BreizhCamp.</div>
 	<div class="span8">
-		<div class="well">
+		<div class="well" ng-controller="LoginCtrl">
 			<h3>Se connecter</h3>
-			<form action="/login" method="POST" class="form-vertical">
+			<form class="form-vertical" novalidate>
 				<fieldset>
 					<div class="control-group">
 						<label class="control-label" for="email"></label>
 						<div class="controls">
-							<input type="text" id="email" name="email" value placeholder="Adresse mail">
+							<input type="email" id="email" name="email" value placeholder="Adresse mail" ng-model="user.email">
 							<p class="help-inline">Votre adresse mail</p>
 						</div>
 					</div>
 					<div class="control-group">
 						<label class="control-label" for="password"></label>
 						<div class="controls">
-							<input type="password" id="password" name="password" value="" placeholder="Mot de passe">
+							<input type="password" id="password" name="password" value="" placeholder="Mot de passe" ng-model="user.password">
 							<p class="help-inline">Votre mot de passe</p>
 						</div>
 					</div>
 				</fieldset>
+				<pre>form = {{user | json}}</pre>
 				<div class="form-actions">
-					<input type="submit" class="btn btn-primary" value="Se Connecter"> <small><a href="/reset/ask">Mot de passe oubli&eacute; ?</a></small>
+					<button ng-click="login()" class="btn btn-primary">Se Connecter</button> <small><a href="#">Mot de passe oubli&eacute; ?</a></small>
 				</div>
 			</form>
 		</div>

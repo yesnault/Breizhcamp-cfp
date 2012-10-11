@@ -3,6 +3,28 @@
 /* Controllers */
 
 
-function MyCtrl1() {}
-MyCtrl1.$inject = [];
+function LoginCtrl($scope, $log, $http) {
+	
+	$scope.login = function(user) {
+		$log.info($scope.user.email);
+		//$http.post('/login', user).success(successCallback);
+		
+		$http({method: 'POST', url: '/login', data : $scope.user}).
+		  success(function(data, status, headers, config) {
+		    // this callback will be called asynchronously
+		    // when the response is available
+			  $log.info(status);
+			  $log.info(data);
+		  }).
+		  error(function(data, status, headers, config) {
+		    // called asynchronously if an error occurs
+		    // or server returns response with status
+		    // code outside of the <200, 400) range
+		  });
+		
+	}
+	
+}
+
+// LoginCtrl.$inject = [$scope];
 
