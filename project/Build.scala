@@ -12,7 +12,7 @@ object ApplicationBuild extends Build {
     val appDependencies = Seq(
       "com.typesafe" %% "play-plugins-mailer" % "2.0.2",
       "org.mindrot" % "jbcrypt" % "0.3m",
-      "mysql" % "mysql-connector-java" % "5.1.18"
+      "mysql" % "mysql-connector-java" % "5.1.21"
     )
 
     lazy val s = Defaults.defaultSettings ++ Seq(generateAPIDocsTask)
