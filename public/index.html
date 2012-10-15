@@ -1,10 +1,10 @@
 <!doctype html>
 <html ng-app="breizhCampCFP">
 <head>
-<meta charset="utf-8">
-<title>BreizhCamp CFP</title>
-<link rel="stylesheet" href="/assets/stylesheets/app.css" />
-<link rel="stylesheet" media="screen" href="/assets/stylesheets/bootstrap.css">
+	<meta charset="utf-8">
+	<title>BreizhCamp CFP</title>
+	<link rel="stylesheet" href="/assets/stylesheets/app.css" />
+	<link rel="stylesheet" media="screen" href="/assets/stylesheets/bootstrap.css">
 </head>
 <body>
 	<div class="navbar">
@@ -15,7 +15,7 @@
 				<div class="nav-collapse">
 					<ul class="nav">
 						<li class=""><a href="/">Home</a></li>
-						<li class="dropdown" ng-show="islogged"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Talks <b class="caret"></b></a>
+						<li class="dropdown" ng-show="authenticaded"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Talks <b class="caret"></b></a>
 							<ul class="dropdown-menu">
 								<li><a href="/talks/submit">Soumettre un talk</a></li>
 								<li><a href="/talks/manage">G&eacute;rer vos talks</a></li>
@@ -24,7 +24,7 @@
 					</ul>
 				</div>
 
-				<div class="btn-group pull-right" ng-show="isadmin">
+				<div class="btn-group pull-right" ng-show="admin">
 					<a class="btn" href="#"><i class="icon-wrench"></i>Admin</a> <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<li><a href="/admin/users"><i class="icon-user"></i>Utilisateurs</a></li>
@@ -33,7 +33,7 @@
 					</ul>
 				</div>
 
-				<div class="btn-group pull-right" ng-show="islogged">
+				<div class="btn-group pull-right" ng-show="authenticaded">
 					<a class="btn" href="#">
 						<i><img src="{{loggeduser.avatar+'?s=14'}}" /></i>{{loggeduser.fullname}}</a> <a
 						class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>

@@ -1,13 +1,9 @@
 'use strict';
 
 /* Controllers */
+function LoginController($scope, $rootScope, $log, $http, $location) {
 
-function LoginCtrl($scope, $log, $http, $rootScope, $location) {
-
-	$rootScope.loggeduser = null;
-	$rootScope.islogged = false;
-	$rootScope.isadmin = false;
-	
+	// Fonction de login appelée sur le bouton de formulaire
 	$scope.login = function(user) {
 		$log.info($scope.user.email);
 
@@ -17,10 +13,14 @@ function LoginCtrl($scope, $log, $http, $rootScope, $location) {
 			// when the response is available
 			$log.info(status);
 			$log.info(data);
-			$rootScope.loggeduser = data;
-			$rootScope.islogged = true;
-			$rootScope.isadmin = data.admin;
-			//$location.url('/dashboard');
+			
+			// Mise à jour des variables de l'appli
+			$rootScope.authenticaded = true;
+			if (data.admin) $rootScope.admin=true;
+			$rootScope.loggeduser= data;
+			
+			// Routage vers le dashboard
+			$location.url('/dashboard');
 			
 		 }).
 		  error(function(data, status, headers, config) {
@@ -30,10 +30,9 @@ function LoginCtrl($scope, $log, $http, $rootScope, $location) {
 			$log.info(status);
 			$log.info(data);
 		});
-
 	}
-
 }
 
-// LoginCtrl.$inject = [$scope];
+// Pour que l'injection de dépendances fonctionne en cas de 'minifying'
+LoginController.$inject = [$scope, $rootScope, $log, $http, $location];
 
