@@ -1,8 +1,10 @@
 package controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import models.User;
+import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
@@ -24,6 +26,19 @@ public class Admin extends Controller {
 		}
 		return ok(views.html.admin.users.render(User.findAll(), user));
 	}
+
+    public static Result varenv() {
+        Map<String, String> variables = System.getenv();
+        Logger.info("Variable environement");
+        for (Map.Entry<String, String> entry : variables.entrySet())
+        {
+            String name = entry.getKey();
+            String value = entry.getValue();
+            Logger.info(name + "=" + value);
+        }
+
+        return ok();
+    }
 	
 	public static Result submitUsers() {
 		

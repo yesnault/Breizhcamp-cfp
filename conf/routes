@@ -39,6 +39,7 @@ GET     /email/:token               controllers.account.settings.Email.validateE
 
 GET	    /admin/users                controllers.Admin.users()
 POST    /admin/submitusers          controllers.Admin.submitUsers()
+GET     /admin/varenv               controllers.Admin.varenv()
 
 GET     /admin/talks/list           controllers.talks.AdminTalks.list()
 GET     /talks/see/:idTalk          controllers.talks.SeeTalks.seeTalk(idTalk:Long)
@@ -51,6 +52,9 @@ GET     /talks/manage               controllers.talks.ManageTalks.index()
 GET     /talks/edit/:idTalk         controllers.talks.ManageTalks.edit(idTalk:Long)
 POST    /talks/save/:idTalk         controllers.talks.ManageTalks.save(idTalk:Long)
 GET     /talks/delete/:idTalk       controllers.talks.ManageTalks.delete(idTalk:Long)
+
+
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
