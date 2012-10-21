@@ -8,6 +8,9 @@ import play.data.validation.Constraints;
 import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.Result;
+
+import static play.libs.Json.toJson;
+
 import views.html.index;
 
 /**
@@ -118,7 +121,7 @@ public class Application extends Controller {
     /**
      * Handle login form submission.
      *
-     * @return Dashboard if auth OK or login form if auth KO
+     * @return User if auth OK or 403 ?? if auth KO
      */
     public static Result authenticate() {
         Form<Login> loginForm = form(Login.class).bindFromRequest();
@@ -126,10 +129,12 @@ public class Application extends Controller {
         Form<Register> registerForm = form(Register.class);
 
         if (loginForm.hasErrors()) {
-            return badRequest(index.render(registerForm, loginForm));
+        	// Renvoyer une erreur du genre 403 ... avec un message d'erreur adéquat ?
+            //return badRequest(index.render(registerForm, loginForm));
+        	return unauthorized("Problème d'authentification");
         } else {
             session("email", loginForm.get().email);
-            return GO_DASHBOARD;
+            return ok(toJson(User.findByEmail(loginForm.get().email)));
         }
     }
 

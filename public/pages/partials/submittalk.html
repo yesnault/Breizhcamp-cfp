@@ -1,9 +1,12 @@
-<div class="row" ng-controller="TalkController">
+<div class="row">
 	<div class="span3">&nbsp;</div>
 	<div class="span12">
 		<div class="well">
-			<h3>Nouveau talk</h3>
-			<form ng-submit="submitTalk()">
+			<div ng-switch on="isNew" >
+				<h3 ng-switch-when="true">Nouveau talk</h3>
+				<h3 ng-switch-when="false">Edition du talk '{{talk.title}}'</h3>
+			</div>
+			<form ng-submit="saveTalk()">
 				<fieldset>
 					<div class="control-group ">
 						<label class="control-label" for="title"></label>
@@ -21,8 +24,7 @@
 					</div>
 				</fieldset>
 				<div class="form-actions">
-					<input type="submit" class="btn btn-primary" value="Valider"> <input type="button" class="btn" onclick="document.location.href='/talks/manage'"
-						value="Annuler">
+					<input type="submit" class="btn btn-primary" value="Valider"> <input type="button" class="btn" value="Annuler">
 				</div>
 			</form>
 		</div>

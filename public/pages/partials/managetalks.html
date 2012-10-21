@@ -1,4 +1,4 @@
-<div class="row" ng-controller="TalkController">
+<div class="row">
 	<div class="span8">
 		<table class="table table-bordered table-striped">
 			<tbody>
@@ -9,8 +9,8 @@
 				</tr>
 				<tr ng-repeat="talk in talks">
 					<td>{{talk.title}}</td>
-					<td><a href="/talks/edit/{{talk.id}}"><i class="icon-pencil"></i></a></td>
-					<td><a href="/talks/delete/{{talk.id}}" onclick="return confirm('Êtes vous sûr de vouloir supprimer les talks titre talk?')"><i class="icon-remove"></i></a></td>
+					<td><a href="#" ng-click="editTalk(talk)"><i class="icon-pencil"></i></a></td>
+					<td><a href="#" ng-click="deleteTalk(talk)" onclick="return confirm('Êtes vous sûr de vouloir supprimer les talks titre talk?')"><i class="icon-remove"></i></a></td>
 				</tr>
 			</tbody>
 		</table>

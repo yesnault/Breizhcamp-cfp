@@ -50,8 +50,10 @@ GET     /talks/edit/:idTalk         controllers.talks.ManageTalks.edit(idTalk:Lo
 POST    /talks/save/:idTalk         controllers.talks.ManageTalks.save(idTalk:Long)
 GET     /talks/delete/:idTalk       controllers.talks.ManageTalks.delete(idTalk:Long)
 
+GET		/talk/:idTalk				controllers.talks.TalkRestController.getById(idTalk:Long)
 GET		/talk						controllers.talks.TalkRestController.get()
 POST	/talk						controllers.talks.TalkRestController.save()
+DELETE	/talk/:idTalk 				controllers.talks.TalkRestController.delete(idTalk:Long)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
