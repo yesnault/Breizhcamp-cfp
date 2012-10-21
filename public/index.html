@@ -1,5 +1,5 @@
 <!doctype html>
-<html ng-app="breizhCampCFP">
+<html ng-app="breizhCampCFP" ng-controller="RootController">
 <head>
 	<meta charset="utf-8">
 	<title>BreizhCamp CFP</title>
@@ -15,7 +15,7 @@
 				<div class="nav-collapse">
 					<ul class="nav">
 						<li class=""><a href="/">Home</a></li>
-						<li class="dropdown" ng-show="authenticaded">
+						<li class="dropdown" ng-show="userService.isAuthenticated()">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Talks <b class="caret"></b></a>
 							<ul class="dropdown-menu">
 								<li><a href="/talks/submit">Soumettre un talk</a></li>
@@ -25,7 +25,7 @@
 					</ul>
 				</div>
 
-				<div class="btn-group pull-right" ng-show="admin">
+				<div class="btn-group pull-right" ng-show="userService.isAdmin()">
 					<a class="btn" href="#"><i class="icon-wrench"></i>Admin</a> <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<li><a href="/admin/users"><i class="icon-user"></i>Utilisateurs</a></li>
@@ -34,9 +34,9 @@
 					</ul>
 				</div>
 
-				<div class="btn-group pull-right" ng-show="authenticaded">
+				<div class="btn-group pull-right" ng-show="userService.isAuthenticated()">
 					<a class="btn" href="#">
-						<i><img src="{{loggeduser.avatar+'?s=14'}}" /></i>{{loggeduser.fullname}}</a> <a
+						<i><img src="{{userService.getUserData().avatar+'?s=14'}}" /></i>{{userService.getUserData().fullname}}</a> <a
 						class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<li><a href="/settings"><i class="icon-wrench"></i> settings</a></li>
@@ -62,8 +62,8 @@
 	<script src="/assets/javascripts/angular/controllers.js"></script>
 	<script src="/assets/javascripts/angular/filters.js"></script>
 	<script src="/assets/javascripts/angular/directives.js"></script>
-	<script src="/assets/javascripts/lib/jquery-1.7.1.min.js"></script>
-	<script src="/assets/javascripts/lib/bootstrap.min.js"></script>
+	<script src="/assets/javascripts/jquery-1.7.1.min.js"></script>
+	<script src="/assets/javascripts/bootstrap.min.js"></script>
 	<script src="/assets/javascripts/password.js" type="text/javascript"></script>
 </body>
 </html>

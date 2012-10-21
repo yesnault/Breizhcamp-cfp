@@ -1,6 +1,18 @@
 'use strict';
 
 /* Controllers */
+
+function RootController($scope, userService) {
+
+	$scope.userService = userService;
+
+}
+
+// Pour que l'injection de dépendances fonctionne en cas de 'minifying'
+rootController.$inject = ['$scope', 'userService'];
+
+
+
 function LoginController($scope, $log, userService) {
 
 	// Fonction de login appelée sur le bouton de formulaire

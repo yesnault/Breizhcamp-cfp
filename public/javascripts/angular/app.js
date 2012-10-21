@@ -16,7 +16,7 @@ App.config(['$routeProvider', function($routeProvider) {
 // Fonctions et données partagées par l'ensemble de l'application
 //App.run(['$rootScope', 'userService', function ($rootScope, userService) {
 //	// permet de savoir si l'utilisation est authentifié
-//	$rootScope.authenticaded = null;
+//	$rootScope.userService = userService;
 //
 //	$rootScope.admin = null;
 //	
