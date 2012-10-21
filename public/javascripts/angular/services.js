@@ -2,8 +2,9 @@
 
 /* Services */
 
-angular.module('breizhCampCFP.services', [])
-	.factory('userService', ['$http', '$log', '$location', function(http, logger, location) {
+var Services = angular.module('breizhCampCFP.services', ['ngResource']);
+
+Services.factory('UserService', ['$http', '$log', '$location', function(http, logger, location) {
 		// Service pour gérer les utilisateurs
 		function UserService(http, logger) {
 			var userdata = null;
@@ -52,3 +53,8 @@ angular.module('breizhCampCFP.services', [])
 		// instanciation du service
 		return new UserService(http, logger);
 	}]);
+
+
+Services.factory('TalkService', function($resource) {
+        return $resource('talk/:id', {});
+    });

@@ -9,16 +9,8 @@ var App = angular.module('breizhCampCFP', ['breizhCampCFP.services']); // , ['br
 App.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/login', {templateUrl: '/assets/pages/partials/login.html', controller: LoginController});
     $routeProvider.when('/dashboard', {templateUrl: '/assets/pages/partials/dashboard.html'});
+    $routeProvider.when('/submittalk', {templateUrl: '/assets/pages/partials/submittalk.html', controller: TalkController});
+    $routeProvider.when('/managetalk', {templateUrl: '/assets/pages/partials/managetalks.html', controller: TalkController});
     $routeProvider.otherwise({redirectTo: '/login'});
   }]);
 
-
-// Fonctions et données partagées par l'ensemble de l'application
-//App.run(['$rootScope', 'userService', function ($rootScope, userService) {
-//	// permet de savoir si l'utilisation est authentifié
-//	$rootScope.userService = userService;
-//
-//	$rootScope.admin = null;
-//	
-//	$rootScope.loggeduser = null;
-//}])

@@ -1,0 +1,30 @@
+<div class="row" ng-controller="TalkController">
+	<div class="span3">&nbsp;</div>
+	<div class="span12">
+		<div class="well">
+			<h3>Nouveau talk</h3>
+			<form ng-submit="submitTalk()">
+				<fieldset>
+					<div class="control-group ">
+						<label class="control-label" for="title"></label>
+						<div class="controls">
+							<input type="text" id="title" name="title" value="" placeholder="Titre" class="input-xxlarge" ng-model="talk.title">
+							<p class="help-inline">Longueur maximum: 50, Obligatoire</p>
+						</div>
+					</div>
+					<div class="control-group ">
+						<label class="control-label" for="description"></label>
+						<div class="controls">
+							<textarea id="description" name="description" placeholder="Description" class="input-xxlarge" rows="10" ng-model="talk.description"></textarea>
+							<p class="help-inline">Longueur maximum: 2&nbsp;000, Obligatoire</p>
+						</div>
+					</div>
+				</fieldset>
+				<div class="form-actions">
+					<input type="submit" class="btn btn-primary" value="Valider"> <input type="button" class="btn" onclick="document.location.href='/talks/manage'"
+						value="Annuler">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
