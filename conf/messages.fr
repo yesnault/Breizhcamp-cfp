@@ -36,6 +36,7 @@ validate=Valider
 cancel=Annuler
 reset=Valider
 account=Profil
+notifs=Notifications
 
 account.not.validated.check.mail=Votre compte n'est pas validé, vérifiez vos emails...
 account.successfully.validated=Votre compte est validé
@@ -54,6 +55,11 @@ error.expiredmaillink=Cette demande de ré-initialisation d'adresse mail est pé
 
 account.settings.password=Cliquez sur Valider pour recevoir les instructions par mail.
 account.settings.email=Entrez votre nouvelle adresse mail et Valider pour recevoir les instructions par mail.
+
+notifs.notifOn=Notifications par mail pour les nouveaux commentaires :
+notifs.notifOnMyTalk=sur mes talks.
+notifs.notifAdminOnAllTalk=sur tous les talks.
+notifs.notifAdminOnTalkWithComment=sur les talks où j'ai mis un commentaire.
 
 account.update.title=Profile
 account.description=Description/Bio
@@ -125,3 +131,8 @@ talks.delete.confirm=Êtes vous sûr de vouloir supprimer les talks {0}?
 talks.add.success=Le talk {0} a bien été ajouté.
 talks.edit.success=Le talk {0} a bien été modifié.
 talks.delete.success=Le talk {0} a bien été supprimé. 
+talks.questions=Questions/Réponses
+talks.comment.new=Nouveau commentaire
+
+talks.comment.new.mail.subject=Nouveau commentaire sur le talk {0}
+talks.comment.new.mail.message=Bonjour,<br/><br/>Un nouveau commentaire a été posté sur le talk {0} par {1} :<br/><i>{2}</i>

@@ -72,26 +72,34 @@ public class Mail {
         }
 
         public void run() {
-            MailerAPI email = play.Play.application().plugin(MailerPlugin.class).email();
 
             final Configuration root = Configuration.root();
             final String mailFrom = root.getString("mail.from");
-            email.addFrom(mailFrom);
-            email.setSubject(envelop.subject);
-            for (String toEmail : envelop.toEmails) {
-                email.addRecipient(toEmail);
-                Logger.debug("Mail.sendMail: Mail will be sent to " + toEmail);
-            }
 
             final String mailSign = root.getString("mail.sign");
-            email.send(envelop.message + "\n\n " + mailSign,
-                    envelop.message + "<br><br>--<br>" + mailSign);
+			String messageText = envelop.message + "\n\n " + mailSign;
+			String messageHtml = envelop.message + "<br><br>--<br>" + mailSign;
 
-            Logger.debug("Mail sent - SMTP:" + root.getString("smtp.host")
+			for (String toEmail : envelop.toEmails) {
+				sendEmail(mailFrom, messageText, messageHtml, envelop.subject,
+						toEmail);
+			}
+
+			Logger.debug("Mail sent - SMTP:" + root.getString("smtp.host")
                     + ":" + root.getString("smtp.port")
                     + " SSL:" + root.getString("smtp.ssl")
                     + " user:" + root.getString("smtp.user")
                     + " password:" + root.getString("smtp.password"));
         }
+
+		private void sendEmail(final String mailFrom, String messageText,
+				String messageHtml, String subject, String toEmail) {
+			MailerAPI email = play.Play.application().plugin(MailerPlugin.class).email();
+			email.addFrom(mailFrom);
+			email.setSubject(subject);
+			email.addRecipient(toEmail);
+			Logger.debug("Mail.sendMail: Mail will be sent to " + toEmail);
+			email.send(messageText, messageHtml);
+		}
     }
 }

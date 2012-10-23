@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.BooleanUtils;
 
 import models.utils.AppException;
 import models.utils.Hash;
@@ -52,7 +53,38 @@ public class User extends Model {
     public Boolean validated = false;
 
 	public Boolean admin = false;
+
+	private Boolean notifOnMyTalk;
+    
+	private Boolean notifAdminOnAllTalk;
+    
+	private Boolean notifAdminOnTalkWithComment;
 	
+	public boolean hasNotifOnMyTalk() {
+		return BooleanUtils.isNotFalse(notifOnMyTalk);
+	}
+	
+	public boolean hasNotifAdminOnAllTalk() {
+		return BooleanUtils.isNotFalse(notifAdminOnAllTalk);
+	}
+	
+	public boolean hasNotifAdminOnTalkWithComment() {
+		return BooleanUtils.isNotFalse(notifAdminOnTalkWithComment);
+	}
+	
+	public void setNotifOnMyTalk(Boolean notifOnMyTalk) {
+		this.notifOnMyTalk = notifOnMyTalk;
+	}
+
+	public void setNotifAdminOnAllTalk(Boolean notifAdminOnAllTalk) {
+		this.notifAdminOnAllTalk = notifAdminOnAllTalk;
+	}
+
+	public void setNotifAdminOnTalkWithComment(Boolean notifAdminOnTalkWithComment) {
+		this.notifAdminOnTalkWithComment = notifAdminOnTalkWithComment;
+	}
+
+	@Column(length = 2000)
 	public String description;
 	
 	@OneToMany( cascade = CascadeType.ALL)
@@ -139,6 +171,10 @@ public class User extends Model {
     public void changePassword(String password) throws AppException {
         this.passwordHash = Hash.createPassword(password);
         this.save();
+    }
+    
+    public static List<User> findAllAdmin() {
+    	return find.where().eq("admin", Boolean.TRUE).findList();
     }
 
     /**

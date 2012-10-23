@@ -1,0 +1,38 @@
+@(user: User, talk: Talk)
+
+@import helper._
+
+@main(user) {
+
+
+    <div class="span8">
+    	<div class="well">
+    		<h3>@talk.title</h3>
+    		@Messages("admin.talks.submit.by", talk.speaker.fullname)<br/>
+    		<br/>
+    		<p>
+    			@talk.description
+    		<p>
+    	</div>
+    	
+    	<div class="well">
+    		<h3>@Messages("talks.questions")</h3>
+    		
+    		@for(comment <- talk.comments) {
+    			<div class="well">
+    				<img src="@comment.author.getAvatar()?s=40"/> @comment.author.fullname<br/>
+    				@comment.comment
+    			</div>
+    		}
+    		
+    		<div class="well">
+    			@form(controllers.talks.routes.SeeTalks.saveComment(talk.id), 'class -> "form-inline") {
+   					<input type="text" name="comment" placeholder="@Messages("talks.comment.new")"/>
+   					<input type="submit" class="btn btn-primary" value="@Messages("validate")">
+    			}
+    		</div>
+    		
+    	</div>
+    </div>
+
+}
