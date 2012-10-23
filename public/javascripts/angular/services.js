@@ -72,3 +72,7 @@ Services.factory('UserService', ['$http', '$log', '$location', '$cookieStore', f
 Services.factory('TalkService', function($resource) {
         return $resource('talk/:id', {});
     });
+
+Services.factory('ManageUsersService', function($resource) {
+        return $resource('/admin/users/get', {});
+    });
