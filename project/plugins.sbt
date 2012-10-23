@@ -13,7 +13,11 @@ libraryDependencies += ("com.google.javascript" % "closure-compiler" % "rr2079.1
 resolvers ++= Seq(
     DefaultMavenRepository,
     Resolver.url("Play", url("http://download.playframework.org/ivy-releases/"))(Resolver.ivyStylePatterns),
-    "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/"
+    "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/",
+    "Sonatype OSS Snasphots" at "http://oss.sonatype.org/content/repositories/snapshots"
 )
 
+
 addSbtPlugin("play" % "sbt-plugin" % "2.0.3")
+
+addSbtPlugin("com.cloudbees.deploy.play" % "sbt-cloudbees-play-plugin" % "0.3-SNAPSHOT")

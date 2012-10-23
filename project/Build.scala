@@ -1,6 +1,7 @@
 import sbt._
 import Keys._
 import PlayProject._
+import cloudbees.Plugin._
 
 object ApplicationBuild extends Build {
 
@@ -17,10 +18,12 @@ object ApplicationBuild extends Build {
 
     lazy val s = Defaults.defaultSettings ++ Seq(generateAPIDocsTask)
 
-    val main = PlayProject(appName, appVersion, appDependencies, mainLang = JAVA, settings = s).settings(
-      // Add your own project settings here
-      resolvers += "Apache" at "http://repo1.maven.org/maven2/",
-      resolvers += "jBCrypt Repository" at "http://repo1.maven.org/maven2/org/"   
+    val main = PlayProject(appName, appVersion, appDependencies, mainLang = JAVA, settings = s)
+    .settings(cloudBeesSettings :_*)
+    .settings(CloudBees.applicationId := Some("breizhcamp/cfp")).settings(
+    // Add your own project settings here
+    resolvers += "Apache" at "http://repo1.maven.org/maven2/",
+    resolvers += "jBCrypt Repository" at "http://repo1.maven.org/maven2/org/"
     )
 
     object Tasks {
