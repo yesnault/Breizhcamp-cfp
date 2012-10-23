@@ -2,14 +2,14 @@
 
 /* Services */
 
-var Services = angular.module('breizhCampCFP.services', ['ngResource']);
+var Services = angular.module('breizhCampCFP.services', ['ngResource', 'ngCookies']);
 
-Services.factory('UserService', ['$http', '$log', '$location', function(http, logger, location) {
+Services.factory('UserService', ['$http', '$log', '$location', '$cookieStore', function(http, logger, location, $cookieStore) {
 		// Service pour gérer les utilisateurs
 		function UserService(http, logger) {
 			var userdata = null;
 			var authenticated = null;
-			var admin = false;
+			var admin = null;
 		
 			// Fonction de login
 			this.login = function(user, route) {
@@ -24,7 +24,8 @@ Services.factory('UserService', ['$http', '$log', '$location', function(http, lo
 
 					logger.info(status);
 					logger.info(data);
-					
+					$cookieStore.put('userData', data);
+
 					userdata = data;
 					authenticated = true;
 					if (userdata.admin) admin = true;
@@ -39,14 +40,27 @@ Services.factory('UserService', ['$http', '$log', '$location', function(http, lo
 			
 				// Getters
 				this.getUserData = function() {
+                    if (userdata == null) {
+                        if ($cookieStore.get('userData') !== 'undefined') {
+                            userdata = $cookieStore.get('userData');
+                        }
+                    }
 					return userdata;
 				};
 				
 				this.isAuthenticated = function() {
+                    if (authenticated == null) {
+                        if ($cookieStore.get('userData') !== 'undefined') {
+                            authenticated = true;
+                        }
+                    }
 					return authenticated;
 				};
 				
 				this.isAdmin = function() {
+                    if (admin == null && this.getUserData() != null && this.getUserData().admin) {
+                        admin = true;
+                    }
 					return admin;
 				};
 		};
