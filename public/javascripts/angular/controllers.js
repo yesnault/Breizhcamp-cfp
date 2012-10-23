@@ -83,11 +83,6 @@ function ManageTalkController($scope, $log, $location, TalkService) {
 	    });
 	}
 	
-	$scope.editTalk = function(talk) {
-		$log.info("Update du talk " + talk.id);
-		$location.url('/submittalk/'+talk.id);
-	}
-	
 }
 // Pour que l'injection de dépendances fonctionne en cas de 'minifying'
 ManageTalkController.$inject = ['$scope', '$log', '$location', 'TalkService'];
