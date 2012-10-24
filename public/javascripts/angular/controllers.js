@@ -121,3 +121,8 @@ function ManageUsersController($scope, $log, $location, ManageUsersService, http
 }
 // Pour que l'injection de dépendances fonctionne en cas de 'minifying'
 ManageUsersController.$inject = ['$scope', '$log', '$location', 'ManageUsersService', '$http'];
+
+function ListTalksController($scope, $log, AllTalkService) {
+    $scope.talks = AllTalkService.query();
+}
+ListTalksController.$inject = ['$scope', '$log', 'AllTalkService'];

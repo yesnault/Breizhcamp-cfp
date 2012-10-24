@@ -53,6 +53,7 @@ GET     /talks/edit/:idTalk         controllers.talks.ManageTalks.edit(idTalk:Lo
 POST    /talks/save/:idTalk         controllers.talks.ManageTalks.save(idTalk:Long)
 GET     /talks/delete/:idTalk       controllers.talks.ManageTalks.delete(idTalk:Long)
 
+GET		/talk/all					controllers.talks.TalkRestController.all()
 GET		/talk/:idTalk				controllers.talks.TalkRestController.getById(idTalk:Long)
 GET		/talk						controllers.talks.TalkRestController.get()
 POST	/talk						controllers.talks.TalkRestController.save()

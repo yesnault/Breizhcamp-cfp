@@ -73,6 +73,10 @@ Services.factory('TalkService', function($resource) {
         return $resource('talk/:id', {});
     });
 
+Services.factory('AllTalkService', function($resource) {
+    return $resource('talk/all', {});
+});
+
 Services.factory('ManageUsersService', function($resource) {
         return $resource('/admin/users/get', {});
     });
