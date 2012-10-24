@@ -86,3 +86,69 @@ function ManageTalkController($scope, $log, $location, TalkService) {
 }
 // Pour que l'injection de dépendances fonctionne en cas de 'minifying'
 ManageTalkController.$inject = ['$scope', '$log', '$location', 'TalkService'];
+
+
+function ManageUsersController($scope, $log, $location, ManageUsersService, http) {
+
+    $scope.users = ManageUsersService.query();
+
+    $scope.submitUsers = function() {
+
+        var data = new Object();
+
+
+        $.each($scope.users, function(index, value) {
+            data[value.email] = value.admin;
+        });
+
+
+        http({
+            method : 'POST',
+            url : '/admin/submitusers',
+            data : data
+        }).success(function(data, status, headers, config) {
+                $('#messageSuccess').text('Utilisateurs sauvegardés');
+                $('#messageSuccess').removeClass('hide');
+                $('#messageError').addClass('hide');
+            }).error(function(data, status, headers, config) {
+                $log.info('code http de la réponse : ' + status);
+                $('#messageError').text('Une erreur a eu lieu pendant la sauvegarde des utilisateurs (' + status + ')');
+                $('#messageSuccess').addClass('hide');
+                $('#messageError').removeClass('hide');
+            });
+    };
+
+}
+// Pour que l'injection de dépendances fonctionne en cas de 'minifying'
+ManageUsersController.$inject = ['$scope', '$log', '$location', 'ManageUsersService', '$http'];
+
+function ListTalksController($scope, $log, AllTalkService) {
+    $scope.talks = AllTalkService.query();
+}
+ListTalksController.$inject = ['$scope', '$log', 'AllTalkService'];
+
+function SeeTalksController($scope, $log, $routeParams, TalkService, http) {
+    $scope.talk = TalkService.get({id:$routeParams.talkId});
+
+    $scope.postComment = function() {
+        $log.info("Sauvegarde du commentaire " + $scope.comment);
+
+        var data = {'comment' : $scope.comment};
+
+        http({
+            method : 'POST',
+            url : '/talks/' + $scope.talk.id + '/comment',
+            data : data
+        }).success(function(data, status, headers, config) {
+
+                $('#messageError').addClass('hide');
+                $log.info(status);
+                $scope.talk = TalkService.get({id:$routeParams.talkId});
+            }).error(function(data, status, headers, config) {
+                $('#messageError').text('Une erreur a eu lieu pendant la sauvegarde du commentaire (' + status + ')');
+                $('#messageError').removeClass('hide');
+                $log.info(status);
+            });
+    }
+}
+SeeTalksController.$inject = ['$scope', '$log', '$routeParams', 'TalkService', '$http'];

@@ -1,0 +1,38 @@
+<div class="row">
+
+    <p class="">
+        <span id="messageSuccess" class="badge badge-success hide"></span>
+        <span id="messageError" class="badge badge-important hide"></span>
+    </p>
+
+    <form ng-submit="submitUsers()">
+
+        <table class="table table-bordered table-striped">
+            <tbody><tr>
+                <th>Utilisateur</th>
+                <th>Email</th>
+                <th>Admin</th>
+            </tr>
+
+            <tr ng-repeat="user in users">
+                <td>{{user.fullname}}</td>
+                <td>{{user.email}}<input type="hidden" name="email" ng-model="user.email" value="{{user.email}}"></td>
+
+                <td><input type="checkbox" name="{{user.email}}" ng-model="user.admin" checked="{{{true:'checked', false:''}[user.admin]}}"></td>
+            </tr>
+
+            </tbody></table>
+
+
+
+        <div class="form-actions">
+            <input type="submit" class="btn btn-primary" value="Valider">
+            <input type="button" class="btn" onclick="document.location.href='/'" value="Annuler">
+        </div>
+
+
+    </form>
+
+
+
+</div>
