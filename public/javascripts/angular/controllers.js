@@ -127,7 +127,28 @@ function ListTalksController($scope, $log, AllTalkService) {
 }
 ListTalksController.$inject = ['$scope', '$log', 'AllTalkService'];
 
-function SeeTalksController($scope, $log, $routeParams, TalkService) {
+function SeeTalksController($scope, $log, $routeParams, TalkService, http) {
     $scope.talk = TalkService.get({id:$routeParams.talkId});
+
+    $scope.postComment = function() {
+        $log.info("Sauvegarde du commentaire " + $scope.comment);
+
+        var data = {'comment' : $scope.comment};
+
+        http({
+            method : 'POST',
+            url : '/talks/' + $scope.talk.id + '/comment',
+            data : data
+        }).success(function(data, status, headers, config) {
+
+                $('#messageError').addClass('hide');
+                $log.info(status);
+                $scope.talk = TalkService.get({id:$routeParams.talkId});
+            }).error(function(data, status, headers, config) {
+                $('#messageError').text('Une erreur a eu lieu pendant la sauvegarde du commentaire (' + status + ')');
+                $('#messageError').removeClass('hide');
+                $log.info(status);
+            });
+    }
 }
-SeeTalksController.$inject = ['$scope', '$log', '$routeParams', 'TalkService'];
+SeeTalksController.$inject = ['$scope', '$log', '$routeParams', 'TalkService', '$http'];

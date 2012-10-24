@@ -1,4 +1,8 @@
 <div class="row">
+
+    <p class="">
+        <span id="messageError" class="badge badge-important hide"></span>
+    </p>
     <div class="span8">
         <div class="well">
             <h3>{{talk.title}}</h3>
@@ -12,28 +16,17 @@
 
         <div class="well">
             <h3>Questions/Réponses</h3>
-
-
             <div class="well" ng-repeat="comment in talk.comments">
                 <img ng-src="{{comment.author.avatar}}?s=40"> {{comment.author.fullname}}<br/>
                 {{comment.comment}}
             </div>
 
-
             <div class="well">
-
-
-                <form action="/talks/{{talk.id}}/comment" method="POST" class="form-inline">
-
-                    <input type="text" name="comment" placeholder="Nouveau commentaire">
+                <form ng-submit="postComment()" method="POST" class="form-inline">
+                    <input type="text" name="comment" ng-model="comment" placeholder="Nouveau commentaire">
                     <input type="submit" class="btn btn-primary" value="Valider">
-
                 </form>
-
             </div>
-
         </div>
     </div>
-
-
 </div>
