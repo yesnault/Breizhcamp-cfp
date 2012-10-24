@@ -63,18 +63,27 @@ Services.factory('UserService', ['$http', '$log', '$location', '$cookieStore', f
                     }
 					return admin;
 				};
-		};
+		}
 		// instanciation du service
 		return new UserService(http, logger);
 	}]);
 
+Services.factory('AccountService', function($resource) {
+    function AccountService($resource) {
+        this.getUser = function (idUser) {
+            return $resource('/settings/user/:id').get({id:idUser});
+        }
+    }
+
+    return new AccountService($resource);
+});
 
 Services.factory('TalkService', function($resource) {
-        return $resource('talk/:id', {});
+        return $resource('/talk/:id', {});
     });
 
 Services.factory('AllTalkService', function($resource) {
-    return $resource('talk/all', {});
+    return $resource('/talk/all', {});
 });
 
 Services.factory('ManageUsersService', function($resource) {

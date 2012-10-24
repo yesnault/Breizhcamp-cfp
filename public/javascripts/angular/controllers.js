@@ -152,3 +152,10 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http) {
     }
 }
 SeeTalksController.$inject = ['$scope', '$log', '$routeParams', 'TalkService', '$http'];
+
+function SettingsAccountController($scope, $log, AccountService, UserService) {
+    var idUser = UserService.getUserData().id;
+    $log.info(idUser);
+    $scope.user = AccountService.getUser(idUser);
+}
+SettingsAccountController.$inject = ['$scope', '$log', 'AccountService', 'UserService'];

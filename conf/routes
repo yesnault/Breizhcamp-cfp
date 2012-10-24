@@ -11,6 +11,7 @@ POST    /login                      controllers.Application.authenticate()
 GET     /logout                     controllers.Application.logout()
 
 GET     /settings                   controllers.account.settings.Index.index()
+GET     /settings/user/:id          controllers.account.settings.Account.getUser(id:Long)
 GET     /settings/password          controllers.account.settings.Password.index()
 POST    /settings/password          controllers.account.settings.Password.runPassword()
 GET     /settings/email             controllers.account.settings.Email.index()

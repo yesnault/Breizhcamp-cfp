@@ -16,8 +16,18 @@ import play.mvc.Security;
 import views.html.account.settings.account;
 import controllers.Secured;
 
+import static play.libs.Json.toJson;
+
 @Security.Authenticated(Secured.class)
 public class Account extends Controller {
+
+    public static Result getUser(Long id) {
+        User user = User.findByEmail(request().username());
+        if (!user.id.equals(id)) {
+            return unauthorized();
+        }
+        return ok(toJson(user));
+    }
 
     public static Result index() {
         User user = User.findByEmail(request().username());

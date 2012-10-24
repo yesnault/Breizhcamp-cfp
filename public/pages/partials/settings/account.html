@@ -1,0 +1,75 @@
+<div class="row">
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span2 breadcrumb">
+                <img ng-src="{{user.avatar}}?s=100"><br/>
+                <br/>
+                Profil
+                <br/>
+                <a href="/settings/notifs">Notifications</a>
+                <br/>
+                <a href="/settings/password">Mot de passe</a>
+                <br/>
+                <a href="/settings/email">Adresse mail</a>
+            </div>
+            <div class="span10">
+                <div class="span12">
+                    <div class="well">
+                        <form action="/settings/account" method="POST">
+                            <fieldset>
+                                <legend>Description/Bio</legend>
+                                <div class="control-group ">
+                                    <label class="control-label" for="description"></label>
+                                    <div class="controls">
+                                        <textarea id="description" name="description" placeholder="Description/Bio" class="input-xxlarge" ng-model="user.description" rows="10"></textarea>
+                                        <p class="help-inline">Longueur maximum: 2&nbsp;000, Obligatoire</p>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <h2>Liste de vos liens</h2>
+                            <fieldset ng-repeat="lien in user.liens">
+                                <div class="control-group ">
+                                    <label class="control-label" for="label{{lien.id}}">Libellé</label>
+                                    <div class="controls">
+                                        <input type="text" id="label{{lien.id}}" name="label" value="{{lien.label}}" placeholder="Libellé" class="input-small">
+                                        <p class="help-inline">Longueur maximum: 50, Obligatoire</p>
+                                    </div>
+                                </div>
+                                <a href="/settings/lien/remove/1" onclick="return confirm('Êtes vous sûr de vouloir supprimer le lien {{lien.label}}?')">
+                                    Supprimer ce lien
+                                </a>
+                                <div class="control-group ">
+                                    <label class="control-label" for="url{{lien.id}}">URL</label>
+                                    <div class="controls">
+                                        <input type="text" id="url{{lien.id}}" name="url" value="{{lien.url}}" placeholder="URL" class="input-large">
+                                        <p class="help-inline">Longueur maximum: 200, Obligatoire</p>
+
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                                <legend>Nouveau lien</legend>
+                                <div class="control-group ">
+                                    <div class="controls">
+                                        <input type="text" name="label" value="" placeholder="Libellé" class="input-small">
+                                        <p class="help-inline">Longueur maximum: 50, Obligatoire</p>
+                                    </div>
+                                </div>
+                                <div class="control-group ">
+                                    <div class="controls">
+                                        <input type="text" name="url" value="" placeholder="URL" class="input-large">
+                                        <p class="help-inline">Longueur maximum: 200, Obligatoire</p>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <div class="form-actions">
+                                <input type="submit" class="btn btn-primary" value="Valider">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
