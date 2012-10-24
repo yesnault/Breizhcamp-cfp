@@ -88,10 +88,36 @@ function ManageTalkController($scope, $log, $location, TalkService) {
 ManageTalkController.$inject = ['$scope', '$log', '$location', 'TalkService'];
 
 
-function ManageUsersController($scope, $log, $location, ManageUsersService) {
+function ManageUsersController($scope, $log, $location, ManageUsersService, http) {
 
     $scope.users = ManageUsersService.query();
 
+    $scope.submitUsers = function() {
+
+        var data = new Object();
+
+
+        $.each($scope.users, function(index, value) {
+            data[value.email] = value.admin;
+        });
+
+
+        http({
+            method : 'POST',
+            url : '/admin/submitusers',
+            data : data
+        }).success(function(data, status, headers, config) {
+                $('#messageSuccess').text('Utilisateurs sauvegardés');
+                $('#messageSuccess').removeClass('hide');
+                $('#messageError').addClass('hide');
+            }).error(function(data, status, headers, config) {
+                $log.info('code http de la réponse : ' + status);
+                $('#messageError').text('Une erreur a eu lieu pendant la sauvegarde des utilisateurs (' + status + ')');
+                $('#messageSuccess').addClass('hide');
+                $('#messageError').removeClass('hide');
+            });
+    };
+
 }
 // Pour que l'injection de dépendances fonctionne en cas de 'minifying'
-ManageUsersController.$inject = ['$scope', '$log', '$location', 'ManageUsersService'];
+ManageUsersController.$inject = ['$scope', '$log', '$location', 'ManageUsersService', '$http'];
