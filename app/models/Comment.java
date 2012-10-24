@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 
 import models.utils.Mail;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
@@ -28,6 +29,7 @@ public class Comment extends Model {
     public User author;
     
     @ManyToOne
+    @JsonIgnore
     public Talk talk;
 
     @Constraints.Required

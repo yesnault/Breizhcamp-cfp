@@ -14,6 +14,7 @@ App.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/managetalk', {templateUrl: '/assets/pages/partials/managetalks.html', controller: ManageTalkController});
     $routeProvider.when('/admin/users', {templateUrl: '/assets/pages/partials/users.html', controller: ManageUsersController});
     $routeProvider.when('/admin/talks/list', {templateUrl: '/assets/pages/partials/listtalks.html', controller: ListTalksController});
+    $routeProvider.when('/talks/see/:talkId', {templateUrl: '/assets/pages/partials/seetalk.html', controller: SeeTalksController});
     $routeProvider.otherwise({redirectTo: '/login'});
   }]);
 

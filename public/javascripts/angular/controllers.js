@@ -126,3 +126,8 @@ function ListTalksController($scope, $log, AllTalkService) {
     $scope.talks = AllTalkService.query();
 }
 ListTalksController.$inject = ['$scope', '$log', 'AllTalkService'];
+
+function SeeTalksController($scope, $log, $routeParams, TalkService) {
+    $scope.talk = TalkService.get({id:$routeParams.talkId});
+}
+SeeTalksController.$inject = ['$scope', '$log', '$routeParams', 'TalkService'];
