@@ -47,15 +47,15 @@
 					<div class="control-group ">
 						<label class="control-label" for="inputPassword"></label>
 						<div class="controls">
-							<input type="password" id="inputPassword" name="inputPassword" value="" placeholder="Mot de passe">
+							<input type="password" id="inputPassword" name="inputPassword" value="" placeholder="Mot de passe" ng-model="signup.password" ng-change="changeStrength(signup.password, '#passwordStrengthDiv')">
 							<p class="help-inline">Obligatoire</p>
 						</div>
-						<div id="#passwordStrengthDiv" class="is0"></div>
+						<div id="passwordStrengthDiv" class="is0"></div>
 					</div>
 					<h6>G&eacute;n&eacute;rer un mot de passe</h6>
-					<input type="text" name="passwordGenerated" /><i class="icon-refresh pointer"></i>
+					<input type="text" name="passwordGenerated" ng-model="generatedPassword" ng-change="changeStrength(generatedPassword, '#passwordStrengthDiv2')"/><i class="icon-refresh pointer" ng-click="generatePassword()"></i>
+                    <div id="passwordStrengthDiv2" class="is0"></div>
 				</fieldset>
-				<div id="#passwordStrengthDiv2" class="is0"></div>
 				<div class="form-actions">
 					<input type="submit" class="btn primary" value="Inscription">
 				</div>

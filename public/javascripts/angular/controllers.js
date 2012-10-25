@@ -15,17 +15,43 @@ RootController.$inject = ['$scope', 'UserService', '$log'];
 
 
 
-function LoginController($scope, $log, UserService) {
+function LoginController($scope, $log, UserService, PasswordService) {
 
 	// Fonction de login appelée sur le bouton de formulaire
 	$scope.login = function() {
 		$log.info($scope.user.email);
 		// TODO Trouver un moyen pour que le routage ne soit pas fait dans le callback du XHR ?
 		UserService.login($scope.user, '/dashboard');
-	}
+	};
+
+    $scope.generatePassword = function() {
+        $log.info('generatePassword');
+        $scope.generatedPassword = PasswordService.randomPassword();
+        $scope.changeStrength($scope.generatedPassword, '#passwordStrengthDiv2')
+    };
+
+    $scope.changeStrength = function(password, divSelected) {
+
+        var strength = PasswordService.getPasswordStrength(password);
+
+        var percent = Math.floor(strength / 10) * 10;
+
+        $(divSelected).removeClass('is10');
+        $(divSelected).removeClass('is20');
+        $(divSelected).removeClass('is30');
+        $(divSelected).removeClass('is40');
+        $(divSelected).removeClass('is50');
+        $(divSelected).removeClass('is60');
+        $(divSelected).removeClass('is70');
+        $(divSelected).removeClass('is80');
+        $(divSelected).removeClass('is90');
+        $(divSelected).removeClass('is100');
+
+        $(divSelected).addClass('is' + percent);
+    }
 }
 // Pour que l'injection de dépendances fonctionne en cas de 'minifying'
-LoginController.$inject = ['$scope', '$log', 'UserService'];
+LoginController.$inject = ['$scope', '$log', 'UserService', 'PasswordService'];
 
 
 

@@ -109,3 +109,62 @@ Services.factory('AllTalkService', function($resource) {
 Services.factory('ManageUsersService', function($resource) {
         return $resource('/admin/users/get', {});
     });
+
+
+
+Services.factory('PasswordService', function() {
+
+    function PasswordService() {
+
+        this.getPasswordStrength = function(H) {
+            var A, B, C, D, E, F, G, I;
+            D = H.length;
+            if (D > 5) {
+                D = 5;
+            }
+            F = H.replace(/[0-9]/g, "");
+            G = H.length - F.length;
+            if (G > 3) {
+                G = 3;
+            }
+            A = H.replace(/\W/g, "");
+            C = H.length - A.length;
+            if (C > 3) {
+                C = 3;
+            }
+            B = H.replace(/[A-Z]/g, "");
+            I = H.length - B.length;
+            if (I > 3) {
+                I = 3;
+            }
+            E = ((D * 10) - 20) + (G * 10) + (C * 15) + (I * 10);
+            if (E < 0) {
+                E = 0;
+            }
+            if (E > 100) {
+                E = 100;
+            }
+            return E;
+        };
+
+        this.randomPassword = function() {
+            var $max, $num, $temp, chars, i, ret, size;
+            chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$_+";
+            size = 15;
+            i = 1;
+            ret = "";
+            while (i <= size) {
+                $max = chars.length - 1;
+                $num = Math.floor(Math.random() * $max);
+                $temp = chars.substr($num, 1);
+                ret += $temp;
+                i++;
+            }
+            return ret;
+        };
+
+    }
+
+    return new PasswordService();
+
+});
