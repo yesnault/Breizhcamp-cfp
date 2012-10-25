@@ -176,6 +176,31 @@ function SettingsAccountController($scope, $log, AccountService, UserService, ht
                     $log.info(status);
                 });
         }
+    };
+
+    $scope.saveSettings = function() {
+        var user = jQuery.extend(true, {}, $scope.user);
+        if ($scope.lien !== undefined) {
+            user.liens.push($scope.lien);
+        }
+        http({
+            method : 'POST',
+            url : '/settings/account',
+            data : user
+        }).success(function(data, status, headers, config) {
+                $('#messageError').addClass('hide');
+                $('#messageSuccess').text('Settings sauvegardés');
+                $('#messageSuccess').removeClass('hide');
+                var idUser = UserService.getUserData().id;
+                $scope.lien = undefined;
+                $scope.user = AccountService.getUser(idUser);
+            }).error(function(data, status, headers, config) {
+                $('#messageError').text('Une erreur a eu lieu pendant la sauvegarde des settings (' + status + ')');
+                $('#messageError').removeClass('hide');
+                $('#messageSuccess').addClass('hide');
+                $log.info(status);
+            });
+
     }
 }
 SettingsAccountController.$inject = ['$scope', '$log', 'AccountService', 'UserService', '$http'];

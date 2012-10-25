@@ -7,6 +7,9 @@ import java.util.Map;
 
 import models.Lien;
 import models.User;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.node.ArrayNode;
+import play.Logger;
 import play.data.Form;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
@@ -55,45 +58,79 @@ public class Account extends Controller {
     
     public static Result save() {
         User user = User.findByEmail(request().username());
-        
-        Form<AccountForm> accountForm = form(AccountForm.class).bindFromRequest();
-
-
+        Form<AccountForm> accountForm;
         List<Form<Lien>> liensForms = new ArrayList<Form<Lien>>();
-        
-        int countLien = 0;
-        
-        String[] labels = request().body().asFormUrlEncoded().get("label");
-        String[] urls = request().body().asFormUrlEncoded().get("url");
-        
-        for (countLien = 0; countLien < user.getLiens().size(); countLien++) {
-        	Map<String, String> data = new HashMap<String, String>(2);
-        	data.put("label", labels[countLien]);
-        	data.put("url", urls[countLien]);
-        	liensForms.add(form(Lien.class).bind(data));
+        Form<Lien> newLink = null;
+        String newLabel = null;
+        String newUrl = null;
+        JsonNode userJson = request().body().asJson();
+        boolean isJson = false;
+        if (userJson != null) {
+            isJson = true;
+            accountForm = form(AccountForm.class).bind(userJson);
+
+            // Parcour des liens du user;
+            ArrayNode liens = (ArrayNode) userJson.get("liens");
+            for (JsonNode lien : liens ) {
+                if (lien.get("id") != null) {
+                    liensForms.add(form(Lien.class).bind(lien));
+                } else {
+                    newLink = form(Lien.class).bind(lien);
+                    newLabel = lien.get("label").asText();
+                    newUrl = lien.get("url").asText();
+                }
+            }
+        } else {
+            accountForm = form(AccountForm.class).bindFromRequest();
+
+
+            int countLien = 0;
+
+            String[] labels = request().body().asFormUrlEncoded().get("label");
+            String[] urls = request().body().asFormUrlEncoded().get("url");
+
+            for (countLien = 0; countLien < user.getLiens().size(); countLien++) {
+                Map<String, String> data = new HashMap<String, String>(2);
+                data.put("label", labels[countLien]);
+                data.put("url", urls[countLien]);
+                liensForms.add(form(Lien.class).bind(data));
+            }
+
+            Map<String, String> data = new HashMap<String, String>(2);
+            data.put("label", labels[countLien]);
+            data.put("url", urls[countLien]);
+
+            newLink = form(Lien.class).bind(data);
+            newLabel = labels[countLien];
+            newUrl = urls[countLien];
         }
 
-    	Map<String, String> data = new HashMap<String, String>(2);
-    	data.put("label", labels[countLien]);
-    	data.put("url", urls[countLien]);
 
-        Form<Lien> newLink = form(Lien.class).bind(data);
-
-        
-        if (newLink.hasErrors()
-        		&& (labels[countLien].length() > 0
-        			|| urls[countLien].length() > 0)) {
-        	return badRequest(account.render(user, accountForm, liensForms, newLink));
-        } else if (newLink.hasErrors()) {
+        if (newLink != null
+                && newLink.hasErrors()
+                && (newLabel.length() > 0
+                || newUrl.length() > 0)) {
+            if (isJson) {
+                return badRequest();
+            } else {
+                return badRequest(account.render(user, accountForm, liensForms, newLink));
+            }
+        } else if (newLink != null && newLink.hasErrors()) {
         	newLink.errors().clear();
         }
         
         if (accountForm.hasErrors()) {
+            if (isJson) {
+                return badRequest();
+            }
         	return badRequest(account.render(user, accountForm, liensForms, newLink));
         }
         
         for (Form<Lien> oneLienForm : liensForms) {
         	if (oneLienForm.hasErrors()) {
+                if (isJson) {
+                    return badRequest();
+                }
             	return badRequest(account.render(user, accountForm, liensForms, newLink));
         	}
         }
@@ -106,14 +143,17 @@ public class Account extends Controller {
         
         user.description = accountForm.get().description;
         
-        if (labels[countLien].length() > 0
-    			|| urls[countLien].length() > 0) {
+        if (newLink != null && (newLabel.length() > 0
+    			|| newUrl.length() > 0)) {
         	Lien lien = newLink.get();
         	user.getLiens().add(lien);
         }
         
         user.save();
-                
+
+        if (isJson) {
+            return ok();
+        }
         return redirect(controllers.account.settings.routes.Account.index());	
     }
 }
