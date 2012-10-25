@@ -20,4 +20,4 @@ resolvers ++= Seq(
 
 addSbtPlugin("play" % "sbt-plugin" % "2.0.3")
 
-addSbtPlugin("com.cloudbees.deploy.play" % "sbt-cloudbees-play-plugin" % "0.3-SNAPSHOT")
+addSbtPlugin("com.cloudbees.deploy.play" % "sbt-cloudbees-play-plugin" % "0.4-SNAPSHOT")
