@@ -8,8 +8,28 @@ Services.factory('UserService', ['$http', '$log', '$location', '$cookieStore', f
 		// Service pour gérer les utilisateurs
 		function UserService(http, logger) {
 			var userdata = null;
-			var authenticated = null;
+			var authenticated = false;
 			var admin = null;
+
+            this.logout = function() {
+                var user = this.getUserData();
+                logger.info("deconnexion de " + user.email);
+
+
+                http({
+                    method : 'GET',
+                    url : '/logout'
+                }).success(
+                    function(data, status, headers, config) {
+                        // Suppression du cookie.
+                        $cookieStore.remove('userData');
+                        userdata = null;
+                        authenticated = false;
+                        admin = null;
+                        location.url("/");
+                    })
+
+            };
 		
 			// Fonction de login
 			this.login = function(user, route) {
@@ -41,7 +61,7 @@ Services.factory('UserService', ['$http', '$log', '$location', '$cookieStore', f
 				// Getters
 				this.getUserData = function() {
                     if (userdata == null) {
-                        if ($cookieStore.get('userData') !== 'undefined') {
+                        if ($cookieStore.get('userData') !== undefined) {
                             userdata = $cookieStore.get('userData');
                         }
                     }
@@ -49,8 +69,8 @@ Services.factory('UserService', ['$http', '$log', '$location', '$cookieStore', f
 				};
 				
 				this.isAuthenticated = function() {
-                    if (authenticated == null) {
-                        if ($cookieStore.get('userData') !== 'undefined') {
+                    if (authenticated == false) {
+                        if (this.getUserData() != null) {
                             authenticated = true;
                         }
                     }
@@ -58,8 +78,8 @@ Services.factory('UserService', ['$http', '$log', '$location', '$cookieStore', f
 				};
 				
 				this.isAdmin = function() {
-                    if (admin == null && this.getUserData() != null && this.getUserData().admin) {
-                        admin = true;
+                    if (admin == null && this.getUserData() != null) {
+                        admin = this.getUserData().admin;
                     }
 					return admin;
 				};

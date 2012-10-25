@@ -1,12 +1,17 @@
 'use strict';
 
 /* Controllers */
-function RootController($scope, UserService) {
+function RootController($scope, UserService, $log) {
 
 	$scope.userService = UserService;
+
+    $scope.logout = function() {
+        UserService.logout();
+
+    }
 }
 // Pour que l'injection de dépendances fonctionne en cas de 'minifying'
-RootController.$inject = ['$scope', 'UserService'];
+RootController.$inject = ['$scope', 'UserService', '$log'];
 
 
 
