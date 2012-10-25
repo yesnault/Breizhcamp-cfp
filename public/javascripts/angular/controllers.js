@@ -15,7 +15,7 @@ RootController.$inject = ['$scope', 'UserService', '$log'];
 
 
 
-function LoginController($scope, $log, UserService, PasswordService) {
+function LoginController($scope, $log, UserService, PasswordService, $http, $location) {
 
 	// Fonction de login appelée sur le bouton de formulaire
 	$scope.login = function() {
@@ -25,7 +25,6 @@ function LoginController($scope, $log, UserService, PasswordService) {
 	};
 
     $scope.generatePassword = function() {
-        $log.info('generatePassword');
         $scope.generatedPassword = PasswordService.randomPassword();
         $scope.changeStrength($scope.generatedPassword, '#passwordStrengthDiv2')
     };
@@ -48,10 +47,27 @@ function LoginController($scope, $log, UserService, PasswordService) {
         $(divSelected).removeClass('is100');
 
         $(divSelected).addClass('is' + percent);
+    };
+
+    $scope.signup = function() {
+        var newUser = $scope.new;
+
+        $http({
+            method : 'POST',
+            url : 'signup',
+            data : newUser
+        }).success(function(data, status, headers, config) {
+              $location.url("signup");
+            }).error(function(data, status, headers, config) {
+                $('#messageError').text("Erreur pendant l'inscription (" + status + ')');
+                $('#messageError').removeClass('hide');
+                $('#messageSuccess').addClass('hide');
+                $log.info(status);
+            });
     }
 }
 // Pour que l'injection de dépendances fonctionne en cas de 'minifying'
-LoginController.$inject = ['$scope', '$log', 'UserService', 'PasswordService'];
+LoginController.$inject = ['$scope', '$log', 'UserService', 'PasswordService', '$http', '$location'];
 
 
 

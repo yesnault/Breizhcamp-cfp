@@ -8,6 +8,7 @@ var App = angular.module('breizhCampCFP', ['breizhCampCFP.services']); // , ['br
 // Configuration des routes
 App.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/login', {templateUrl: '/assets/pages/partials/login.html', controller: LoginController});
+    $routeProvider.when('/signup', {templateUrl: '/assets/pages/partials/signup.html'});
     $routeProvider.when('/dashboard', {templateUrl: '/assets/pages/partials/dashboard.html'});
     $routeProvider.when('/submittalk/new', {templateUrl: '/assets/pages/partials/submittalk.html', controller: NewTalkController});
     $routeProvider.when('/edittalk/:talkId', {templateUrl: '/assets/pages/partials/submittalk.html', controller: EditTalkController});

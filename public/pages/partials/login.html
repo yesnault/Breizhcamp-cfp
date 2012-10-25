@@ -1,5 +1,11 @@
 <div class="row">
-	<div class="span3">Bienvenue sur le site du Call For Paper du BreizhCamp.</div>
+	<div class="span3">Bienvenue sur le site du Call For Paper du BreizhCamp.
+
+        <p class="">
+            <span id="messageSuccess" class="badge badge-success hide"></span>
+            <span id="messageError" class="badge badge-important hide"></span>
+        </p>
+    </div>
 	<div class="span8">
 		<div class="well" >
 			<h3>Se connecter</h3>
@@ -28,26 +34,26 @@
 
 		<div class="well">
 			<h3>Nouveau ?</h3>
-			<form action="/signup" method="POST">
+			<form ng-submit="signup()">
 				<fieldset>
 					<div class="control-group ">
 						<label class="control-label" for="email"></label>
 						<div class="controls">
-							<input type="text" id="email" name="email" value="" placeholder="Adresse mail">
+							<input type="text" id="email" name="email" value="" placeholder="Adresse mail" ng-model="new.email">
 							<p class="help-inline">Obligatoire</p>
 						</div>
 					</div>
 					<div class="control-group ">
 						<label class="control-label" for="fullname"></label>
 						<div class="controls">
-							<input type="text" id="fullname" name="fullname" value="" placeholder="Nom Complet">
+							<input type="text" id="fullname" name="fullname" value="" placeholder="Nom Complet" ng-model="new.fullname">
 							<p class="help-inline">Obligatoire</p>
 						</div>
 					</div>
 					<div class="control-group ">
 						<label class="control-label" for="inputPassword"></label>
 						<div class="controls">
-							<input type="password" id="inputPassword" name="inputPassword" value="" placeholder="Mot de passe" ng-model="signup.password" ng-change="changeStrength(signup.password, '#passwordStrengthDiv')">
+							<input type="password" id="inputPassword" name="inputPassword" value="" placeholder="Mot de passe" ng-model="new.inputPassword" ng-change="changeStrength(new.inputPassword, '#passwordStrengthDiv')">
 							<p class="help-inline">Obligatoire</p>
 						</div>
 						<div id="passwordStrengthDiv" class="is0"></div>

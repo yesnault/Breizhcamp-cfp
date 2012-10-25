@@ -6,6 +6,7 @@ import models.utils.AppException;
 import models.utils.Hash;
 import models.utils.Mail;
 import org.apache.commons.mail.EmailException;
+import org.codehaus.jackson.JsonNode;
 import play.Configuration;
 import play.Logger;
 import play.data.Form;
@@ -52,7 +53,14 @@ public class Signup extends Controller {
      * @return Successfull page or created form if bad
      */
     public static Result save() {
-        Form<Application.Register> registerForm = form(Application.Register.class).bindFromRequest();
+        JsonNode newUser = request().body().asJson();
+        Form<Application.Register> registerForm;
+        if (newUser == null) {
+            registerForm = form(Application.Register.class).bindFromRequest();
+        } else {
+            registerForm = form(Application.Register.class).bind(newUser);
+        }
+
 
         if (registerForm.hasErrors()) {
             return badRequest(create.render(registerForm));
