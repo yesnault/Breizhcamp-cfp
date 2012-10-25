@@ -15,20 +15,20 @@
                 <br/>
                 Notifications
                 <br/>
-                <a href="/settings/password">Mot de passe</a>
+                <a href="/#/settings/password">Mot de passe</a>
                 <br/>
                 <a href="/settings/email">Adresse mail</a>
             </div>
             <div class="span10">
                 <div class="span12">
                     <div class="well">
-                        <form action="/settings/notifs" method="POST">
+                        <form ng-submit="saveSettings()">
                             <fieldset>
                                 <legend>Notifications par mail pour les nouveaux commentaires :</legend>
                                 <div class="control-group ">
                                     <div class="controls">
                                         <label class="checkbox">
-                                            <input type="checkbox" id="notifOnMyTalk" name="notifOnMyTalk" value="true" ng-model="user.notifOnMyTalk">
+                                            <input type="checkbox" id="notifOnMyTalk" name="notifOnMyTalk" ng-model="user.notifOnMyTalk">
                                             <span></span>
                                             sur mes talks.
                                         </label>
@@ -37,7 +37,7 @@
                                 <div class="control-group" ng-show="userService.isAdmin()">
                                     <div class="controls">
                                         <label class="checkbox">
-                                            <input type="checkbox" id="notifAdminOnAllTalk" name="notifAdminOnAllTalk" value="true" ng-model="user.notifAdminOnAllTalk">
+                                            <input type="checkbox" id="notifAdminOnAllTalk" name="notifAdminOnAllTalk" ng-model="user.notifAdminOnAllTalk">
                                             <span></span>
                                             sur tous les talks.
                                         </label>
@@ -46,7 +46,7 @@
                                 <div class="control-group " ng-show="userService.isAdmin()">
                                     <div class="controls">
                                         <label class="checkbox">
-                                            <input type="checkbox" id="notifAdminOnTalkWithComment" name="notifAdminOnTalkWithComment" value="true" ng-model="user.notifAdminOnTalkWithComment">
+                                            <input type="checkbox" id="notifAdminOnTalkWithComment" name="notifAdminOnTalkWithComment" ng-model="user.notifAdminOnTalkWithComment">
                                             <span></span>
                                             sur les talks où jai mis un commentaire.
                                         </label>

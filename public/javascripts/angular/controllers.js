@@ -204,3 +204,55 @@ function SettingsAccountController($scope, $log, AccountService, UserService, ht
     }
 }
 SettingsAccountController.$inject = ['$scope', '$log', 'AccountService', 'UserService', '$http'];
+
+function NotifsAccountController($scope, $log, AccountService, UserService, $http) {
+
+    var idUser = UserService.getUserData().id;
+    $scope.user = AccountService.getUser(idUser);
+
+    $scope.saveSettings = function() {
+        var user = jQuery.extend(true, {}, $scope.user);
+        $http({
+            method : 'POST',
+            url : '/settings/notifs',
+            data : user
+        }).success(function(data, status, headers, config) {
+                $('#messageError').addClass('hide');
+                $('#messageSuccess').text('Settings sauvegardés');
+                $('#messageSuccess').removeClass('hide');
+                var idUser = UserService.getUserData().id;
+                $scope.user = AccountService.getUser(idUser);
+            }).error(function(data, status, headers, config) {
+                $('#messageError').text('Une erreur a eu lieu pendant la sauvegarde des settings (' + status + ')');
+                $('#messageError').removeClass('hide');
+                $('#messageSuccess').addClass('hide');
+                $log.info(status);
+            });
+    };
+}
+
+NotifsAccountController.$inject = ['$scope', '$log', 'AccountService', 'UserService', '$http'];
+
+function PasswordAccountController($scope, $log, UserService, AccountService, $http) {
+    var idUser = UserService.getUserData().id;
+    $scope.user = AccountService.getUser(idUser);
+
+    $scope.resetPassword = function() {
+        $http( {
+            method : 'POST',
+            url : '/settings/password'
+        }).success(function(data, status, headers, config) {
+                $('#messageError').addClass('hide');
+                $('#messageSuccess').text('Un mail a été envoyé. Merci de vérifier vos mails.');
+                $('#messageSuccess').removeClass('hide');
+            }).error(function(data, status, headers, config) {
+                $('#messageError').text('Une erreur a eu lieu pendant le reset du password (' + status + ')');
+                $('#messageError').removeClass('hide');
+                $('#messageSuccess').addClass('hide');
+                $log.info(status);
+            });
+    }
+
+}
+
+PasswordAccountController.$inject = ['$scope', '$log', 'UserService', 'AccountService', '$http'];
