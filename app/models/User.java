@@ -54,21 +54,21 @@ public class User extends Model {
 
 	public Boolean admin = false;
 
-	private Boolean notifOnMyTalk;
-    
-	private Boolean notifAdminOnAllTalk;
-    
-	private Boolean notifAdminOnTalkWithComment;
+    private Boolean notifOnMyTalk;
+
+    private Boolean notifAdminOnAllTalk;
+
+    private Boolean notifAdminOnTalkWithComment;
 	
-	public boolean hasNotifOnMyTalk() {
+	public boolean getNotifOnMyTalk() {
 		return BooleanUtils.isNotFalse(notifOnMyTalk);
 	}
 	
-	public boolean hasNotifAdminOnAllTalk() {
+	public boolean getNotifAdminOnAllTalk() {
 		return BooleanUtils.isNotFalse(notifAdminOnAllTalk);
 	}
 	
-	public boolean hasNotifAdminOnTalkWithComment() {
+	public boolean getNotifAdminOnTalkWithComment() {
 		return BooleanUtils.isNotFalse(notifAdminOnTalkWithComment);
 	}
 	

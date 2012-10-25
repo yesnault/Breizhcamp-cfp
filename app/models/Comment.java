@@ -68,16 +68,16 @@ public class Comment extends Model {
 	}
 
 	private boolean isAdminAndHasCommentAndWantReceive(User contact) {
-		return contact.admin && contact.hasNotifAdminOnTalkWithComment()
+		return contact.admin && contact.getNotifAdminOnTalkWithComment()
 				&& getAuthorsOfComments().contains(contact.id);
 	}
 
 	private boolean isAdminAndWantReceiveAll(User contact) {
-		return contact.admin && contact.hasNotifAdminOnAllTalk();
+		return contact.admin && contact.getNotifAdminOnAllTalk();
 	}
 
 	private boolean isSpeakerOfTalkAndWantReceive(User contact) {
-		return contact.equals(talk.speaker) && contact.hasNotifOnMyTalk();
+		return contact.equals(talk.speaker) && contact.getNotifOnMyTalk();
 	}
 
 	private boolean isNotAuthor(User contact) {

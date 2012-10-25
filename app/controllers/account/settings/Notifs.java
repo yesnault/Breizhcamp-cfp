@@ -1,6 +1,7 @@
 package controllers.account.settings;
 
 import models.User;
+import org.codehaus.jackson.JsonNode;
 import play.data.Form;
 import play.data.validation.Constraints;
 import play.mvc.Controller;
@@ -22,15 +23,34 @@ public class Notifs extends Controller {
     public static Result save() {
 
         User user = User.findByEmail(request().username());
-        
-        
-        
-        user.setNotifOnMyTalk(checkboxPresent("notifOnMyTalk"));
-        user.setNotifAdminOnAllTalk(checkboxPresent("notifAdminOnAllTalk"));
-        user.setNotifAdminOnTalkWithComment(checkboxPresent("notifAdminOnTalkWithComment"));
+
+        JsonNode userJson = request().body().asJson();
+        boolean isJson;
+        boolean  notifOnMyTalk;
+        boolean  notifAdminOnAllTalk;
+        boolean  notifAdminOnTalkWithComment;
+        if (userJson == null) {
+            isJson = false;
+            notifOnMyTalk = checkboxPresent("notifOnMyTalk");
+            notifAdminOnAllTalk = checkboxPresent("notifAdminOnAllTalk");
+            notifAdminOnTalkWithComment = checkboxPresent("notifAdminOnTalkWithComment");
+        } else {
+            isJson = true;
+            notifOnMyTalk = userJson.get("notifOnMyTalk").asBoolean();
+            notifAdminOnAllTalk = userJson.get("notifAdminOnAllTalk").asBoolean();
+            notifAdminOnTalkWithComment = userJson.get("notifAdminOnTalkWithComment").asBoolean();
+        }
+
+
+        user.setNotifOnMyTalk(notifOnMyTalk);
+        user.setNotifAdminOnAllTalk(notifAdminOnAllTalk);
+        user.setNotifAdminOnTalkWithComment(notifAdminOnTalkWithComment);
         user.save();
-    	
-    	return redirect(routes.Notifs.index());
+    	if (isJson) {
+            return ok();
+        } else {
+    	    return redirect(routes.Notifs.index());
+        }
     }
     
     private static boolean checkboxPresent(String name) {
@@ -51,9 +71,9 @@ public class Notifs extends Controller {
         
         public static NotifsForm fromUser(User user) {
         	NotifsForm notifsForm = new NotifsForm();
-        	notifsForm.notifOnMyTalk = user.hasNotifOnMyTalk();
-        	notifsForm.notifAdminOnAllTalk = user.hasNotifAdminOnAllTalk();
-        	notifsForm.notifAdminOnTalkWithComment = user.hasNotifAdminOnTalkWithComment();
+        	notifsForm.notifOnMyTalk = user.getNotifOnMyTalk();
+        	notifsForm.notifAdminOnAllTalk = user.getNotifAdminOnAllTalk();
+        	notifsForm.notifAdminOnTalkWithComment = user.getNotifAdminOnTalkWithComment();
         	return notifsForm;
         }
     }
