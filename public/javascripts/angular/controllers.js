@@ -153,9 +153,29 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http) {
 }
 SeeTalksController.$inject = ['$scope', '$log', '$routeParams', 'TalkService', '$http'];
 
-function SettingsAccountController($scope, $log, AccountService, UserService) {
+function SettingsAccountController($scope, $log, AccountService, UserService, http) {
     var idUser = UserService.getUserData().id;
-    $log.info(idUser);
     $scope.user = AccountService.getUser(idUser);
+
+    $scope.removeLink = function (lien) {
+        if (confirm('Êtes vous sûr de vouloir supprimer le lien ' + lien.label + '?')) {
+            $log.info("Suppression du lien "  + lien.label + '(' + lien.id + ')');
+            http({
+                method : 'GET',
+                url : '/settings/lien/remove/' + lien.id
+            }).success(function(data, status, headers, config) {
+                    $('#messageError').addClass('hide');
+                    $('#messageSuccess').text('Lien ' + lien.label + ' supprimé');
+                    $('#messageSuccess').removeClass('hide');
+                    var idUser = UserService.getUserData().id;
+                    $scope.user = AccountService.getUser(idUser);
+                }).error(function(data, status, headers, config) {
+                    $('#messageError').text('Une erreur a eu lieu pendant la sauvegarde du commentaire (' + status + ')');
+                    $('#messageError').removeClass('hide');
+                    $('#messageSuccess').addClass('hide');
+                    $log.info(status);
+                });
+        }
+    }
 }
-SettingsAccountController.$inject = ['$scope', '$log', 'AccountService', 'UserService'];
+SettingsAccountController.$inject = ['$scope', '$log', 'AccountService', 'UserService', '$http'];

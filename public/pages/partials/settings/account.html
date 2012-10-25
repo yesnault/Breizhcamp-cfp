@@ -1,4 +1,11 @@
 <div class="row">
+
+    <p class="">
+        <span id="messageSuccess" class="badge badge-success hide"></span>
+        <span id="messageError" class="badge badge-important hide"></span>
+    </p>
+
+
     <div class="container-fluid">
         <div class="row-fluid">
             <div class="span2 breadcrumb">
@@ -36,7 +43,7 @@
                                         <p class="help-inline">Longueur maximum: 50, Obligatoire</p>
                                     </div>
                                 </div>
-                                <a href="/settings/lien/remove/1" onclick="return confirm('Êtes vous sûr de vouloir supprimer le lien {{lien.label}}?')">
+                                <a ng-click="removeLink(lien)">
                                     Supprimer ce lien
                                 </a>
                                 <div class="control-group ">

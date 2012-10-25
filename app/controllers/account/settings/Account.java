@@ -116,18 +116,4 @@ public class Account extends Controller {
                 
         return redirect(controllers.account.settings.routes.Account.index());	
     }
-    
-    public static class AccountForm {
-
-        @Constraints.Required
-        @Formats.NonEmpty
-        @Constraints.MaxLength(2000)
-    	public String description;
-        
-        public static AccountForm fromUser(User user) {
-        	AccountForm form = new AccountForm();
-        	form.description = user.description;
-        	return form;
-        }
-    }
 }
