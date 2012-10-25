@@ -3,6 +3,7 @@ package controllers.account.settings;
 import controllers.Secured;
 import models.Token;
 import models.User;
+import org.codehaus.jackson.JsonNode;
 import play.Logger;
 import play.data.Form;
 import play.data.validation.Constraints;
@@ -51,24 +52,45 @@ public class Email extends Controller {
      * @return email page with flash error or success
      */
     public static Result runEmail() {
-        Form<AskForm> askForm = form(AskForm.class).bindFromRequest();
+        JsonNode jsonNode = request().body().asJson();
+        Form<AskForm> askForm;
+        boolean isJson;
+        if (jsonNode == null) {
+            isJson = false;
+            askForm = form(AskForm.class).bindFromRequest();
+        } else {
+            isJson = true;
+            askForm = form(AskForm.class).bind(jsonNode);
+        }
         User user = User.findByEmail(request().username());
 
         if (askForm.hasErrors()) {
-            flash("error", Messages.get("signup.valid.email"));
-            return badRequest(email.render(user, askForm));
+            if (isJson) {
+                return badRequest();
+            } else {
+                flash("error", Messages.get("signup.valid.email"));
+                return badRequest(email.render(user, askForm));
+            }
         }
 
         try {
             String mail = askForm.get().email;
             Token.sendMailChangeMail(user, mail);
-            flash("success", Messages.get("changemail.mailsent"));
-            return ok(email.render(user, askForm));
+            if (isJson) {
+                return ok();
+            } else {
+                flash("success", Messages.get("changemail.mailsent"));
+                return ok(email.render(user, askForm));
+            }
         } catch (MalformedURLException e) {
             Logger.error("Cannot validate URL", e);
             flash("error", Messages.get("error.technical"));
         }
-        return badRequest(email.render(user, askForm));
+        if (isJson) {
+            return badRequest();
+        } else {
+            return badRequest(email.render(user, askForm));
+        }
     }
 
     /**

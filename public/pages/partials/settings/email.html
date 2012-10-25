@@ -8,20 +8,24 @@
                 <br/>
                 <a href="/#/settings/notifs">Notifications</a>
                 <br/>
-                Mot de passe
+                <a href="/#/settings/password">Mot de passe</a>
                 <br/>
-                <a href="/#/settings/email">Adresse mail</a>
+                Adresse mail
             </div>
             <div class="span10">
-                Cliquez sur Valider pour recevoir les instructions par mail.
+                Entrez votre nouvelle adresse mail et Valider pour recevoir les instructions par mail.
                 <p class="">
                     <span id="messageSuccess" class="badge badge-success hide"></span>
-                    <span id="messageError" class="badge badge-important hide">Un mail a été envoyé. Merci de vérifier vos mails.</span>
+                    <span id="messageError" class="badge badge-important hide"></span>
                 </p>
-                <form ng-submit="resetPassword()">
+                <form ng-submit="changeEmail()">
+                    <fieldset>
+                        <input type="text" id="email" name="email" value="ybonnel@sopragroup.com" placeholder="Adresse mail" ng-model="user.email"/>
+                    </fieldset>
                     <div class="form-actions">
                         <input type="submit" class="btn btn-primary" value="Valider">
                     </div>
+
                 </form>
 
 

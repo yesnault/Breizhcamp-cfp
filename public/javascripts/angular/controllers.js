@@ -256,3 +256,26 @@ function PasswordAccountController($scope, $log, UserService, AccountService, $h
 }
 
 PasswordAccountController.$inject = ['$scope', '$log', 'UserService', 'AccountService', '$http'];
+
+function EmailAccountController($scope, $log, UserService, AccountService, $http) {
+    var idUser = UserService.getUserData().id;
+    $scope.user = AccountService.getUser(idUser);
+
+    $scope.changeEmail = function() {
+        $http( {
+            method : 'POST',
+            url : '/settings/email',
+            data: $scope.user
+        }).success(function(data, status, headers, config) {
+                $('#messageError').addClass('hide');
+                $('#messageSuccess').text('Un mail a été envoyé. Merci de vérifier vos mails.');
+                $('#messageSuccess').removeClass('hide');
+            }).error(function(data, status, headers, config) {
+                $('#messageError').text('Une erreur a eu lieu pendant le reset du password (' + status + ')');
+                $('#messageError').removeClass('hide');
+                $('#messageSuccess').addClass('hide');
+                $log.info(status);
+            });
+    }
+}
+EmailAccountController.$inject = ['$scope', '$log', 'UserService', 'AccountService', '$http'];
