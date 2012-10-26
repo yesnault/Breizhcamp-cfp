@@ -36,7 +36,7 @@
 				</div>
 
 				<div class="btn-group pull-right" ng-show="userService.isAuthenticated()">
-					<a class="btn" href="#" data-toggle="dropdown" ><i><img ng-src="{{userService.getUserData().avatar+'?s=14'}}" /></i> {{userService.getUserData().fullname}}</a>
+					<a class="btn" href="#" data-toggle="dropdown" ><i><img ng-src="{{{true:userService.getUserData().avatar+'?s=14', false:''}[userService.getUserData()!=null]}}" /></i> {{userService.getUserData().fullname}}</a>
 					<a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<li><a href="/#/settings/account"><i class="icon-wrench"></i> settings</a></li>
