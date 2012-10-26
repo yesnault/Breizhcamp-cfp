@@ -30,7 +30,7 @@ public class Token extends Model {
     private static final int EXPIRATION_DAYS = 1;
 
     public enum TypeToken {
-        password("reset"), email("email");
+        password("#/reset"), email("#/email");
         private String urlPath;
 
         TypeToken(String urlPath) {

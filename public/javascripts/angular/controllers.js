@@ -371,4 +371,56 @@ function ConfirmSignupController($scope, $log, $http, $routeParams) {
 
 ConfirmSignupController.$inject = ['$scope', '$log', '$http', '$routeParams'];
 
+function ConfirmResetPasswordController($scope, $log, $http, $routeParams, PasswordService) {
+
+
+
+    $scope.generatePassword = function() {
+        $scope.generatedPassword = PasswordService.randomPassword();
+        $scope.changeStrength($scope.generatedPassword, '#passwordStrengthDiv2')
+    };
+
+    $scope.changeStrength = function(password, divSelected) {
+
+        var strength = PasswordService.getPasswordStrength(password);
+
+        var percent = Math.floor(strength / 10) * 10;
+
+        $(divSelected).removeClass('is10');
+        $(divSelected).removeClass('is20');
+        $(divSelected).removeClass('is30');
+        $(divSelected).removeClass('is40');
+        $(divSelected).removeClass('is50');
+        $(divSelected).removeClass('is60');
+        $(divSelected).removeClass('is70');
+        $(divSelected).removeClass('is80');
+        $(divSelected).removeClass('is90');
+        $(divSelected).removeClass('is100');
+
+        $(divSelected).addClass('is' + percent);
+    };
+
+    $scope.resetPassword = function() {
+        var data = new Object();
+        data.inputPassword = $scope.inputPassword;
+        var token = $routeParams.token;
+        $http({
+            method:'POST',
+            url:'/reset/' + token,
+            data: data
+        }).success(function (data, status, headers, config) {
+                $scope.successMessage = 'Votre nouveau mot de passe est enregistré.';
+                $('#valider').addClass('hide');
+                $scope.showSuccess = true;
+            }).error(function (data, status, headers, config) {
+                $scope.errorMessage = 'Une erreur a eu lieu pendant le changement de mot de passe (' + status + ')';
+                $scope.showError = true;
+            });
+    }
+}
+
+ConfirmResetPasswordController.$inject = ['$scope', '$log', '$http', '$routeParams', 'PasswordService'];
+
+
+
 
