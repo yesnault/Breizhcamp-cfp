@@ -70,6 +70,9 @@ public class TalkRestController extends Controller {
 	
 	public static Result delete(Long idTalk) {
 		Talk talk = Talk.find.byId(idTalk);
+        for (Comment comment : talk.getComments()) {
+            comment.delete();
+        }
 		talk.delete();
 		// HTTP 204 en cas de succès (NO CONTENT)
         return noContent();
