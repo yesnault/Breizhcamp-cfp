@@ -22,6 +22,7 @@ App.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/settings/password', {templateUrl: '/assets/pages/partials/settings/password.html', controller: PasswordAccountController});
     $routeProvider.when('/settings/email', {templateUrl: '/assets/pages/partials/settings/email.html', controller: EmailAccountController});
     $routeProvider.when('/reset/ask', {templateUrl: 'assets/pages/partials/resetpassword.html', controller: ResetPasswordController});
+    $routeProvider.when('/confirm/:token', {templateUrl: 'assets/pages/partials/confirmsignup.html', controller: ConfirmSignupController});
     $routeProvider.otherwise({redirectTo: '/login'});
   }]);
 

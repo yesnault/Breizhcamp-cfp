@@ -354,4 +354,21 @@ function ResetPasswordController($scope, $log, $http) {
 
 ResetPasswordController.$inject = ['$scope', '$log', '$http'];
 
+function ConfirmSignupController($scope, $log, $http, $routeParams) {
+    var token = $routeParams.token;
+
+    $http({
+        method:'GET',
+        url:'/confirm/' + token
+    }).success(function (data, status, headers, config) {
+            $scope.successMessage = 'Votre compte est validé';
+            $scope.showSuccess = true;
+        }).error(function (data, status, headers, config) {
+            $scope.errorMessage = 'Une erreur a eu lieu pendant la confirmation (' + status + ')';
+            $scope.showError = true;
+        });
+}
+
+ConfirmSignupController.$inject = ['$scope', '$log', '$http', '$routeParams'];
+
 

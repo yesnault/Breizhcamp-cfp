@@ -119,9 +119,9 @@ public class Signup extends Controller {
      */
     private static void sendMailAskForConfirmation(User user) throws EmailException, MalformedURLException {
         String subject = Messages.get("mail.confirm.subject");
-
+        // TODO URL Angular à mettre.
         String urlString = "http://" + Configuration.root().getString("server.hostname");
-        urlString += "/confirm/" + user.confirmationToken;
+        urlString += "/#/confirm/" + user.confirmationToken;
         URL url = new URL(urlString); // validate the URL, will throw an exception if bad.
         String message = Messages.get("mail.confirm.message", url.toString());
 
