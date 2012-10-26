@@ -421,6 +421,29 @@ function ConfirmResetPasswordController($scope, $log, $http, $routeParams, Passw
 
 ConfirmResetPasswordController.$inject = ['$scope', '$log', '$http', '$routeParams', 'PasswordService'];
 
+function ConfirmEmailController($scope, $log, $http, $routeParams, UserService, AccountService) {
+    var token = $routeParams.token;
+    if (UserService.getUserData() != null) {
+        var idUser = UserService.getUserData().id;
+        $scope.user = AccountService.getUser(idUser);
+    }
+
+    $http({
+        method:'GET',
+        url:'/email/' + token
+    }).success(function (data, status, headers, config) {
+            // TODO ajouter la nouvelle adresse email dans le message, une fois la vue scale supprimée.
+            $scope.successMessage = 'Votre nouvelle adresse mail est validée';
+            $scope.showSuccess = true;
+        }).error(function (data, status, headers, config) {
+            $scope.errorMessage = "Une erreur a eu lieu pendant le changement d'adresse (" + status + ')';
+            $scope.showError = true;
+        });
+}
+
+ConfirmEmailController.$inject = ['$scope', '$log', '$http', '$routeParams', 'UserService', 'AccountService'];
+
+
 
 
 
