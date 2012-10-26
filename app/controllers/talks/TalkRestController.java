@@ -4,8 +4,10 @@ import static play.libs.Json.toJson;
 
 import java.util.List;
 
+import models.Comment;
 import models.Talk;
 import models.User;
+import org.codehaus.jackson.JsonNode;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -72,5 +74,28 @@ public class TalkRestController extends Controller {
 		// HTTP 204 en cas de succès (NO CONTENT)
         return noContent();
 	}
+
+    public static Result saveComment(Long idTalk) {
+        User user = User.findByEmail(request().username());
+        Talk talk = Talk.find.byId(idTalk);
+
+        JsonNode node = request().body().asJson();
+        String commentForm = node.get("comment").asText();
+
+
+        if (!user.admin && !user.id.equals(talk.speaker.id)) {
+            return unauthorized();
+        }
+
+        if (commentForm.length() > 0 && commentForm.length() <= 140) {
+            Comment comment = new Comment();
+            comment.author = user;
+            comment.comment = commentForm;
+            comment.talk = talk;
+            comment.save();
+            comment.sendMail();
+        }
+        return ok();
+    }
 
 }

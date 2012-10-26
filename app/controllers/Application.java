@@ -2,7 +2,6 @@ package controllers;
 
 import models.User;
 import models.utils.AppException;
-import play.Logger;
 import play.data.Form;
 import play.data.validation.Constraints;
 import play.i18n.Messages;
@@ -11,42 +10,11 @@ import play.mvc.Result;
 
 import static play.libs.Json.toJson;
 
-import views.html.index;
-
 /**
  * Login and Logout.
  * User: yesnault
  */
 public class Application extends Controller {
-
-    public static Result GO_HOME = redirect(
-            routes.Application.index()
-    );
-
-    public static Result GO_DASHBOARD = redirect(
-            routes.Dashboard.index()
-    );
-
-    /**
-     * Display the login page or dashboard if connected
-     *
-     * @return login page or dashboard
-     */
-    public static Result index() {
-        // Check that the email matches a confirmed user before we redirect
-        String email = ctx().session().get("email");
-        if (email != null) {
-            User user = User.findByEmail(email);
-            if (user != null && user.validated) {
-                return GO_DASHBOARD;
-            } else {
-                Logger.debug("Clearing invalid session credentials");
-                session().clear();
-            }
-        }
-
-        return ok(index.render(form(Register.class), form(Login.class)));
-    }
 
     /**
      * Login class used by Login Form.
@@ -65,7 +33,7 @@ public class Application extends Controller {
          */
         public String validate() {
 
-            User user = null;
+            User user;
             try {
                 user = User.authenticate(email, password);
             } catch (AppException e) {
@@ -123,14 +91,11 @@ public class Application extends Controller {
      *
      * @return User if auth OK or 403 ?? if auth KO
      */
+    // Utilisée par le js.
     public static Result authenticate() {
         Form<Login> loginForm = form(Login.class).bindFromRequest();
 
-        Form<Register> registerForm = form(Register.class);
-
         if (loginForm.hasErrors()) {
-        	// Renvoyer une erreur du genre 403 ... avec un message d'erreur adéquat ?
-            //return badRequest(index.render(registerForm, loginForm));
         	return unauthorized("Problème d'authentification");
         } else {
             session("email", loginForm.get().email);
@@ -143,10 +108,11 @@ public class Application extends Controller {
      *
      * @return Index page
      */
+    // Utilisée par le js.
     public static Result logout() {
         session().clear();
         flash("success", Messages.get("youve.been.logged.out"));
-        return GO_HOME;
+        return ok();
     }
 
 }

@@ -4,56 +4,34 @@
 
 # Home page
 GET     /                           controllers.Assets.at(path="/public", file="index.html")
-GET     /oldhome                    controllers.Application.index()
-GET     /dashboard                  controllers.Dashboard.index()
 
 POST    /login                      controllers.Application.authenticate()
 GET     /logout                     controllers.Application.logout()
 
-GET     /settings                   controllers.account.settings.Index.index()
 GET     /settings/user/:id          controllers.account.settings.Account.getUser(id:Long)
-GET     /settings/password          controllers.account.settings.Password.index()
 POST    /settings/password          controllers.account.settings.Password.runPassword()
-GET     /settings/email             controllers.account.settings.Email.index()
 POST    /settings/email             controllers.account.settings.Email.runEmail()
-GET     /settings/account           controllers.account.settings.Account.index()
 POST    /settings/account           controllers.account.settings.Account.save()
-GET     /settings/notifs            controllers.account.settings.Notifs.index()
 POST    /settings/notifs            controllers.account.settings.Notifs.save()
 GET     /settings/lien/remove/:id   controllers.account.settings.Account.deleteLink(id:Long)
 
 # Registers the user, sending an email to confirm the account.
-GET     /signup                     controllers.account.Signup.create()
 POST    /signup                     controllers.account.Signup.save()
 
 # Accessed when the user confirms the registration.
 GET     /confirm/:confirmToken      controllers.account.Signup.confirm(confirmToken:String)
 
 # Displays a page to send a reset email given the user's email.
-GET     /reset/ask                  controllers.account.Reset.ask()
 POST    /reset/ask                  controllers.account.Reset.runAsk()
 
 # Resets the password using the password.
-GET     /reset/:token               controllers.account.Reset.reset(token:String)
 POST    /reset/:token               controllers.account.Reset.runReset(token:String)
 
 GET     /email/:token               controllers.account.settings.Email.validateEmail(token:String)
 
-GET	    /admin/users                controllers.Admin.users()
 POST    /admin/submitusers          controllers.Admin.submitUsers()
 
-GET     /admin/talks/list           controllers.talks.AdminTalks.list()
-GET     /talks/see/:idTalk          controllers.talks.SeeTalks.seeTalk(idTalk:Long)
-POST    /talks/:idTalk/comment      controllers.talks.SeeTalks.saveComment(idTalk:Long)
-
-GET     /talks/submit               controllers.talks.SubmitTalk.index()
-POST    /talks/submit/save          controllers.talks.SubmitTalk.save()
-
-GET     /talks/manage               controllers.talks.ManageTalks.index()
-GET     /talks/edit/:idTalk         controllers.talks.ManageTalks.edit(idTalk:Long)
-POST    /talks/save/:idTalk         controllers.talks.ManageTalks.save(idTalk:Long)
-GET     /talks/delete/:idTalk       controllers.talks.ManageTalks.delete(idTalk:Long)
-
+POST    /talks/:idTalk/comment      controllers.talks.TalkRestController.saveComment(idTalk:Long)
 GET		/talk/all					controllers.talks.TalkRestController.all()
 GET		/talk/:idTalk				controllers.talks.TalkRestController.getById(idTalk:Long)
 GET		/talk						controllers.talks.TalkRestController.get()
