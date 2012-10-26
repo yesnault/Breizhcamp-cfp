@@ -326,3 +326,32 @@ function EmailAccountController($scope, $log, UserService, AccountService, $http
     }
 }
 EmailAccountController.$inject = ['$scope', '$log', 'UserService', 'AccountService', '$http'];
+
+function ResetPasswordController($scope, $log, $http) {
+
+    $scope.resetPassword = function () {
+        var data = new Object();
+        data.email = $scope.email;
+        $http({
+            method:'POST',
+            url:'/reset/ask',
+            data:data
+        }).success(function (data, status, headers, config) {
+                $('#fieldEmail').addClass('hide');
+                $('#valider').addClass('hide');
+                $('#messageError').addClass('hide');
+                $('#messageSuccess').text('Un mail a été envoyé. Merci de vérifier vos mails.');
+                $('#messageSuccess').removeClass('hide');
+            }).error(function (data, status, headers, config) {
+                $('#messageError').text('Une erreur a eu lieu pendant le reset du password (' + status + ')');
+                $('#messageError').removeClass('hide');
+                $('#messageSuccess').addClass('hide');
+                $log.info(status);
+            });
+    }
+
+}
+
+ResetPasswordController.$inject = ['$scope', '$log', '$http'];
+
+

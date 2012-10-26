@@ -5,6 +5,7 @@ import models.User;
 import models.utils.AppException;
 import models.utils.Mail;
 import org.apache.commons.mail.EmailException;
+import org.codehaus.jackson.JsonNode;
 import play.Logger;
 import play.data.Form;
 import play.data.validation.Constraints;
@@ -55,7 +56,14 @@ public class Reset extends Controller {
      * @return reset password form if error, runAsk render otherwise
      */
     public static Result runAsk() {
-        Form<AskForm> askForm = form(AskForm.class).bindFromRequest();
+        JsonNode requestJson = request().body().asJson();
+        Form<AskForm> askForm;
+
+        if (requestJson == null) {
+            askForm = form(AskForm.class).bindFromRequest();
+        } else {
+            askForm = form(AskForm.class).bind(requestJson);
+        }
 
         if (askForm.hasErrors()) {
             flash("error", Messages.get("signup.valid.email"));
