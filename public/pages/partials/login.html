@@ -58,6 +58,15 @@
 						</div>
 						<div id="passwordStrengthDiv" class="is0"></div>
 					</div>
+                    <div class="control-group ">
+                        <label class="control-label" for="confirmPassword"></label>
+                        <div class="controls">
+                            <input type="password" id="confirmPassword" name="confirmPassword" value="" placeholder="Confirmation du mot de passe" ng-model="new.confirmPassword" ng-change="changeStrength(new.confirmPassword, '#confirmpasswordStrengthDiv')">
+                            <p class="help-inline">Obligatoire</p>
+                        </div>
+                        <div id="confirmpasswordStrengthDiv" class="is0"></div>
+                    </div>
+                    <br />
 					<h6>G&eacute;n&eacute;rer un mot de passe</h6>
 					<input type="text" name="passwordGenerated" ng-model="generatedPassword" ng-change="changeStrength(generatedPassword, '#passwordStrengthDiv2')"/><i class="icon-refresh pointer" ng-click="generatePassword()"></i>
                     <div id="passwordStrengthDiv2" class="is0"></div>
