@@ -1,9 +1,5 @@
 <div class="row">
 
-    <p class="">
-        <span id="messageSuccess" class="badge badge-success hide"></span>
-        <span id="messageError" class="badge badge-important hide"></span>
-    </p>
 
     <form ng-submit="submitUsers()">
 
@@ -21,9 +17,13 @@
                 <td><input type="checkbox" name="{{user.email}}" ng-model="user.admin" checked="{{{true:'checked', false:''}[user.admin]}}"></td>
             </tr>
 
-            </tbody></table>
+            </tbody>
+        </table>
 
-
+        <p class="">
+            <span id="messageSuccess" class="badge badge-success hide"></span>
+            <span id="messageError" class="badge badge-important hide"></span>
+        </p>
 
         <div class="form-actions">
             <input type="submit" class="btn btn-primary" value="Valider">

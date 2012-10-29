@@ -14,7 +14,7 @@ function RootController($scope, UserService, $log, $location) {
         if (user == null) {
             $location.url("/login");
         } else {
-            if (mustBeAdmin && !user.isAdmin()) {
+            if (mustBeAdmin && !UserService.isAdmin()) {
                 $location.url("/");
             }
         }
