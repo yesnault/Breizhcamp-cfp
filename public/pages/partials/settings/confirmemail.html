@@ -1,0 +1,23 @@
+<div class="row">
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span2 breadcrumb">
+                <img ng-src="{{user.avatar}}?s=100"><br/>
+                <br/>
+                <a href="/#/settings/account">Profil</a>
+                <br/>
+                <a href="/#/settings/notifs">Notifications</a>
+                <br/>
+                <a href="/#/settings/password">Mot de passe</a>
+                <br/>
+                Adresse mail
+            </div>
+            <div class="span10">
+                <p class="">
+                    <span id="messageSuccess" class="badge badge-success" ng-show="showSuccess">{{successMessage}}</span>
+                    <span id="messageError" class="badge badge-important" ng-show="showError">{{errorMessage}}</span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

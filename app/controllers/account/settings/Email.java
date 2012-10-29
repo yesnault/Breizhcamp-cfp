@@ -3,6 +3,8 @@ package controllers.account.settings;
 import controllers.Secured;
 import models.Token;
 import models.User;
+import models.utils.TransformValidationErrors;
+import org.codehaus.jackson.JsonNode;
 import play.Logger;
 import play.data.Form;
 import play.data.validation.Constraints;
@@ -10,10 +12,10 @@ import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
-import views.html.account.settings.email;
-import views.html.account.settings.emailValidate;
 
 import java.net.MalformedURLException;
+
+import static play.libs.Json.toJson;
 
 /**
  * Settings -> Email page.
@@ -27,22 +29,6 @@ public class Email extends Controller {
     public static class AskForm {
         @Constraints.Required
         public String email;
-        public AskForm() {}
-        AskForm(String email) {
-            this.email = email;
-        }
-    }
-
-    /**
-     * Password Page. Ask the user to change his password.
-     *
-     * @return index settings
-     */
-    public static Result index() {
-        User user = User.findByEmail(request().username());
-        Form<AskForm> askForm = form(AskForm.class);
-        askForm = askForm.fill(new AskForm(user.email));
-        return ok(email.render(User.findByEmail(request().username()), askForm));
     }
 
     /**
@@ -51,24 +37,22 @@ public class Email extends Controller {
      * @return email page with flash error or success
      */
     public static Result runEmail() {
-        Form<AskForm> askForm = form(AskForm.class).bindFromRequest();
+        JsonNode jsonNode = request().body().asJson();
+        Form<AskForm> askForm = form(AskForm.class).bind(jsonNode);
         User user = User.findByEmail(request().username());
 
         if (askForm.hasErrors()) {
-            flash("error", Messages.get("signup.valid.email"));
-            return badRequest(email.render(user, askForm));
+            return badRequest(toJson(TransformValidationErrors.transform(askForm.errors())));
         }
 
         try {
             String mail = askForm.get().email;
             Token.sendMailChangeMail(user, mail);
-            flash("success", Messages.get("changemail.mailsent"));
-            return ok(email.render(user, askForm));
+            return ok();
         } catch (MalformedURLException e) {
             Logger.error("Cannot validate URL", e);
-            flash("error", Messages.get("error.technical"));
         }
-        return badRequest(email.render(user, askForm));
+        return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.technical"))));
     }
 
     /**
@@ -80,20 +64,17 @@ public class Email extends Controller {
         User user = User.findByEmail(request().username());
 
         if (token == null) {
-            flash("error", Messages.get("error.technical"));
-            return badRequest(emailValidate.render(user));
+            return badRequest();
         }
 
         Token resetToken = Token.findByTokenAndType(token, Token.TypeToken.email);
         if (resetToken == null) {
-            flash("error", Messages.get("error.technical"));
-            return badRequest(emailValidate.render(user));
+            return badRequest();
         }
 
         if (resetToken.isExpired()) {
             resetToken.delete();
-            flash("error", Messages.get("error.expiredmaillink"));
-            return badRequest(emailValidate.render(user));
+            return badRequest();
         }
 
         user.email = resetToken.email;
@@ -101,8 +82,6 @@ public class Email extends Controller {
 
         session("email", resetToken.email);
 
-        flash("success", Messages.get("account.settings.email.successful", user.email));
-
-        return ok(emailValidate.render(user));
+        return ok();
     }
 }

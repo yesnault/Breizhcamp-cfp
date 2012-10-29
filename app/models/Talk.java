@@ -47,6 +47,7 @@ public class Talk extends Model {
 
 	public static Finder<Long, Talk> find = new Finder<Long, Talk>(Long.class, Talk.class);
 	
+	
 	public static Talk findByTitle(String title) {
 		return find.where().eq("title", title).findUnique();
 	}

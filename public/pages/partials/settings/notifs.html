@@ -1,0 +1,64 @@
+<div class="row">
+
+
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span2 breadcrumb">
+                <img ng-src="{{user.avatar}}?s=100"><br/>
+                <br/>
+                <a href="/#/settings/account">Profil</a>
+                <br/>
+                Notifications
+                <br/>
+                <a href="/#/settings/password">Mot de passe</a>
+                <br/>
+                <a href="/#/settings/email">Adresse mail</a>
+            </div>
+            <div class="span10">
+                <div class="well">
+                    <form ng-submit="saveSettings()">
+                        <fieldset>
+                            <legend>Notifications par mail pour les nouveaux commentaires :</legend>
+                            <div class="control-group ">
+                                <div class="controls">
+                                    <label class="checkbox">
+                                        <input type="checkbox" id="notifOnMyTalk" name="notifOnMyTalk" ng-model="user.notifOnMyTalk">
+                                        <span></span>
+                                        sur mes talks.
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="control-group" ng-show="userService.isAdmin()">
+                                <div class="controls">
+                                    <label class="checkbox">
+                                        <input type="checkbox" id="notifAdminOnAllTalk" name="notifAdminOnAllTalk" ng-model="user.notifAdminOnAllTalk">
+                                        <span></span>
+                                        sur tous les talks.
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="control-group " ng-show="userService.isAdmin()">
+                                <div class="controls">
+                                    <label class="checkbox">
+                                        <input type="checkbox" id="notifAdminOnTalkWithComment" name="notifAdminOnTalkWithComment" ng-model="user.notifAdminOnTalkWithComment">
+                                        <span></span>
+                                        sur les talks où jai mis un commentaire.
+                                    </label>
+                                </div>
+                            </div>
+                        </fieldset>
+
+
+                        <span id="messageSuccess" class="badge badge-success hide"></span>
+                        <span id="messageError" class="badge badge-important hide"></span>
+
+                        <div class="form-actions">
+                            <input type="submit" class="btn btn-primary" value="Valider">
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

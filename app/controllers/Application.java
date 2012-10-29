@@ -2,48 +2,23 @@ package controllers;
 
 import models.User;
 import models.utils.AppException;
-import play.Logger;
+import models.utils.TransformValidationErrors;
 import play.data.Form;
 import play.data.validation.Constraints;
 import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.Result;
-import views.html.index;
+
+import java.util.List;
+import java.util.Map;
+
+import static play.libs.Json.toJson;
 
 /**
  * Login and Logout.
  * User: yesnault
  */
 public class Application extends Controller {
-
-    public static Result GO_HOME = redirect(
-            routes.Application.index()
-    );
-
-    public static Result GO_DASHBOARD = redirect(
-            routes.Dashboard.index()
-    );
-
-    /**
-     * Display the login page or dashboard if connected
-     *
-     * @return login page or dashboard
-     */
-    public static Result index() {
-        // Check that the email matches a confirmed user before we redirect
-        String email = ctx().session().get("email");
-        if (email != null) {
-            User user = User.findByEmail(email);
-            if (user != null && user.validated) {
-                return GO_DASHBOARD;
-            } else {
-                Logger.debug("Clearing invalid session credentials");
-                session().clear();
-            }
-        }
-
-        return ok(index.render(form(Register.class), form(Login.class)));
-    }
 
     /**
      * Login class used by Login Form.
@@ -62,7 +37,7 @@ public class Application extends Controller {
          */
         public String validate() {
 
-            User user = null;
+            User user;
             try {
                 user = User.authenticate(email, password);
             } catch (AppException e) {
@@ -89,6 +64,9 @@ public class Application extends Controller {
         @Constraints.Required
         public String inputPassword;
 
+        @Constraints.Required
+        public String confirmPassword;
+
         /**
          * Validate the authentication.
          *
@@ -107,6 +85,14 @@ public class Application extends Controller {
                 return "Password is required";
             }
 
+            if (isBlank(confirmPassword)) {
+                return "Confirm Password is required";
+            }
+
+            if (!inputPassword.equals(confirmPassword)) {
+                return "Passwords do not match";
+            }
+
             return null;
         }
 
@@ -118,18 +104,17 @@ public class Application extends Controller {
     /**
      * Handle login form submission.
      *
-     * @return Dashboard if auth OK or login form if auth KO
+     * @return User if auth OK or 403 ?? if auth KO
      */
+    // Utilisée par le js.
     public static Result authenticate() {
         Form<Login> loginForm = form(Login.class).bindFromRequest();
 
-        Form<Register> registerForm = form(Register.class);
-
         if (loginForm.hasErrors()) {
-            return badRequest(index.render(registerForm, loginForm));
+        	return unauthorized(toJson(TransformValidationErrors.transform(loginForm.errors())));
         } else {
             session("email", loginForm.get().email);
-            return GO_DASHBOARD;
+            return ok(toJson(User.findByEmail(loginForm.get().email)));
         }
     }
 
@@ -138,10 +123,11 @@ public class Application extends Controller {
      *
      * @return Index page
      */
+    // Utilisée par le js.
     public static Result logout() {
         session().clear();
         flash("success", Messages.get("youve.been.logged.out"));
-        return GO_HOME;
+        return ok();
     }
 
 }

@@ -5,20 +5,21 @@ import models.User;
 import models.utils.AppException;
 import models.utils.Hash;
 import models.utils.Mail;
+import models.utils.TransformValidationErrors;
 import org.apache.commons.mail.EmailException;
+import org.codehaus.jackson.JsonNode;
 import play.Configuration;
 import play.Logger;
 import play.data.Form;
 import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.Result;
-import views.html.account.signup.confirm;
-import views.html.account.signup.create;
-import views.html.account.signup.created;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.UUID;
+
+import static play.libs.Json.toJson;
 
 /**
  * Signup to Play20StartApp : save and send confirm mail.
@@ -29,37 +30,26 @@ import java.util.UUID;
 public class Signup extends Controller {
 
     /**
-     * Display the create form.
-     *
-     * @return create form
-     */
-    public static Result create() {
-        return ok(create.render(form(Application.Register.class)));
-    }
-
-    /**
-     * Display the create form only (for the index page).
-     *
-     * @return create form
-     */
-    public static Result createFormOnly() {
-        return ok(create.render(form(Application.Register.class)));
-    }
-
-    /**
      * Save the new user.
      *
      * @return Successfull page or created form if bad
      */
     public static Result save() {
-        Form<Application.Register> registerForm = form(Application.Register.class).bindFromRequest();
+        JsonNode newUser = request().body().asJson();
+        Form<Application.Register> registerForm;
+        if (newUser == null) {
+            registerForm = form(Application.Register.class).bindFromRequest();
+        } else {
+            registerForm = form(Application.Register.class).bind(newUser);
+        }
+
 
         if (registerForm.hasErrors()) {
-            return badRequest(create.render(registerForm));
+            return badRequest(toJson(TransformValidationErrors.transform(registerForm.errors())));
         }
 
         Application.Register register = registerForm.get();
-        Result resultError = checkBeforeSave(registerForm, register.email);
+        Result resultError = checkBeforeSave(register.email);
 
         if (resultError != null) {
             return resultError;
@@ -75,29 +65,25 @@ public class Signup extends Controller {
             user.save();
             sendMailAskForConfirmation(user);
 
-            return ok(created.render());
+            return ok();
         } catch (EmailException e) {
-            Logger.debug("Signup.save Cannot send email", e);
-            flash("error", Messages.get("error.sending.email"));
+            Logger.error("Signup.save Cannot send email", e);
         } catch (Exception e) {
             Logger.error("Signup.save error", e);
-            flash("error", Messages.get("error.technical"));
         }
-        return badRequest(create.render(registerForm));
+        return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.technical"))));
     }
 
     /**
      * Check if the email already exists.
      *
-     * @param registerForm User Form submitted
      * @param email email address
      * @return Index if there was a problem, null otherwise
      */
-    private static Result checkBeforeSave(Form<Application.Register> registerForm, String email) {
+    private static Result checkBeforeSave(String email) {
         // Check unique email
         if (User.findByEmail(email) != null) {
-            flash("error", Messages.get("error.email.already.exist"));
-            return badRequest(create.render(registerForm));
+            return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.email.already.exist"))));
         }
 
         return null;
@@ -111,9 +97,8 @@ public class Signup extends Controller {
      */
     private static void sendMailAskForConfirmation(User user) throws EmailException, MalformedURLException {
         String subject = Messages.get("mail.confirm.subject");
-
         String urlString = "http://" + Configuration.root().getString("server.hostname");
-        urlString += "/confirm/" + user.confirmationToken;
+        urlString += "/#/confirm/" + user.confirmationToken;
         URL url = new URL(urlString); // validate the URL, will throw an exception if bad.
         String message = Messages.get("mail.confirm.message", url.toString());
 
@@ -130,33 +115,27 @@ public class Signup extends Controller {
     public static Result confirm(String token) {
         User user = User.findByConfirmationToken(token);
         if (user == null) {
-            flash("error", Messages.get("error.unknown.email"));
-            return badRequest(confirm.render());
+            return badRequest();
         }
 
         if (user.validated) {
-            flash("error", Messages.get("error.account.already.validated"));
-            return badRequest(confirm.render());
+            return badRequest();
         }
 
         try {
             if (User.confirm(user)) {
                 sendMailConfirmation(user);
-                flash("success", Messages.get("account.successfully.validated"));
-                return ok(confirm.render());
+                return ok();
             } else {
                 Logger.debug("Signup.confirm cannot confirm user");
-                flash("error", Messages.get("error.confirm"));
-                return badRequest(confirm.render());
+                return badRequest();
             }
         } catch (AppException e) {
             Logger.error("Cannot signup", e);
-            flash("error", Messages.get("error.technical"));
         } catch (EmailException e) {
             Logger.debug("Cannot send email", e);
-            flash("error", Messages.get("error.sending.confirm.email"));
         }
-        return badRequest(confirm.render());
+        return badRequest();
     }
 
     /**
