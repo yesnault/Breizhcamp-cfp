@@ -249,16 +249,12 @@ function SettingsAccountController($scope, $log, AccountService, UserService, ht
                 method : 'GET',
                 url : '/settings/lien/remove/' + lien.id
             }).success(function(data, status, headers, config) {
-                    $('#messageError').addClass('hide');
-                    $('#messageSuccess').text('Lien ' + lien.label + ' supprimé');
-                    $('#messageSuccess').removeClass('hide');
+                    $scope.errors = undefined;
                     var idUser = UserService.getUserData().id;
                     $scope.user = AccountService.getUser(idUser);
                 }).error(function(data, status, headers, config) {
-                    $('#messageError').text('Une erreur a eu lieu pendant la sauvegarde du commentaire (' + status + ')');
-                    $('#messageError').removeClass('hide');
-                    $('#messageSuccess').addClass('hide');
                     $log.info(status);
+                    $scope.errors = data;
                 });
         }
     };
@@ -273,16 +269,12 @@ function SettingsAccountController($scope, $log, AccountService, UserService, ht
             url : '/settings/account',
             data : user
         }).success(function(data, status, headers, config) {
-                $('#messageError').addClass('hide');
-                $('#messageSuccess').text('Settings sauvegardés');
-                $('#messageSuccess').removeClass('hide');
+                $scope.errors = undefined;
                 var idUser = UserService.getUserData().id;
                 $scope.lien = undefined;
                 $scope.user = AccountService.getUser(idUser);
             }).error(function(data, status, headers, config) {
-                $('#messageError').text('Une erreur a eu lieu pendant la sauvegarde des settings (' + status + ')');
-                $('#messageError').removeClass('hide');
-                $('#messageSuccess').addClass('hide');
+                $scope.errors = data;
                 $log.info(status);
             });
 

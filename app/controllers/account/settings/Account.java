@@ -7,6 +7,7 @@ import java.util.Map;
 
 import models.Lien;
 import models.User;
+import models.utils.TransformValidationErrors;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ArrayNode;
 import play.Logger;
@@ -54,31 +55,34 @@ public class Account extends Controller {
         ArrayNode liens = (ArrayNode) userJson.get("liens");
         for (JsonNode lien : liens ) {
             if (lien.get("id") != null) {
-                liensForms.add(form(Lien.class).bind(lien));
+                Form<Lien> oneLienForm = form(Lien.class).bind(lien);
+                if (oneLienForm.hasErrors()) {
+                    Map<String, Map<String, List<String>>> errors = new HashMap<String, Map<String, List<String>>>();
+                    errors.put(lien.get("id").asText(), TransformValidationErrors.transform(oneLienForm.errors()));
+                    return badRequest(toJson(errors));
+                }
+                liensForms.add(oneLienForm);
             } else {
                 newLink = form(Lien.class).bind(lien);
-                newLabel = lien.get("label").asText();
-                newUrl = lien.get("url").asText();
+                if (lien.get("label") != null) {
+                    newLabel = lien.get("label").asText();
+                }
+                if (lien.get("url") != null) {
+                    newUrl = lien.get("url").asText();
+                }
             }
         }
 
-        if (newLink != null
-                && newLink.hasErrors()
-                && (newLabel.length() > 0
-                || newUrl.length() > 0)) {
-            return badRequest();
-        } else if (newLink != null && newLink.hasErrors()) {
+        if (newLinkExists(newLink, newLabel, newUrl)
+                && newLink.hasErrors()) {
+            return badRequest(toJson(TransformValidationErrors.transform(newLink.errors())));
+        }
+        if (newLink != null && newLink.hasErrors()) {
         	newLink.errors().clear();
         }
         
         if (accountForm.hasErrors()) {
-            return badRequest();
-        }
-        
-        for (Form<Lien> oneLienForm : liensForms) {
-        	if (oneLienForm.hasErrors()) {
-                return badRequest();
-        	}
+            return badRequest(toJson(TransformValidationErrors.transform(accountForm.errors())));
         }
         
         for (Lien oneLien : user.getLiens()) {
@@ -89,8 +93,7 @@ public class Account extends Controller {
         
         user.description = accountForm.get().description;
         
-        if (newLink != null && (newLabel.length() > 0
-    			|| newUrl.length() > 0)) {
+        if (newLinkExists(newLink, newLabel, newUrl)) {
         	Lien lien = newLink.get();
         	user.getLiens().add(lien);
         }
@@ -98,5 +101,11 @@ public class Account extends Controller {
         user.save();
 
         return ok();
+    }
+
+    public static boolean newLinkExists(Form<Lien> newLink, String newLabel, String newUrl) {
+        return newLink != null
+                && ((newLabel != null && newLabel.length() > 0)
+                || (newUrl != null && newUrl.length() > 0));
     }
 }

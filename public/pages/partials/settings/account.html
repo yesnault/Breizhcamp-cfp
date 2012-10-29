@@ -1,10 +1,5 @@
 <div class="row">
 
-    <p class="">
-        <span id="messageSuccess" class="badge badge-success hide"></span>
-        <span id="messageError" class="badge badge-important hide"></span>
-    </p>
-
 
     <div class="container-fluid">
         <div class="row-fluid">
@@ -25,51 +20,56 @@
                         <form ng-submit="saveSettings()">
                             <fieldset>
                                 <legend>Description/Bio</legend>
-                                <div class="control-group ">
+                                <div class="control-group {{{true:'error', false:''}[errors.description != undefined]}}">
                                     <label class="control-label" for="description"></label>
                                     <div class="controls">
                                         <textarea id="description" name="description" placeholder="Description/Bio" class="input-xxlarge" ng-model="user.description" rows="10"></textarea>
                                         <p class="help-inline">Longueur maximum: 2&nbsp;000, Obligatoire</p>
+                                        <p class="help-inline" ng-repeat="error in errors.description">{{error}}</p>
                                     </div>
                                 </div>
                             </fieldset>
 
                             <h2>Liste de vos liens</h2>
                             <fieldset ng-repeat="lien in user.liens">
-                                <div class="control-group ">
+                                <div class="control-group {{{true:'error', false:''}[errors[lien.id].label != undefined]}}">
                                     <label class="control-label" for="label{{lien.id}}">Libellé</label>
                                     <div class="controls">
                                         <input type="text" id="label{{lien.id}}" name="label" value="{{lien.label}}" placeholder="Libellé" class="input-small" ng-model="lien.label">
                                         <p class="help-inline">Longueur maximum: 50, Obligatoire</p>
+                                        <p class="help-inline" ng-repeat="error in errors[lien.id].label">{{error}}</p>
                                     </div>
                                 </div>
                                 <a ng-click="removeLink(lien)">
                                     Supprimer ce lien
                                 </a>
-                                <div class="control-group ">
+                                <div class="control-group {{{true:'error', false:''}[errors[lien.id].url != undefined]}}">
                                     <label class="control-label" for="url{{lien.id}}">URL</label>
                                     <div class="controls">
                                         <input type="text" id="url{{lien.id}}" name="url" value="{{lien.url}}" placeholder="URL" class="input-large" ng-model="lien.url">
                                         <p class="help-inline">Longueur maximum: 200, Obligatoire</p>
-
+                                        <p class="help-inline" ng-repeat="error in errors[lien.id].url">{{error}}</p>
                                     </div>
                                 </div>
                             </fieldset>
                             <fieldset>
                                 <legend>Nouveau lien</legend>
-                                <div class="control-group ">
+                                <div class="control-group {{{true:'error', false:''}[errors.label != undefined]}}">
                                     <div class="controls">
                                         <input type="text" name="label" value="" placeholder="Libellé" class="input-small" ng-model="lien.label">
                                         <p class="help-inline">Longueur maximum: 50, Obligatoire</p>
+                                        <p class="help-inline" ng-repeat="error in errors.label">{{error}}</p>
                                     </div>
                                 </div>
-                                <div class="control-group ">
+                                <div class="control-group {{{true:'error', false:''}[errors.url != undefined]}}">
                                     <div class="controls">
                                         <input type="text" name="url" value="" placeholder="URL" class="input-large" ng-model="lien.url">
                                         <p class="help-inline">Longueur maximum: 200, Obligatoire</p>
+                                        <p class="help-inline" ng-repeat="error in errors.url">{{error}}</p>
                                     </div>
                                 </div>
                             </fieldset>
+                            <span class="badge badge-important" ng-repeat="error in errors['']">{{error}}</span>
                             <div class="form-actions">
                                 <input type="submit" class="btn btn-primary" value="Valider">
                             </div>
