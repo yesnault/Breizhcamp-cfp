@@ -2,11 +2,15 @@ package controllers;
 
 import models.User;
 import models.utils.AppException;
+import models.utils.TransformValidationErrors;
 import play.data.Form;
 import play.data.validation.Constraints;
 import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.Result;
+
+import java.util.List;
+import java.util.Map;
 
 import static play.libs.Json.toJson;
 
@@ -107,7 +111,7 @@ public class Application extends Controller {
         Form<Login> loginForm = form(Login.class).bindFromRequest();
 
         if (loginForm.hasErrors()) {
-        	return unauthorized("Problème d'authentification");
+        	return unauthorized(toJson(TransformValidationErrors.transform(loginForm.errors())));
         } else {
             session("email", loginForm.get().email);
             return ok(toJson(User.findByEmail(loginForm.get().email)));

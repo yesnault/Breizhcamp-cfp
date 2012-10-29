@@ -32,9 +32,12 @@ function LoginController($scope, $log, UserService, PasswordService, $http, $loc
 
 	// Fonction de login appelée sur le bouton de formulaire
 	$scope.login = function() {
-		$log.info($scope.user.email);
+		$log.info($scope.user);
+        $log.info($scope);
 		// TODO Trouver un moyen pour que le routage ne soit pas fait dans le callback du XHR ?
-		UserService.login($scope.user, '/dashboard');
+		UserService.login($scope.user, '/dashboard', function(data){
+            $scope.errors = data;
+        });
 	};
 
     $scope.generatePassword = function() {
@@ -72,10 +75,7 @@ function LoginController($scope, $log, UserService, PasswordService, $http, $loc
         }).success(function(data, status, headers, config) {
               $location.url("signup");
             }).error(function(data, status, headers, config) {
-                $('#messageError').text("Erreur pendant l'inscription (" + status + ')');
-                $('#messageError').removeClass('hide');
-                $('#messageSuccess').addClass('hide');
-                $log.info(status);
+                $scope.newerrors = data;
             });
     }
 }

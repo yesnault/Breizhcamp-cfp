@@ -5,6 +5,7 @@ import models.User;
 import models.utils.AppException;
 import models.utils.Hash;
 import models.utils.Mail;
+import models.utils.TransformValidationErrors;
 import org.apache.commons.mail.EmailException;
 import org.codehaus.jackson.JsonNode;
 import play.Configuration;
@@ -17,6 +18,8 @@ import play.mvc.Result;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.UUID;
+
+import static play.libs.Json.toJson;
 
 /**
  * Signup to Play20StartApp : save and send confirm mail.
@@ -42,7 +45,7 @@ public class Signup extends Controller {
 
 
         if (registerForm.hasErrors()) {
-            return badRequest();
+            return badRequest(toJson(TransformValidationErrors.transform(registerForm.errors())));
         }
 
         Application.Register register = registerForm.get();
@@ -68,7 +71,7 @@ public class Signup extends Controller {
         } catch (Exception e) {
             Logger.error("Signup.save error", e);
         }
-        return badRequest();
+        return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.technical"))));
     }
 
     /**
@@ -80,7 +83,7 @@ public class Signup extends Controller {
     private static Result checkBeforeSave(String email) {
         // Check unique email
         if (User.findByEmail(email) != null) {
-            return badRequest();
+            return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.email.already.exist"))));
         }
 
         return null;
