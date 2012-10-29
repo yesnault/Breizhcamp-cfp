@@ -8,20 +8,23 @@
 			</div>
 			<form ng-submit="saveTalk()">
 				<fieldset>
-					<div class="control-group ">
+					<div class="control-group {{{true:'error', false:''}[errors.title != undefined]}}">
 						<label class="control-label" for="title"></label>
 						<div class="controls">
 							<input type="text" id="title" name="title" value="" placeholder="Titre" class="input-xxlarge" ng-model="talk.title">
 							<p class="help-inline">Longueur maximum: 50, Obligatoire</p>
+                            <p class="help-inline" ng-repeat="error in errors.title">{{error}}</p>
 						</div>
 					</div>
-					<div class="control-group ">
+					<div class="control-group {{{true:'error', false:''}[errors.description != undefined]}}">
 						<label class="control-label" for="description"></label>
 						<div class="controls">
 							<textarea id="description" name="description" placeholder="Description" class="input-xxlarge" rows="10" ng-model="talk.description"></textarea>
 							<p class="help-inline">Longueur maximum: 2&nbsp;000, Obligatoire</p>
+                            <p class="help-inline" ng-repeat="error in errors.description">{{error}}</p>
 						</div>
 					</div>
+                    <span class="badge badge-important" ng-repeat="error in errors['']">{{error}}</span>
 				</fieldset>
 				<div class="form-actions">
 					<input type="submit" class="btn btn-primary" value="Valider"/>

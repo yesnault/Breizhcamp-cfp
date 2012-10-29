@@ -30,6 +30,13 @@ DashboardController.$inject = ['$scope'];
 
 function LoginController($scope, $log, UserService, PasswordService, $http, $location) {
 
+    // Si l'utilisateur est déjà loggué, on le redirige vers /
+    var user = UserService.getUserData();
+    if (user != null) {
+        $location.url("/");
+    }
+
+
 	// Fonction de login appelée sur le bouton de formulaire
 	$scope.login = function() {
 		$log.info($scope.user);
@@ -99,7 +106,9 @@ function NewTalkController($scope, $log, $location, TalkService) {
 			$log.info("Soummission du talk ok");
 			$location.url('/managetalk');
 		}, function (err) {
-			$log.info("Soummission du talk ko : " + err);
+			$log.info("Soummission du talk ko");
+            $log.info(err.data);
+            $scope.errors = err.data;
 		});	
 	}
 }
@@ -122,7 +131,9 @@ function EditTalkController($scope, $log, $location, $routeParams, TalkService) 
 			$log.info("Soummission du talk ok");
 			$location.url('/managetalk');
 		}, function (err) {
-			$log.info("Soummission du talk ko : " + err);
+            $log.info("Soummission du talk ko");
+            $log.info(err.data);
+            $scope.errors = err.data;
 		});
 		
 	}
@@ -213,14 +224,12 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http) {
             url : '/talks/' + $scope.talk.id + '/comment',
             data : data
         }).success(function(data, status, headers, config) {
-
-                $('#messageError').addClass('hide');
                 $log.info(status);
+                $scope.errors = undefined;
                 $scope.talk = TalkService.get({id:$routeParams.talkId});
             }).error(function(data, status, headers, config) {
-                $('#messageError').text('Une erreur a eu lieu pendant la sauvegarde du commentaire (' + status + ')');
-                $('#messageError').removeClass('hide');
                 $log.info(status);
+                $scope.errors = data;
             });
     }
 }
