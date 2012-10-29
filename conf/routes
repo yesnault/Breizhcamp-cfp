@@ -30,7 +30,6 @@ POST    /reset/:token               controllers.account.Reset.runReset(token:Str
 GET     /email/:token               controllers.account.settings.Email.validateEmail(token:String)
 
 POST    /admin/submitusers          controllers.Admin.submitUsers()
-GET     /admin/varenv               controllers.Admin.varenv()
 
 POST    /talks/:idTalk/comment      controllers.talks.TalkRestController.saveComment(idTalk:Long)
 GET		/talk/all					controllers.talks.TalkRestController.all()
