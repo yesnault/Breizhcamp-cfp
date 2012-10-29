@@ -3,6 +3,7 @@ package controllers.account.settings;
 import controllers.Secured;
 import models.Token;
 import models.User;
+import models.utils.TransformValidationErrors;
 import org.codehaus.jackson.JsonNode;
 import play.Logger;
 import play.data.Form;
@@ -13,6 +14,8 @@ import play.mvc.Result;
 import play.mvc.Security;
 
 import java.net.MalformedURLException;
+
+import static play.libs.Json.toJson;
 
 /**
  * Settings -> Email page.
@@ -39,7 +42,7 @@ public class Email extends Controller {
         User user = User.findByEmail(request().username());
 
         if (askForm.hasErrors()) {
-            return badRequest();
+            return badRequest(toJson(TransformValidationErrors.transform(askForm.errors())));
         }
 
         try {
@@ -48,9 +51,8 @@ public class Email extends Controller {
             return ok();
         } catch (MalformedURLException e) {
             Logger.error("Cannot validate URL", e);
-            flash("error", Messages.get("error.technical"));
         }
-        return badRequest();
+        return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.technical"))));
     }
 
     /**

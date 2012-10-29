@@ -352,13 +352,12 @@ function EmailAccountController($scope, $log, UserService, AccountService, $http
             url : '/settings/email',
             data: $scope.user
         }).success(function(data, status, headers, config) {
-                $('#messageError').addClass('hide');
                 $('#messageSuccess').text('Un mail a été envoyé. Merci de vérifier vos mails.');
                 $('#messageSuccess').removeClass('hide');
+                $scope.errors = undefined;
             }).error(function(data, status, headers, config) {
-                $('#messageError').text('Une erreur a eu lieu pendant le reset du password (' + status + ')');
-                $('#messageError').removeClass('hide');
                 $('#messageSuccess').addClass('hide');
+                $scope.errors = data;
                 $log.info(status);
             });
     }
