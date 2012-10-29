@@ -9,7 +9,7 @@ var App = angular.module('breizhCampCFP', ['breizhCampCFP.services']); // , ['br
 App.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/login', {templateUrl: '/assets/pages/partials/login.html', controller: LoginController});
     $routeProvider.when('/signup', {templateUrl: '/assets/pages/partials/signup.html'});
-    $routeProvider.when('/dashboard', {templateUrl: '/assets/pages/partials/dashboard.html'});
+    $routeProvider.when('/dashboard', {templateUrl: '/assets/pages/partials/dashboard.html', controller: DashboardController});
     $routeProvider.when('/submittalk/new', {templateUrl: '/assets/pages/partials/submittalk.html', controller: NewTalkController});
     $routeProvider.when('/edittalk/:talkId', {templateUrl: '/assets/pages/partials/submittalk.html', controller: EditTalkController});
     $routeProvider.when('/managetalk', {templateUrl: '/assets/pages/partials/managetalks.html', controller: ManageTalkController});
@@ -25,6 +25,6 @@ App.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/reset/:token', {templateUrl: 'assets/pages/partials/confirmresetpassword.html', controller: ConfirmResetPasswordController});
     $routeProvider.when('/confirm/:token', {templateUrl: 'assets/pages/partials/confirmsignup.html', controller: ConfirmSignupController});
     $routeProvider.when('/email/:token', {templateUrl: 'assets/pages/partials/settings/confirmemail.html', controller: ConfirmEmailController});
-    $routeProvider.otherwise({redirectTo: '/login'});
+    $routeProvider.otherwise({redirectTo: '/dashboard'});
   }]);
 

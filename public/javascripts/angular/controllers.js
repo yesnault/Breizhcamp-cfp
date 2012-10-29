@@ -1,19 +1,32 @@
 'use strict';
 
 /* Controllers */
-function RootController($scope, UserService, $log) {
-
+function RootController($scope, UserService, $log, $location) {
 	$scope.userService = UserService;
 
     $scope.logout = function() {
         UserService.logout();
 
+    };
+
+    $scope.checkloc = function(mustBeAdmin) {
+        var user = UserService.getUserData();
+        if (user == null) {
+            $location.url("/login");
+        } else {
+            if (mustBeAdmin && !user.isAdmin()) {
+                $location.url("/");
+            }
+        }
     }
 }
 // Pour que l'injection de dépendances fonctionne en cas de 'minifying'
-RootController.$inject = ['$scope', 'UserService', '$log'];
+RootController.$inject = ['$scope', 'UserService', '$log', '$location'];
 
-
+function DashboardController($scope) {
+    $scope.checkloc(false);
+}
+DashboardController.$inject = ['$scope'];
 
 function LoginController($scope, $log, UserService, PasswordService, $http, $location) {
 
@@ -73,7 +86,8 @@ LoginController.$inject = ['$scope', '$log', 'UserService', 'PasswordService', '
 
 function NewTalkController($scope, $log, $location, TalkService) {
 
-	$scope.talk;
+    $scope.checkloc(false);
+
 	$scope.$location = $location;
 	
 	$scope.isNew = true;
@@ -93,6 +107,8 @@ function NewTalkController($scope, $log, $location, TalkService) {
 NewTalkController.$inject = ['$scope', '$log', '$location', 'TalkService'];
 
 function EditTalkController($scope, $log, $location, $routeParams, TalkService) {
+
+    $scope.checkloc(false);
 
 	$scope.talk = TalkService.get({id:$routeParams.talkId});
 	$scope.$location = $location;
@@ -117,6 +133,8 @@ EditTalkController.$inject = ['$scope', '$log', '$location', '$routeParams', 'Ta
 
 
 function ManageTalkController($scope, $log, $location, TalkService) {
+
+    $scope.checkloc(false);
 	
 	$scope.talks = TalkService.query();
 	
@@ -136,6 +154,8 @@ ManageTalkController.$inject = ['$scope', '$log', '$location', 'TalkService'];
 
 
 function ManageUsersController($scope, $log, $location, ManageUsersService, http) {
+
+    $scope.checkloc(true);
 
     $scope.users = ManageUsersService.query();
 
@@ -170,11 +190,17 @@ function ManageUsersController($scope, $log, $location, ManageUsersService, http
 ManageUsersController.$inject = ['$scope', '$log', '$location', 'ManageUsersService', '$http'];
 
 function ListTalksController($scope, $log, AllTalkService) {
+
+    $scope.checkloc(true);
+
     $scope.talks = AllTalkService.query();
 }
 ListTalksController.$inject = ['$scope', '$log', 'AllTalkService'];
 
 function SeeTalksController($scope, $log, $routeParams, TalkService, http) {
+
+    $scope.checkloc(false);
+
     $scope.talk = TalkService.get({id:$routeParams.talkId});
 
     $scope.postComment = function() {
@@ -201,6 +227,9 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http) {
 SeeTalksController.$inject = ['$scope', '$log', '$routeParams', 'TalkService', '$http'];
 
 function SettingsAccountController($scope, $log, AccountService, UserService, http) {
+
+    $scope.checkloc(false);
+
     var idUser = UserService.getUserData().id;
     $scope.user = AccountService.getUser(idUser);
 
@@ -254,6 +283,8 @@ SettingsAccountController.$inject = ['$scope', '$log', 'AccountService', 'UserSe
 
 function NotifsAccountController($scope, $log, AccountService, UserService, $http) {
 
+    $scope.checkloc(false);
+
     var idUser = UserService.getUserData().id;
     $scope.user = AccountService.getUser(idUser);
 
@@ -281,6 +312,9 @@ function NotifsAccountController($scope, $log, AccountService, UserService, $htt
 NotifsAccountController.$inject = ['$scope', '$log', 'AccountService', 'UserService', '$http'];
 
 function PasswordAccountController($scope, $log, UserService, AccountService, $http) {
+
+    $scope.checkloc(false);
+
     var idUser = UserService.getUserData().id;
     $scope.user = AccountService.getUser(idUser);
 
@@ -305,6 +339,9 @@ function PasswordAccountController($scope, $log, UserService, AccountService, $h
 PasswordAccountController.$inject = ['$scope', '$log', 'UserService', 'AccountService', '$http'];
 
 function EmailAccountController($scope, $log, UserService, AccountService, $http) {
+
+    $scope.checkloc(false);
+
     var idUser = UserService.getUserData().id;
     $scope.user = AccountService.getUser(idUser);
 
