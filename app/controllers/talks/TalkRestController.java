@@ -7,11 +7,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ch.qos.logback.classic.spi.LoggerRemoteView;
 import models.Comment;
+import models.StatusTalk;
 import models.Talk;
 import models.User;
 import models.utils.TransformValidationErrors;
 import org.codehaus.jackson.JsonNode;
+import play.Logger;
 import play.data.Form;
 import play.data.validation.ValidationError;
 import play.i18n.Messages;
@@ -110,6 +113,27 @@ public class TalkRestController extends Controller {
             comment.save();
             comment.sendMail();
         }
+        return ok();
+    }
+
+    public static Result saveStatus(Long idTalk) {
+        User user = User.findByEmail(request().username());
+        Talk talk = Talk.find.byId(idTalk);
+        if (!user.admin) {
+            return unauthorized();
+        }
+
+        JsonNode node = request().body().asJson();
+
+        StatusTalk newStatus = StatusTalk.fromValue(node.get("status").asText());
+        if (talk.statusTalk != newStatus) {
+            talk.statusTalk = newStatus;
+            talk.save();
+            if (talk.statusTalk != null) {
+                talk.statusTalk.sendMail(talk, talk.speaker.email);
+            }
+        }
+
         return ok();
     }
 

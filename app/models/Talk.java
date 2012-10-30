@@ -45,6 +45,8 @@ public class Talk extends Model {
 		return comments;
 	}
 
+    public StatusTalk statusTalk;
+
 	public static Finder<Long, Talk> find = new Finder<Long, Talk>(Long.class, Talk.class);
 	
 	

@@ -111,3 +111,10 @@ talks.comment.new=New comment
 
 talks.comment.new.mail.subject=New comment on talk {0}
 talks.comment.new.mail.message=Hello,<br/><br/>A new comment was posted on talk {0} by {1} :<br/><i>{2}</i>
+
+talks.status.mail.subject.accepted=Your talk {0} is accepted
+talks.status.mail.subject.rejected=Your talk {0} is rejected
+talks.status.mail.subject.waiting=Your talk {0} is in waiting list
+talks.statuc.mail.message.accepted=Hello,<br/><br/>Your talk <i>{0}</i> has been accepted for Breizhcamp.
+talks.statuc.mail.message.rejected=Hello,<br/><br/>Your talk <i>{0}</i> has been rejected for Breizhcamp.
+talks.statuc.mail.message.waiting=Hello,<br/><br/>Your talk <i>{0}</i> for Breizhcamp is in waiting list.

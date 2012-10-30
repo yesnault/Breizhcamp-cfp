@@ -32,6 +32,7 @@ GET     /email/:token               controllers.account.settings.Email.validateE
 POST    /admin/submitusers          controllers.Admin.submitUsers()
 
 POST    /talks/:idTalk/comment      controllers.talks.TalkRestController.saveComment(idTalk:Long)
+POST    /talks/:idTalk/status      controllers.talks.TalkRestController.saveStatus(idTalk:Long)
 GET		/talk/all					controllers.talks.TalkRestController.all()
 GET		/talk/:idTalk				controllers.talks.TalkRestController.getById(idTalk:Long)
 GET		/talk						controllers.talks.TalkRestController.get()
