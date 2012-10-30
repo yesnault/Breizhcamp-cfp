@@ -89,7 +89,8 @@ public class Mail {
                     + ":" + root.getString("smtp.port")
                     + " SSL:" + root.getString("smtp.ssl")
                     + " user:" + root.getString("smtp.user")
-                    + " password:" + root.getString("smtp.password"));
+                    + " password:" + root.getString("smtp.password")
+                    + " message:" + messageText);
         }
 
 		private void sendEmail(final String mailFrom, String messageText,

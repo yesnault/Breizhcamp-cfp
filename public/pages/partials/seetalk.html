@@ -9,6 +9,30 @@
                 {{talk.description}}
             </p>
             <p></p>
+            <div class="well" ng-show="userService.isAdmin()">
+                <form ng-submit="postStatus()" method="POST" class="form-inline">
+
+                    <div class="control-group {{{true:'error', false:''}[errors.status != undefined]}}">
+                        <label for="status">Status du talk</label>
+                        <div class="controls">
+                            <select id="status" name="status" ng-model="talk.statusTalk">
+                                <option value="null"></option>
+                                <option value="REJETE">Rejeté</option>
+                                <option value="ATTENTE">Liste d'attente</option>
+                                <option value="ACCEPTE">Accepté</option>
+                            </select>
+                            <p class="help-inline" ng-repeat="error in errors.status">{{error}}</p>
+                        </div>
+                    </div>
+                    <input type="submit" class="btn btn-primary" value="Valider">
+                </form>
+            </div>
+            <div class="well" ng-show="!userService.isAdmin() && talk.statusTalk != undefined" ng-switch on="talk.statusTalk">
+                Status du talk :
+                <span class="label label-important" ng-switch-when="REJETE">Rejeté</span>
+                <span class="label label-warning" ng-switch-when="ATTENTE">Liste d'attente</span>
+                <span class="label label-success" ng-switch-when="ACCEPTE">Accepté</span>
+            </div>
         </div>
 
         <div class="well">
