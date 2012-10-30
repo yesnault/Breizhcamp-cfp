@@ -231,6 +231,25 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http) {
                 $log.info(status);
                 $scope.errors = data;
             });
+    };
+
+    $scope.addTag = function() {
+        $log.info("Ajout de tags " + $scope.tags);
+
+        var data = {'tags' : $scope.tags,'idTalk' : $scope.talk.id};
+
+        http({
+              method : 'POST',
+              url : '/talk/' + $scope.talk.id + '/tags/'+$scope.tags,
+              data : data
+        }).success(function(data, status, headers, config) {
+                  $log.info(status);
+                  $scope.errors = undefined;
+                  $scope.talk = TalkService.get({id:$routeParams.talkId});
+              }).error(function(data, status, headers, config) {
+                  $log.info(status);
+                  $scope.errors = data;
+              });
     }
 }
 SeeTalksController.$inject = ['$scope', '$log', '$routeParams', 'TalkService', '$http'];

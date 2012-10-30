@@ -7,16 +7,14 @@ import models.Talk;
 import models.User;
 import models.utils.TransformValidationErrors;
 import org.codehaus.jackson.JsonNode;
+import play.Logger;
 import play.data.Form;
 import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static play.libs.Json.toJson;
 
@@ -74,33 +72,36 @@ public class TalkRestController extends Controller {
 
     public static Result addTag(Long idTalk, String tags) {
         Talk dbTalk = Talk.find.byId(idTalk);
+        Logger.debug("addTags: = " + tags + " init tags " + dbTalk.getTagsName());
         String[] tagsList = tags.split(",");
 
+        // suppression qui ne sont plus présent dans la nouvelle liste
+        List<Tag> tagtmp = new ArrayList( dbTalk.getTags());
+        for (Tag tag : tagtmp) {
+            if (!tags.contains(tag.nom)) {
+                dbTalk.getTags().remove(tag);
+                dbTalk.save();
+            }
+        }
+
+        // ajout des tags ajoutés dans la liste
         for (String tag : tagsList) {
-            if (!dbTalk.tags().contains(tag)) {
+            if (!dbTalk.getTagsName().contains(tag)) {
                 Tag dbTag = Tag.findByTagName(tag);
                 if (dbTag == null) {
                     dbTag = new Tag();
                     dbTag.nom = tag;
                     dbTag.save();
                 }
+                Logger.debug("tags: = " + dbTag.id);
                 dbTalk.getTags().add(dbTag);
-                dbTalk.save();
             }
         }
+        dbTalk.save();
+        Logger.debug("fin addTags: = " + dbTalk.getTagsName() + " size : " + dbTalk.getTags().size());
         return ok();
     }
 
-    public static Result deleteTag(Long idTalk, String tag) {
-        Talk dbTalk = Talk.find.byId(idTalk);
-
-        if (dbTalk.tags().contains(tag)) {
-            Tag dbTag = Tag.findByTagName(tag);
-            dbTalk.getTags().remove(dbTag);
-            dbTalk.save();
-        }
-        return noContent();
-    }
 
     public static Result delete(Long idTalk) {
         Talk talk = Talk.find.byId(idTalk);

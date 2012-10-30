@@ -42,7 +42,7 @@ public class Talk extends Model {
         return comments;
     }
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "talks")
     public List<Tag> tags;
 
     public List<Tag> getTags() {
@@ -52,8 +52,8 @@ public class Talk extends Model {
         return tags;
     }
 
-    public String tags() {
-       return Joiner.on(",").join(tags);
+    public String getTagsName() {
+        return Joiner.on(",").join(tags);
     }
 
 

@@ -7,6 +7,8 @@ import play.db.ebean.Model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import java.util.List;
 
 
 @Entity
@@ -19,6 +21,9 @@ public class Tag extends Model {
     @Formats.NonEmpty
     @Column(unique = true)
     public String nom;
+
+    @ManyToMany
+    public List<Talk> talks;
 
     public static Model.Finder<Long, Tag> find = new Model.Finder<Long, Tag>(Long.class, Tag.class);
 
