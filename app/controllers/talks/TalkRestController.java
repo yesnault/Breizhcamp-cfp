@@ -125,8 +125,14 @@ public class TalkRestController extends Controller {
 
         JsonNode node = request().body().asJson();
 
-        talk.statusTalk = StatusTalk.fromValue(node.get("status").asText());
-        talk.save();
+        StatusTalk newStatus = StatusTalk.fromValue(node.get("status").asText());
+        if (talk.statusTalk != newStatus) {
+            talk.statusTalk = newStatus;
+            talk.save();
+            if (talk.statusTalk != null) {
+                talk.statusTalk.sendMail(talk, talk.speaker.email);
+            }
+        }
 
         return ok();
     }
