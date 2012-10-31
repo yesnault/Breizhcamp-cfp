@@ -22,4 +22,17 @@ alter table tag_talk add constraint fk_tag_talk_tag_01 foreign key (tag_id) refe
 alter table tag_talk add constraint fk_tag_talk_talk_02 foreign key (talk_id) references talk (id) on delete restrict on update restrict;
 
 
-#; --- !Downs
+
+
+# --- !Downs
+
+SET REFERENTIAL_INTEGRITY FALSE;
+
+drop table if exists tag_talk;
+
+drop table if exists tag;
+
+
+SET REFERENTIAL_INTEGRITY TRUE;
+
+drop sequence if exists tag_seq;
