@@ -1,5 +1,8 @@
 <div class="row">
 	<div class="span8">
+        <p>
+        <span class="badge badge-important" ng-repeat="error in errors['']">{{error}}</span>
+        </p>
 		<table class="table table-bordered table-striped">
 			<tbody>
 				<tr>
@@ -10,7 +13,7 @@
 				<tr ng-repeat="talk in talks">
 					<td><a href="/#/talks/see/{{talk.id}}">{{talk.title}}</a></td>
 					<td><a href="#/edittalk/{{talk.id}}" ><i class="icon-pencil"></i></a></td>
-					<td><a href="#" ng-click="deleteTalk(talk)" onclick="return confirm('Êtes vous sûr de vouloir supprimer les talks titre talk?')"><i class="icon-remove"></i></a></td>
+					<td><a ng-click="deleteTalk(talk)"><i class="icon-remove"></i></a></td>
 				</tr>
 			</tbody>
 		</table>

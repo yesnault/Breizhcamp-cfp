@@ -8,10 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import ch.qos.logback.classic.spi.LoggerRemoteView;
-import models.Comment;
-import models.StatusTalk;
-import models.Talk;
-import models.User;
+import models.*;
 import models.utils.TransformValidationErrors;
 import org.codehaus.jackson.JsonNode;
 import play.Logger;
@@ -45,6 +42,11 @@ public class TalkRestController extends Controller {
 	
 	public static Result save() {
 		User user = User.findByEmail(request().username());
+
+        if (VoteStatus.getVoteStatus() != VoteStatusEnum.NOT_BEGIN) {
+            return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.vote.begin"))));
+        }
+
 		Form<Talk> talkForm = form(Talk.class).bindFromRequest();
 		if (talkForm.hasErrors()) {
 			return badRequest(toJson(TransformValidationErrors.transform(talkForm.errors())));
@@ -78,6 +80,10 @@ public class TalkRestController extends Controller {
 	
 	
 	public static Result delete(Long idTalk) {
+        if (VoteStatus.getVoteStatus() != VoteStatusEnum.NOT_BEGIN) {
+            return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.vote.begin"))));
+        }
+
 		Talk talk = Talk.find.byId(idTalk);
         for (Comment comment : talk.getComments()) {
             comment.delete();

@@ -106,6 +106,21 @@ Services.factory('AllTalkService', function($resource) {
     return $resource('/talk/all', {});
 });
 
+
+Services.factory('VoteService', function($resource, $http, $log) {
+    function VoteService($resource, $http, $log) {
+
+        this.getVote = function () {
+            return $resource('/admin/vote', {}).get();
+        }
+    }
+
+
+    return new VoteService($resource, $http, $log);
+});
+
+
+
 Services.factory('ManageUsersService', function($resource) {
         return $resource('/admin/users/get', {});
     });

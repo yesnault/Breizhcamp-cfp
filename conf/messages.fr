@@ -24,6 +24,7 @@ error.minLength=Longueur minimum autorisée : {0}
 error.maxLength=Longueur maximum autorisée : {0}
 error.email=Email valide obligatoire
 error.pattern=Doit respecter {0}
+error.vote.begin=Vous ne pouvez plus soumettre/modifier/supprimer des talks une fois que le CFP est fermé.
 
 confirm=Confirmation
 email=Adresse mail

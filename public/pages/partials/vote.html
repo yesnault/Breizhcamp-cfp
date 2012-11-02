@@ -1,0 +1,30 @@
+<div class="row">
+
+
+    <form ng-submit="submitVote()">
+
+        <div class="control-group">
+            <label for="vote">Status des votes</label>
+            <div class="controls">
+                <select id="vote" name="vote" ng-model="vote.status">
+                    <option value="NOT_BEGIN">Non débutés</option>
+                    <option value="OPEN">Votes ouverts</option>
+                    <option value="CLOSED">Votes terminés</option>
+                </select>
+            </div>
+        </div>
+
+        <span id="messageSuccess" class="badge badge-success" ng-show="success != undefined">{{success}}</span>
+        <span id="messageError" class="badge badge-important" ng-show="error != undefined">{{error}}</span>
+
+        <div class="form-actions">
+            <input type="submit" class="btn btn-primary" value="Valider">
+            <input type="button" class="btn" onclick="document.location.href='/'" value="Annuler">
+        </div>
+
+
+    </form>
+
+
+
+</div>

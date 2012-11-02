@@ -105,8 +105,8 @@ function NewTalkController($scope, $log, $location, TalkService) {
 		TalkService.save($scope.talk, function(data) {	
 			$log.info("Soummission du talk ok");
 			$location.url('/managetalk');
-		}, function (err) {
-			$log.info("Soummission du talk ko");
+        }, function (err) {
+            $log.info("Soummission du talk ko");
             $log.info(err.data);
             $scope.errors = err.data;
 		});	
@@ -150,13 +150,17 @@ function ManageTalkController($scope, $log, $location, TalkService) {
 	$scope.talks = TalkService.query();
 	
 	$scope.deleteTalk = function(talk) {
-		$log.info("Delete du talk " + talk.id);
-		TalkService.delete({'id': talk.id}, function(data) {
-			$log.info("Delete du talk ok");
-			$location.url('/managetalk');
-	    }, function(err) {
-	    	  $log.info("Delete du talk ko : " + err);
-	    });
+        var confirmation = confirm('Êtes vous sûr de vouloir supprimer les talks titre talk?');
+        if (confirmation) {
+            TalkService.delete({'id': talk.id}, function(data) {
+                $scope.talks = TalkService.query();
+                $scope.errors = undefined;
+            }, function(err) {
+                $log.info("Delete du talk ko");
+                $log.info(err);
+                $scope.errors = err.data;
+            });
+        }
 	}
 	
 }
@@ -207,6 +211,31 @@ function ListTalksController($scope, $log, AllTalkService) {
     $scope.talks = AllTalkService.query();
 }
 ListTalksController.$inject = ['$scope', '$log', 'AllTalkService'];
+
+function VoteController($scope, $log, VoteService, $http) {
+
+    $scope.checkloc(true);
+
+    $scope.vote = VoteService.getVote();
+
+    $log.info($scope.vote);
+
+    $scope.submitVote = function() {
+        var vote = $scope.vote;
+        $http({
+            method: 'POST',
+            url: '/admin/vote/' + vote.status
+        }).success(function() {
+                $scope.error = undefined;
+                $scope.success = "Le changement de status du votes a bien été pris en compte."
+            }).error(function(){
+                $scope.error = "Une erreur est survenue pendant le changement de status des votes";
+                $scope.success = undefined;
+            });
+    }
+}
+
+VoteController.$inject = ['$scope', '$log', 'VoteService', '$http'];
 
 function SeeTalksController($scope, $log, $routeParams, TalkService, http) {
 
