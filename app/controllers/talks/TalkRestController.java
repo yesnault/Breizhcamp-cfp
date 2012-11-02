@@ -71,35 +71,45 @@ public class TalkRestController extends Controller {
     }
 
     public static Result addTag(Long idTalk, String tags) {
+        User user = User.findByEmail(request().username());
         Talk dbTalk = Talk.find.byId(idTalk);
-        Logger.debug("addTags: = " + tags + " init tags " + dbTalk.getTagsName());
-        String[] tagsList = tags.split(",");
 
-        // suppression qui ne sont plus présent dans la nouvelle liste
-        List<Tag> tagtmp = new ArrayList( dbTalk.getTags());
-        for (Tag tag : tagtmp) {
-            if (!tags.contains(tag.nom)) {
-                dbTalk.getTags().remove(tag);
-                dbTalk.save();
-            }
+        if (!user.admin && !user.id.equals(dbTalk.speaker.id)) {
+            return unauthorized(toJson(TransformValidationErrors.transform("Action non autorisée")));
         }
 
-        // ajout des tags ajoutés dans la liste
-        for (String tag : tagsList) {
-            if (!dbTalk.getTagsName().contains(tag)) {
-                Tag dbTag = Tag.findByTagName(tag);
-                if (dbTag == null) {
-                    dbTag = new Tag();
-                    dbTag.nom = tag;
-                    dbTag.save();
+        if (dbTalk != null) {
+            Logger.debug("addTags: = " + tags + " init tags " + dbTalk.getTagsName());
+            List<String> tagsList = Arrays.asList(tags.split(","));
+
+            // suppression qui ne sont plus présent dans la nouvelle liste
+            List<Tag> tagtmp = new ArrayList(dbTalk.getTags());
+            for (Tag tag : tagtmp) {
+                if (!tagsList.contains(tag.nom)) {
+                    dbTalk.getTags().remove(tag);
                 }
-                Logger.debug("tags: = " + dbTag.id);
-                dbTalk.getTags().add(dbTag);
             }
+
+            // ajout des tags ajoutés dans la liste
+            for (String tag : tagsList) {
+                if (!dbTalk.getTagsName().contains(tag)) {
+                    Tag dbTag = Tag.findByTagName(tag.toUpperCase());
+                    if (dbTag == null) {
+                        dbTag = new Tag();
+                        dbTag.nom = tag.toUpperCase();
+                        dbTag.save();
+                    }
+                    Logger.debug("tags: = " + dbTag.id);
+                    dbTalk.getTags().add(dbTag);
+                }
+            }
+            dbTalk.saveManyToManyAssociations("tags");
+            dbTalk.update();
+            Logger.debug("fin addTags: = " + dbTalk.getTagsName() + " size : " + dbTalk.getTags().size());
+            return ok();
+        } else {
+            return notFound();
         }
-        dbTalk.save();
-        Logger.debug("fin addTags: = " + dbTalk.getTagsName() + " size : " + dbTalk.getTags().size());
-        return ok();
     }
 
 

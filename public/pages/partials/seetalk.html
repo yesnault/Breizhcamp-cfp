@@ -15,17 +15,8 @@
 
         <div class="well">
             <h4>Tags</h4>
-            <p>{{talk.tagsName}}</p>
+            <p>{{talk.tags}}</p>
             <br/>
-            <form ng-submit="addTag()" method="GET" class="form-inline">
-                <div class="control-group {{{true:'error', false:''}[errors.tags != undefined]}}">
-                   <div class="controls">
-                        <input type="text" id="tags" name="tags" ng-model="tags" value="{{talk.tagsName}}" placeholder="Tags" class="input-xxlarge" >
-                        <p class="help-inline" ng-repeat="error in errors.tags">{{error}}</p>
-                   </div>
-                </div>
-                <input type="submit" class="btn btn-primary" value="Valider"/>
-            </form>
         </div>
 
         <div class="well">

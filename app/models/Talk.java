@@ -1,6 +1,8 @@
 package models;
 
 import com.google.common.base.Joiner;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
@@ -43,7 +45,8 @@ public class Talk extends Model {
     }
 
     @ManyToMany(mappedBy = "talks")
-    public List<Tag> tags;
+    @JsonIgnore
+    public List<Tag> tags = new ArrayList<Tag>();
 
     public List<Tag> getTags() {
         if (tags == null) {
@@ -52,6 +55,7 @@ public class Talk extends Model {
         return tags;
     }
 
+    @JsonProperty(value = "tags")
     public String getTagsName() {
         return Joiner.on(",").join(tags);
     }

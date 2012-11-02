@@ -1,5 +1,6 @@
 package models;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
@@ -8,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -23,7 +25,8 @@ public class Tag extends Model {
     public String nom;
 
     @ManyToMany
-    public List<Talk> talks;
+    @JsonIgnore
+    public List<Talk> talks = new ArrayList<Talk>();
 
     public static Model.Finder<Long, Tag> find = new Model.Finder<Long, Tag>(Long.class, Tag.class);
 
