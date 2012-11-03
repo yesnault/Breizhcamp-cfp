@@ -36,6 +36,12 @@
         </div>
 
         <div class="well">
+            <h4>Tags</h4>
+            <p>{{talk.tags}}</p>
+            <br/>
+        </div>
+
+        <div class="well">
             <h3>Questions/Réponses</h3>
             <div class="well" ng-repeat="comment in talk.comments">
                 <img ng-src="{{comment.author.avatar}}?s=40"> {{comment.author.fullname}}<br/>

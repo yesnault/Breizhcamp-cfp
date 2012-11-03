@@ -115,7 +115,7 @@ function NewTalkController($scope, $log, $location, TalkService) {
 // Pour que l'injection de dépendances fonctionne en cas de 'minifying'
 NewTalkController.$inject = ['$scope', '$log', '$location', 'TalkService'];
 
-function EditTalkController($scope, $log, $location, $routeParams, TalkService) {
+function EditTalkController($scope, $log, $location, $routeParams, TalkService, http) {
 
     $scope.checkloc(false);
 
@@ -136,11 +136,30 @@ function EditTalkController($scope, $log, $location, $routeParams, TalkService) 
             $scope.errors = err.data;
 		});
 		
-	}
+	};
+
+    $scope.addTag = function() {
+        $log.info("Ajout de tags " + $scope.tags);
+
+        var data = {'tags' : $scope.talk.tags,'idTalk' : $scope.talk.id};
+
+        http({
+            method : 'POST',
+            url : '/talk/' + $scope.talk.id + '/tags/'+$scope.talk.tags,
+            data : data
+        }).success(function(data, status, headers, config) {
+                $log.info(status);
+                $scope.errors = undefined;
+                $scope.talk = TalkService.get({id:$routeParams.talkId});
+            }).error(function(data, status, headers, config) {
+                $log.info(status);
+                $scope.errors = data;
+            });
+    }
 	
 }
 // Pour que l'injection de dépendances fonctionne en cas de 'minifying'
-EditTalkController.$inject = ['$scope', '$log', '$location', '$routeParams', 'TalkService'];
+EditTalkController.$inject = ['$scope', '$log', '$location', '$routeParams', 'TalkService', '$http'];
 
 
 function ManageTalkController($scope, $log, $location, TalkService) {
@@ -222,25 +241,6 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http) {
         http({
             method : 'POST',
             url : '/talks/' + $scope.talk.id + '/comment',
-            data : data
-        }).success(function(data, status, headers, config) {
-                $log.info(status);
-                $scope.errors = undefined;
-                $scope.talk = TalkService.get({id:$routeParams.talkId});
-            }).error(function(data, status, headers, config) {
-                $log.info(status);
-                $scope.errors = data;
-            });
-    };
-
-    $scope.postStatus = function() {
-        $log.info("portStatus");
-
-        var data = {'status' : $scope.talk.statusTalk};
-
-        http({
-            method : 'POST',
-            url : '/talks/' + $scope.talk.id + '/status',
             data : data
         }).success(function(data, status, headers, config) {
                 $log.info(status);

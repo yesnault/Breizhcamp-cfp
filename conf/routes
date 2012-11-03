@@ -38,6 +38,8 @@ GET		/talk/:idTalk				controllers.talks.TalkRestController.getById(idTalk:Long)
 GET		/talk						controllers.talks.TalkRestController.get()
 POST	/talk						controllers.talks.TalkRestController.save()
 DELETE	/talk/:idTalk 				controllers.talks.TalkRestController.delete(idTalk:Long)
+GET	/talk/:idTalk/tags/:tags 	controllers.talks.TalkRestController.addTag(idTalk:Long,tags:String)
+POST	/talk/:idTalk/tags/:tags 	controllers.talks.TalkRestController.addTag(idTalk:Long,tags:String)
 
 GET     /admin/users/get            controllers.UserRestController.get()
 
