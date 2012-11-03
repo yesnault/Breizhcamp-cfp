@@ -120,7 +120,7 @@ public class TalkRestController extends Controller {
         for (Tag tag : tagtmp) {
            talk.getTags().remove(tag);
         }
-
+        talk.saveManyToManyAssociations("tags");
 		talk.delete();
 		// HTTP 204 en cas de succès (NO CONTENT)
         return noContent();

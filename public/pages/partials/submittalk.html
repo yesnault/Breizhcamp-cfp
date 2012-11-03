@@ -32,7 +32,7 @@
 				</div>
 			</form>
 		</div>
-        <div class="well">
+        <div class="well" ng-show="!isNew">
             <h4>Tags</h4>
             <form ng-submit="addTag()" method="POST" class="form-inline">
                 <div class="control-group {{{true:'error', false:''}[errors.tags != undefined]}}">

@@ -250,6 +250,25 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http) {
                 $log.info(status);
                 $scope.errors = data;
             });
+    };
+
+    $scope.postStatus = function() {
+        $log.info("postStatus");
+
+        var data = {'status' : $scope.talk.statusTalk};
+
+        http({
+            method : 'POST',
+            url : '/talks/' + $scope.talk.id + '/status',
+            data : data
+        }).success(function(data, status, headers, config) {
+                $log.info(status);
+                $scope.errors = undefined;
+                $scope.talk = TalkService.get({id:$routeParams.talkId});
+            }).error(function(data, status, headers, config) {
+                $log.info(status);
+                $scope.errors = data;
+            });
     }
 }
 SeeTalksController.$inject = ['$scope', '$log', '$routeParams', 'TalkService', '$http'];
