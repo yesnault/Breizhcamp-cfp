@@ -383,6 +383,31 @@ function EmailAccountController($scope, $log, UserService, AccountService, $http
 }
 EmailAccountController.$inject = ['$scope', '$log', 'UserService', 'AccountService', '$http'];
 
+function MacAccountController($scope, $log, UserService, AccountService, $http) {
+
+    $scope.checkloc(false);
+
+    var idUser = UserService.getUserData().id;
+    $scope.user = AccountService.getUser(idUser);
+
+    $scope.changeMac = function() {
+        $http( {
+            method : 'POST',
+            url : '/settings/mac',
+            data: $scope.user
+        }).success(function(data, status, headers, config) {
+                $('#messageSuccess').text('Votre adresse mac a été enregistrée.');
+                $('#messageSuccess').removeClass('hide');
+                $scope.errors = undefined;
+            }).error(function(data, status, headers, config) {
+                $('#messageSuccess').addClass('hide');
+                $scope.errors = data;
+                $log.info(status);
+            });
+    }
+}
+MacAccountController.$inject = ['$scope', '$log', 'UserService', 'AccountService', '$http'];
+
 function ResetPasswordController($scope, $log, $http) {
 
     $scope.resetPassword = function () {

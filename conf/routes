@@ -12,6 +12,7 @@ GET     /settings/user/:id          controllers.account.settings.Account.getUser
 POST    /settings/password          controllers.account.settings.Password.runPassword()
 POST    /settings/email             controllers.account.settings.Email.runEmail()
 POST    /settings/account           controllers.account.settings.Account.save()
+POST    /settings/mac               controllers.account.settings.Account.changeMac()
 POST    /settings/notifs            controllers.account.settings.Notifs.save()
 GET     /settings/lien/remove/:id   controllers.account.settings.Account.deleteLink(id:Long)
 

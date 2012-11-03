@@ -1,23 +1,20 @@
 package controllers.account.settings;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import controllers.Secured;
 import models.Lien;
 import models.User;
 import models.utils.TransformValidationErrors;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ArrayNode;
-import play.Logger;
 import play.data.Form;
-import play.data.format.Formats;
-import play.data.validation.Constraints;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
-import controllers.Secured;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static play.libs.Json.toJson;
 
@@ -98,6 +95,28 @@ public class Account extends Controller {
         	user.getLiens().add(lien);
         }
         
+        user.save();
+
+        return ok();
+    }
+
+    public static class MacForm {
+        public String adresseMac;
+    }
+
+    public static Result changeMac() {
+        JsonNode jsonNode = request().body().asJson();
+        Form<MacForm> macForm = form(MacForm.class).bind(jsonNode);
+        User user = User.findByEmail(request().username());
+
+        if (macForm.hasErrors()) {
+            return badRequest(toJson(TransformValidationErrors.transform(macForm.errors())));
+        }
+
+        String adresseMac = macForm.get().adresseMac;
+
+        user.adresseMac = adresseMac;
+
         user.save();
 
         return ok();
