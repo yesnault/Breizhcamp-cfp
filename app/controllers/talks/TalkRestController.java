@@ -1,28 +1,15 @@
 package controllers.talks;
 
-import static play.libs.Json.toJson;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import ch.qos.logback.classic.spi.LoggerRemoteView;
-import models.Comment;
-import models.StatusTalk;
-import models.Tag;
-import models.Talk;
-import models.User;
+import controllers.Secured;
+import models.*;
 import models.utils.TransformValidationErrors;
 import org.codehaus.jackson.JsonNode;
 import play.Logger;
 import play.data.Form;
-import play.data.validation.ValidationError;
 import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
-import controllers.Secured;
 
 import java.util.*;
 
@@ -128,6 +115,12 @@ public class TalkRestController extends Controller {
         for (Comment comment : talk.getComments()) {
             comment.delete();
         }
+
+        List<Tag> tagtmp = new ArrayList(talk.getTags());
+        for (Tag tag : tagtmp) {
+           talk.getTags().remove(tag);
+        }
+
 		talk.delete();
 		// HTTP 204 en cas de succès (NO CONTENT)
         return noContent();
