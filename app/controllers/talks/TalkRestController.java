@@ -80,7 +80,7 @@ public class TalkRestController extends Controller {
             List<String> tagsList = Arrays.asList(tags.split(","));
 
             // suppression qui ne sont plus présent dans la nouvelle liste
-            List<Tag> tagtmp = new ArrayList(dbTalk.getTags());
+            List<Tag> tagtmp = new ArrayList<Tag>(dbTalk.getTags());
             for (Tag tag : tagtmp) {
                 if (!tagsList.contains(tag.nom)) {
                     dbTalk.getTags().remove(tag);
@@ -116,7 +116,7 @@ public class TalkRestController extends Controller {
             comment.delete();
         }
 
-        List<Tag> tagtmp = new ArrayList(talk.getTags());
+        List<Tag> tagtmp = new ArrayList<Tag>(talk.getTags());
         for (Tag tag : tagtmp) {
            talk.getTags().remove(tag);
         }

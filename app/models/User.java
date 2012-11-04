@@ -1,23 +1,17 @@
 package models;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang.BooleanUtils;
-
 import models.utils.AppException;
 import models.utils.Hash;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.BooleanUtils;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * User: yesnault
@@ -59,6 +53,9 @@ public class User extends Model {
     private Boolean notifAdminOnAllTalk;
 
     private Boolean notifAdminOnTalkWithComment;
+
+    @Constraints.Pattern("^([0-9a-fA-F][0-9a-fA-F]:){5}([0-9a-fA-F][0-9a-fA-F])$")
+    public String adresseMac;
 	
 	public boolean getNotifOnMyTalk() {
 		return BooleanUtils.isNotFalse(notifOnMyTalk);

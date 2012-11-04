@@ -1,4 +1,6 @@
 <div class="row">
+
+
     <div class="container-fluid">
         <div class="row-fluid">
             <div class="span2 breadcrumb">
@@ -10,24 +12,29 @@
                 <br/>
                 <a href="/#/settings/password">Mot de passe</a>
                 <br/>
-                Adresse mail
+                <a href="/#/settings/email">Adresse mail</a>
                 <br/>
-                <a href="/#/settings/mac">Adresse mac</a>
+                Adresse Mac
             </div>
             <div class="span10">
                 <div class="well">
-
-                    <form ng-submit="changeEmail()">
+                    <form ng-submit="changeMac()">
                         <fieldset>
-                            <div class="control-group {{{true:'error', false:''}[errors.email != undefined]}}">
-                                <label class="control-label" for="email">Entrez votre nouvelle adresse mail et Valider pour recevoir les instructions par mail.</label>
+                            <legend>Adresse Mac pour l'accès au WIFI</legend>
+                            <div class="control-group ">
                                 <div class="controls">
-                                    <input type="text" id="email" name="email" placeholder="Adresse mail" ng-model="user.email"/>
-                                    <p class="help-inline" ng-repeat="error in errors.email">{{error}}</p>
+                                    <label class="adresseMac">
+                                        <input type="text" id="adresseMac" name="adresseMac" ng-model="user.adresseMac">
+                                        <span></span>
+                                    </label>
                                 </div>
                             </div>
                         </fieldset>
+
+
                         <span id="messageSuccess" class="badge badge-success hide"></span>
+                        <span id="messageError" class="badge badge-important hide"></span>
+
                         <div class="form-actions">
                             <input type="submit" class="btn btn-primary" value="Valider">
                         </div>
