@@ -33,19 +33,18 @@ GET     /email/:token               controllers.account.settings.Email.validateE
 POST    /admin/submitusers          controllers.Admin.submitUsers()
 
 POST    /talks/:idTalk/comment      controllers.talks.TalkRestController.saveComment(idTalk:Long)
-POST    /talks/:idTalk/status      controllers.talks.TalkRestController.saveStatus(idTalk:Long)
+POST    /talks/:idTalk/status       controllers.talks.TalkRestController.saveStatus(idTalk:Long)
 GET		/talk/all					controllers.talks.TalkRestController.all()
 GET		/talk/:idTalk				controllers.talks.TalkRestController.getById(idTalk:Long)
 GET		/talk						controllers.talks.TalkRestController.get()
 POST	/talk						controllers.talks.TalkRestController.save()
 DELETE	/talk/:idTalk 				controllers.talks.TalkRestController.delete(idTalk:Long)
-GET	/talk/:idTalk/tags/:tags 	controllers.talks.TalkRestController.addTag(idTalk:Long,tags:String)
+GET	/talk/:idTalk/tags/:tags 	    controllers.talks.TalkRestController.addTag(idTalk:Long,tags:String)
 POST	/talk/:idTalk/tags/:tags 	controllers.talks.TalkRestController.addTag(idTalk:Long,tags:String)
 
+GET		/user/:userId/talks			controllers.talks.TalkRestController.getTalks(userId:Long)
+
 GET     /admin/users/get            controllers.UserRestController.get()
-
-
-
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

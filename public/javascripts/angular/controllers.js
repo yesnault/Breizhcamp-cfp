@@ -273,6 +273,21 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http) {
 }
 SeeTalksController.$inject = ['$scope', '$log', '$routeParams', 'TalkService', '$http'];
 
+function ProfilController($scope, $log, $routeParams, AccountService, ProfilService, http) {
+
+    $scope.checkloc(false);
+
+    var idUSer = $routeParams.userId;
+    $scope.user = AccountService.getUser(idUSer);
+
+    $scope.talks = ProfilService.getTalks(idUSer);
+
+
+}
+ProfilController.$inject = ['$scope', '$log','$routeParams', 'AccountService', 'ProfilService', '$http'];
+
+
+
 function SettingsAccountController($scope, $log, AccountService, UserService, http) {
 
     $scope.checkloc(false);

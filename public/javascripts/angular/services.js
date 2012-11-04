@@ -98,6 +98,16 @@ Services.factory('AccountService', function($resource) {
     return new AccountService($resource);
 });
 
+Services.factory('ProfilService', function($resource) {
+    function ProfilService($resource) {
+        this.getTalks = function (userId) {
+            return $resource('/user/:userId/talks').query({userId:userId});
+        }
+    }
+
+    return new ProfilService($resource);
+});
+
 Services.factory('TalkService', function($resource) {
         return $resource('/talk/:id', {});
 });

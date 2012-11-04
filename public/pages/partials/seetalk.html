@@ -3,7 +3,7 @@
     <div class="span8">
         <div class="well">
             <h3>{{talk.title}}</h3>
-            Soumis par {{talk.speaker.fullname}}<br/>
+            Soumis par <a ng-href="/#/profil/{{talk.speaker.id}}" >{{talk.speaker.fullname}}</a><br/>
             <br/>
             <p>
                 {{talk.description}}

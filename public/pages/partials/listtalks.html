@@ -4,13 +4,19 @@
     <div class="span8">
         <table class="table table-bordered table-striped">
             <tbody><tr>
-                <th class="span2">Speaker</th>
-                <th class="span8">Titre</th>
+                <th class="span3">Speaker</th>
+                <th class="span7">Titre</th>
+                <th class="span2">Statut</th>
             </tr>
 
             <tr ng-repeat="talk in talks">
-                <td><img ng-src="{{talk.speaker.avatar}}?s=16"> {{talk.speaker.fullname}}</td>
+                <td><a ng-href="/#/profil/{{talk.speaker.id}}" ><img ng-src="{{talk.speaker.avatar}}?s=16"> {{talk.speaker.fullname}}</a></td>
                 <td><a href="/#/talks/see/{{talk.id}}">{{talk.title}}</a></td>
+                <td><div ng-show="talk.statusTalk != undefined" ng-switch on="talk.statusTalk">
+                    <span class="label label-important" ng-switch-when="REJETE">Rejeté</span>
+                    <span class="label label-warning" ng-switch-when="ATTENTE">Liste d'attente</span>
+                    <span class="label label-success" ng-switch-when="ACCEPTE">Accepté</span>
+                </div></td>
             </tr>
 
             </tbody></table>
