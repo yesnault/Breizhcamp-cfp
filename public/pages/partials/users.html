@@ -11,7 +11,7 @@
             </tr>
 
             <tr ng-repeat="user in users">
-                <td>{{user.fullname}}</td>
+                <td><a ng-href="/#/profil/{{user.id}}" >{{user.fullname}}</a></td>
                 <td>{{user.email}}<input type="hidden" name="email" ng-model="user.email" value="{{user.email}}"></td>
 
                 <td><input type="checkbox" name="{{user.email}}" ng-model="user.admin" checked="{{{true:'checked', false:''}[user.admin]}}"></td>

@@ -17,6 +17,9 @@
 
                     <br /><br/>
                     <h3>Liens</h3>
+                    <p ng-show="user.liens.length == 0">
+                        - aucun lien
+                    </p>
                     <p ng-repeat="lien in user.liens">- <a ng-href="{{lien.url}}" target="_blank">{{lien.label}}</a></p>
 
                     <h3>Talks</h3>
