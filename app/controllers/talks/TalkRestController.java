@@ -29,6 +29,12 @@ public class TalkRestController extends Controller {
 		return ok(toJson(talks));
 	}
 
+    public static Result getTalks(Long userId) {
+        User user = User.find.byId(userId);
+        List<Talk> talks = Talk.findBySpeaker(user);
+        return ok(toJson(talks));
+    }
+
     public static Result all() {
         List<Talk> talks = Talk.find.all();
         return ok(toJson(talks));
