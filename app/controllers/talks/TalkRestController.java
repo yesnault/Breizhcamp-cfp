@@ -17,17 +17,17 @@ import static play.libs.Json.toJson;
 
 @Security.Authenticated(Secured.class)
 public class TalkRestController extends Controller {
-	
-	public static Result getById(Long idTalk) {
-		Talk talk = Talk.find.byId(idTalk); 
-		return ok(toJson(talk));
-	}
-	
-	public static Result get() {
-		User user = User.findByEmail(request().username());
-		List<Talk> talks = Talk.findBySpeaker(user);	
-		return ok(toJson(talks));
-	}
+
+    public static Result getById(Long idTalk) {
+        Talk talk = Talk.find.byId(idTalk);
+        return ok(toJson(talk));
+    }
+
+    public static Result get() {
+        User user = User.findByEmail(request().username());
+        List<Talk> talks = Talk.findBySpeaker(user);
+        return ok(toJson(talks));
+    }
 
     public static Result getTalks(Long userId) {
         User user = User.find.byId(userId);
@@ -35,42 +35,81 @@ public class TalkRestController extends Controller {
         return ok(toJson(talks));
     }
 
+    public static Result getTalksAccepted(Long userId) {
+        User user = User.find.byId(userId);
+        List<Talk> talks = Talk.findBySpeakerAndStatus(user, StatusTalk.ACCEPTE);
+        return ok(toJson(talks));
+    }
+
     public static Result all() {
         List<Talk> talks = Talk.find.all();
         return ok(toJson(talks));
     }
-	
-	
-	public static Result save() {
-		User user = User.findByEmail(request().username());
-		Form<Talk> talkForm = form(Talk.class).bindFromRequest();
-		if (talkForm.hasErrors()) {
-			return badRequest(toJson(TransformValidationErrors.transform(talkForm.errors())));
-		}
-		
-		Talk formTalk = talkForm.get();
-		
-		if (formTalk.id==null) {
-			// Nouveau talk
-			formTalk.speaker = user;
-			if (Talk.findByTitle(formTalk.title) != null) {
-				return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.talk.already.exist"))));
-			}
-			formTalk.save();
-		} else {
-			// Mise à jour d'un talk
-			Talk dbTalk = Talk.find.byId(formTalk.id);
-			if (!formTalk.title.equals(dbTalk.title) 
-					&& Talk.findByTitle(formTalk.title) != null) {
-                return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.talk.already.exist"))));
-			}
-			dbTalk.title = formTalk.title;
-			dbTalk.description = formTalk.description;
-			dbTalk.save();
-		}		
 
-		// HTTP 204 en cas de succès (NO CONTENT)
+
+    public static Result save() {
+        User user = User.findByEmail(request().username());
+        Form<Talk> talkForm = form(Talk.class).bindFromRequest();
+
+        if (talkForm.hasErrors()) {
+            return badRequest(toJson(TransformValidationErrors.transform(talkForm.errors())));
+        }
+
+        Talk formTalk = talkForm.get();
+
+        if (formTalk.id == null) {
+            // Nouveau talk
+            formTalk.speaker = user;
+            if (Talk.findByTitle(formTalk.title) != null) {
+                return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.talk.already.exist"))));
+            }
+            formTalk.save();
+            updateTags(talkForm.data().get("tagsname"), formTalk);
+        } else {
+            // Mise à jour d'un talk
+            Talk dbTalk = Talk.find.byId(formTalk.id);
+            if (!formTalk.title.equals(dbTalk.title)
+                    && Talk.findByTitle(formTalk.title) != null) {
+                return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.talk.already.exist"))));
+            }
+            dbTalk.title = formTalk.title;
+            dbTalk.description = formTalk.description;
+            dbTalk.save();
+            updateTags(talkForm.data().get("tagsname"), dbTalk);
+        }
+
+
+        // HTTP 204 en cas de succès (NO CONTENT)
         return noContent();
+    }
+
+
+    public static void updateTags(String tags, Talk dbTalk) {
+        List<String> tagsList = Arrays.asList(tags.split(","));
+
+        // suppression qui ne sont plus présent dans la nouvelle liste
+        List<Tag> tagtmp = new ArrayList<Tag>(dbTalk.getTags());
+        for (Tag tag : tagtmp) {
+            if (!tagsList.contains(tag.nom)) {
+                dbTalk.getTags().remove(tag);
+            }
+        }
+
+        // ajout des tags ajoutés dans la liste
+        for (String tag : tagsList) {
+            if (!dbTalk.getTagsName().contains(tag)) {
+                Tag dbTag = Tag.findByTagName(tag.toUpperCase());
+                if (dbTag == null) {
+                    dbTag = new Tag();
+                    dbTag.nom = tag.toUpperCase();
+                    dbTag.save();
+                }
+                Logger.debug("tags: = " + dbTag.id);
+                dbTalk.getTags().add(dbTag);
+            }
+        }
+        dbTalk.saveManyToManyAssociations("tags");
+        dbTalk.update();
     }
 
     public static Result addTag(Long idTalk, String tags) {
@@ -83,31 +122,7 @@ public class TalkRestController extends Controller {
 
         if (dbTalk != null) {
             Logger.debug("addTags: = " + tags + " init tags " + dbTalk.getTagsName());
-            List<String> tagsList = Arrays.asList(tags.split(","));
-
-            // suppression qui ne sont plus présent dans la nouvelle liste
-            List<Tag> tagtmp = new ArrayList<Tag>(dbTalk.getTags());
-            for (Tag tag : tagtmp) {
-                if (!tagsList.contains(tag.nom)) {
-                    dbTalk.getTags().remove(tag);
-                }
-            }
-
-            // ajout des tags ajoutés dans la liste
-            for (String tag : tagsList) {
-                if (!dbTalk.getTagsName().contains(tag)) {
-                    Tag dbTag = Tag.findByTagName(tag.toUpperCase());
-                    if (dbTag == null) {
-                        dbTag = new Tag();
-                        dbTag.nom = tag.toUpperCase();
-                        dbTag.save();
-                    }
-                    Logger.debug("tags: = " + dbTag.id);
-                    dbTalk.getTags().add(dbTag);
-                }
-            }
-            dbTalk.saveManyToManyAssociations("tags");
-            dbTalk.update();
+            updateTags(tags,dbTalk);
             Logger.debug("fin addTags: = " + dbTalk.getTagsName() + " size : " + dbTalk.getTags().size());
             return ok();
         } else {
@@ -124,13 +139,13 @@ public class TalkRestController extends Controller {
 
         List<Tag> tagtmp = new ArrayList<Tag>(talk.getTags());
         for (Tag tag : tagtmp) {
-           talk.getTags().remove(tag);
+            talk.getTags().remove(tag);
         }
         talk.saveManyToManyAssociations("tags");
-		talk.delete();
-		// HTTP 204 en cas de succès (NO CONTENT)
+        talk.delete();
+        // HTTP 204 en cas de succès (NO CONTENT)
         return noContent();
-	}
+    }
 
     public static Result saveComment(Long idTalk) {
         User user = User.findByEmail(request().username());

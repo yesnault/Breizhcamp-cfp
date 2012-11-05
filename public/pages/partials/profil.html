@@ -22,16 +22,16 @@
                     </p>
                     <p ng-repeat="lien in user.liens">- <a ng-href="{{lien.url}}" target="_blank">{{lien.label}}</a></p>
 
-                    <h3>Talks</h3>
-                    <p ng-show="talks.length == 0">
-                        - aucun talk proposé
-                    </p>
+                    <h3 ng-show="talks.length > 0">Talks proposés</h3>
                     <p ng-show="talks.length == 1">
                         - 1 talk proposé
                     </p>
                     <p ng-show="talks.length > 1">
                         - {{talks.length}} talks proposés
                     </p>
+
+                    <h3 ng-show="talksok.length > 0">Talks acceptés</h3>
+                    <p ng-repeat="talk in talksok">- <a ng-href="/#/talks/see/{{talk.id}}" title="{{talk.description}}" >{{talk.title}}</a></p>
                 </div>
             </div>
         </div>

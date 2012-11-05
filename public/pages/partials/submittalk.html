@@ -24,6 +24,13 @@
                             <p class="help-inline" ng-repeat="error in errors.description">{{error}}</p>
 						</div>
 					</div>
+                    <div class="control-group {{{true:'error', false:''}[errors.tags != undefined]}}">
+                        Tags : <br/>
+                         <div class="controls">
+                              <input type="text" id="tags" name="tags" ng-model="talk.tagsname"  placeholder="Tags séparés par une virgule" class="input-xxlarge" >
+                               <p class="help-inline" ng-repeat="error in errors.tags">{{error}}</p>
+                         </div>
+                    </div>
                     <span class="badge badge-important" ng-repeat="error in errors['']">{{error}}</span>
 				</fieldset>
 				<div class="form-actions">
@@ -32,17 +39,5 @@
 				</div>
 			</form>
 		</div>
-        <div class="well" ng-show="!isNew">
-            <h4>Tags</h4>
-            <form ng-submit="addTag()" method="POST" class="form-inline">
-                <div class="control-group {{{true:'error', false:''}[errors.tags != undefined]}}">
-                    <div class="controls">
-                        <input type="text" id="tags" name="tags" ng-model="talk.tags" pattern="^[a-zA-Z0-9,]+$" placeholder="Tags séparés par une virgule" class="input-xxlarge" >
-                        <p class="help-inline" ng-repeat="error in errors.tags">{{error}}</p>
-                    </div>
-                </div>
-                <input type="submit" class="btn btn-primary" value="Valider"/>
-            </form>
-        </div>
 	</div>
 </div>
