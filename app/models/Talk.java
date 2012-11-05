@@ -56,7 +56,7 @@ public class Talk extends Model {
         return tags;
     }
 
-    @JsonProperty(value = "tags")
+    @JsonProperty(value = "tagsname")
     public String getTagsName() {
         return Joiner.on(",").join(tags);
     }
@@ -72,4 +72,8 @@ public class Talk extends Model {
 	public static List<Talk> findBySpeaker(User speaker) {
 		return find.where().eq("speaker", speaker).findList();
 	}
+
+    public static List<Talk> findBySpeakerAndStatus(User speaker,StatusTalk status) {
+    		return find.where().eq("statusTalk", status.name()).eq("speaker", speaker).findList();
+    	}
 }
