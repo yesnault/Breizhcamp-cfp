@@ -61,4 +61,18 @@ public class Vote extends Model {
     public static Vote findVoteByUserAndTalk(User user, Talk talk) {
         return find.query().where().eq("user", user).eq("talk", talk).findUnique();
     }
+
+    public static Double calculMoyenne(Talk talk) {
+        Double moyenne = null;
+        int sum = 0;
+        int nbVotes = 0;
+        for (Vote vote : find.query().where().eq("talk", talk).findList()) {
+            sum = sum + vote.getNote();
+            nbVotes++;
+        }
+        if (nbVotes > 0) {
+            moyenne = ((double)sum) / ((double)nbVotes);
+        }
+        return moyenne;
+    }
 }

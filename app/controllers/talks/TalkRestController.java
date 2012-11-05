@@ -11,6 +11,7 @@ import controllers.Secured;
 import models.*;
 import models.utils.TransformValidationErrors;
 import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.node.ObjectNode;
 import play.Logger;
 import play.data.Form;
 import play.i18n.Messages;
@@ -53,6 +54,9 @@ public class TalkRestController extends Controller {
         List<Talk> talks = Talk.find.all();
         for (Talk talk : talks) {
             talk.vote = Vote.findVoteByUserAndTalk(user, talk);
+            if (VoteStatus.getVoteStatus() == VoteStatusEnum.CLOSED) {
+                talk.moyenne = Vote.calculMoyenne(talk);
+            }
         }
         return ok(toJson(talks));
     }
@@ -65,7 +69,13 @@ public class TalkRestController extends Controller {
             return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.vote.begin"))));
         }
 
-		Form<Talk> talkForm = form(Talk.class).bindFromRequest();
+        JsonNode talkJson = request().body().asJson();
+        if (talkJson.get("tags") != null && talkJson instanceof ObjectNode) {
+            // Contournement pour l'envoi de 'tags' vide.
+            ((ObjectNode)talkJson).remove("tags");
+        }
+
+		Form<Talk> talkForm = form(Talk.class).bind(talkJson);
 		if (talkForm.hasErrors()) {
 			return badRequest(toJson(TransformValidationErrors.transform(talkForm.errors())));
 		}

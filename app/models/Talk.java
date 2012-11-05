@@ -74,4 +74,6 @@ public class Talk extends Model {
 	}
 
     public transient Vote vote;
+
+    public transient Double moyenne;
 }

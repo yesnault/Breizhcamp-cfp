@@ -7,10 +7,11 @@
                 <th class="span2">Speaker</th>
                 <th class="span6">Titre</th>
                 <th class="span2">Statut</th>
-                <th class="span2">Note</th>
+                <th class="span1">Note</th>
+                <th class="span1" ng-show="vote.status == 'CLOSED'"><a ng-click="predicate = 'moyenne'; reverse=!reverse">Moyenne</a></th>
             </tr>
 
-            <tr ng-repeat="talk in talks">
+            <tr ng-repeat="talk in talks | orderBy:predicate:reverse">
                 <td><a ng-href="/#/profil/{{talk.speaker.id}}" ><img ng-src="{{talk.speaker.avatar}}?s=16"> {{talk.speaker.fullname}}</a></td>
                 <td><a href="/#/talks/see/{{talk.id}}">{{talk.title}}</a></td>
                 <td><div ng-show="talk.statusTalk != undefined" ng-switch on="talk.statusTalk">
@@ -19,6 +20,7 @@
                     <span class="label label-success" ng-switch-when="ACCEPTE">Accepté</span>
                 </div></td>
                 <td>{{talk.vote.note}}</td>
+                <td ng-show="vote.status == 'CLOSED'">{{talk.moyenne}}</td>
             </tr>
 
             </tbody></table>

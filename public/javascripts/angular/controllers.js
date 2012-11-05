@@ -223,13 +223,19 @@ function ManageUsersController($scope, $log, $location, ManageUsersService, http
 // Pour que l'injection de dépendances fonctionne en cas de 'minifying'
 ManageUsersController.$inject = ['$scope', '$log', '$location', 'ManageUsersService', '$http'];
 
-function ListTalksController($scope, $log, AllTalkService) {
+function ListTalksController($scope, $log, AllTalkService, VoteService) {
 
     $scope.checkloc(true);
 
     $scope.talks = AllTalkService.query();
+
+    $scope.vote = VoteService.getVote();
+
+    $scope.predicate = 'moyenne';
+
+    $scope.reverse = true;
 }
-ListTalksController.$inject = ['$scope', '$log', 'AllTalkService'];
+ListTalksController.$inject = ['$scope', '$log', 'AllTalkService', 'VoteService'];
 
 function VoteController($scope, $log, VoteService, $http) {
 
