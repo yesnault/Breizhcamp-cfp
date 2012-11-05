@@ -26,9 +26,9 @@
 					</ul>
 				</div>
 
-				<div class="btn-group pull-right" ng-show="userService.isAdmin()">
+				<div class="btn-group pull-right" ng-show="userService.isAdmin()" ng-cloak>
 					<a class="btn" href="#" data-toggle="dropdown" ><i class="icon-wrench"></i>Admin</a> <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
-					<ul class="dropdown-menu">
+					<ul class="dropdown-menu" >
 						<li><a href="/#/admin/users"><i class="icon-user"></i>Utilisateurs</a></li>
 						<li class="divider"></li>
 						<li><a href="/#/admin/talks/list"><i class="icon-list"></i>Liste des talks</a>
@@ -36,7 +36,7 @@
 					</ul>
 				</div>
 
-				<div class="btn-group pull-right" ng-show="userService.isAuthenticated()">
+				<div class="btn-group pull-right" ng-show="userService.isAuthenticated()" ng-cloak>
 					<a class="btn" href="#" data-toggle="dropdown" ><i><img ng-src="{{{true:userService.getUserData().avatar+'?s=14', false:''}[userService.getUserData()!=null]}}" /></i> {{userService.getUserData().fullname}}</a>
 					<a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
 					<ul class="dropdown-menu">
