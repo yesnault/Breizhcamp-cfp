@@ -107,6 +107,9 @@ public class TalkRestController extends Controller {
 
 
     public static void updateTags(String tags, Talk dbTalk) {
+        if (tags == null || tags.length() == 0) {
+            return;
+        }
         List<String> tagsList = Arrays.asList(tags.split(","));
 
         // suppression qui ne sont plus présent dans la nouvelle liste

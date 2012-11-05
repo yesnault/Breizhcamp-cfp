@@ -4,7 +4,7 @@ alter table talk add status_talk varchar(1);
 alter table talk add constraint ck_talk_status_talk check (status_talk in ('A','W','R'));
 
 create table tag (
-id                        bigint auto_increment not null,
+id                        bigint not null,
 nom                       varchar(255),
 constraint uq_tag_nom unique (nom),
 constraint pk_tag primary key (id))
@@ -16,6 +16,8 @@ talk_id                        bigint not null,
 constraint pk_tag_talk primary key (tag_id, talk_id))
 ;
 
+
+create sequence tag_seq;
 
 alter table tag_talk add constraint fk_tag_talk_tag_01 foreign key (tag_id) references tag (id) on delete restrict on update restrict;
 
@@ -37,3 +39,5 @@ SET REFERENTIAL_INTEGRITY TRUE;
 
 alter table talk delete status_talk;
 alter table talk delete constraint ck_talk_status_talk;
+
+drop sequence if exists tag_seq;
