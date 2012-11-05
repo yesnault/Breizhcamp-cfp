@@ -58,8 +58,17 @@ public enum StatusTalk {
 
     private String interne;
 
-    public String getInterne(){
-          return interne;
+    public String getInterne() {
+        return interne;
+    }
+
+    public static StatusTalk fromCode(String code) {
+        for (StatusTalk v : values()) {
+            if (v.interne.equals(code)) {
+                return v;
+            }
+        }
+        return null;
     }
 
     abstract String getSubject(String talkTitle);

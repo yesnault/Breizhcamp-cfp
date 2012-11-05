@@ -1,4 +1,27 @@
-<div class="row">DASHBOARD Example<br>
-Utilisateur authentifié : {{userService.isAuthenticated()}}<br>
-Nom : {{userService.getUserData().fullname}}
+<div class="row">
+    <div class="well"><h2>DASHBOARD</h2><br>
+
+        Nom : {{userService.getUserData().fullname}}
+
+    </div>
+    <br/>
+    <div class="well">
+        <h2><a ng-href="/#/managetalk">Talks</a></h2>
+        <h4 ng-show="talks.length == 1">
+            - 1 talk proposé
+        </h4>
+        <h4 ng-show="talks.length > 1">
+            - {{talks.length}} talks proposés
+        </h4>
+        <br/>
+        <h4 ng-show="talksok.length > 0"> - Talks acceptés</h4>
+        <p ng-repeat="talk in talksok">- <a ng-href="/#/talks/see/{{talk.id}}" title="{{talk.description}}" >{{talk.title}}</a></p>
+        <br/>
+        <h4 ng-show="talks_w.length > 0"> - Talks en attente</h4>
+        <p ng-repeat="talk in talks_w">- <a ng-href="/#/talks/see/{{talk.id}}" title="{{talk.description}}" >{{talk.title}}</a></p>
+        <br/>
+        <h4 ng-show="talksko.length > 0"> - Talks refusés</h4>
+        <p ng-repeat="talk in talksko">- <a ng-href="/#/talks/see/{{talk.id}}" title="{{talk.description}}" >{{talk.title}}</a></p>
+    </div>
+
 </div>

@@ -1,17 +1,9 @@
 package controllers.talks;
 
-import static play.libs.Json.toJson;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import controllers.Secured;
 import models.*;
 import models.utils.TransformValidationErrors;
 import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.node.ObjectNode;
 import play.Logger;
 import play.data.Form;
 import play.i18n.Messages;
@@ -20,6 +12,8 @@ import play.mvc.Result;
 import play.mvc.Security;
 
 import java.util.*;
+
+import static play.libs.Json.toJson;
 
 
 @Security.Authenticated(Secured.class)
@@ -46,9 +40,10 @@ public class TalkRestController extends Controller {
         return ok(toJson(talks));
     }
 
-    public static Result getTalksAccepted(Long userId) {
+    public static Result getTalksByStatus(Long userId,String status) {
+        StatusTalk statusTalk = StatusTalk.fromCode(status);
         User user = User.find.byId(userId);
-        List<Talk> talks = Talk.findBySpeakerAndStatus(user, StatusTalk.ACCEPTE);
+        List<Talk> talks = Talk.findBySpeakerAndStatus(user, statusTalk);
         return ok(toJson(talks));
     }
 
