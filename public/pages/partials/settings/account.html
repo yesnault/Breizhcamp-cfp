@@ -13,9 +13,12 @@
                 <a href="/#/settings/password">Mot de passe</a>
                 <br/>
                 <a href="/#/settings/email">Adresse mail</a>
+                <br/>
+                <a href="/#/settings/mac">Adresse mac</a>
             </div>
             <div class="span10">
                 <div class="well">
+                    <a ng-href="/#/profil/{{user.id}}" >aperçu</a>
                     <form ng-submit="saveSettings()">
                         <fieldset>
                             <legend>Description/Bio</legend>

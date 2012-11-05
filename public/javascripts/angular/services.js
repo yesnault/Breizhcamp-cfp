@@ -86,7 +86,7 @@ Services.factory('UserService', ['$http', '$log', '$location', '$cookieStore', f
 		}
 		// instanciation du service
 		return new UserService(http, logger);
-	}]);
+}]);
 
 Services.factory('AccountService', function($resource) {
     function AccountService($resource) {
@@ -98,9 +98,19 @@ Services.factory('AccountService', function($resource) {
     return new AccountService($resource);
 });
 
+Services.factory('ProfilService', function($resource) {
+    function ProfilService($resource) {
+        this.getTalks = function (userId) {
+            return $resource('/user/:userId/talks').query({userId:userId});
+        }
+    }
+
+    return new ProfilService($resource);
+});
+
 Services.factory('TalkService', function($resource) {
         return $resource('/talk/:id', {});
-    });
+});
 
 Services.factory('AllTalkService', function($resource) {
     return $resource('/talk/all', {});
@@ -123,7 +133,7 @@ Services.factory('VoteService', function($resource, $http, $log) {
 
 Services.factory('ManageUsersService', function($resource) {
         return $resource('/admin/users/get', {});
-    });
+});
 
 
 

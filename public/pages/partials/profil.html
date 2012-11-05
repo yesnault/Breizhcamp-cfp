@@ -1,0 +1,39 @@
+<div class="row">
+
+
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span2 breadcrumb">
+                <img ng-src="{{user.avatar}}?s=100"><br/>
+            </div>
+            <div class="span10">
+                <div class="well">
+                    <h2>{{user.fullname}}</h2>
+                    <p ng-show="user.admin && talks.length==0">(Organisateur)</p>
+                    <p ng-show="user.admin && talks.length!=0 ">(Speaker/Organisateur)</p>
+                    <p ng-show="!user.admin && talks.length!=0 ">(Speaker)</p><br />
+
+                    {{user.description}}
+
+                    <br /><br/>
+                    <h3>Liens</h3>
+                    <p ng-show="user.liens.length == 0">
+                        - aucun lien
+                    </p>
+                    <p ng-repeat="lien in user.liens">- <a ng-href="{{lien.url}}" target="_blank">{{lien.label}}</a></p>
+
+                    <h3>Talks</h3>
+                    <p ng-show="talks.length == 0">
+                        - aucun talk proposé
+                    </p>
+                    <p ng-show="talks.length == 1">
+                        - 1 talk proposé
+                    </p>
+                    <p ng-show="talks.length > 1">
+                        - {{talks.length}} talks proposés
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -3,7 +3,7 @@
     <div class="span8">
         <div class="well">
             <h3>{{talk.title}}</h3>
-            Soumis par {{talk.speaker.fullname}}<br/>
+            Soumis par <a ng-href="/#/profil/{{talk.speaker.id}}" >{{talk.speaker.fullname}}</a><br/>
             <br/>
             <p>
                 {{talk.description}}
@@ -33,6 +33,12 @@
                 <span class="label label-warning" ng-switch-when="ATTENTE">Liste d'attente</span>
                 <span class="label label-success" ng-switch-when="ACCEPTE">Accepté</span>
             </div>
+        </div>
+
+        <div class="well">
+            <h4>Tags</h4>
+            <p>{{talk.tags}}</p>
+            <br/>
         </div>
 
         <div class="well">

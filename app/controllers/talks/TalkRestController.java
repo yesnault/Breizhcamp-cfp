@@ -7,18 +7,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ch.qos.logback.classic.spi.LoggerRemoteView;
+import controllers.Secured;
 import models.*;
 import models.utils.TransformValidationErrors;
 import org.codehaus.jackson.JsonNode;
 import play.Logger;
 import play.data.Form;
-import play.data.validation.ValidationError;
 import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
-import controllers.Secured;
+
+import java.util.*;
+
 
 @Security.Authenticated(Secured.class)
 public class TalkRestController extends Controller {
@@ -33,6 +34,12 @@ public class TalkRestController extends Controller {
 		List<Talk> talks = Talk.findBySpeaker(user);	
 		return ok(toJson(talks));
 	}
+
+    public static Result getTalks(Long userId) {
+        User user = User.find.byId(userId);
+        List<Talk> talks = Talk.findBySpeaker(user);
+        return ok(toJson(talks));
+    }
 
     public static Result all() {
         List<Talk> talks = Talk.find.all();
@@ -76,8 +83,49 @@ public class TalkRestController extends Controller {
 		// HTTP 204 en cas de succès (NO CONTENT)
         return noContent();
 	}
-	
-	
+
+
+    public static Result addTag(Long idTalk, String tags) {
+        User user = User.findByEmail(request().username());
+        Talk dbTalk = Talk.find.byId(idTalk);
+
+        if (!user.admin && !user.id.equals(dbTalk.speaker.id)) {
+            return unauthorized(toJson(TransformValidationErrors.transform("Action non autorisée")));
+        }
+
+        if (dbTalk != null) {
+            Logger.debug("addTags: = " + tags + " init tags " + dbTalk.getTagsName());
+            List<String> tagsList = Arrays.asList(tags.split(","));
+
+            // suppression qui ne sont plus présent dans la nouvelle liste
+            List<Tag> tagtmp = new ArrayList<Tag>(dbTalk.getTags());
+            for (Tag tag : tagtmp) {
+                if (!tagsList.contains(tag.nom)) {
+                    dbTalk.getTags().remove(tag);
+                }
+            }
+
+            // ajout des tags ajoutés dans la liste
+            for (String tag : tagsList) {
+                if (!dbTalk.getTagsName().contains(tag)) {
+                    Tag dbTag = Tag.findByTagName(tag.toUpperCase());
+                    if (dbTag == null) {
+                        dbTag = new Tag();
+                        dbTag.nom = tag.toUpperCase();
+                        dbTag.save();
+                    }
+                    Logger.debug("tags: = " + dbTag.id);
+                    dbTalk.getTags().add(dbTag);
+                }
+            }
+            dbTalk.saveManyToManyAssociations("tags");
+            dbTalk.update();
+            Logger.debug("fin addTags: = " + dbTalk.getTagsName() + " size : " + dbTalk.getTags().size());
+            return ok();
+        } else {
+            return notFound();
+        }
+    }
 	
 	public static Result delete(Long idTalk) {
         if (VoteStatus.getVoteStatus() != VoteStatusEnum.NOT_BEGIN) {
@@ -88,6 +136,12 @@ public class TalkRestController extends Controller {
         for (Comment comment : talk.getComments()) {
             comment.delete();
         }
+
+        List<Tag> tagtmp = new ArrayList<Tag>(talk.getTags());
+        for (Tag tag : tagtmp) {
+           talk.getTags().remove(tag);
+        }
+        talk.saveManyToManyAssociations("tags");
 		talk.delete();
 		// HTTP 204 en cas de succès (NO CONTENT)
         return noContent();

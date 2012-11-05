@@ -115,7 +115,7 @@ function NewTalkController($scope, $log, $location, TalkService) {
 // Pour que l'injection de dépendances fonctionne en cas de 'minifying'
 NewTalkController.$inject = ['$scope', '$log', '$location', 'TalkService'];
 
-function EditTalkController($scope, $log, $location, $routeParams, TalkService) {
+function EditTalkController($scope, $log, $location, $routeParams, TalkService, http) {
 
     $scope.checkloc(false);
 
@@ -136,11 +136,30 @@ function EditTalkController($scope, $log, $location, $routeParams, TalkService) 
             $scope.errors = err.data;
 		});
 		
-	}
+	};
+
+    $scope.addTag = function() {
+        $log.info("Ajout de tags " + $scope.tags);
+
+        var data = {'tags' : $scope.talk.tags,'idTalk' : $scope.talk.id};
+
+        http({
+            method : 'POST',
+            url : '/talk/' + $scope.talk.id + '/tags/'+$scope.talk.tags,
+            data : data
+        }).success(function(data, status, headers, config) {
+                $log.info(status);
+                $scope.errors = undefined;
+                $scope.talk = TalkService.get({id:$routeParams.talkId});
+            }).error(function(data, status, headers, config) {
+                $log.info(status);
+                $scope.errors = data;
+            });
+    }
 	
 }
 // Pour que l'injection de dépendances fonctionne en cas de 'minifying'
-EditTalkController.$inject = ['$scope', '$log', '$location', '$routeParams', 'TalkService'];
+EditTalkController.$inject = ['$scope', '$log', '$location', '$routeParams', 'TalkService', '$http'];
 
 
 function ManageTalkController($scope, $log, $location, TalkService) {
@@ -263,7 +282,7 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http) {
     };
 
     $scope.postStatus = function() {
-        $log.info("portStatus");
+        $log.info("postStatus");
 
         var data = {'status' : $scope.talk.statusTalk};
 
@@ -282,6 +301,21 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http) {
     }
 }
 SeeTalksController.$inject = ['$scope', '$log', '$routeParams', 'TalkService', '$http'];
+
+function ProfilController($scope, $log, $routeParams, AccountService, ProfilService, http) {
+
+    $scope.checkloc(false);
+
+    var idUSer = $routeParams.userId;
+    $scope.user = AccountService.getUser(idUSer);
+
+    $scope.talks = ProfilService.getTalks(idUSer);
+
+
+}
+ProfilController.$inject = ['$scope', '$log','$routeParams', 'AccountService', 'ProfilService', '$http'];
+
+
 
 function SettingsAccountController($scope, $log, AccountService, UserService, http) {
 
@@ -411,6 +445,31 @@ function EmailAccountController($scope, $log, UserService, AccountService, $http
     }
 }
 EmailAccountController.$inject = ['$scope', '$log', 'UserService', 'AccountService', '$http'];
+
+function MacAccountController($scope, $log, UserService, AccountService, $http) {
+
+    $scope.checkloc(false);
+
+    var idUser = UserService.getUserData().id;
+    $scope.user = AccountService.getUser(idUser);
+
+    $scope.changeMac = function() {
+        $http( {
+            method : 'POST',
+            url : '/settings/mac',
+            data: $scope.user
+        }).success(function(data, status, headers, config) {
+                $('#messageSuccess').text('Votre adresse mac a été enregistrée.');
+                $('#messageSuccess').removeClass('hide');
+                $scope.errors = undefined;
+            }).error(function(data, status, headers, config) {
+                $('#messageSuccess').addClass('hide');
+                $scope.errors = data;
+                $log.info(status);
+            });
+    }
+}
+MacAccountController.$inject = ['$scope', '$log', 'UserService', 'AccountService', '$http'];
 
 function ResetPasswordController($scope, $log, $http) {
 

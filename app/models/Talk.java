@@ -1,17 +1,15 @@
 package models;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-
+import com.google.common.base.Joiner;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("serial")
 @Entity
@@ -47,7 +45,24 @@ public class Talk extends Model {
 
     public StatusTalk statusTalk;
 
-	public static Finder<Long, Talk> find = new Finder<Long, Talk>(Long.class, Talk.class);
+    @ManyToMany(mappedBy = "talks")
+    @JsonIgnore
+    public List<Tag> tags = new ArrayList<Tag>();
+
+    public List<Tag> getTags() {
+        if (tags == null) {
+            tags = new ArrayList<Tag>();
+        }
+        return tags;
+    }
+
+    @JsonProperty(value = "tags")
+    public String getTagsName() {
+        return Joiner.on(",").join(tags);
+    }
+
+
+    public static Finder<Long, Talk> find = new Finder<Long, Talk>(Long.class, Talk.class);
 	
 	
 	public static Talk findByTitle(String title) {
