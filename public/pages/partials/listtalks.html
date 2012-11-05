@@ -1,12 +1,13 @@
 <div class="row">
 
 
-    <div class="span8">
+    <div class="span12">
         <table class="table table-bordered table-striped">
             <tbody><tr>
-                <th class="span3">Speaker</th>
-                <th class="span7">Titre</th>
+                <th class="span2">Speaker</th>
+                <th class="span6">Titre</th>
                 <th class="span2">Statut</th>
+                <th class="span2">Note</th>
             </tr>
 
             <tr ng-repeat="talk in talks">
@@ -17,6 +18,7 @@
                     <span class="label label-warning" ng-switch-when="ATTENTE">Liste d'attente</span>
                     <span class="label label-success" ng-switch-when="ACCEPTE">Accepté</span>
                 </div></td>
+                <td>{{talk.vote.note}}</td>
             </tr>
 
             </tbody></table>

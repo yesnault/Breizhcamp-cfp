@@ -33,6 +33,26 @@
                 <span class="label label-warning" ng-switch-when="ATTENTE">Liste d'attente</span>
                 <span class="label label-success" ng-switch-when="ACCEPTE">Accepté</span>
             </div>
+
+            <div class="well" ng-show="userService.isAdmin() && voteStatus.status == 'OPEN'">
+                <form ng-submit="postVote()" class="form-inline">
+                    <div class="control-group {{{true:'error', false:''}[errors.vote != undefined]}}">
+                        <label for="note">Note du talk</label>
+                        <div class="controls">
+                            <select id="note" name="status" ng-model="talk.vote.note">
+                                <option value="null"></option>
+                                <option value="1">1 - Null</option>
+                                <option value="2">2 - Mouais</option>
+                                <option value="3">3 - Pourquoi pas</option>
+                                <option value="4">4 - Vraiment bien</option>
+                                <option value="5">5 - Exceptionnel</option>
+                            </select>
+                            <p class="help-inline" ng-repeat="error in errors.status">{{error}}</p>
+                        </div>
+                    </div>
+                    <input type="submit" class="btn btn-primary" value="Valider">
+                </form>
+            </div>
         </div>
 
         <div class="well">

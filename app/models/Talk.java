@@ -72,4 +72,6 @@ public class Talk extends Model {
 	public static List<Talk> findBySpeaker(User speaker) {
 		return find.where().eq("speaker", speaker).findList();
 	}
+
+    public transient Vote vote;
 }

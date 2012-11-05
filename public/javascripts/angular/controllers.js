@@ -256,11 +256,13 @@ function VoteController($scope, $log, VoteService, $http) {
 
 VoteController.$inject = ['$scope', '$log', 'VoteService', '$http'];
 
-function SeeTalksController($scope, $log, $routeParams, TalkService, http) {
+function SeeTalksController($scope, $log, $routeParams, TalkService, http, VoteService) {
 
     $scope.checkloc(false);
 
     $scope.talk = TalkService.get({id:$routeParams.talkId});
+
+    $scope.voteStatus = VoteService.getVote();
 
     $scope.postComment = function() {
         $log.info("Sauvegarde du commentaire " + $scope.comment);
@@ -298,9 +300,26 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http) {
                 $log.info(status);
                 $scope.errors = data;
             });
+    };
+
+    $scope.postVote = function() {
+        $log.info("postVote");
+        $log.info($scope.talk);
+
+        http({
+            method : 'POST',
+            url : '/talks/' + $scope.talk.id + '/vote/' + $scope.talk.vote.note
+        }).success(function(data, status, headers, config) {
+                $log.info(status);
+                $scope.errors = undefined;
+                $scope.talk = TalkService.get({id:$routeParams.talkId});
+            }).error(function(data, status, headers, config) {
+                $log.info(status);
+                $scope.errors = data;
+            });
     }
 }
-SeeTalksController.$inject = ['$scope', '$log', '$routeParams', 'TalkService', '$http'];
+SeeTalksController.$inject = ['$scope', '$log', '$routeParams', 'TalkService', '$http', 'VoteService'];
 
 function ProfilController($scope, $log, $routeParams, AccountService, ProfilService, http) {
 

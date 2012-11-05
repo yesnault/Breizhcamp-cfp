@@ -25,7 +25,11 @@ import java.util.*;
 public class TalkRestController extends Controller {
 	
 	public static Result getById(Long idTalk) {
-		Talk talk = Talk.find.byId(idTalk); 
+		Talk talk = Talk.find.byId(idTalk);
+        User user = User.findByEmail(request().username());
+        if (user.admin) {
+            talk.vote = Vote.findVoteByUserAndTalk(user, talk);
+        }
 		return ok(toJson(talk));
 	}
 	
@@ -42,7 +46,14 @@ public class TalkRestController extends Controller {
     }
 
     public static Result all() {
+        User user = User.findByEmail(request().username());
+        if (!user.admin) {
+            return unauthorized();
+        }
         List<Talk> talks = Talk.find.all();
+        for (Talk talk : talks) {
+            talk.vote = Vote.findVoteByUserAndTalk(user, talk);
+        }
         return ok(toJson(talks));
     }
 	
@@ -194,6 +205,34 @@ public class TalkRestController extends Controller {
             }
         }
 
+        return ok();
+    }
+
+
+
+    public static Result saveVote(Long idTalk, Integer note) {
+        User user = User.findByEmail(request().username());
+        Talk talk = Talk.find.byId(idTalk);
+        if (!user.admin) {
+            return unauthorized();
+        }
+
+        VoteStatusEnum voteStatus = VoteStatus.getVoteStatus();
+        if (voteStatus != VoteStatusEnum.OPEN) {
+            return unauthorized();
+        }
+        if (note == null || note < 1 || note > 5) {
+            return badRequest();
+        }
+
+        Vote vote = Vote.findVoteByUserAndTalk(user, talk);
+        if (vote == null) {
+            vote = new Vote();
+            vote.setUser(user);
+            vote.setTalk(talk);
+        }
+        vote.setNote(note);
+        vote.save();
         return ok();
     }
 
