@@ -102,6 +102,10 @@ Services.factory('ProfilService', function($resource) {
     function ProfilService($resource) {
         this.getTalks = function (userId) {
             return $resource('/user/:userId/talks').query({userId:userId});
+        };
+
+        this.getTalksAccepted = function (userId) {
+                return $resource('/user/:userId/talksAccepted').query({userId:userId});
         }
     }
 

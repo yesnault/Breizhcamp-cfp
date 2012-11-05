@@ -1,14 +1,13 @@
 package models;
 
+import com.avaje.ebean.annotation.EnumValue;
 import models.utils.Mail;
 import play.i18n.Messages;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public enum StatusTalk {
 
-    REJETE {
+    @EnumValue("R")
+    REJETE("R") {
         @Override
         String getSubject(String talkTitle) {
             return Messages.get("talks.status.mail.subject.rejected", talkTitle);
@@ -19,7 +18,8 @@ public enum StatusTalk {
             return Messages.get("talks.statuc.mail.message.rejected", talkTitle);
         }
     },
-    ATTENTE {
+    @EnumValue("W")
+    ATTENTE("W") {
         @Override
         String getSubject(String talkTitle) {
             return Messages.get("talks.status.mail.subject.waiting", talkTitle);
@@ -30,7 +30,8 @@ public enum StatusTalk {
             return Messages.get("talks.statuc.mail.message.waiting", talkTitle);
         }
     },
-    ACCEPTE {
+    @EnumValue("A")
+    ACCEPTE("A") {
         @Override
         String getSubject(String talkTitle) {
             return Messages.get("talks.status.mail.subject.accepted", talkTitle);
@@ -51,7 +52,18 @@ public enum StatusTalk {
         return null;
     }
 
+    private StatusTalk(String interne) {
+        this.interne = interne;
+    }
+
+    private String interne;
+
+    public String getInterne(){
+          return interne;
+    }
+
     abstract String getSubject(String talkTitle);
+
     abstract String getMessage(String talkTitle);
 
     public void sendMail(Talk talk, String mail) {

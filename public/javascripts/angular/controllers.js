@@ -141,11 +141,11 @@ function EditTalkController($scope, $log, $location, $routeParams, TalkService, 
     $scope.addTag = function() {
         $log.info("Ajout de tags " + $scope.tags);
 
-        var data = {'tags' : $scope.talk.tags,'idTalk' : $scope.talk.id};
+        var data = {'tags' : $scope.talk.tagsname,'idTalk' : $scope.talk.id};
 
         http({
             method : 'POST',
-            url : '/talk/' + $scope.talk.id + '/tags/'+$scope.talk.tags,
+            url : '/talk/' + $scope.talk.id + '/tags/'+$scope.talk.tagsname,
             data : data
         }).success(function(data, status, headers, config) {
                 $log.info(status);
@@ -335,6 +335,7 @@ function ProfilController($scope, $log, $routeParams, AccountService, ProfilServ
     $scope.user = AccountService.getUser(idUSer);
 
     $scope.talks = ProfilService.getTalks(idUSer);
+    $scope.talksok = ProfilService.getTalksAccepted(idUSer);
 
 
 }

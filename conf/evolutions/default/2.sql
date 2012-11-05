@@ -1,8 +1,7 @@
 
 # --- !Ups
-alter table talk add status_talk integer;
-alter table talk add constraint ck_talk_status_talk check (status_talk in (0,1,2));
-
+alter table talk add status_talk varchar(1);
+alter table talk add constraint ck_talk_status_talk check (status_talk in ('A','W','R'));
 
 create table tag (
 id                        bigint auto_increment not null,

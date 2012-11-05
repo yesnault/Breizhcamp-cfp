@@ -46,6 +46,7 @@ GET	/talk/:idTalk/tags/:tags 	    controllers.talks.TalkRestController.addTag(id
 POST	/talk/:idTalk/tags/:tags 	controllers.talks.TalkRestController.addTag(idTalk:Long,tags:String)
 
 GET		/user/:userId/talks			controllers.talks.TalkRestController.getTalks(userId:Long)
+GET		/user/:userId/talksAccepted	controllers.talks.TalkRestController.getTalksAccepted(userId:Long)
 
 GET     /admin/users/get            controllers.UserRestController.get()
 
