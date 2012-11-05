@@ -74,6 +74,6 @@ public class Talk extends Model {
 	}
 
     public static List<Talk> findBySpeakerAndStatus(User speaker,StatusTalk status) {
-    		return find.where().eq("statusTalk", status.name()).eq("speaker", speaker).findList();
+    		return find.where().eq("statusTalk", status.getInterne()).eq("speaker", speaker).findList();
     	}
 }
