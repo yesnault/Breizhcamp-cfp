@@ -21,8 +21,6 @@ create table talk (
   title                     varchar(50),
   description               varchar(2000),
   speaker_id                bigint,
-  status_talk               integer,
-  constraint ck_talk_status_talk check (status_talk in (0,1,2)),
   constraint uq_talk_title unique (title),
   constraint pk_talk primary key (id))
 ;
