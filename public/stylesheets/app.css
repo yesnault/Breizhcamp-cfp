@@ -29,3 +29,27 @@
   padding: 0;
 }
 
+.privateComment {
+    position: relative;
+}
+
+.well .privateComment {
+    padding-top: 40px;
+}
+
+.privateComment::after {
+    content: "Commentaire Privé";
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    padding: 3px 7px;
+    font-size: 12px;
+    font-weight: bold;
+    background-color: white;
+    border: 1px solid #DDD;
+    color: #9DA0A4;
+    -webkit-border-radius: 4px 0 4px 0;
+    -moz-border-radius: 4px 0 4px 0;
+    border-radius: 4px 0 4px 0;
+}
+

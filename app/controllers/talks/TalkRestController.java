@@ -25,18 +25,25 @@ public class TalkRestController extends Controller {
         if (user.admin) {
             talk.vote = Vote.findVoteByUserAndTalk(user, talk);
         }
+        talk.fiteredComments(user);
 		return ok(toJson(talk));
 	}
 	
 	public static Result get() {
 		User user = User.findByEmail(request().username());
-		List<Talk> talks = Talk.findBySpeaker(user);	
+		List<Talk> talks = Talk.findBySpeaker(user);
+        for (Talk talk : talks) {
+            talk.fiteredComments(user);
+        }
 		return ok(toJson(talks));
 	}
 
     public static Result getTalks(Long userId) {
         User user = User.find.byId(userId);
         List<Talk> talks = Talk.findBySpeaker(user);
+        for (Talk talk : talks) {
+            talk.fiteredComments(user);
+        }
         return ok(toJson(talks));
     }
 
@@ -44,6 +51,9 @@ public class TalkRestController extends Controller {
         StatusTalk statusTalk = StatusTalk.fromCode(status);
         User user = User.find.byId(userId);
         List<Talk> talks = Talk.findBySpeakerAndStatus(user, statusTalk);
+        for (Talk talk : talks) {
+            talk.fiteredComments(user);
+        }
         return ok(toJson(talks));
     }
 
@@ -58,6 +68,7 @@ public class TalkRestController extends Controller {
             if (VoteStatus.getVoteStatus() == VoteStatusEnum.CLOSED) {
                 talk.moyenne = Vote.calculMoyenne(talk);
             }
+            talk.fiteredComments(user);
         }
         return ok(toJson(talks));
     }
@@ -176,8 +187,12 @@ public class TalkRestController extends Controller {
 
         JsonNode node = request().body().asJson();
         String commentForm = null;
+        boolean privateComment = false;
         if (node != null && node.get("comment") != null) {
             commentForm = node.get("comment").asText();
+            if (user.admin && node.get("private") != null) {
+                privateComment = node.get("private").asBoolean();
+            }
         } else {
             Map<String, List<String>> errors = new HashMap<String, List<String>>();
             errors.put("comment", Collections.singletonList(Messages.get("error.required")));
@@ -192,6 +207,7 @@ public class TalkRestController extends Controller {
             Comment comment = new Comment();
             comment.author = user;
             comment.comment = commentForm;
+            comment.privateComment = privateComment;
             comment.talk = talk;
             comment.save();
             comment.sendMail();

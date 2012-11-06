@@ -63,7 +63,7 @@
 
         <div class="well">
             <h3>Questions/Réponses</h3>
-            <div class="well" ng-repeat="comment in talk.comments">
+            <div class="well {{{true:'privateComment',false:''}[comment.privateComment == true]}}" ng-repeat="comment in talk.comments">
                 <img ng-src="{{comment.author.avatar}}?s=40"> {{comment.author.fullname}}<br/>
                 {{comment.comment}}
             </div>
@@ -73,8 +73,11 @@
 
                     <div class="control-group {{{true:'error', false:''}[errors.comment != undefined]}}">
                         <div class="controls">
-                            <input type="text" name="comment" ng-model="comment" placeholder="Nouveau commentaire">
+                            <input type="text" name="comment" ng-model="comment" placeholder="Nouveau commentaire"/>
                             <p class="help-inline" ng-repeat="error in errors.comment">{{error}}</p>
+                            <label class="checkbox" ng-show="userService.isAdmin()">
+                                <input type="checkbox" id="private" name="private" ng-model="private" ng-show="userService.isAdmin()">Commentaire privé</input>
+                            </label>
                         </div>
                     </div>
                     <input type="submit" class="btn btn-primary" value="Valider">

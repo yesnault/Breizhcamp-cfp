@@ -1,6 +1,7 @@
 package models;
 
 import com.google.common.base.Joiner;
+import org.apache.commons.lang.BooleanUtils;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import play.data.format.Formats;
@@ -34,6 +35,7 @@ public class Talk extends Model {
 	public User speaker;
 	
 	@OneToMany(mappedBy ="talk")
+    @JsonIgnore
 	public List<Comment> comments;
 	
 	public List<Comment> getComments() {
@@ -61,6 +63,26 @@ public class Talk extends Model {
         return Joiner.on(",").join(tags);
     }
 
+    @JsonIgnore
+    public transient List<Comment> commentsFiltered;
+
+    public void fiteredComments(User user) {
+        if (user.admin) {
+            commentsFiltered = comments;
+        } else {
+            commentsFiltered = new ArrayList<Comment>();
+            for (Comment comment : comments) {
+                if (BooleanUtils.isNotTrue(comment.privateComment)) {
+                    commentsFiltered.add(comment);
+                }
+            }
+        }
+    }
+
+    @JsonProperty("comments")
+    public List<Comment> getCommentsFiltered() {
+        return commentsFiltered;
+    }
 
     public static Finder<Long, Talk> find = new Finder<Long, Talk>(Long.class, Talk.class);
 	

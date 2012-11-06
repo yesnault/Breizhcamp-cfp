@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 
 import models.utils.Mail;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
@@ -37,22 +38,27 @@ public class Comment extends Model {
     @Constraints.MaxLength(140)
     @Column(length = 140)
     public String comment;
+
+    public Boolean privateComment;
     
 
     public static Model.Finder<Long, Comment> find = new Model.Finder<Long, Comment>(Long.class, Comment.class);
     
     public void sendMail() {
     	List<String> emails = new ArrayList<String>();
-    	addMailIfNotAuthorAndWantReceive(talk.speaker, emails);
+        if (BooleanUtils.isNotTrue(privateComment)) {
+    	    addMailIfNotAuthorAndWantReceive(talk.speaker, emails);
+        }
     	for (User admin : User.findAllAdmin()) {
     		addMailIfNotAuthorAndWantReceive(admin, emails);
     	}
-    	
-    	String subjet = Messages.get("talks.comment.new.mail.subject", talk.title);
-    	String message = Messages.get("talks.comment.new.mail.message", talk.title, author.fullname, comment);
-    	
-    	Mail.sendMail(new Mail.Envelop(subjet, message, emails));
-    	
+
+        if (!emails.isEmpty()) {
+            String subjet = Messages.get("talks.comment.new.mail.subject", talk.title);
+            String message = Messages.get("talks.comment.new.mail.message", talk.title, author.fullname, comment);
+
+            Mail.sendMail(new Mail.Envelop(subjet, message, emails));
+        }
     }
     
     private void addMailIfNotAuthorAndWantReceive(User contact, List<String> emails) {

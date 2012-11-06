@@ -281,7 +281,7 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http, VoteS
     $scope.postComment = function () {
         $log.info("Sauvegarde du commentaire " + $scope.comment);
 
-        var data = {'comment':$scope.comment};
+        var data = {'comment':$scope.comment, 'private':$scope.private};
 
         http({
             method:'POST',
