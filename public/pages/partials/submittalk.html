@@ -17,11 +17,13 @@
 						</div>
 					</div>
 					<div class="control-group {{{true:'error', false:''}[errors.description != undefined]}}">
-						<label class="control-label" for="description"></label>
+						<label class="control-label" for="wmd-input"></label>
 						<div class="controls">
-							<textarea id="description" name="description" placeholder="Description" class="input-xxlarge" rows="10" ng-model="talk.description"></textarea>
+                            <div id="wmd-button-bar"></div>
+							<textarea id="wmd-input" name="description" placeholder="Description" class="input-xxlarge" rows="10" ng-model="talk.description"></textarea>
 							<p class="help-inline">Longueur maximum: 2&nbsp;000, Obligatoire</p>
                             <p class="help-inline" ng-repeat="error in errors.description">{{error}}</p>
+                            <div id="previewMarkdown" class="well" markdownpreview="talk.description"></div>
 						</div>
 					</div>
                     <div class="control-group {{{true:'error', false:''}[errors.tags != undefined]}}">

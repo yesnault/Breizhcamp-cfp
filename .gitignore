@@ -24,6 +24,7 @@
 db
 eclipse
 lib
+!public/javascripts/lib
 log
 logs
 modules

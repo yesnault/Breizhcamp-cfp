@@ -5,9 +5,7 @@
             <h3>{{talk.title}}</h3>
             Soumis par <a ng-href="/#/profil/{{talk.speaker.id}}" >{{talk.speaker.fullname}}</a><br/>
             <br/>
-            <p>
-                {{talk.description}}
-            </p>
+            <div class="well" markdownpreview="talk.description"></div>
             <p></p>
             <div class="well" ng-show="userService.isAdmin()">
                 <form ng-submit="postStatus()" method="POST" class="form-inline">

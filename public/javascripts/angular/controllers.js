@@ -107,6 +107,10 @@ function NewTalkController($scope, $log, $location, TalkService) {
 
     $scope.isNew = true;
 
+    $scope.converter = new Markdown.Converter();
+    var editor = new Markdown.Editor($scope.converter);
+    editor.run();
+
     $scope.saveTalk = function () {
         $log.info("Soummission du nouveau talk");
 
@@ -123,14 +127,19 @@ function NewTalkController($scope, $log, $location, TalkService) {
 // Pour que l'injection de dépendances fonctionne en cas de 'minifying'
 NewTalkController.$inject = ['$scope', '$log', '$location', 'TalkService'];
 
-function EditTalkController($scope, $log, $location, $routeParams, TalkService, http) {
+function EditTalkController($scope, $log, $location, $routeParams, TalkService, http, $resource) {
 
     $scope.checkloc(false);
 
     $scope.talk = TalkService.get({id:$routeParams.talkId});
+
     $scope.$location = $location;
 
     $scope.isNew = false;
+
+    $scope.converter = new Markdown.Converter();
+    var editor = new Markdown.Editor($scope.converter);
+    editor.run();
 
     $scope.saveTalk = function () {
         $log.info("Sauvegarde du talk : " + $routeParams.talkId);
@@ -167,7 +176,7 @@ function EditTalkController($scope, $log, $location, $routeParams, TalkService, 
 
 }
 // Pour que l'injection de dépendances fonctionne en cas de 'minifying'
-EditTalkController.$inject = ['$scope', '$log', '$location', '$routeParams', 'TalkService', '$http'];
+EditTalkController.$inject = ['$scope', '$log', '$location', '$routeParams', 'TalkService', '$http', '$resource'];
 
 
 function ManageTalkController($scope, $log, $location, TalkService) {
@@ -277,6 +286,8 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http, VoteS
     $scope.talk = TalkService.get({id:$routeParams.talkId});
 
     $scope.voteStatus = VoteService.getVote();
+
+    $scope.converter = new Markdown.Converter();
 
     $scope.postComment = function () {
         $log.info("Sauvegarde du commentaire " + $scope.comment);

@@ -2,10 +2,26 @@
 
 /* Directives */
 
+angular.module('breizhCampCFP.directives', [])
+    .directive('markdownpreview', function($log) {
+        // return the directive link function. (compile function not needed)
+        return function(scope, element, attrs) {
+            var content; // contenu markdown
 
-//angular.module('breizhCampCFP.directives', []).
-//  directive('appVersion', ['version', function(version) {
-//    return function(scope, elm, attrs) {
-//      elm.text(version);
-//    };
-//  }]);
+            // used to update the UI
+            function updateContent() {
+                if (content !== undefined) {
+                    element.html(scope.converter.makeHtml(content));
+                } else {
+                    element.text('');
+                }
+            }
+
+            // watch the expression, and update the UI on change.
+            scope.$watch(attrs.markdownpreview, function(value) {
+                content = value;
+                updateContent();
+            });
+        }
+    });
+
