@@ -119,3 +119,8 @@ talks.status.mail.subject.waiting=Your talk {0} is in waiting list
 talks.statuc.mail.message.accepted=Hello,<br/><br/>Your talk <i>{0}</i> has been accepted for Breizhcamp.
 talks.statuc.mail.message.rejected=Hello,<br/><br/>Your talk <i>{0}</i> has been rejected for Breizhcamp.
 talks.statuc.mail.message.waiting=Hello,<br/><br/>Your talk <i>{0}</i> for Breizhcamp is in waiting list.
+
+
+error.creneau.already.exist=This slot already exists.
+
+

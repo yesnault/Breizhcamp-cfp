@@ -45,6 +45,11 @@ DELETE	/talk/:idTalk 				controllers.talks.TalkRestController.delete(idTalk:Long
 GET	/talk/:idTalk/tags/:tags 	    controllers.talks.TalkRestController.addTag(idTalk:Long,tags:String)
 POST	/talk/:idTalk/tags/:tags 	controllers.talks.TalkRestController.addTag(idTalk:Long,tags:String)
 
+GET		/creneau/:idCreneau			controllers.CreneauRestController.get(idCreneau:Long)
+GET		/creneau					controllers.CreneauRestController.all()
+POST	/creneau					controllers.CreneauRestController.save()
+DELETE	/creneau/:idCreneau 		controllers.CreneauRestController.delete(idCreneau:Long)
+
 GET		/user/:userId/talks			controllers.talks.TalkRestController.getTalks(userId:Long)
 GET		/user/:userId/talks/:status	controllers.talks.TalkRestController.getTalksByStatus(userId:Long,status:String)
 

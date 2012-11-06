@@ -144,3 +144,6 @@ talks.status.mail.subject.waiting=Votre talk {0} est en liste d'attente
 talks.statuc.mail.message.accepted=Bonjour,<br/><br/>Votre talk <i>{0}</i> a été accepté pour le Breizhcamp.
 talks.statuc.mail.message.rejected=Bonjour,<br/><br/>Votre talk <i>{0}</i> a été rejeté pour le Breizhcamp.
 talks.statuc.mail.message.waiting=Bonjour,<br/><br/>Votre talk <i>{0}</i> est en liste d'attente pour le Breizhcamp.
+
+error.creneau.already.exist=Ce créneau existe déjà.
+
