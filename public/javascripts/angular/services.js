@@ -128,6 +128,10 @@ Services.factory('AllTalkService', function($resource) {
     return $resource('/talk/all', {});
 });
 
+Services.factory('CreneauxService', function($resource) {
+    return $resource('/creneau/:id', {});
+});
+
 
 Services.factory('VoteService', function($resource, $http, $log) {
     function VoteService($resource, $http, $log) {

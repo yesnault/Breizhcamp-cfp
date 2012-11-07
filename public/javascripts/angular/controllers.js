@@ -630,6 +630,76 @@ function ConfirmEmailController($scope, $log, $http, $routeParams, UserService, 
 
 ConfirmEmailController.$inject = ['$scope', '$log', '$http', '$routeParams', 'UserService', 'AccountService'];
 
+function CreneauxController($scope, $log, CreneauxService) {
+    $scope.checkloc(true);
+
+    $scope.creneaux = CreneauxService.query();
+
+    $scope.deleteCreneau = function(creneauToDelete) {
+        var confirmation = confirm('Êtes vous sûr de vouloir supprimer le creneau ' + creneauToDelete.libelle + '?');
+        if (confirmation) {
+            CreneauxService.delete({id:creneauToDelete.id}, function (data) {
+                $scope.creneaux = CreneauxService.query();
+                $scope.errors = undefined;
+            }, function (err) {
+                $log.info("Delete du creneau ko");
+                $log.info(err);
+                $scope.errors = err.data;
+            });
+        }
+    }
+}
+
+CreneauxController.$inject = ['$scope', '$log', 'CreneauxService'];
+
+function NewCreneauController($scope, $log, CreneauxService, $location) {
+    $scope.checkloc(true);
+
+    $scope.isNew = true;
+
+    $scope.saveCreneau = function() {
+        $log.info("Creneau à sauvegarder");
+        $log.info($scope.creneau);
+
+        CreneauxService.save($scope.creneau, function (data) {
+            $log.info("Soummission du creneau ok");
+            $location.url('/admin/creneaux');
+        }, function (err) {
+            $log.info("Soummission du creneau ko");
+            $log.info(err.data);
+            $scope.errors = err.data;
+        });
+    }
+}
+
+NewCreneauController.$inject = ['$scope', '$log', 'CreneauxService', '$location'];
+
+function EditCreneauController($scope, $log, CreneauxService, $location, $routeParams) {
+    $scope.checkloc(true);
+
+    var idCreneau = $routeParams.creneauId;
+
+    $scope.creneau = CreneauxService.get({id:idCreneau});
+
+    $scope.isNew = false;
+
+    $scope.saveCreneau = function() {
+        $log.info("Creneau à sauvegarder");
+        $log.info($scope.creneau);
+
+        CreneauxService.save($scope.creneau, function (data) {
+            $log.info("Soummission du creneau ok");
+            $location.url('/admin/creneaux');
+        }, function (err) {
+            $log.info("Soummission du creneau ko");
+            $log.info(err.data);
+            $scope.errors = err.data;
+        });
+    }
+}
+
+EditCreneauController.$inject = ['$scope', '$log', 'CreneauxService', '$location', '$routeParams'];
+
 
 
 

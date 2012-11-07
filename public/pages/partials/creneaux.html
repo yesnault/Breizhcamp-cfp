@@ -1,0 +1,28 @@
+<div class="row">
+	<div class="span6">
+
+        <p>
+            <a href="#/admin/creneau/new"><button class="btn">Nouveau créneau</button></a>
+        </p>
+        <p>
+            <span class="badge badge-important" ng-repeat="error in errors['']">{{error}}</span>
+        </p>
+
+		<table class="table table-bordered table-striped">
+			<tbody>
+				<tr>
+					<th class="span3">Libelle</th>
+                    <th class="span3">Durée en minutes</th>
+					<th></th>
+					<th></th>
+				</tr>
+				<tr ng-repeat="creneau in creneaux">
+					<td>{{creneau.libelle}}</td>
+                    <td>{{creneau.dureeMinutes}}</td>
+					<td><a href="#/admin/creneau/edit/{{creneau.id}}" ><i class="icon-pencil"></i></a></td>
+					<td><a ng-click="deleteCreneau(creneau)"><i class="icon-remove"></i></a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
