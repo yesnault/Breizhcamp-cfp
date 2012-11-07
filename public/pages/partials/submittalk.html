@@ -27,11 +27,21 @@
 						</div>
 					</div>
                     <div class="control-group {{{true:'error', false:''}[errors.tags != undefined]}}">
-                        Tags : <br/>
+                        <label class="control-label" for="creneaux">Tags :</label>
                          <div class="controls">
                               <input type="text" id="tags" name="tags" ng-model="talk.tagsname"  placeholder="Tags séparés par une virgule" class="input-xxlarge" >
                                <p class="help-inline" ng-repeat="error in errors.tags">{{error}}</p>
                          </div>
+                    </div>
+                    <div class="control-group {{{true:'error', false:''}[errors.creneaux != undefined]}}">
+                        <label class="control-label" for="creneaux">Creneaux</label>
+                        <div class="controls">
+                            <select id="creneaux" name="creneaux" multiple="true" ng-model="talk.creneaux" ng-options="creneau.libelle + ' (' + creneau.dureeMinutes + 'min)' for creneau in creneaux"></select>
+                            <p class="help-inline" ng-repeat="error in errors.creneaux">{{error}}</p>
+                            <p class="help-inline" ng-repeat="creneau in talk.creneaux">
+                                <span class="label">{{creneau.libelle + ' (' + creneau.dureeMinutes + 'min)'}}</span>
+                            </p>
+                        </div>
                     </div>
                     <span class="badge badge-important" ng-repeat="error in errors['']">{{error}}</span>
 				</fieldset>

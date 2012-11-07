@@ -37,8 +37,6 @@ public class CreneauRestController extends Controller {
             return unauthorized();
         }
 
-        System.out.println(request().body().asText());
-
         Form<Creneau> creneauForm = form(Creneau.class).bindFromRequest();
 
         if (creneauForm.hasErrors()) {

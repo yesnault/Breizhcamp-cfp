@@ -85,12 +85,15 @@ public class TalkRestController extends Controller {
         Talk formTalk = talkForm.get();
 
         if (formTalk.id == null) {
+            System.out.println(formTalk.getCreneaux());
             // Nouveau talk
             formTalk.speaker = user;
             if (Talk.findByTitle(formTalk.title) != null) {
                 return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.talk.already.exist"))));
             }
             formTalk.save();
+            formTalk.saveManyToManyAssociations("creneaux");
+            formTalk.update();
             updateTags(talkForm.data().get("tagsname"), formTalk);
         } else {
             // Mise à jour d'un talk
@@ -102,6 +105,7 @@ public class TalkRestController extends Controller {
             dbTalk.title = formTalk.title;
             dbTalk.description = formTalk.description;
             dbTalk.save();
+            updateCreneaux(formTalk, dbTalk);
             updateTags(talkForm.data().get("tagsname"), dbTalk);
         }
 
@@ -110,6 +114,30 @@ public class TalkRestController extends Controller {
         return noContent();
 	}
 
+    private static void updateCreneaux(Talk formTalk, Talk dbTalk) {
+        Set<Long> creneauxInForm = new HashSet<Long>();
+        for (Creneau creneau : formTalk.getCreneaux()) {
+            creneauxInForm.add(creneau.getId());
+        }
+        List<Creneau> creneauxTmp = new ArrayList<Creneau>(dbTalk.getCreneaux());
+        Set<Long> creneauxInDb = new HashSet<Long>();
+        for (Creneau creneau : creneauxTmp) {
+            if (!creneauxInForm.contains(creneau.getId())) {
+                dbTalk.getCreneaux().remove(creneau);
+            } else {
+                creneauxInDb.add(creneau.getId());
+            }
+        }
+
+        // ajout des creneaux ajoutés dans la liste
+        for (Long idCreneau : creneauxInForm) {
+            if (!creneauxInDb.contains(idCreneau)) {
+                dbTalk.getCreneaux().add(Creneau.find.byId(idCreneau));
+            }
+        }
+        dbTalk.saveManyToManyAssociations("creneaux");
+        dbTalk.update();
+    }
 
 
     public static void updateTags(String tags, Talk dbTalk) {

@@ -84,6 +84,16 @@ public class Talk extends Model {
         return commentsFiltered;
     }
 
+    @ManyToMany( mappedBy = "talks" )
+    private List<Creneau> creneaux;
+
+    public List<Creneau> getCreneaux() {
+        if (creneaux == null) {
+            creneaux = new ArrayList<Creneau>();
+        }
+        return creneaux;
+    }
+
     public static Finder<Long, Talk> find = new Finder<Long, Talk>(Long.class, Talk.class);
 	
 	

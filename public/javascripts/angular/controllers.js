@@ -99,13 +99,15 @@ function LoginController($scope, $log, UserService, PasswordService, $http, $loc
 LoginController.$inject = ['$scope', '$log', 'UserService', 'PasswordService', '$http', '$location'];
 
 
-function NewTalkController($scope, $log, $location, TalkService) {
+function NewTalkController($scope, $log, $location, TalkService, CreneauxService) {
 
     $scope.checkloc(false);
 
     $scope.$location = $location;
 
     $scope.isNew = true;
+
+    $scope.creneaux = CreneauxService.query();
 
     $scope.converter = new Markdown.Converter();
     var editor = new Markdown.Editor($scope.converter);
@@ -125,9 +127,9 @@ function NewTalkController($scope, $log, $location, TalkService) {
     }
 }
 // Pour que l'injection de dépendances fonctionne en cas de 'minifying'
-NewTalkController.$inject = ['$scope', '$log', '$location', 'TalkService'];
+NewTalkController.$inject = ['$scope', '$log', '$location', 'TalkService', 'CreneauxService'];
 
-function EditTalkController($scope, $log, $location, $routeParams, TalkService, http, $resource) {
+function EditTalkController($scope, $log, $location, $routeParams, TalkService, http, CreneauxService) {
 
     $scope.checkloc(false);
 
@@ -136,6 +138,8 @@ function EditTalkController($scope, $log, $location, $routeParams, TalkService, 
     $scope.$location = $location;
 
     $scope.isNew = false;
+
+    $scope.creneaux = CreneauxService.query();
 
     $scope.converter = new Markdown.Converter();
     var editor = new Markdown.Editor($scope.converter);
@@ -176,7 +180,7 @@ function EditTalkController($scope, $log, $location, $routeParams, TalkService, 
 
 }
 // Pour que l'injection de dépendances fonctionne en cas de 'minifying'
-EditTalkController.$inject = ['$scope', '$log', '$location', '$routeParams', 'TalkService', '$http', '$resource'];
+EditTalkController.$inject = ['$scope', '$log', '$location', '$routeParams', 'TalkService', '$http', 'CreneauxService'];
 
 
 function ManageTalkController($scope, $log, $location, TalkService) {

@@ -1,5 +1,6 @@
 package models;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
@@ -7,6 +8,9 @@ import play.db.ebean.Model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Creneau extends Model {
@@ -22,6 +26,17 @@ public class Creneau extends Model {
 
     @Constraints.Required
     private Integer dureeMinutes;
+
+    @ManyToMany
+    @JsonIgnore
+    private List<Talk> talks;
+
+    public List<Talk> getTalks() {
+        if (talks == null) {
+            talks = new ArrayList<Talk>();
+        }
+        return talks;
+    }
 
     public Long getId() {
         return id;
