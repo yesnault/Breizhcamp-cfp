@@ -354,9 +354,10 @@ function ProfilController($scope, $log, $routeParams, AccountService, ProfilServ
 
     $scope.checkloc(false);
 
+    $scope.converter = new Markdown.Converter();
+
     var idUSer = $routeParams.userId;
     $scope.user = AccountService.getUser(idUSer);
-
     $scope.talks = ProfilService.getTalks(idUSer);
     $scope.talksok = ProfilService.getTalksAccepted(idUSer);
 

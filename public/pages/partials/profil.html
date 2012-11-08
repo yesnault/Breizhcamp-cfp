@@ -13,9 +13,7 @@
                     <p ng-show="user.admin && talks.length!=0 ">(Speaker/Organisateur)</p>
                     <p ng-show="!user.admin && talks.length!=0 ">(Speaker)</p><br />
 
-                    {{user.description}}
-
-                    <br /><br/>
+                    <div class="well" markdownpreview="user.description"></div>
                     <h3>Liens</h3>
                     <p ng-show="user.liens.length == 0">
                         - aucun lien
