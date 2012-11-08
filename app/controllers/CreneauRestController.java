@@ -74,6 +74,10 @@ public class CreneauRestController extends Controller {
 
 		Creneau creneau = Creneau.find.byId(idCreneau);
         if (creneau != null) {
+            for (Talk talk : new ArrayList<Talk>(creneau.getTalks())) {
+                creneau.getTalks().remove(talk);
+            }
+            creneau.saveManyToManyAssociations("talks");
             creneau.delete();
         }
         // HTTP 204 en cas de succès (NO CONTENT)
