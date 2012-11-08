@@ -1,6 +1,7 @@
 package models;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
@@ -37,6 +38,13 @@ public class Creneau extends Model {
         }
         return talks;
     }
+
+    // Give a hashKey unique for angular.
+    @JsonProperty("$$hashKey")
+    public String getHashKey() {
+        return "creneau_" + id;
+    }
+
 
     public Long getId() {
         return id;
