@@ -2,9 +2,13 @@
 
     <div class="span8">
         <div class="well">
-            <h3>{{talk.title}}</h3>
-            Soumis par <a ng-href="/#/profil/{{talk.speaker.id}}" >{{talk.speaker.fullname}}</a><br/>
-            <br/>
+            <h3>{{talk.title}}
+                <p class="help-inline" ng-repeat="creneau in talk.creneaux">
+                    <span class="label">{{creneau.libelle + ' (' + creneau.dureeMinutes + 'min)'}}</span>
+                </p>
+            </h3>
+            <p>Soumis par <a ng-href="/#/profil/{{talk.speaker.id}}" >{{talk.speaker.fullname}}</a>
+            </p>
             <div class="well" markdownpreview="talk.description"></div>
             <p></p>
             <div class="well" ng-show="userService.isAdmin()">
