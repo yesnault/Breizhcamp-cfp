@@ -372,6 +372,10 @@ function SettingsAccountController($scope, $log, AccountService, UserService, ht
     var idUser = UserService.getUserData().id;
     $scope.user = AccountService.getUser(idUser);
 
+    $scope.converter = new Markdown.Converter();
+    var editor = new Markdown.Editor($scope.converter);
+    editor.run();
+
     $scope.removeLink = function (lien) {
         if (confirm('Êtes vous sûr de vouloir supprimer le lien ' + lien.label + '?')) {
             $log.info("Suppression du lien " + lien.label + '(' + lien.id + ')');

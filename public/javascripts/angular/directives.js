@@ -10,7 +10,7 @@ angular.module('breizhCampCFP.directives', [])
 
             // used to update the UI
             function updateContent() {
-                if (content !== undefined) {
+                if (content !== undefined && content != null) {
                     element.html(scope.converter.makeHtml(content));
                 } else {
                     element.text('');
