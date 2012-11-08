@@ -85,7 +85,6 @@ public class TalkRestController extends Controller {
         Talk formTalk = talkForm.get();
 
         if (formTalk.id == null) {
-            System.out.println(formTalk.getCreneaux());
             // Nouveau talk
             formTalk.speaker = user;
             if (Talk.findByTitle(formTalk.title) != null) {
@@ -204,6 +203,12 @@ public class TalkRestController extends Controller {
             talk.getTags().remove(tag);
         }
         talk.saveManyToManyAssociations("tags");
+
+        List<Creneau> creneauxTmp = new ArrayList<Creneau>(talk.getCreneaux());
+        for (Creneau creneau : creneauxTmp) {
+            talk.getCreneaux().remove(creneau);
+        }
+        talk.saveManyToManyAssociations("creneaux");
         talk.delete();
         // HTTP 204 en cas de succès (NO CONTENT)
         return noContent();
