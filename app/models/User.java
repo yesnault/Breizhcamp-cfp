@@ -56,8 +56,18 @@ public class User extends Model {
 
     @Constraints.Pattern("^([0-9a-fA-F][0-9a-fA-F]:){5}([0-9a-fA-F][0-9a-fA-F])$")
     public String adresseMac;
-	
-	public boolean getNotifOnMyTalk() {
+
+    @OneToMany(mappedBy = "user")
+    private List<DynamicFieldValue> dynamicFieldValues;
+
+    public List<DynamicFieldValue> getDynamicFieldValues() {
+        if (dynamicFieldValues == null) {
+            dynamicFieldValues = new ArrayList<DynamicFieldValue>();
+        }
+        return dynamicFieldValues;
+    }
+
+    public boolean getNotifOnMyTalk() {
 		return BooleanUtils.isNotFalse(notifOnMyTalk);
 	}
 	
