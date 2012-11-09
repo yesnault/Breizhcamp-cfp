@@ -1,8 +1,12 @@
 package controllers.account.settings;
 
+import models.DynamicFieldJson;
 import models.User;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AccountForm {
     @Constraints.Required
@@ -18,9 +22,12 @@ public class AccountForm {
         this.description = description;
     }
 
-    public static AccountForm fromUser(User user) {
-        AccountForm form = new AccountForm();
-        form.description = user.description;
-        return form;
+    private List<DynamicFieldJson> dynamicFields;
+
+    public List<DynamicFieldJson> getDynamicFields() {
+        if (dynamicFields == null) {
+            dynamicFields = new ArrayList<DynamicFieldJson>();
+        }
+        return dynamicFields;
     }
 }

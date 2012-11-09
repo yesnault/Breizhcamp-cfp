@@ -33,6 +33,15 @@
                             </div>
                         </fieldset>
 
+                        <fieldset>
+                            <div class="control-group" ng-repeat="dynamicField in user.dynamicFields">
+                                <label for="dynamicField{{dynamicField.idField}}">{{dynamicField.name}}</label>
+                                <div class="controls">
+                                    <input type="text" id="dynamicField{{dynamicField.idField}}" class="input-small" ng-model="dynamicField.value">
+                                </div>
+                            </div>
+                        </fieldset>
+
                         <h2>Liste de vos liens</h2>
                         <fieldset ng-repeat="lien in user.liens">
                             <div class="control-group {{{true:'error', false:''}[errors[lien.id].label != undefined]}}">

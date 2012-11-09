@@ -1,8 +1,7 @@
 package controllers.account.settings;
 
 import controllers.Secured;
-import models.Lien;
-import models.User;
+import models.*;
 import models.utils.TransformValidationErrors;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ArrayNode;
@@ -94,8 +93,26 @@ public class Account extends Controller {
         	Lien lien = newLink.get();
         	user.getLiens().add(lien);
         }
-        
+
         user.save();
+
+        for (DynamicFieldJson fieldJson : accountForm.get().getDynamicFields()) {
+            if (fieldJson.getIdValue() != null) {
+                // Edit case
+                DynamicFieldValue valueToEdit = DynamicFieldValue.find.byId(fieldJson.getIdValue());
+                valueToEdit.setValue(fieldJson.getValue());
+                valueToEdit.update();
+            } else {
+                // New field case
+                if (fieldJson.getValue() != null && fieldJson.getValue().length() > 0) {
+                    DynamicFieldValue newValue = new DynamicFieldValue();
+                    newValue.setValue(fieldJson.getValue());
+                    newValue.setDynamicField(DynamicField.find.byId(fieldJson.getIdField()));
+                    newValue.setUser(user);
+                    newValue.save();
+                }
+            }
+        }
 
         return ok();
     }

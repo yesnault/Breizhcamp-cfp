@@ -55,4 +55,7 @@ public class DynamicFieldValue extends Model {
     public void setUser(User user) {
         this.user = user;
     }
+
+
+    public static Model.Finder<Long, DynamicFieldValue> find = new Model.Finder<Long, DynamicFieldValue>(Long.class, DynamicFieldValue.class);
 }

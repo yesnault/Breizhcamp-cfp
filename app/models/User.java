@@ -4,14 +4,14 @@ import models.utils.AppException;
 import models.utils.Hash;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.BooleanUtils;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * User: yesnault
@@ -58,6 +58,7 @@ public class User extends Model {
     public String adresseMac;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<DynamicFieldValue> dynamicFieldValues;
 
     public List<DynamicFieldValue> getDynamicFieldValues() {
@@ -66,6 +67,20 @@ public class User extends Model {
         }
         return dynamicFieldValues;
     }
+
+    @JsonProperty("dynamicFields")
+    public List<DynamicFieldJson> getDynamicFieldsJson() {
+        Map<Long, DynamicFieldValue> dynamicFieldValueByDynamicFieldId = new HashMap<Long, DynamicFieldValue>();
+        for (DynamicFieldValue value : getDynamicFieldValues()) {
+            dynamicFieldValueByDynamicFieldId.put(value.getDynamicField().getId(), value);
+        }
+        List<DynamicFieldJson> jsonFields = new ArrayList<DynamicFieldJson>();
+        for (DynamicField field : DynamicField.find.all()) {
+            jsonFields.add(DynamicFieldJson.toDynamicFieldJson(field, dynamicFieldValueByDynamicFieldId.get(field.getId())));
+        }
+        return jsonFields;
+    }
+
 
     public boolean getNotifOnMyTalk() {
 		return BooleanUtils.isNotFalse(notifOnMyTalk);
