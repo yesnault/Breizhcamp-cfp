@@ -46,16 +46,16 @@ public class CreneauRestController extends Controller {
         Creneau formCreneau = creneauForm.get();
 
         if (formCreneau.getId() == null) {
-            // Nouveau talk
+            // Nouveau créneau
             if (Creneau.findByLibelle(formCreneau.getLibelle()) != null) {
                 return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.creneau.already.exist"))));
             }
             formCreneau.save();
         } else {
-            // Mise à jour d'un talk
+            // Mise à jour d'un créneau
             Creneau dbCreneau = Creneau.find.byId(formCreneau.getId());
             if (!formCreneau.getLibelle().equals(dbCreneau.getLibelle())
-                    && Talk.findByTitle(formCreneau.getLibelle()) != null) {
+                    && Creneau.findByLibelle(formCreneau.getLibelle()) != null) {
                 return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.creneau.already.exist"))));
             }
             dbCreneau.setLibelle(formCreneau.getLibelle());

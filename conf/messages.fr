@@ -146,4 +146,5 @@ talks.statuc.mail.message.rejected=Bonjour,<br/><br/>Votre talk <i>{0}</i> a ét
 talks.statuc.mail.message.waiting=Bonjour,<br/><br/>Votre talk <i>{0}</i> est en liste d'attente pour le Breizhcamp.
 
 error.creneau.already.exist=Ce créneau existe déjà.
+error.dynamicField.already.exist=Ce champ dynamique existe déjà.
 

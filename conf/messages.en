@@ -122,5 +122,6 @@ talks.statuc.mail.message.waiting=Hello,<br/><br/>Your talk <i>{0}</i> for Breiz
 
 
 error.creneau.already.exist=This slot already exists.
+error.dynamicField.already.exist=This dynamic field already exists.
 
 

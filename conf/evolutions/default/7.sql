@@ -1,8 +1,9 @@
 # --- !Ups
 create table dynamic_field (
   id                        bigint not null,
-  name                      varchar(255),
-  constraint pk_dynamic_field primary key (id))
+  name                      varchar(50),
+  constraint pk_dynamic_field primary key (id),
+  constraint uq_dynamic_field_name unique (name))
 ;
 
 create table dynamic_field_value (

@@ -1,6 +1,7 @@
 package models;
 
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import play.db.ebean.Model;
 
 import javax.persistence.Entity;
@@ -20,6 +21,7 @@ public class DynamicFieldValue extends Model {
     private DynamicField dynamicField;
 
     @ManyToOne
+    @JsonIgnore
     private User user;
 
     public Long getId() {
