@@ -132,6 +132,10 @@ Services.factory('CreneauxService', function($resource) {
     return $resource('/creneau/:id', {});
 });
 
+Services.factory('DynamicFieldsService', function($resource) {
+    return $resource('/dynamicfield/:id', {});
+});
+
 
 Services.factory('VoteService', function($resource, $http, $log) {
     function VoteService($resource, $http, $log) {

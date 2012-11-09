@@ -1,0 +1,26 @@
+<div class="row">
+	<div class="span6">
+
+        <p>
+            <a href="#/admin/dynamicfield/new"><button class="btn">Nouveau champ dynamic</button></a>
+        </p>
+        <p>
+            <span class="badge badge-important" ng-repeat="error in errors['']">{{error}}</span>
+        </p>
+
+		<table class="table table-bordered table-striped">
+			<tbody>
+				<tr>
+					<th class="span3">Nom</th>
+					<th></th>
+					<th></th>
+				</tr>
+				<tr ng-repeat="dynamicField in dynamicFields">
+					<td>{{dynamicField.name}}</td>
+					<td><a href="#/admin/dynamicfield/edit/{{dynamicField.id}}" ><i class="icon-pencil"></i></a></td>
+					<td><a ng-click="deleteDynamicField(dynamicField)"><i class="icon-remove"></i></a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

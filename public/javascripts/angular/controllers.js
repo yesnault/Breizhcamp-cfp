@@ -713,3 +713,73 @@ EditCreneauController.$inject = ['$scope', '$log', 'CreneauxService', '$location
 
 
 
+function DynamicFieldsController($scope, $log, DynamicFieldsService) {
+    $scope.checkloc(true);
+
+    $scope.dynamicFields = DynamicFieldsService.query();
+
+    $scope.deleteDynamicField = function(dynamicFieldToDelete) {
+        var confirmation = confirm('Êtes vous sûr de vouloir supprimer le champ ' + dynamicFieldToDelete.name + '?');
+        if (confirmation) {
+            DynamicFieldsService.delete({id:dynamicFieldToDelete.id}, function (data) {
+                $scope.dynamicFields = DynamicFieldsService.query();
+                $scope.errors = undefined;
+            }, function (err) {
+                $log.info("Delete du champ dynamique ko");
+                $log.info(err);
+                $scope.errors = err.data;
+            });
+        }
+    }
+}
+
+DynamicFieldsController.$inject = ['$scope', '$log', 'DynamicFieldsService'];
+
+function NewDynamicFieldController($scope, $log, DynamicFieldsService, $location) {
+    $scope.checkloc(true);
+
+    $scope.isNew = true;
+
+    $scope.saveDynamicField = function() {
+        $log.info("Champ dynamique à sauvegarder");
+        $log.info($scope.dynamicField);
+
+        DynamicFieldsService.save($scope.dynamicField, function (data) {
+            $log.info("Soummission du champ dynamique ok");
+            $location.url('/admin/dynamicfields');
+        }, function (err) {
+            $log.info("Soummission du champ dynamique ko");
+            $log.info(err.data);
+            $scope.errors = err.data;
+        });
+    }
+}
+
+NewDynamicFieldController.$inject = ['$scope', '$log', 'DynamicFieldsService', '$location'];
+
+function EditDynamicFieldController($scope, $log, DynamicFieldsService, $location, $routeParams) {
+    $scope.checkloc(true);
+
+    var idDynamicField = $routeParams.dynamicFieldId;
+
+    $scope.dynamicField = DynamicFieldsService.get({id:idDynamicField});
+
+    $scope.isNew = false;
+
+    $scope.saveDynamicField = function() {
+        $log.info("Champ dynamique à sauvegarder");
+        $log.info($scope.dynamicField);
+
+        DynamicFieldsService.save($scope.dynamicField, function (data) {
+            $log.info("Soummission du champ dynamique ok");
+            $location.url('/admin/dynamicfields');
+        }, function (err) {
+            $log.info("Soummission du champ dynamique ko");
+            $log.info(err.data);
+            $scope.errors = err.data;
+        });
+    }
+}
+
+EditDynamicFieldController.$inject = ['$scope', '$log', 'DynamicFieldsService', '$location', '$routeParams'];
+
