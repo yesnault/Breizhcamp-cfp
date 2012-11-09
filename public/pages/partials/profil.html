@@ -20,6 +20,13 @@
                     </p>
                     <p ng-repeat="lien in user.liens">- <a ng-href="{{lien.url}}" target="_blank">{{lien.label}}</a></p>
 
+                    <div>
+                        <h3 >Autres informations</h3>
+                        <ul>
+                            <li ng-repeat="dynamicField in user.dynamicFields"><strong>{{dynamicField.name}} : </strong>{{dynamicField.value}}</li>
+                        </ul>
+                    </div>
+
                     <h3 ng-show="talks.length > 0">Talks proposés</h3>
                     <p ng-show="talks.length == 1">
                         - 1 talk proposé
