@@ -114,6 +114,9 @@ Services.factory('ProfilService', function($resource) {
 
         this.getTalksWait = function (userId) {
             return $resource('/user/:userId/talks/W').query({userId:userId});
+        };
+        this.getUser = function (idUser) {
+            return $resource('/user/:id').get({id:idUser});
         }
     }
 

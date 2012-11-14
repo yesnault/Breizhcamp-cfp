@@ -2,6 +2,7 @@ package controllers;
 
 
 import models.User;
+import org.codehaus.jackson.map.util.JSONPObject;
 import play.mvc.Result;
 import play.mvc.Controller;
 import play.mvc.Security;
@@ -18,5 +19,14 @@ public class UserRestController extends Controller {
         }
         return ok(toJson(User.findAll()));
     }
+
+    public static Result getUser(Long id) {
+           User user = User.findById(id);
+          if (user == null) {
+              return badRequest();
+          }
+
+          return ok(toJson(user));
+      }
 
 }

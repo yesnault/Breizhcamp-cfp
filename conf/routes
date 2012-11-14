@@ -58,6 +58,8 @@ DELETE	/dynamicfield/:idDynamicField   controllers.DynamicFieldRestController.de
 GET		/user/:userId/talks			controllers.talks.TalkRestController.getTalks(userId:Long)
 GET		/user/:userId/talks/:status	controllers.talks.TalkRestController.getTalksByStatus(userId:Long,status:String)
 
+GET     /user/:id                   controllers.UserRestController.getUser(id:Long)
+
 GET     /admin/users/get            controllers.UserRestController.get()
 
 # Map static resources from the /public folder to the /assets URL path
