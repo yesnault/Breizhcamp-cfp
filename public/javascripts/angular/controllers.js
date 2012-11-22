@@ -366,7 +366,7 @@ function ProfilController($scope, $log, $routeParams, AccountService, ProfilServ
 ProfilController.$inject = ['$scope', '$log', '$routeParams', 'AccountService', 'ProfilService', 'UserService', '$http'];
 
 
-function SettingsAccountController($scope, $log, AccountService, UserService, http) {
+function SettingsAccountController($scope, $log, AccountService, UserService, http, $location) {
 
     $scope.checkloc(false);
 
@@ -414,8 +414,26 @@ function SettingsAccountController($scope, $log, AccountService, UserService, ht
             });
 
     }
+
+    $scope.appercu = function () {
+        var user = jQuery.extend(true, {}, $scope.user);
+        if ($scope.lien !== undefined) {
+            user.liens.push($scope.lien);
+        }
+        http({
+            method:'POST',
+            url:'/settings/account',
+            data:user
+        }).success(function (data, status, headers, config) {
+                var idUser = UserService.getUserData().id;
+                $location.path('/profil/' + idUser)
+            }).error(function (data, status, headers, config) {
+                $scope.errors = data;
+                $log.info(status);
+            });
+    }
 }
-SettingsAccountController.$inject = ['$scope', '$log', 'AccountService', 'UserService', '$http'];
+SettingsAccountController.$inject = ['$scope', '$log', 'AccountService', 'UserService', '$http', '$location'];
 
 function NotifsAccountController($scope, $log, AccountService, UserService, $http) {
 
