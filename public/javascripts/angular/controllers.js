@@ -190,7 +190,7 @@ function ManageTalkController($scope, $log, $location, TalkService) {
     $scope.talks = TalkService.query();
 
     $scope.deleteTalk = function (talk) {
-        var confirmation = confirm('Êtes vous sûr de vouloir supprimer les talks titre talk?');
+        var confirmation = confirm('Êtes vous sûr de vouloir supprimer le talk "'+talk.titre+'" ?');
         if (confirmation) {
             TalkService.delete({'id':talk.id}, function (data) {
                 $scope.talks = TalkService.query();
