@@ -2,7 +2,11 @@ package models;
 
 import com.avaje.ebean.annotation.EnumValue;
 import models.utils.Mail;
+import play.Configuration;
 import play.i18n.Messages;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public enum StatusTalk {
 
@@ -14,8 +18,8 @@ public enum StatusTalk {
         }
 
         @Override
-        String getMessage(String talkTitle) {
-            return Messages.get("talks.statuc.mail.message.rejected", talkTitle);
+        String getMessage(String talkUrl,String talkTitle) {
+            return Messages.get("talks.statuc.mail.message.rejected",talkUrl, talkTitle);
         }
     },
     @EnumValue("W")
@@ -26,8 +30,8 @@ public enum StatusTalk {
         }
 
         @Override
-        String getMessage(String talkTitle) {
-            return Messages.get("talks.statuc.mail.message.waiting", talkTitle);
+        String getMessage(String talkUrl,String talkTitle) {
+            return Messages.get("talks.statuc.mail.message.waiting",talkUrl, talkTitle);
         }
     },
     @EnumValue("A")
@@ -38,8 +42,8 @@ public enum StatusTalk {
         }
 
         @Override
-        String getMessage(String talkTitle) {
-            return Messages.get("talks.statuc.mail.message.accepted", talkTitle);
+        String getMessage(String talkUrl,String talkTitle) {
+            return Messages.get("talks.statuc.mail.message.accepted",talkUrl, talkTitle);
         }
     };
 
@@ -73,9 +77,13 @@ public enum StatusTalk {
 
     abstract String getSubject(String talkTitle);
 
-    abstract String getMessage(String talkTitle);
+    abstract String getMessage(String talkUrl,String talkTitle);
 
-    public void sendMail(Talk talk, String mail) {
-        Mail.sendMail(new Mail.Envelop(getSubject(talk.title), getMessage(talk.title), mail));
+    public void sendMail(Talk talk, String mail) throws MalformedURLException {
+        String urlString = "http://" + Configuration.root().getString("server.hostname");
+        urlString += "/#/talks/see/" + talk.id;
+        URL url = new URL(urlString);
+
+        Mail.sendMail(new Mail.Envelop(getSubject(talk.title), getMessage(url.toString(),talk.title), mail));
     }
 }

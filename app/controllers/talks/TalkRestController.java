@@ -11,6 +11,7 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
 
+import java.net.MalformedURLException;
 import java.util.*;
 
 import static play.libs.Json.toJson;
@@ -248,7 +249,7 @@ public class TalkRestController extends Controller {
         return ok();
     }
 
-    public static Result saveStatus(Long idTalk) {
+    public static Result saveStatus(Long idTalk) throws MalformedURLException {
         User user = User.findByEmail(request().username());
         Talk talk = Talk.find.byId(idTalk);
         if (!user.admin) {

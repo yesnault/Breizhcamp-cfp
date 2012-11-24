@@ -141,9 +141,9 @@ talks.comment.new.mail.message=Bonjour,<br/><br/>Un nouveau commentaire a été 
 talks.status.mail.subject.accepted=Votre talk {0} est accepté
 talks.status.mail.subject.rejected=Votre talk {0} est rejeté
 talks.status.mail.subject.waiting=Votre talk {0} est en liste d'attente
-talks.statuc.mail.message.accepted=Bonjour,<br/><br/>Votre talk <i>{0}</i> a été accepté pour le Breizhcamp.
-talks.statuc.mail.message.rejected=Bonjour,<br/><br/>Votre talk <i>{0}</i> a été rejeté pour le Breizhcamp.
-talks.statuc.mail.message.waiting=Bonjour,<br/><br/>Votre talk <i>{0}</i> est en liste d'attente pour le Breizhcamp.
+talks.statuc.mail.message.accepted=Bonjour,<br/><br/>Votre talk <i><a href="{0}">{1}</a></i> a été accepté pour le Breizhcamp.
+talks.statuc.mail.message.rejected=Bonjour,<br/><br/>Votre talk <i><a href="{0}">{1}</a></i> a été rejeté pour le Breizhcamp.
+talks.statuc.mail.message.waiting=Bonjour,<br/><br/>Votre talk <i><a href="{0}">{1}</a></i> est en liste d'attente pour le Breizhcamp.
 
 error.creneau.already.exist=Ce créneau existe déjà.
 error.dynamicField.already.exist=Ce champ dynamique existe déjà.
