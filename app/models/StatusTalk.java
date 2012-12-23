@@ -19,7 +19,7 @@ public enum StatusTalk {
 
         @Override
         String getMessage(String talkUrl,String talkTitle) {
-            return Messages.get("talks.statuc.mail.message.rejected",talkUrl, talkTitle);
+            return Messages.get("talks.status.mail.message.rejected",talkUrl, talkTitle);
         }
     },
     @EnumValue("W")
@@ -31,7 +31,7 @@ public enum StatusTalk {
 
         @Override
         String getMessage(String talkUrl,String talkTitle) {
-            return Messages.get("talks.statuc.mail.message.waiting",talkUrl, talkTitle);
+            return Messages.get("talks.status.mail.message.waiting",talkUrl, talkTitle);
         }
     },
     @EnumValue("A")
@@ -43,7 +43,7 @@ public enum StatusTalk {
 
         @Override
         String getMessage(String talkUrl,String talkTitle) {
-            return Messages.get("talks.statuc.mail.message.accepted",talkUrl, talkTitle);
+            return Messages.get("talks.status.mail.message.accepted",talkUrl, talkTitle);
         }
     };
 
