@@ -33,7 +33,15 @@ public class TalkRestController extends Controller {
 	public static Result get() {
 		User user = User.findByEmail(request().username());
 		List<Talk> talks = Talk.findBySpeaker(user);
+
         for (Talk talk : talks) {
+            if (user.admin) {
+                talk.vote = Vote.findVoteByUserAndTalk(user, talk);
+                if (VoteStatus.getVoteStatus() == VoteStatusEnum.CLOSED) {
+                    talk.moyenne = Vote.calculMoyenne(talk);
+                }
+            }
+
             talk.fiteredComments(user);
         }
 		return ok(toJson(talks));

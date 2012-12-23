@@ -331,6 +331,18 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http, VoteS
             });
     };
 
+    $scope.note = function () {
+        $.fn.raty.defaults.path = '/assets/img/';
+        $log.info($scope.talk);
+        $('#star').raty({
+            score : $scope.talk.vote != undefined ? $scope.talk.vote.note :1 ,
+            click : function(score, evt) {
+                  $scope.talk.vote.note = score;
+                 $('#note').val( score);
+            }
+        });
+    };
+
     $scope.postVote = function () {
         $log.info("postVote");
         $log.info($scope.talk);
