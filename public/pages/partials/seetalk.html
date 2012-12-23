@@ -39,21 +39,26 @@
             <div class="well" ng-show="userService.isAdmin() && voteStatus.status == 'OPEN'">
                 <form ng-submit="postVote()" class="form-inline">
                     <div class="control-group {{{true:'error', false:''}[errors.vote != undefined]}}">
-                        <script type="text/javascript" >
-                            $('#noteStars').raty({
-                                score : {{talk.vote.note}},
-                                click : function(score, evt) {
-                                    $('#note').value =  score;
-                                }
-                            });
-
-                        </script>
                         <label for="note">Note du talk</label>
-                        <input id="note" name="note" type="hidden" ng-model="talk.vote.note" />
-                        <div class="noteStars"> </div>
+                        <input id="note" name="status" type="hidden"   ng-model="talk.vote.note" />
+
+                        <div id="star"> </div>
+
                     </div>
                     <input type="submit" class="btn btn-primary" value="Valider">
                 </form>
+                <script type="text/javascript" >
+                    $(function() {
+                        $.fn.raty.defaults.path = '/assets/img/';
+
+                        $('#star').raty({
+                            score : $('#note').val() ,
+                            click : function(score, evt) {
+                                $('#note').val( score);
+                            }
+                        });
+                    });
+                </script>
             </div>
         </div>
 
