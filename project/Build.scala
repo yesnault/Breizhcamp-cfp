@@ -13,7 +13,8 @@ object ApplicationBuild extends Build {
     val appDependencies = Seq(
       "com.typesafe" %% "play-plugins-mailer" % "2.0.2",
       "org.mindrot" % "jbcrypt" % "0.3m",
-      "mysql" % "mysql-connector-java" % "5.1.21"
+      "mysql" % "mysql-connector-java" % "5.1.21",
+      "securesocial" % "securesocial_2.9.1" % "2.0.8"
     )
 
     lazy val s = Defaults.defaultSettings ++ Seq(generateAPIDocsTask)
@@ -23,7 +24,8 @@ object ApplicationBuild extends Build {
     .settings(CloudBees.applicationId := Some("breizhcamp/cfp")).settings(
     // Add your own project settings here
     resolvers += "Apache" at "http://repo1.maven.org/maven2/",
-    resolvers += "jBCrypt Repository" at "http://repo1.maven.org/maven2/org/"
+    resolvers += "jBCrypt Repository" at "http://repo1.maven.org/maven2/org/",
+    resolvers += Resolver.url("SecureSocial Repository", url("http://securesocial.ws/repository/releases/"))(Resolver.ivyStylePatterns)
     )
 
     object Tasks {
