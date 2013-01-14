@@ -1,17 +1,26 @@
 package models;
 
-import models.utils.AppException;
-import models.utils.Hash;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.joda.time.DateTime;
+
 import play.data.format.Formats;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
-
-import javax.persistence.*;
-import java.util.*;
 
 /**
  * User: yesnault
@@ -31,14 +40,26 @@ public class User extends Model {
 
     @Constraints.Required
     @Formats.NonEmpty
-    @Column(unique = true)
     public String fullname;
 
-    public String confirmationToken;
+    //   [SocialUser(UserId(laurent.huet35@free.fr,userpass),
+    //   Laurent,HUET,Laurent HUET,Some(laurent.huet35@free.fr),
+    //   None,AuthenticationMethod(userPassword),None,None,
+    //   Some(PasswordInfo(bcrypt,$2a$10$iH9snjDQsokeoSrJparn5OidMmRKdnyCVVZbawIiZlQ3p4aTHL6se,None)))]
 
-    @Constraints.Required
     @Formats.NonEmpty
-    @JsonIgnore
+    public String providerId;
+    
+    @Formats.NonEmpty
+    public String tokenUuid;
+
+    @Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
+    public DateTime tokenCreationTime;
+
+    @Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
+    public DateTime tokenModificationTime;
+
+    @Formats.NonEmpty
     public String passwordHash;
 
     @Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -174,55 +195,8 @@ public class User extends Model {
         return find.all();
     }
 
-    /**
-     * Authenticate a User, from a email and clear password.
-     *
-     * @param email         email
-     * @param clearPassword clear password
-     * @return User if authenticated, null otherwise
-     * @throws AppException App Exception
-     */
-    public static User authenticate(String email, String clearPassword) throws AppException {
-
-        // get the user with email only to keep the salt password
-        User user = find.where().eq("email", email).findUnique();
-        if (user != null) {
-            // get the hash password from the salt + clear password
-            if (Hash.checkPassword(clearPassword, user.passwordHash)) {
-                return user;
-            }
-        }
-        return null;
-    }
-
-    public void changePassword(String password) throws AppException {
-        this.passwordHash = Hash.createPassword(password);
-        this.save();
-    }
-
     public static List<User> findAllAdmin() {
         return find.where().eq("admin", Boolean.TRUE).findList();
-    }
-
-    /**
-     * Confirms an account.
-     *
-     * @return true if confirmed, false otherwise.
-     * @throws AppException App Exception
-     */
-    public static boolean confirm(User user) throws AppException {
-        if (user == null) {
-            return false;
-        }
-
-        // If there's no admin for now, the new confirm user is admin.
-        if (find.where().eq("admin", Boolean.TRUE).findRowCount() == 0) {
-            user.admin = true;
-        }
-        user.confirmationToken = null;
-        user.validated = true;
-        user.save();
-        return true;
     }
 
 }

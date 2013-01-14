@@ -17,6 +17,7 @@
 package service;
 
 import play.Application;
+import play.Logger;
 import scala.Option;
 import securesocial.core.Identity;
 import securesocial.core.UserId;
@@ -40,30 +41,36 @@ public class InMemoryUserService extends BaseUserService {
 
     public InMemoryUserService(Application application) {
         super(application);
+      	Logger.debug("Instanciation SecureSocial InMemoryUserService");
     }
 
     @Override
     public void doSave(Identity user) {
         users.put(user.id().id() + user.id().providerId(), user);
+        Logger.debug("doSave SecureSocial User : " + user.email().get());
     }
 
     @Override
     public void doSave(Token token) {
         tokens.put(token.uuid, token);
+        Logger.debug("doSave SecureSocial Token : " + token.getEmail());
     }
 
     @Override
     public Identity doFind(UserId userId) {
+    	Logger.debug("doFind SecureSocial Find User by Id : " + userId.id());
         return users.get(userId.id() + userId.providerId());
     }
 
     @Override
     public Token doFindToken(String tokenId) {
+    	Logger.debug("doFindToken SecureSocial");
         return tokens.get(tokenId);
     }
 
     @Override
     public Identity doFindByEmailAndProvider(String email, String providerId) {
+    	Logger.debug("doFindByEmailAndProvider SecureSocial");
         Identity result = null;
         for( Identity user : users.values() ) {
             Option<String> optionalEmail = user.email();

@@ -24,27 +24,34 @@ function RootController($scope, UserService, $log, $location) {
 RootController.$inject = ['$scope', 'UserService', '$log', '$location'];
 
 function DashboardController($scope, ProfilService, AccountService, UserService) {
-    $scope.checkloc(false);
 
-    var idUSer = UserService.getUserData().id;
-    $scope.user = AccountService.getUser(idUSer);
-    $scope.talks = ProfilService.getTalks(idUSer);
-    $scope.talksok = ProfilService.getTalksAccepted(idUSer);
-    $scope.talksko = ProfilService.getTalksRefused(idUSer);
-    $scope.talks_w = ProfilService.getTalksWait(idUSer);
+	$scope.checkloc(false);
+
+    //var idUSer = UserService.getUserData().id;
+    //$scope.user = AccountService.getUser();
+    //$scope.talks = ProfilService.getTalks();
+    //$scope.talksok = ProfilService.getTalksAccepted();
+    //$scope.talksko = ProfilService.getTalksRefused();
+    //$scope.talks_w = ProfilService.getTalksWait();
 
 
 }
 DashboardController.$inject = ['$scope', 'ProfilService', 'AccountService', 'UserService'];
 
-function LoginController($scope, $log, UserService, PasswordService, $http, $location) {
+function LoginController($scope, $log, UserService, PasswordService, $http, $location, $cookies) {
 
     // Si l'utilisateur est déjà loggué, on le redirige vers /
-    var user = UserService.getUserData();
-    if (user != null) {
-        $location.url("/");
-    }
+//    var user = UserService.getUserData();
+//    if (user != null) {
+//        $location.url("/");
+//    }
 
+	$scope.userlogged = UserService.isLogged("/dashboard", "/login");
+	
+    $scope.debug = function () {
+		//playCookie = $cookieStore.get('PLAY_SESSION');
+		$log.info('cookie play : ' + $scope.cookieValue);
+    }
 
     // Fonction de login appelée sur le bouton de formulaire
     $scope.login = function () {
@@ -56,47 +63,9 @@ function LoginController($scope, $log, UserService, PasswordService, $http, $loc
         });
     };
 
-    $scope.generatePassword = function () {
-        $scope.generatedPassword = PasswordService.randomPassword();
-        $scope.changeStrength($scope.generatedPassword, '#passwordStrengthDiv2')
-    };
-
-    $scope.changeStrength = function (password, divSelected) {
-
-        var strength = PasswordService.getPasswordStrength(password);
-
-        var percent = Math.floor(strength / 10) * 10;
-
-        $(divSelected).removeClass('is10');
-        $(divSelected).removeClass('is20');
-        $(divSelected).removeClass('is30');
-        $(divSelected).removeClass('is40');
-        $(divSelected).removeClass('is50');
-        $(divSelected).removeClass('is60');
-        $(divSelected).removeClass('is70');
-        $(divSelected).removeClass('is80');
-        $(divSelected).removeClass('is90');
-        $(divSelected).removeClass('is100');
-
-        $(divSelected).addClass('is' + percent);
-    };
-
-    $scope.signup = function () {
-        var newUser = $scope.new;
-
-        $http({
-            method:'POST',
-            url:'signup',
-            data:newUser
-        }).success(function (data, status, headers, config) {
-                $location.url("signup");
-            }).error(function (data, status, headers, config) {
-                $scope.newerrors = data;
-            });
-    }
 }
 // Pour que l'injection de dépendances fonctionne en cas de 'minifying'
-LoginController.$inject = ['$scope', '$log', 'UserService', 'PasswordService', '$http', '$location'];
+LoginController.$inject = ['$scope', '$log', 'UserService', 'PasswordService', '$http', '$location', '$cookies', '$cookieStore'];
 
 
 function NewTalkController($scope, $log, $location, TalkService, CreneauxService) {

@@ -1,84 +1,16 @@
 <div class="row">
-	<div class="span3">Bienvenue sur le site du Call For Paper du BreizhCamp.</div>
-	<div class="span8">
-		<div class="well" >
-			<h3>Se connecter</h3>
-			<form class="form-vertical" novalidate name="loginform">
-				<fieldset>
-					<div class="control-group {{{true:'error', false:''}[errors.email != undefined || loginform.email.$error['email']]}}">
-						<label class="control-label" for="email"></label>
-						<div class="controls">
-							<input type="email" id="email" name="email" value placeholder="Adresse mail" ng-model="user.email">
-							<p class="help-inline">Votre adresse mail</p>
-                            <p class="help-inline" ng-repeat="error in errors.email">{{error}}</p>
-						</div>
-					</div>
-					<div class="control-group {{{true:'error', false:''}[errors.password != undefined]}}">
-						<label class="control-label" for="password"></label>
-						<div class="controls">
-							<input type="password" id="password" name="password" value="" placeholder="Mot de passe" ng-model="user.password">
-							<p class="help-inline">Votre mot de passe</p>
-                            <p class="help-inline" ng-repeat="error in errors.password">{{error}}</p>
-						</div>
-					</div>
-                    <span class="badge badge-important" ng-repeat="error in errors['']">{{error}}</span>
-				</fieldset>
-				<div class="form-actions">
-					<button ng-click="login()" class="btn btn-primary">Se Connecter</button> <small><a href="/#/reset/ask">Mot de passe oubli&eacute; ?</a></small>
-				</div>
-			</form>
-		</div>
-
-		<div class="well">
-			<h3>Nouveau ?</h3>
-			<form ng-submit="signup()">
-				<fieldset>
-					<div class="control-group {{{true:'error', false:''}[newerrors.email != undefined]}}">
-						<label class="control-label" for="newemail"></label>
-						<div class="controls">
-							<input type="text" id="newemail" name="email" value="" placeholder="Adresse mail" ng-model="new.email">
-							<p class="help-inline">Obligatoire</p>
-                            <p class="help-inline" ng-repeat="error in newerrors.email">{{error}}</p>
-						</div>
-					</div>
-					<div class="control-group {{{true:'error', false:''}[newerrors.fullname != undefined]}}">
-						<label class="control-label" for="fullname"></label>
-						<div class="controls">
-							<input type="text" id="fullname" name="fullname" value="" placeholder="Nom Complet" ng-model="new.fullname">
-							<p class="help-inline">Obligatoire</p>
-                            <p class="help-inline" ng-repeat="error in newerrors.fullname">{{error}}</p>
-						</div>
-					</div>
-					<div class="control-group {{{true:'error', false:''}[newerrors.inputPassword != undefined]}}">
-						<label class="control-label" for="inputPassword"></label>
-						<div class="controls">
-							<input type="password" id="inputPassword" name="inputPassword" value="" placeholder="Mot de passe" ng-model="new.inputPassword" ng-change="changeStrength(new.inputPassword, '#passwordStrengthDiv')">
-							<p class="help-inline">Obligatoire</p>
-                            <p class="help-inline" ng-repeat="error in newerrors.inputPassword">{{error}}</p>
-						</div>
-						<div id="passwordStrengthDiv" class="is0"></div>
-					</div>
-                    <div class="control-group {{{true:'error', false:''}[newerrors.confirmPassword != undefined]}}">
-                        <label class="control-label" for="confirmPassword"></label>
-                        <div class="controls">
-                            <input type="password" id="confirmPassword" name="confirmPassword" value="" placeholder="Confirmation du mot de passe" ng-model="new.confirmPassword" ng-change="changeStrength(new.confirmPassword, '#confirmpasswordStrengthDiv')">
-                            <p class="help-inline">Obligatoire</p>
-                            <p class="help-inline" ng-repeat="error in newerrors.confirmPassword">{{error}}</p>
-                        </div>
-                        <div id="confirmpasswordStrengthDiv" class="is0"></div>
-                    </div>
-
-                    <span class="badge badge-important" ng-repeat="error in newerrors['']">{{error}}</span>
-                    <br />
-					<h6>G&eacute;n&eacute;rer un mot de passe</h6>
-					<input type="text" name="passwordGenerated" ng-model="generatedPassword" ng-change="changeStrength(generatedPassword, '#passwordStrengthDiv2')"/><i class="icon-refresh pointer" ng-click="generatePassword()"></i>
-                    <div id="passwordStrengthDiv2" class="is0"></div>
-				</fieldset>
-				<div class="form-actions">
-					<input type="submit" class="btn primary" value="Inscription">
-				</div>
-			</form>
-		</div>
+	<div class="clearfix">
+	    <p>Use your existing account on one of the following networks to log in.</p>
+	    <p>
+	        <a href="/authenticate/github"> <img src="/assets/securesocial/images/providers/github.png"/></a>
+	        <a href="/authenticate/linkedin"> <img src="/assets/securesocial/images/providers/linkedin.png"/></a>
+	        <a href="/authenticate/google"> <img src="/assets/securesocial/images/providers/google.png"/></a>
+	        <a href="/authenticate/facebook"> <img src="/assets/securesocial/images/providers/facebook.png"/></a>
+	        <a href="/authenticate/twitter"> <img src="/assets/securesocial/images/providers/twitter.png"/></a>
+	    </p>
+	</div>
+	<div class="form-actions">
+		<button ng-click="debug()" class="btn btn-primary">Debug</button>
+		userData Value: {{userlogged}}
 	</div>
 </div>
-

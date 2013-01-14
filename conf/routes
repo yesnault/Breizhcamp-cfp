@@ -26,30 +26,11 @@ GET     /authenticate/:provider     securesocial.controllers.ProviderController.
 POST    /authenticate/:provider     securesocial.controllers.ProviderController.authenticateByPost(provider)
 GET     /not-authorized             securesocial.controllers.ProviderController.notAuthorized
 
-POST    /login                      controllers.Application.authenticate()
-#GET     /logout                     controllers.Application.logout()
-
 GET     /settings/user/:id          controllers.account.settings.Account.getUser(id:Long)
-POST    /settings/password          controllers.account.settings.Password.runPassword()
-POST    /settings/email             controllers.account.settings.Email.runEmail()
 POST    /settings/account           controllers.account.settings.Account.save()
 POST    /settings/mac               controllers.account.settings.Account.changeMac()
 POST    /settings/notifs            controllers.account.settings.Notifs.save()
 GET     /settings/lien/remove/:id   controllers.account.settings.Account.deleteLink(id:Long)
-
-# Registers the user, sending an email to confirm the account.
-POST    /signup                     controllers.account.Signup.save()
-
-# Accessed when the user confirms the registration.
-GET     /confirm/:confirmToken      controllers.account.Signup.confirm(confirmToken:String)
-
-# Displays a page to send a reset email given the user's email.
-POST    /reset/ask                  controllers.account.Reset.runAsk()
-
-# Resets the password using the password.
-POST    /reset/:token               controllers.account.Reset.runReset(token:String)
-
-GET     /email/:token               controllers.account.settings.Email.validateEmail(token:String)
 
 POST    /admin/submitusers          controllers.Admin.submitUsers()
 GET     /admin/vote                 controllers.Admin.getVoteStatus()
@@ -84,6 +65,7 @@ GET		/user/:userId/talks			controllers.talks.TalkRestController.getTalks(userId:
 GET		/user/:userId/talks/:status	controllers.talks.TalkRestController.getTalksByStatus(userId:Long,status:String)
 
 GET     /user/:id                   controllers.UserRestController.getUser(id:Long)
+GET		/userLogged					controllers.UserRestController.getUserLogged()
 
 GET     /admin/users/get            controllers.UserRestController.get()
 
