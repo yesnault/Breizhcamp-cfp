@@ -23,8 +23,7 @@ import play.data.validation.Constraints;
 import play.db.ebean.Model;
 
 /**
- * User: yesnault
- * Date: 20/01/12
+ * 
  */
 @SuppressWarnings("serial")
 @Entity
@@ -49,6 +48,8 @@ public class User extends Model {
 
     @Formats.NonEmpty
     public String providerId;
+    
+    public Boolean signUp;
     
     @Formats.NonEmpty
     public String tokenUuid;

@@ -66,6 +66,7 @@ create table user (
   email                     varchar(255),
   fullname                  varchar(255),
   provider_id               varchar(255),
+  sign_up                   tinyint(1) default 0,
   token_uuid                varchar(255),
   token_creation_time       datetime,
   token_modification_time   datetime,
