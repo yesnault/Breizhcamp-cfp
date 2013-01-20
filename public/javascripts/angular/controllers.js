@@ -293,6 +293,8 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http, VoteS
 
     $scope.converter = new Markdown.Converter();
 
+
+
     $scope.postComment = function () {
         $log.info("Sauvegarde du commentaire " + $scope.comment);
 
@@ -305,6 +307,7 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http, VoteS
         }).success(function (data, status, headers, config) {
                 $log.info(status);
                 $scope.errors = undefined;
+                $scope.comment = undefined;
                 $scope.talk = TalkService.get({id:$routeParams.talkId});
             }).error(function (data, status, headers, config) {
                 $log.info(status);
