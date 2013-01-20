@@ -6,23 +6,44 @@
 				<h3 ng-switch-when="true">Nouveau talk</h3>
 				<h3 ng-switch-when="false">Edition du talk '{{talk.title}}'</h3>
 			</div>
+            <script type="text/javascript" charset="utf-8">
+                var maxTitre=50;  		// 50 caractères maximum
+                var maxDesc=2000;
+
+                function compterTitre() {
+                    var txt=document.getElementById('title');
+                    var nb=txt.value.length;
+                    var nbTitre =document.getElementById('nbTitre');
+                    nbTitre.innerHTML = (maxTitre-nb)+" caractère(s) restant";
+                }
+
+                function compterDescription() {
+                    var txt=document.getElementById('wmd-input');
+                    var nb=txt.value.length;
+                    var nbDesc =document.getElementById('nbDesc');
+                    nbDesc.innerHTML = (maxDesc-nb)+" caractère(s) restant";
+                }
+
+            </script>
 			<form ng-submit="saveTalk()">
 				<fieldset>
 					<div class="control-group {{{true:'error', false:''}[errors.title != undefined]}}">
 						<label class="control-label" for="title"></label>
 						<div class="controls">
-							<input type="text" id="title" name="title" value="" placeholder="Titre" class="input-xxlarge" ng-model="talk.title">
+							<input type="text" id="title" name="title" onkeypress="compterTitre()" onkeydown="compterTitre()" value="" placeholder="Titre" class="input-xxlarge" ng-model="talk.title">
 							<p class="help-inline">Longueur maximum: 50, Obligatoire</p>
                             <p class="help-inline" ng-repeat="error in errors.title">{{error}}</p>
+                            <p class="help-inline" id="nbTitre" />
 						</div>
 					</div>
 					<div class="control-group {{{true:'error', false:''}[errors.description != undefined]}}">
 						<label class="control-label" for="wmd-input"></label>
 						<div class="controls">
                             <div id="wmd-button-bar"></div>
-							<textarea id="wmd-input" name="description" placeholder="Description" class="input-xxlarge" rows="10" ng-model="talk.description"></textarea>
+							<textarea id="wmd-input"  name="description" onkeypress="compterDescription()" onkeydown="compterDescription()" placeholder="Description" class="input-xxlarge" rows="10" ng-model="talk.description"></textarea>
 							<p class="help-inline">Longueur maximum: 2&nbsp;000, Obligatoire</p>
                             <p class="help-inline" ng-repeat="error in errors.description">{{error}}</p>
+                            <p class="help-inline" id="nbDesc" />
                             <div id="previewMarkdown" class="well" markdownpreview="talk.description"></div>
 						</div>
 					</div>
