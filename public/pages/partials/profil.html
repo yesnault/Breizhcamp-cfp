@@ -28,12 +28,22 @@
                     </div>
 
                     <h3 ng-show="talks.length > 0">Talks proposés</h3>
-                    <p ng-show="talks.length == 1">
-                        - 1 talk proposé
-                    </p>
-                    <p ng-show="talks.length > 1">
-                        - {{talks.length}} talks proposés
-                    </p>
+                    <table class="table table-bordered table-striped">
+                        <tbody><tr>
+                            <th class="span6">Titre</th>
+                            <th class="span2">Statut</th>
+                        </tr>
+
+                        <tr ng-repeat="talk in talks | orderBy:predicate:reverse">
+                            <td><a href="/#/talks/see/{{talk.id}}">{{talk.title}}</a></td>
+                            <td><div ng-show="talk.statusTalk != undefined" ng-switch on="talk.statusTalk">
+                                <span class="label label-important" ng-switch-when="REJETE">Rejeté</span>
+                                <span class="label label-warning" ng-switch-when="ATTENTE">Liste d'attente</span>
+                                <span class="label label-success" ng-switch-when="ACCEPTE">Accepté</span>
+                            </div></td>
+                        </tr>
+
+                        </tbody></table>
 
                     <h3 ng-show="talksok.length > 0">Talks acceptés</h3>
                     <p ng-repeat="talk in talksok">- <a ng-href="/#/talks/see/{{talk.id}}" title="{{talk.title}}" >{{talk.title}}</a></p>
