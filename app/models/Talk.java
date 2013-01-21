@@ -68,11 +68,16 @@ public class Talk extends Model {
 
     public void fiteredComments(User user) {
         if (user.admin) {
-            commentsFiltered = comments;
+            commentsFiltered = new ArrayList<Comment>();
+            for (Comment comment : comments) {
+                if (comment.question == null) {
+                    commentsFiltered.add(comment);
+                }
+            }
         } else {
             commentsFiltered = new ArrayList<Comment>();
             for (Comment comment : comments) {
-                if (BooleanUtils.isNotTrue(comment.privateComment)) {
+                if (comment.question == null && BooleanUtils.isNotTrue(comment.privateComment)) {
                     commentsFiltered.add(comment);
                 }
             }

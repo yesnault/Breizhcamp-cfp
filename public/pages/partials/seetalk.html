@@ -55,12 +55,43 @@
             <p>{{talk.tagsname}}</p>
             <br/>
         </div>
+        <script type="text/javascript">
+            function displayReponse(id){
+                    var respStyle = document.getElementById(id).style;
+                    if(respStyle.display == 'none'){
+                        document.getElementById(id).style.display = 'block';
+                    } else {
+                        document.getElementById(id).style.display = 'none';
+                    }
+            }
+        </script>
 
         <div class="well">
             <h3>Questions/Réponses</h3>
             <div class="well {{{true:'privateComment',false:''}[comment.privateComment == true]}}" ng-repeat="comment in talk.comments">
                 <img ng-src="{{comment.author.avatar}}?s=40"> {{comment.author.fullname}}<br/>
                 {{comment.comment}}
+                <br/> <br/><br/>
+                <div class="well {{{true:'privateComment',false:''}[comment.privateComment == true]}}" ng-repeat="reponse in comment.reponses">
+                    <img ng-src="{{comment.author.avatar}}?s=40"> {{reponse.author.fullname}}<br/>
+                    {{reponse.comment}}
+                </div>
+                <input type="button" class="btn btn-primary" value="Repondre" onclick="displayReponse('resp-{{comment.id}}')">
+                <div class="well" id="resp-{{comment.id}}" style="display: none;">
+                    <form ng-submit="postReponse({{comment.id}})" method="POST" class="form-inline">
+
+                        <div class="control-group {{{true:'error', false:''}[errors.commentR != undefined]}}">
+                            <div class="controls">
+                                <textarea name="commentR" ng-model="commentR" class="input-xlarge"  rows="3" placeholder="Repondre au commentaire" ></textarea>
+                                <p class="help-inline" ng-repeat="error in errors.commentR">{{error}}</p>
+                                <label class="checkbox" ng-show="userService.isAdmin()">
+                                    <input type="checkbox" name="privateR" ng-model="privateR" ng-show="userService.isAdmin()">Commentaire privé</input>
+                                </label>
+                            </div>
+                        </div>
+                        <input type="submit" class="btn btn-primary" value="Valider">
+                    </form>
+                </div>
             </div>
 
             <div class="well">
@@ -68,7 +99,7 @@
 
                     <div class="control-group {{{true:'error', false:''}[errors.comment != undefined]}}">
                         <div class="controls">
-                            <input type="text" name="comment" ng-model="comment" placeholder="Nouveau commentaire"/>
+                            <textarea name="comment" class="input-xxlarge" ng-model="comment" rows="5" placeholder="Nouveau commentaire" ></textarea>
                             <p class="help-inline" ng-repeat="error in errors.comment">{{error}}</p>
                             <label class="checkbox" ng-show="userService.isAdmin()">
                                 <input type="checkbox" id="private" name="private" ng-model="private" ng-show="userService.isAdmin()">Commentaire privé</input>

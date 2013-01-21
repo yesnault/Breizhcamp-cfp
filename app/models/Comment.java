@@ -1,23 +1,18 @@
 package models;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-
 import models.utils.Mail;
-
 import org.apache.commons.lang.BooleanUtils;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
 import play.i18n.Messages;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @SuppressWarnings("serial")
 @Entity
@@ -40,6 +35,13 @@ public class Comment extends Model {
     public String comment;
 
     public Boolean privateComment;
+
+    @OneToMany(mappedBy = "question")
+    public List<Comment> reponses;
+
+    @ManyToOne
+    @JsonIgnore
+    public Comment question;
     
 
     public static Model.Finder<Long, Comment> find = new Model.Finder<Long, Comment>(Long.class, Comment.class);
