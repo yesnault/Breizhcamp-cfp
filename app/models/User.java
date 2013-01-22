@@ -30,6 +30,7 @@ import play.db.ebean.Model;
 public class User extends Model {
 
     @Id
+    @JsonIgnore
     public Long id;
 
     @Constraints.Required
@@ -41,32 +42,34 @@ public class User extends Model {
     @Formats.NonEmpty
     public String fullname;
 
-    //   [SocialUser(UserId(laurent.huet35@free.fr,userpass),
-    //   Laurent,HUET,Laurent HUET,Some(laurent.huet35@free.fr),
-    //   None,AuthenticationMethod(userPassword),None,None,
-    //   Some(PasswordInfo(bcrypt,$2a$10$iH9snjDQsokeoSrJparn5OidMmRKdnyCVVZbawIiZlQ3p4aTHL6se,None)))]
-
-    @Formats.NonEmpty
-    public String providerId;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JsonIgnore
+    public List<ExternalUserId> extUserIds;
     
+    @JsonIgnore
     public Boolean signUp;
     
     @Formats.NonEmpty
+    @JsonIgnore
     public String tokenUuid;
 
     @Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonIgnore
     public DateTime tokenCreationTime;
 
     @Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonIgnore
     public DateTime tokenModificationTime;
 
     @Formats.NonEmpty
+    @JsonIgnore
     public String passwordHash;
 
     @Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date dateCreation;
 
     @Formats.NonEmpty
+    @JsonIgnore
     public Boolean validated = false;
 
     public Boolean admin = false;
@@ -142,8 +145,7 @@ public class User extends Model {
         return liens;
     }
 
-
-    private transient String avatar;
+    public String avatar;
 
     private final static String GRAVATAR_URL = "http://www.gravatar.com/avatar/";
 
@@ -168,10 +170,30 @@ public class User extends Model {
         return find.where().eq("email", email).findUnique();
     }
 
+    /**
+     * Retrieve a user from an Id.
+     *
+     * @param email email to search
+     * @return a user
+     */
     public static User findById(Long id) {
         return find.where().eq("id", id).findUnique();
     }
 
+    /**
+     * Retrieve a user from an external Id (SocialUser id/providerId).
+     *
+     * @param email email to search
+     * @return a user
+     */
+    public static User findByExternalId(String uuid, String providerId) {
+
+    	return find	.where()
+    					.eq("extUserIds.providerUuid", uuid)
+    					.eq("extUserIds.providerId", providerId)
+    				.findUnique();
+    }
+    
     /**
      * Retrieve a user from a fullname.
      *

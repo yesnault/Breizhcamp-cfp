@@ -1,12 +1,11 @@
 package models;
 
-import play.Logger;
-import play.db.ebean.Model;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.util.List;
 
+import play.db.ebean.Model;
+
+@SuppressWarnings("serial")
 @Entity
 public class VoteStatus extends Model {
 

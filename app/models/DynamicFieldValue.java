@@ -1,14 +1,15 @@
 package models;
 
 
-import org.codehaus.jackson.annotate.JsonIgnore;
-import play.db.ebean.Model;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
+import play.db.ebean.Model;
+
+@SuppressWarnings("serial")
 @Entity
 public class DynamicFieldValue extends Model {
 

@@ -10,6 +10,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("serial")
 @Entity
 public class Creneau extends Model {
 

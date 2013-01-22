@@ -1,8 +1,11 @@
 package service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
+import models.ExternalUserId;
 import models.User;
 import play.Application;
 import play.Logger;
@@ -12,15 +15,21 @@ import securesocial.core.UserId;
 import securesocial.core.java.BaseUserService;
 import securesocial.core.java.Token;
 
+/**
+ * Classe utilisée par SecureSocial pour la gestion des Identity
+ *
+ */
 public class CfpUserService extends BaseUserService {
 
+	// TODO Eventuellement mettre les données Identity et Token en base (contient les infos sur OAuth notamment)
+	// Pour le CFP, le nombre de User ne devrait pas être très important => laisser en HashMap pour le moment
     private HashMap<String, Identity> users  = new HashMap<String, Identity>();
     private HashMap<String, Token> tokens = new HashMap<String, Token>();
     
-	public CfpUserService(Application application) {
+
+    public CfpUserService(Application application) {
 		super(application);
 	}
-
 	
 	@Override
 	public Identity doFind(UserId userId) {
@@ -35,18 +44,32 @@ public class CfpUserService extends BaseUserService {
 	    users.put(socialUser.id().id() + socialUser.id().providerId(), socialUser);
 		
 		// Recherche d'un user existant et création ou mise à jour des données en SGBD
-		String email = socialUser.email().get();
-		User userCfp = User.findByEmail(email);
+	    User userCfp = User.findByExternalId(socialUser.id().id(), socialUser.id().providerId());
 		if (userCfp == null) {
-			Logger.debug("Création du user : " + email);
+			Logger.debug("Création du user : " + socialUser.fullName());
 			userCfp = new User();
-			userCfp.email = email;
+			// Selon les providers externes (twitter par ex.), on ne récupère pas toujours le mail
+			if (socialUser.email().isDefined()) 
+				userCfp.email = socialUser.email().get(); 
+			userCfp.admin = false;
 			userCfp.fullname = socialUser.fullName();
 			userCfp.dateCreation = new Date();
+			userCfp.validated = true;
+			if (socialUser.avatarUrl().isDefined())
+				userCfp.avatar = socialUser.avatarUrl().get();
+			if (userCfp.extUserIds == null || userCfp.extUserIds.isEmpty()) {
+				Logger.debug("Création du userid : " + socialUser.id().id() + " / " + socialUser.id().providerId());
+				ExternalUserId extUserId = new ExternalUserId(socialUser.id().id(), socialUser.id().providerId());
+				List<ExternalUserId> extUserIds = new ArrayList<>();
+				extUserIds.add(extUserId);
+				userCfp.extUserIds = extUserIds;
+			}
 		} 
 		else {
-			Logger.debug("Mise à jour d'un user");
+			Logger.debug("Mise à jour du user : " + socialUser.fullName());
 			userCfp.fullname = socialUser.fullName();
+			if (socialUser.avatarUrl().isDefined())
+				userCfp.avatar = socialUser.avatarUrl().get();
 		}
 		userCfp.save();
 	}

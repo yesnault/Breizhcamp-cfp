@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+@SuppressWarnings("serial")
 @Entity
 public class Tag extends Model {
 

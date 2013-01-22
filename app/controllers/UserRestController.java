@@ -34,13 +34,11 @@ public class UserRestController extends Controller {
     public static Result getUserLogged() {
     	Identity socialUser = (Identity) ctx().args.get(SecureSocial.USER_KEY);
     	if (socialUser == null) return unauthorized();
-//    	User userCfp = new User();
-//    	userCfp.email = user.email().get();
-//    	userCfp.fullname = user.fullName();
-    	 //  user.avatarUrl().get();
-    	Logger.debug("getUserLogged : " + socialUser.email().get());
-    	User user = User.findByEmail(socialUser.email().get());
     	
+    	Logger.debug("getUserLogged : " + socialUser.id().id() + "/" + socialUser.id().providerId());
+    	User user = User.findByExternalId(socialUser.id().id(), socialUser.id().providerId());
+    	
+    	//return ok();
     	return ok(toJson(user));
     }
 }
