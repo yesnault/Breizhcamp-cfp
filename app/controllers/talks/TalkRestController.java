@@ -84,6 +84,9 @@ public class TalkRestController extends Controller {
 
 
     public static Result save() {
+        if (VoteStatus.getVoteStatus() != VoteStatusEnum.NOT_BEGIN) {
+            return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.vote.begin"))));
+        }
         User user = User.findByEmail(request().username());
         Form<Talk> talkForm = form(Talk.class).bindFromRequest();
 
