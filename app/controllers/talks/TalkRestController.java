@@ -102,6 +102,10 @@ public class TalkRestController extends Controller {
             if (Talk.findByTitle(formTalk.title) != null) {
                 return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.talk.already.exist"))));
             }
+            if (formTalk.getCreneaux() == null || formTalk.getCreneaux().isEmpty()) {
+                return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.talk.creneaux.empty"))));
+            }
+
             formTalk.save();
             formTalk.saveManyToManyAssociations("creneaux");
             formTalk.update();
