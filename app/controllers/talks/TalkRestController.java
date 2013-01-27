@@ -269,14 +269,40 @@ public class TalkRestController extends Controller {
         Talk talk = Talk.find.byId(idTalk);
         Comment question = Comment.find.byId(idComment);
 
+
+
+        if(question.author.id !=user.id){
+            Map<String, List<String>> errors = new HashMap<String, List<String>>();
+            errors.put("error", Collections.singletonList(Messages.get("error.delete.comment.baduser")));
+            return badRequest(toJson(errors));
+        }
+
+        question.clos = true;
+        question.save();
+
+        return ok();
+
+    }
+
+    public static Result deleteComment(Long idTalk,Long idComment) {
+        User user = User.findByEmail(request().username());
+        Talk talk = Talk.find.byId(idTalk);
+        Comment question = Comment.find.byId(idComment);
+
         if(question.author.id !=user.id && !user.admin){
             Map<String, List<String>> errors = new HashMap<String, List<String>>();
             errors.put("error", Collections.singletonList(Messages.get("error.close.comment.baduser")));
             return badRequest(toJson(errors));
         }
 
-        question.clos = true;
-        question.save();
+        if(question.reponses != null && question.reponses.size() >0 ){
+            Map<String, List<String>> errors = new HashMap<String, List<String>>();
+            errors.put("error", Collections.singletonList(Messages.get("error.delete.comment")));
+            return badRequest(toJson(errors));
+        }
+
+
+        question.delete();
 
         return ok();
 
@@ -325,6 +351,35 @@ public class TalkRestController extends Controller {
             question.save();
 
             comment.sendMail();
+        }
+        return ok();
+    }
+
+    public static Result editComment(Long idTalk,Long idComment) {
+        User user = User.findByEmail(request().username());
+        Talk talk = Talk.find.byId(idTalk);
+        Comment question = Comment.find.byId(idComment);
+
+        JsonNode node = request().body().asJson();
+        String commentForm = null;
+        Logger.debug("nose : "+node.asText());
+        if (node != null && node.get("comment") != null) {
+            commentForm = node.get("comment").asText();
+        } else {
+            Map<String, List<String>> errors = new HashMap<String, List<String>>();
+            errors.put("commentE", Collections.singletonList(Messages.get("error.required")));
+            return badRequest(toJson(errors));
+        }
+
+        if (!user.admin && !user.id.equals(talk.speaker.id)) {
+            return unauthorized(toJson(TransformValidationErrors.transform("Action non autorisée")));
+        }
+
+        if (commentForm.length() > 0 && commentForm.length() <= 140) {
+            question.comment = commentForm;
+            question.save();
+
+            question.sendMail();
         }
         return ok();
     }

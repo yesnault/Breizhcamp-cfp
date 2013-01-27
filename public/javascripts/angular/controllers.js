@@ -336,6 +336,27 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http, VoteS
             });
     };
 
+    $scope.editComment = function (id) {
+        $log.info("modification du commentaire " + $scope.commentE);
+
+        var commentId = id;
+        var dataR = {'comment':$scope.commentE};
+
+        http({
+            method:'POST',
+            url:'/talks/' + $scope.talk.id + '/comment/'+ commentId +'/edit',
+            data:dataR
+        }).success(function (data, status, headers, config) {
+                $log.info(status);
+                $scope.errors = undefined;
+                $scope.commentE = undefined;
+                $scope.talk = TalkService.get({id:$routeParams.talkId});
+            }).error(function (data, status, headers, config) {
+                $log.info(status);
+                $scope.errors = data;
+            });
+    };
+
     $scope.postCloseComment = function (id) {
         $log.info("cloture du commentaire " + id);
 
@@ -344,6 +365,25 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http, VoteS
         http({
             method:'POST',
             url:'/talks/' + $scope.talk.id + '/comment/'+ id +'/close',
+            data:data
+        }).success(function (data, status, headers, config) {
+                $log.info(status);
+                $scope.errors = undefined;
+                $scope.talk = TalkService.get({id:$routeParams.talkId});
+            }).error(function (data, status, headers, config) {
+                $log.info(status);
+                $scope.errors = data;
+            });
+    };
+
+    $scope.deleteComment = function (id) {
+        $log.info("suppression du commentaire " + id);
+
+        var data = {};
+
+        http({
+            method:'POST',
+            url:'/talks/' + $scope.talk.id + '/comment/'+ id +'/delete',
             data:data
         }).success(function (data, status, headers, config) {
                 $log.info(status);
@@ -374,11 +414,11 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http, VoteS
             });
     };
 
-    $scope.note = function () {
+    $scope.note = function (talk) {
         $.fn.raty.defaults.path = '/assets/img/';
-        $log.info("talk : "+$scope.talk.note);
+        $log.info("talk : "+talk.note);
         $('#star').raty({
-            score : $scope.talk.note != undefined ? $scope.talk.note :1 ,
+            score : talk.note != undefined ? talk.note :1 ,
             click : function(score, evt) {
                   $scope.note = score;
                  $('#note').val( score);

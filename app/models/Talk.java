@@ -121,6 +121,6 @@ public class Talk extends Model {
 
     @JsonProperty("note")
     public Integer note() {
-        return vote.getNote();
+        return vote ==null ? 0 : vote.getNote();
     }
 }

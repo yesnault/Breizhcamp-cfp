@@ -26,6 +26,8 @@ error.email=Email valide obligatoire
 error.pattern=Doit respecter {0}
 error.vote.begin=Vous ne pouvez plus soumettre/modifier/supprimer des talks une fois que le CFP est fermé.
 error.close.comment.baduser=Vous ne pouvez pas clore le commentaire.
+error.delete.comment.baduser=Vous ne pouvez pas supprimer le commentaire.
+error.delete.comment=Il n'est pas possible de supprimer un commantaire ayant des réponses.
 
 confirm=Confirmation
 email=Adresse mail

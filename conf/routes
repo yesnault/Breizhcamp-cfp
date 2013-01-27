@@ -37,6 +37,8 @@ POST    /admin/vote/:newStatus      controllers.Admin.changeVoteStatus(newStatus
 POST    /talks/:idTalk/comment      controllers.talks.TalkRestController.saveComment(idTalk:Long)
 POST    /talks/:idTalk/comment/:idComment/response      controllers.talks.TalkRestController.saveReponse(idTalk:Long,idComment:Long)
 POST    /talks/:idTalk/comment/:idComment/close      controllers.talks.TalkRestController.closeComment(idTalk:Long,idComment:Long)
+POST    /talks/:idTalk/comment/:idComment/delete      controllers.talks.TalkRestController.deleteComment(idTalk:Long,idComment:Long)
+POST    /talks/:idTalk/comment/:idComment/edit      controllers.talks.TalkRestController.editComment(idTalk:Long,idComment:Long)
 POST    /talks/:idTalk/status       controllers.talks.TalkRestController.saveStatus(idTalk:Long)
 POST    /talks/:idTalk/vote/:note   controllers.talks.TalkRestController.saveVote(idTalk:Long,note:java.lang.Integer)
 GET		/talk/all					controllers.talks.TalkRestController.all()
