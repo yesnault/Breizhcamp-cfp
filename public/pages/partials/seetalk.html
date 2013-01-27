@@ -4,7 +4,8 @@
         <div class="well">
             <h3>{{talk.title}}
                 <p class="help-inline" ng-repeat="creneau in talk.creneaux">
-                    <span class="label">{{creneau.libelle + ' (' + creneau.dureeMinutes + 'min)'}}</span>
+                    <span class="label" ng-show="talk.dureePreferee == null || creneau.id!=talk.dureePreferee.id">{{creneau.libelle + ' (' + creneau.dureeMinutes + 'min)'}}</span>
+                    <span class="label label-info" ng-show="talk.dureePreferee != null &&  creneau.id==talk.dureePreferee.id">{{creneau.libelle + ' (' + creneau.dureeMinutes + 'min)'}}</span>
                 </p>
             </h3>
             <p>Soumis par <a ng-href="/#/profil/{{talk.speaker.id}}" >{{talk.speaker.fullname}}</a>

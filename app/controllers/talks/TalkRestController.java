@@ -151,6 +151,11 @@ public class TalkRestController extends Controller {
             }
         }
         dbTalk.saveManyToManyAssociations("creneaux");
+
+        dbTalk.dureePreferee = formTalk.dureePreferee;
+        //formTalk.dureePreferee.talksPrefere.add(dbTalk);
+        //formTalk.dureePreferee.save();
+
         dbTalk.update();
     }
 

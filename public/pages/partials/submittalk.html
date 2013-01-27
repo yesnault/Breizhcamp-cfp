@@ -64,6 +64,17 @@
                             </p>
                         </div>
                     </div>
+
+                    <div class="control-group {{{true:'error', false:''}[errors.dureePreferee != undefined]}}">
+                        <label class="control-label" for="dureePreferee">Creneau Optimal</label>
+                        <div class="controls">
+                            <select id="dureePreferee" name="dureePreferee" ng-model="talk.dureePreferee" ng-options="creneau.libelle + ' (' + creneau.dureeMinutes + 'min)' for creneau in creneaux"></select>
+                            <p class="help-inline" ng-repeat="error in errors.dureePreferee">{{error}}</p>
+                            <p class="help-inline">
+                                <span class="label">{{talk.dureePreferee.libelle + ' (' + talk.dureePreferee.dureeMinutes + 'min)'}}</span>
+                            </p>
+                        </div>
+                    </div>
                     <span class="badge badge-important" ng-repeat="error in errors['']">{{error}}</span>
 				</fieldset>
 				<div class="form-actions">

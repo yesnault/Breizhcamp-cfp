@@ -6,10 +6,7 @@ import play.data.format.Formats;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +24,10 @@ public class Creneau extends Model {
 
     @Constraints.Required
     private Integer dureeMinutes;
+
+    @OneToMany(mappedBy ="dureePreferee")
+    @JsonIgnore
+    public List<Talk> talksPrefere;
 
     @ManyToMany
     @JsonIgnore

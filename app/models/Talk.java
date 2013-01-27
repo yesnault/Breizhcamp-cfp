@@ -92,6 +92,9 @@ public class Talk extends Model {
     @ManyToMany( mappedBy = "talks" )
     private List<Creneau> creneaux;
 
+    @ManyToOne
+    public Creneau dureePreferee;
+
     public List<Creneau> getCreneaux() {
         if (creneaux == null) {
             creneaux = new ArrayList<Creneau>();
