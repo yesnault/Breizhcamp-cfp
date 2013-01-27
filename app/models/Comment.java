@@ -34,6 +34,8 @@ public class Comment extends Model {
     @Column(length = 140)
     public String comment;
 
+    public boolean clos;
+
     public Boolean privateComment;
 
     @OneToMany(mappedBy = "question")

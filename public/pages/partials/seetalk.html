@@ -76,16 +76,16 @@
                     <img ng-src="{{comment.author.avatar}}?s=40"> {{reponse.author.fullname}}<br/>
                     {{reponse.comment}}
                 </div>
-                <input type="button" class="btn btn-primary" value="Repondre" onclick="displayReponse('resp-{{comment.id}}')">
+                <input type="button" class="btn btn-primary" value="Repondre" ng-show="!comment.clos" onclick="displayReponse('resp-{{comment.id}}')">
                 <div class="well" id="resp-{{comment.id}}" style="display: none;">
                     <form ng-submit="postReponse({{comment.id}})" method="POST" class="form-inline">
 
                         <div class="control-group {{{true:'error', false:''}[errors.commentR != undefined]}}">
                             <div class="controls">
-                                <textarea name="commentR" ng-model="commentR" class="input-xlarge"  rows="3" placeholder="Repondre au commentaire" ></textarea>
+                                <textarea name="commentR" ng-model="$parent.commentR" class="input-xlarge"  rows="3" placeholder="Repondre au commentaire" ></textarea>
                                 <p class="help-inline" ng-repeat="error in errors.commentR">{{error}}</p>
                                 <label class="checkbox" ng-show="userService.isAdmin()">
-                                    <input type="checkbox" name="privateR" ng-model="privateR" ng-show="userService.isAdmin()">Commentaire privé</input>
+                                    <input type="checkbox" name="privateR" ng-model="$parent.privateR" ng-show="userService.isAdmin()">Commentaire privé</input>
                                 </label>
                             </div>
                         </div>

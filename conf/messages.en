@@ -28,6 +28,7 @@ error.confirm=Confirmation failed
 error.expiredresetlink=This password reset has expired.
 error.expiredmaillink=This mail change has expired.
 error.vote.begin=You can't submit/update/delete talks after the close of CFP.
+error.close.comment.baduser=You can't close comment.
 
 account.settings.password=Click OK to receive instructions by mail.
 account.settings.email=Enter your new email adress. Click OK to receive instructions on this new mail.
