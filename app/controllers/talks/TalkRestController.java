@@ -264,6 +264,71 @@ public class TalkRestController extends Controller {
         return ok();
     }
 
+    public static Result closeComment(Long idTalk,Long idComment) {
+        User user = User.findByEmail(request().username());
+        Talk talk = Talk.find.byId(idTalk);
+        Comment question = Comment.find.byId(idComment);
+
+        if(question.author.id !=user.id && !user.admin){
+            Map<String, List<String>> errors = new HashMap<String, List<String>>();
+            errors.put("error", Collections.singletonList(Messages.get("error.close.comment.baduser")));
+            return badRequest(toJson(errors));
+        }
+
+        question.clos = true;
+        question.save();
+
+        return ok();
+
+    }
+
+    public static Result saveReponse(Long idTalk,Long idComment) {
+        User user = User.findByEmail(request().username());
+        Talk talk = Talk.find.byId(idTalk);
+        Comment question = Comment.find.byId(idComment);
+
+        JsonNode node = request().body().asJson();
+        String commentForm = null;
+        boolean privateComment = false;
+        Logger.debug("nose : "+node.asText());
+        if (node != null && node.get("comment") != null) {
+            commentForm = node.get("comment").asText();
+            if (user.admin && node.get("private") != null) {
+                privateComment = node.get("private").asBoolean();
+            }
+        } else {
+            Map<String, List<String>> errors = new HashMap<String, List<String>>();
+            errors.put("commentR", Collections.singletonList(Messages.get("error.required")));
+            return badRequest(toJson(errors));
+        }
+
+        if (!user.admin && !user.id.equals(talk.speaker.id)) {
+            return unauthorized(toJson(TransformValidationErrors.transform("Action non autorisée")));
+        }
+
+        if (commentForm.length() > 0 && commentForm.length() <= 140) {
+            Comment comment = new Comment();
+            comment.author = user;
+            comment.comment = commentForm;
+            comment.privateComment = privateComment;
+            comment.talk = talk;
+
+
+            if(question.reponses == null){
+                question.reponses = new ArrayList<Comment>();
+            }
+
+            comment.question = question;
+            comment.save();
+
+            question.reponses.add(comment);
+            question.save();
+
+            comment.sendMail();
+        }
+        return ok();
+    }
+
     public static Result saveStatus(Long idTalk) throws MalformedURLException {
         User user = User.findByEmail(request().username());
         Talk talk = Talk.find.byId(idTalk);
