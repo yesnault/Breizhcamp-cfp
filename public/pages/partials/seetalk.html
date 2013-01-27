@@ -76,7 +76,11 @@
                     <img ng-src="{{comment.author.avatar}}?s=40"> {{reponse.author.fullname}}<br/>
                     {{reponse.comment}}
                 </div>
-                <input type="button" class="btn btn-primary" value="Repondre" ng-show="!comment.clos" onclick="displayReponse('resp-{{comment.id}}')">
+                <form ng-submit="postCloseComment({{comment.id}})" method="POST" class="form-inline">
+                    <input type="button" class="btn btn-primary" value="Repondre" ng-show="!comment.clos" onclick="displayReponse('resp-{{comment.id}}')">
+                    <input type="submit" class="btn btn-primary" value="Clore" ng-show="!comment.clos" >
+                </form>
+                <span class="label" ng-show="comment.clos">Clos</span>
                 <div class="well" id="resp-{{comment.id}}" style="display: none;">
                     <form ng-submit="postReponse({{comment.id}})" method="POST" class="form-inline">
 

@@ -262,7 +262,7 @@ public class TalkRestController extends Controller {
         Talk talk = Talk.find.byId(idTalk);
         Comment question = Comment.find.byId(idComment);
 
-        if(talk.speaker.id !=user.id && !user.admin){
+        if(question.author.id !=user.id && !user.admin){
             Map<String, List<String>> errors = new HashMap<String, List<String>>();
             errors.put("error", Collections.singletonList(Messages.get("error.close.comment.baduser")));
             return badRequest(toJson(errors));

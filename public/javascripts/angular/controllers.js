@@ -336,6 +336,25 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http, VoteS
             });
     };
 
+    $scope.postCloseComment = function (id) {
+        $log.info("cloture du commentaire " + id);
+
+        var data = {};
+
+        http({
+            method:'POST',
+            url:'/talks/' + $scope.talk.id + '/comment/'+ id +'/close',
+            data:data
+        }).success(function (data, status, headers, config) {
+                $log.info(status);
+                $scope.errors = undefined;
+                $scope.talk = TalkService.get({id:$routeParams.talkId});
+            }).error(function (data, status, headers, config) {
+                $log.info(status);
+                $scope.errors = data;
+            });
+    };
+
     $scope.postStatus = function () {
         $log.info("postStatus");
 
