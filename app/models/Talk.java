@@ -114,7 +114,13 @@ public class Talk extends Model {
         return find.where().eq("statusTalk", status.getInterne()).eq("speaker", speaker).findList();
     }
 
+    @JsonIgnore
     public transient Vote vote;
 
     public transient Double moyenne;
+
+    @JsonProperty("note")
+    public Integer note() {
+        return vote.getNote();
+    }
 }

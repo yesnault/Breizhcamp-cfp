@@ -376,11 +376,11 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http, VoteS
 
     $scope.note = function () {
         $.fn.raty.defaults.path = '/assets/img/';
-        $log.info($scope.talk);
+        $log.info("talk : "+$scope.talk.note);
         $('#star').raty({
-            score : $scope.talk.vote != undefined ? $scope.talk.vote.note :1 ,
+            score : $scope.talk.note != undefined ? $scope.talk.note :1 ,
             click : function(score, evt) {
-                  $scope.talk.vote.note = score;
+                  $scope.note = score;
                  $('#note').val( score);
             }
         });
@@ -392,7 +392,7 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http, VoteS
 
         http({
             method:'POST',
-            url:'/talks/' + $scope.talk.id + '/vote/' + $scope.talk.vote.note
+            url:'/talks/' + $scope.talk.id + '/vote/' + $scope.note
         }).success(function (data, status, headers, config) {
                 $log.info(status);
                 $scope.errors = undefined;

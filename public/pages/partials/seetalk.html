@@ -40,9 +40,9 @@
                 <form ng-submit="postVote()" class="form-inline">
                     <div class="control-group {{{true:'error', false:''}[errors.vote != undefined]}}">
                         <label for="note">Note du talk</label>
-                        <input id="note" name="note" type="hidden"    ng-model="talk.vote.note" />
+                        <input id="note" name="note" type="hidden"    ng-model="$parent.note" />
                         <div id="star" ng-init="note()"> </div>
-
+                        note : {{talk.vote.note}}
                     </div>
                     <input  type="submit" class="btn btn-primary" value="Valider">
                 </form>
