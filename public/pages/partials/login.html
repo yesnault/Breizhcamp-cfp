@@ -1,16 +1,58 @@
 <div class="row">
-	<div class="clearfix">
-	    <p>Use your existing account on one of the following networks to log in.</p>
-	    <p>
-	        <a href="/authenticate/github"> <img src="/assets/securesocial/images/providers/github.png"/></a>
-	        <a href="/authenticate/linkedin"> <img src="/assets/securesocial/images/providers/linkedin.png"/></a>
-	        <a href="/authenticate/google"> <img src="/assets/securesocial/images/providers/google.png"/></a>
-	        <a href="/authenticate/facebook"> <img src="/assets/securesocial/images/providers/facebook.png"/></a>
-	        <a href="/authenticate/twitter"> <img src="/assets/securesocial/images/providers/twitter.png"/></a>
-	    </p>
-	</div>
-	<div class="form-actions">
-		<button ng-click="debug()" class="btn btn-primary">Debug</button>
-		userData Value: {{userlogged}}
-	</div>
+	
+	<div class="container" style="padding-top: 30px">
+		<div class="page-header">
+			<h1>Bienvenue sur le CFP du BreizhC&#64;mp</h1>
+		</div>
+		<div class="well">
+			<form>
+				<legend>Authentification avec un compte Github/Google/Twitter</legend>
+				<p>
+					<a href="/authenticate/github"><img src="/assets/securesocial/images/providers/github.png"></a>
+					<a href="/authenticate/google"><img src="/assets/securesocial/images/providers/google.png"></a>
+					<a href="/authenticate/twitter"><img src="/assets/securesocial/images/providers/twitter.png"></a>
+				</p>
+			</form>
+		</div>
+		<div class="well">
+			<form action="/authenticate/userpass" class="form-horizontal" autocomplete="off" method="POST">
+				<fieldset>
+					<legend>Authentification avec un compte local</legend>
+					<div class="control-group  " id="username_field">
+						<label class="control-label" for="username">Email</label>
+						<div class="controls">
+							<input type="text" id="username" name="username" value="" class="input-xlarge"> <span class="help-block">Required</span>
+						</div>
+					</div>
+					<div class="control-group  " id="password_field">
+						<label class="control-label" for="password">Password</label>
+						<div class="controls">
+							<input type="password" id="password" name="password" value="" class="input-xlarge"> <span class="help-block">Required</span>
+						</div>
+					</div>
+					<div class="form-actions">
+						<button type="submit" class="btn btn-primary">Login</button>
+					</div>
+					<div class="clearfix">
+						<a href="/reset"></a>
+						<p>
+							<a href="/reset">Tu as oublié ton mot de passe ??</a>
+						</p>
+					</div>
+					<div class="clearfix">
+						<p>
+							Si tu veux te créer un compte local, c'est <a href="/signup">par ici</a>
+						</p>
+					</div>
+				</fieldset>
+			</form>
+		</div>
+	</div>	
+	
+	
+	
+	
+	
+	
+	
 </div>
