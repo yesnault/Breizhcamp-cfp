@@ -1,18 +1,26 @@
 package controllers.account.settings;
 
-import controllers.Secured;
 import models.User;
+
 import org.codehaus.jackson.JsonNode;
+
 import play.mvc.Controller;
 import play.mvc.Result;
-import play.mvc.Security;
+import securesocial.core.Identity;
+import securesocial.core.java.SecureSocial;
 
-@Security.Authenticated(Secured.class)
+@SecureSocial.SecuredAction(ajaxCall=true)
 public class Notifs extends Controller {
-    
+
+    public static User getLoggedUser() {
+        Identity socialUser = (Identity) ctx().args.get(SecureSocial.USER_KEY);
+        User user = User.findByExternalId(socialUser.id().id(), socialUser.id().providerId());
+        return user;
+    }
+
     public static Result save() {
 
-        User user = User.findByEmail(request().username());
+        User user = getLoggedUser();
 
         JsonNode userJson = request().body().asJson();
         user.setNotifOnMyTalk(userJson.get("notifOnMyTalk").asBoolean());

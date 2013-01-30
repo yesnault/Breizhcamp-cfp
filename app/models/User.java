@@ -11,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.BooleanUtils;
@@ -30,7 +31,6 @@ import play.db.ebean.Model;
 public class User extends Model {
 
     @Id
-    @JsonIgnore
     public Long id;
 
     @Constraints.Required
@@ -42,9 +42,9 @@ public class User extends Model {
     @Formats.NonEmpty
     public String fullname;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JsonIgnore
-    public List<ExternalUserId> extUserIds;
+    public ExternalUserId extUserId;
     
     @JsonIgnore
     public Boolean signUp;
@@ -82,6 +82,14 @@ public class User extends Model {
 
     @Constraints.Pattern("^([0-9a-fA-F][0-9a-fA-F]:){5}([0-9a-fA-F][0-9a-fA-F])$")
     public String adresseMac;
+
+    @JsonProperty("provider")
+    public String getProvider(){
+        if (extUserId != null) {
+            return extUserId.providerId;
+        }
+        return null;
+    }
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore
@@ -189,8 +197,8 @@ public class User extends Model {
     public static User findByExternalId(String uuid, String providerId) {
 
     	return find	.where()
-    					.eq("extUserIds.providerUuid", uuid)
-    					.eq("extUserIds.providerId", providerId)
+    					.eq("extUserId.providerUuid", uuid)
+    					.eq("extUserId.providerId", providerId)
     				.findUnique();
     }
     

@@ -1,22 +1,29 @@
 package controllers;
 
-import models.*;
+import static play.libs.Json.toJson;
+
+import java.util.ArrayList;
+
+import models.Creneau;
+import models.Talk;
+import models.User;
 import models.utils.TransformValidationErrors;
-import org.codehaus.jackson.JsonNode;
-import play.Logger;
 import play.data.Form;
 import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.Result;
-import play.mvc.Security;
-
-import java.util.*;
-
-import static play.libs.Json.toJson;
+import securesocial.core.Identity;
+import securesocial.core.java.SecureSocial;
 
 
-@Security.Authenticated(Secured.class)
+@SecureSocial.SecuredAction(ajaxCall=true)
 public class CreneauRestController extends Controller {
+
+    public static User getLoggedUser() {
+        Identity socialUser = (Identity) ctx().args.get(SecureSocial.USER_KEY);
+        User user = User.findByExternalId(socialUser.id().id(), socialUser.id().providerId());
+        return user;
+    }
 	
 	public static Result get(Long idCreneau) {
 		Creneau creneau = Creneau.find.byId(idCreneau);
@@ -32,7 +39,10 @@ public class CreneauRestController extends Controller {
 
 
     public static Result save() {
-        User user = User.findByEmail(request().username());
+
+        User user = getLoggedUser();
+
+        // Vérification du rôle du user
         if (!user.admin) {
             return unauthorized();
         }
@@ -67,7 +77,7 @@ public class CreneauRestController extends Controller {
 	}
 	
 	public static Result delete(Long idCreneau) {
-        User user = User.findByEmail(request().username());
+        User user = getLoggedUser();
         if (!user.admin) {
             return unauthorized();
         }

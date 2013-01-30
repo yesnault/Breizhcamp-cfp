@@ -57,12 +57,9 @@ public class CfpUserService extends BaseUserService {
 			userCfp.validated = true;
 			if (socialUser.avatarUrl().isDefined())
 				userCfp.avatar = socialUser.avatarUrl().get();
-			if (userCfp.extUserIds == null || userCfp.extUserIds.isEmpty()) {
+			if (userCfp.extUserId == null) {
 				Logger.debug("Création du userid : " + socialUser.id().id() + " / " + socialUser.id().providerId());
-				ExternalUserId extUserId = new ExternalUserId(socialUser.id().id(), socialUser.id().providerId());
-				List<ExternalUserId> extUserIds = new ArrayList<>();
-				extUserIds.add(extUserId);
-				userCfp.extUserIds = extUserIds;
+				userCfp.extUserId = new ExternalUserId(socialUser.id().id(), socialUser.id().providerId());
 			}
 		} 
 		else {

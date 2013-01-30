@@ -1,27 +1,34 @@
 package controllers;
 
-import models.User;
-import models.VoteStatus;
-import models.VoteStatusEnum;
-import org.codehaus.jackson.JsonNode;
-import play.mvc.Controller;
-import play.mvc.Result;
-import play.mvc.Security;
+import static play.libs.Json.toJson;
 
 import java.util.Iterator;
 import java.util.Map;
 
-import static play.libs.Json.toJson;
+import models.User;
+import models.VoteStatus;
+import models.VoteStatusEnum;
 
-/**
- * Login and Logout.
- * User: yesnault
- */
+import org.codehaus.jackson.JsonNode;
 
-@Security.Authenticated(Secured.class)
+import play.mvc.Controller;
+import play.mvc.Result;
+import securesocial.core.Identity;
+import securesocial.core.java.SecureSocial;
+
+
+
+@SecureSocial.SecuredAction(ajaxCall=true)
 public class Admin extends Controller {
+
+    public static User getLoggedUser() {
+        Identity socialUser = (Identity) ctx().args.get(SecureSocial.USER_KEY);
+        User user = User.findByExternalId(socialUser.id().id(), socialUser.id().providerId());
+        return user;
+    }
+
 	public static Result submitUsers() {
-        User userRequest = User.findByEmail(request().username());
+        User userRequest = getLoggedUser();
         if (!userRequest.admin) {
             return unauthorized();
         }
@@ -47,6 +54,7 @@ public class Admin extends Controller {
         return ok();
 	}
 
+
     public static class ResultVote {
 
         public ResultVote(VoteStatusEnum status) {
@@ -56,8 +64,9 @@ public class Admin extends Controller {
         public VoteStatusEnum status;
     }
 
+
     public static Result getVoteStatus() {
-        User user = User.findByEmail(request().username());
+        User user = getLoggedUser();
         if (!user.admin) {
             return unauthorized();
         }
@@ -65,7 +74,7 @@ public class Admin extends Controller {
     }
 
     public static Result changeVoteStatus(String newStatus) {
-        User user = User.findByEmail(request().username());
+        User user = getLoggedUser();
         if (!user.admin) {
             return unauthorized();
         }

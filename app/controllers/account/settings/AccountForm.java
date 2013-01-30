@@ -1,12 +1,11 @@
 package controllers.account.settings;
 
-import models.DynamicFieldJson;
-import models.User;
-import play.data.format.Formats;
-import play.data.validation.Constraints;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import models.DynamicFieldJson;
+import play.data.format.Formats;
+import play.data.validation.Constraints;
 
 public class AccountForm {
     @Constraints.Required

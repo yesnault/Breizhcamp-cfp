@@ -1,28 +1,40 @@
 package controllers.account.settings;
 
-import controllers.Secured;
-import models.*;
-import models.utils.TransformValidationErrors;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.node.ArrayNode;
-import play.data.Form;
-import play.mvc.Controller;
-import play.mvc.Result;
-import play.mvc.Security;
+import static play.libs.Json.toJson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static play.libs.Json.toJson;
+import models.DynamicField;
+import models.DynamicFieldJson;
+import models.DynamicFieldValue;
+import models.Lien;
+import models.User;
+import models.utils.TransformValidationErrors;
 
-@Security.Authenticated(Secured.class)
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.node.ArrayNode;
+
+import play.data.Form;
+import play.mvc.Controller;
+import play.mvc.Result;
+import securesocial.core.Identity;
+import securesocial.core.java.SecureSocial;
+
+@SecureSocial.SecuredAction(ajaxCall=true)
 public class Account extends Controller {
+
+    public static User getLoggedUser() {
+        Identity socialUser = (Identity) ctx().args.get(SecureSocial.USER_KEY);
+        User user = User.findByExternalId(socialUser.id().id(), socialUser.id().providerId());
+        return user;
+    }
 
     // Utilisé par le json.
     public static Result getUser(Long id) {
-        User user = User.findByEmail(request().username());
+        User user = getLoggedUser();
         if (!user.id.equals(id)) {
             return unauthorized();
         }
@@ -38,7 +50,7 @@ public class Account extends Controller {
     }
     
     public static Result save() {
-        User user = User.findByEmail(request().username());
+        User user = getLoggedUser();
         Form<AccountForm> accountForm;
         List<Form<Lien>> liensForms = new ArrayList<Form<Lien>>();
         Form<Lien> newLink = null;
@@ -124,7 +136,7 @@ public class Account extends Controller {
     public static Result changeMac() {
         JsonNode jsonNode = request().body().asJson();
         Form<MacForm> macForm = form(MacForm.class).bind(jsonNode);
-        User user = User.findByEmail(request().username());
+        User user = getLoggedUser();
 
         if (macForm.hasErrors()) {
             return badRequest(toJson(TransformValidationErrors.transform(macForm.errors())));

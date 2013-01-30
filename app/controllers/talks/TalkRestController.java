@@ -1,28 +1,52 @@
 package controllers.talks;
 
-import controllers.Secured;
-import models.*;
+import static play.libs.Json.toJson;
+
+import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import models.Comment;
+import models.Creneau;
+import models.StatusTalk;
+import models.Tag;
+import models.Talk;
+import models.User;
+import models.Vote;
+import models.VoteStatus;
+import models.VoteStatusEnum;
 import models.utils.TransformValidationErrors;
+
 import org.codehaus.jackson.JsonNode;
+
 import play.Logger;
 import play.data.Form;
 import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.Result;
-import play.mvc.Security;
-
-import java.net.MalformedURLException;
-import java.util.*;
-
-import static play.libs.Json.toJson;
+import securesocial.core.Identity;
+import securesocial.core.java.SecureSocial;
 
 
-@Security.Authenticated(Secured.class)
+@SecureSocial.SecuredAction(ajaxCall=true)
 public class TalkRestController extends Controller {
-	
+
+    public static User getLoggedUser() {
+        Identity socialUser = (Identity) ctx().args.get(SecureSocial.USER_KEY);
+        User user = User.findByExternalId(socialUser.id().id(), socialUser.id().providerId());
+        return user;
+    }
+
 	public static Result getById(Long idTalk) {
 		Talk talk = Talk.find.byId(idTalk);
-        User user = User.findByEmail(request().username());
+
+        User user = getLoggedUser();
         if (user.admin) {
             talk.vote = Vote.findVoteByUserAndTalk(user, talk);
         }
@@ -31,7 +55,8 @@ public class TalkRestController extends Controller {
 	}
 	
 	public static Result get() {
-		User user = User.findByEmail(request().username());
+        User user = getLoggedUser();
+
 		List<Talk> talks = Talk.findBySpeaker(user);
 
         for (Talk talk : talks) {
@@ -67,7 +92,7 @@ public class TalkRestController extends Controller {
     }
 
     public static Result all() {
-        User user = User.findByEmail(request().username());
+        User user = getLoggedUser();
         if (!user.admin) {
             return unauthorized();
         }
@@ -87,7 +112,7 @@ public class TalkRestController extends Controller {
         if (VoteStatus.getVoteStatus() != VoteStatusEnum.NOT_BEGIN) {
             return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.vote.begin"))));
         }
-        User user = User.findByEmail(request().username());
+        User user = getLoggedUser();
         Form<Talk> talkForm = form(Talk.class).bindFromRequest();
 
         if (talkForm.hasErrors()) {
@@ -192,7 +217,7 @@ public class TalkRestController extends Controller {
     }
 
     public static Result addTag(Long idTalk, String tags) {
-        User user = User.findByEmail(request().username());
+        User user = getLoggedUser();
         Talk dbTalk = Talk.find.byId(idTalk);
 
         if (!user.admin && !user.id.equals(dbTalk.speaker.id)) {
@@ -236,7 +261,7 @@ public class TalkRestController extends Controller {
     }
 
     public static Result saveComment(Long idTalk) {
-        User user = User.findByEmail(request().username());
+        User user = getLoggedUser();
         Talk talk = Talk.find.byId(idTalk);
 
         JsonNode node = request().body().asJson();
@@ -270,11 +295,9 @@ public class TalkRestController extends Controller {
     }
 
     public static Result closeComment(Long idTalk,Long idComment) {
-        User user = User.findByEmail(request().username());
+        User user = getLoggedUser();
         Talk talk = Talk.find.byId(idTalk);
         Comment question = Comment.find.byId(idComment);
-
-
 
         if(question.author.id !=user.id){
             Map<String, List<String>> errors = new HashMap<String, List<String>>();
@@ -290,7 +313,7 @@ public class TalkRestController extends Controller {
     }
 
     public static Result deleteComment(Long idTalk,Long idComment) {
-        User user = User.findByEmail(request().username());
+        User user = getLoggedUser();
         Talk talk = Talk.find.byId(idTalk);
         Comment question = Comment.find.byId(idComment);
 
@@ -306,15 +329,14 @@ public class TalkRestController extends Controller {
             return badRequest(toJson(errors));
         }
 
-
         question.delete();
 
         return ok();
-
     }
 
+
     public static Result saveReponse(Long idTalk,Long idComment) {
-        User user = User.findByEmail(request().username());
+        User user = getLoggedUser();
         Talk talk = Talk.find.byId(idTalk);
         Comment question = Comment.find.byId(idComment);
 
@@ -361,7 +383,7 @@ public class TalkRestController extends Controller {
     }
 
     public static Result editComment(Long idTalk,Long idComment) {
-        User user = User.findByEmail(request().username());
+        User user = getLoggedUser();
         Talk talk = Talk.find.byId(idTalk);
         Comment question = Comment.find.byId(idComment);
 
@@ -390,7 +412,7 @@ public class TalkRestController extends Controller {
     }
 
     public static Result saveStatus(Long idTalk) throws MalformedURLException {
-        User user = User.findByEmail(request().username());
+        User user = getLoggedUser();
         Talk talk = Talk.find.byId(idTalk);
         if (!user.admin) {
             return unauthorized();
@@ -413,7 +435,7 @@ public class TalkRestController extends Controller {
 
 
     public static Result saveVote(Long idTalk, Integer note) {
-        User user = User.findByEmail(request().username());
+        User user = getLoggedUser();
         Talk talk = Talk.find.byId(idTalk);
         if (!user.admin) {
             return unauthorized();

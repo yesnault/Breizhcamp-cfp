@@ -1,21 +1,27 @@
 package controllers;
 
-import models.*;
+import static play.libs.Json.toJson;
+import models.DynamicField;
+import models.DynamicFieldValue;
+import models.User;
 import models.utils.TransformValidationErrors;
 import play.data.Form;
 import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.Result;
-import play.mvc.Security;
-
-import java.util.ArrayList;
-
-import static play.libs.Json.toJson;
+import securesocial.core.Identity;
+import securesocial.core.java.SecureSocial;
 
 
-@Security.Authenticated(Secured.class)
+@SecureSocial.SecuredAction(ajaxCall=true)
 public class DynamicFieldRestController extends Controller {
-	
+
+    public static User getLoggedUser() {
+        Identity socialUser = (Identity) ctx().args.get(SecureSocial.USER_KEY);
+        User user = User.findByExternalId(socialUser.id().id(), socialUser.id().providerId());
+        return user;
+    }
+
 	public static Result get(Long idDynamicField) {
 		DynamicField dynamicField = DynamicField.find.byId(idDynamicField);
         if (dynamicField == null) {
@@ -30,7 +36,7 @@ public class DynamicFieldRestController extends Controller {
 
 
     public static Result save() {
-        User user = User.findByEmail(request().username());
+        User user = getLoggedUser();
         if (!user.admin) {
             return unauthorized();
         }
@@ -64,7 +70,7 @@ public class DynamicFieldRestController extends Controller {
 	}
 	
 	public static Result delete(Long idDynamicField) {
-        User user = User.findByEmail(request().username());
+        User user = getLoggedUser();
         if (!user.admin) {
             return unauthorized();
         }

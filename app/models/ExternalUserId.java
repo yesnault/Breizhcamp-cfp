@@ -1,8 +1,10 @@
 package models;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import play.db.ebean.Model;
 
@@ -10,11 +12,10 @@ import play.db.ebean.Model;
 @Entity
 public class ExternalUserId extends Model {
 
-
 	@Id
 	public Long id;
 	
-	@ManyToOne
+	@OneToOne
 	public User user;
 	
 	public String providerUuid;
