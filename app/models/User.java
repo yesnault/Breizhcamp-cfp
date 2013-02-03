@@ -1,27 +1,16 @@
 package models;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.joda.time.DateTime;
-
 import play.data.format.Formats;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
+
+import javax.persistence.*;
+import java.util.*;
 
 /**
  * 
@@ -181,7 +170,7 @@ public class User extends Model {
     /**
      * Retrieve a user from an Id.
      *
-     * @param email email to search
+     * @param id id to search
      * @return a user
      */
     public static User findById(Long id) {
@@ -191,7 +180,7 @@ public class User extends Model {
     /**
      * Retrieve a user from an external Id (SocialUser id/providerId).
      *
-     * @param email email to search
+     * @param uuid uuid to search
      * @return a user
      */
     public static User findByExternalId(String uuid, String providerId) {
