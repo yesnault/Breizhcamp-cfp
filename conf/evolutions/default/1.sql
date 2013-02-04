@@ -8,7 +8,9 @@ create table comment (
   author_id                 bigint,
   talk_id                   bigint,
   comment                   varchar(140),
+  clos                      tinyint(1) default 0,
   private_comment           tinyint(1) default 0,
+  question_id               bigint,
   constraint pk_comment primary key (id))
 ;
 
@@ -64,6 +66,7 @@ create table talk (
   description               varchar(2000),
   speaker_id                bigint,
   status_talk               varchar(1),
+  duree_preferee_id         bigint,
   constraint ck_talk_status_talk check (status_talk in ('A','W','R')),
   constraint uq_talk_title unique (title),
   constraint pk_talk primary key (id))
@@ -73,6 +76,7 @@ create table user (
   id                        bigint auto_increment not null,
   email                     varchar(255),
   fullname                  varchar(255),
+  ext_user_id_id            bigint,
   sign_up                   tinyint(1) default 0,
   token_uuid                varchar(255),
   token_creation_time       datetime,
@@ -122,20 +126,26 @@ alter table comment add constraint fk_comment_author_1 foreign key (author_id) r
 create index ix_comment_author_1 on comment (author_id);
 alter table comment add constraint fk_comment_talk_2 foreign key (talk_id) references talk (id) on delete restrict on update restrict;
 create index ix_comment_talk_2 on comment (talk_id);
-alter table dynamic_field_value add constraint fk_dynamic_field_value_dynamic_3 foreign key (dynamic_field_id) references dynamic_field (id) on delete restrict on update restrict;
-create index ix_dynamic_field_value_dynamic_3 on dynamic_field_value (dynamic_field_id);
-alter table dynamic_field_value add constraint fk_dynamic_field_value_user_4 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_dynamic_field_value_user_4 on dynamic_field_value (user_id);
-alter table external_user_id add constraint fk_external_user_id_user_5 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_external_user_id_user_5 on external_user_id (user_id);
-alter table lien add constraint fk_lien_user_6 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_lien_user_6 on lien (user_id);
-alter table talk add constraint fk_talk_speaker_7 foreign key (speaker_id) references user (id) on delete restrict on update restrict;
-create index ix_talk_speaker_7 on talk (speaker_id);
-alter table vote add constraint fk_vote_user_8 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_vote_user_8 on vote (user_id);
-alter table vote add constraint fk_vote_talk_9 foreign key (talk_id) references talk (id) on delete restrict on update restrict;
-create index ix_vote_talk_9 on vote (talk_id);
+alter table comment add constraint fk_comment_question_3 foreign key (question_id) references comment (id) on delete restrict on update restrict;
+create index ix_comment_question_3 on comment (question_id);
+alter table dynamic_field_value add constraint fk_dynamic_field_value_dynamic_4 foreign key (dynamic_field_id) references dynamic_field (id) on delete restrict on update restrict;
+create index ix_dynamic_field_value_dynamic_4 on dynamic_field_value (dynamic_field_id);
+alter table dynamic_field_value add constraint fk_dynamic_field_value_user_5 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_dynamic_field_value_user_5 on dynamic_field_value (user_id);
+alter table external_user_id add constraint fk_external_user_id_user_6 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_external_user_id_user_6 on external_user_id (user_id);
+alter table lien add constraint fk_lien_user_7 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_lien_user_7 on lien (user_id);
+alter table talk add constraint fk_talk_speaker_8 foreign key (speaker_id) references user (id) on delete restrict on update restrict;
+create index ix_talk_speaker_8 on talk (speaker_id);
+alter table talk add constraint fk_talk_dureePreferee_9 foreign key (duree_preferee_id) references creneau (id) on delete restrict on update restrict;
+create index ix_talk_dureePreferee_9 on talk (duree_preferee_id);
+alter table user add constraint fk_user_extUserId_10 foreign key (ext_user_id_id) references external_user_id (id) on delete restrict on update restrict;
+create index ix_user_extUserId_10 on user (ext_user_id_id);
+alter table vote add constraint fk_vote_user_11 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_vote_user_11 on vote (user_id);
+alter table vote add constraint fk_vote_talk_12 foreign key (talk_id) references talk (id) on delete restrict on update restrict;
+create index ix_vote_talk_12 on vote (talk_id);
 
 
 

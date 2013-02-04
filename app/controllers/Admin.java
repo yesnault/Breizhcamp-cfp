@@ -16,9 +16,7 @@ import play.mvc.Result;
 import securesocial.core.Identity;
 import securesocial.core.java.SecureSocial;
 
-
-
-@SecureSocial.SecuredAction(ajaxCall=true)
+@SecureSocial.SecuredAction(ajaxCall = true)
 public class Admin extends Controller {
 
     public static User getLoggedUser() {
@@ -27,10 +25,10 @@ public class Admin extends Controller {
         return user;
     }
 
-	public static Result submitUsers() {
+    public static Result submitUsers() {
         User userRequest = getLoggedUser();
         if (!userRequest.admin) {
-            return unauthorized();
+            return forbidden();
         }
         JsonNode node = request().body().asJson();
         Iterator<Map.Entry<String, JsonNode>> iteratorMails = node.getFields();
@@ -52,23 +50,20 @@ public class Admin extends Controller {
             }
         }
         return ok();
-	}
-
+    }
 
     public static class ResultVote {
 
         public ResultVote(VoteStatusEnum status) {
             this.status = status;
         }
-
         public VoteStatusEnum status;
     }
-
 
     public static Result getVoteStatus() {
         User user = getLoggedUser();
         if (!user.admin) {
-            return unauthorized();
+            return forbidden();
         }
         return ok(toJson(new ResultVote(VoteStatus.getVoteStatus())));
     }
@@ -76,10 +71,9 @@ public class Admin extends Controller {
     public static Result changeVoteStatus(String newStatus) {
         User user = getLoggedUser();
         if (!user.admin) {
-            return unauthorized();
+            return forbidden();
         }
         VoteStatus.changeVoteStatus(VoteStatusEnum.valueOf(newStatus));
         return ok();
     }
-
 }

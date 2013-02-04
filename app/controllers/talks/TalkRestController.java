@@ -33,8 +33,7 @@ import play.mvc.Result;
 import securesocial.core.Identity;
 import securesocial.core.java.SecureSocial;
 
-
-@SecureSocial.SecuredAction(ajaxCall=true)
+@SecureSocial.SecuredAction(ajaxCall = true)
 public class TalkRestController extends Controller {
 
     public static User getLoggedUser() {
@@ -43,21 +42,21 @@ public class TalkRestController extends Controller {
         return user;
     }
 
-	public static Result getById(Long idTalk) {
-		Talk talk = Talk.find.byId(idTalk);
+    public static Result getById(Long idTalk) {
+        Talk talk = Talk.find.byId(idTalk);
 
         User user = getLoggedUser();
         if (user.admin) {
             talk.vote = Vote.findVoteByUserAndTalk(user, talk);
         }
         talk.fiteredComments(user);
-		return ok(toJson(talk));
-	}
-	
-	public static Result get() {
+        return ok(toJson(talk));
+    }
+
+    public static Result get() {
         User user = getLoggedUser();
 
-		List<Talk> talks = Talk.findBySpeaker(user);
+        List<Talk> talks = Talk.findBySpeaker(user);
 
         for (Talk talk : talks) {
             if (user.admin) {
@@ -69,8 +68,8 @@ public class TalkRestController extends Controller {
 
             talk.fiteredComments(user);
         }
-		return ok(toJson(talks));
-	}
+        return ok(toJson(talks));
+    }
 
     public static Result getTalks(Long userId) {
         User user = User.find.byId(userId);
@@ -81,7 +80,7 @@ public class TalkRestController extends Controller {
         return ok(toJson(talks));
     }
 
-    public static Result getTalksByStatus(Long userId,String status) {
+    public static Result getTalksByStatus(Long userId, String status) {
         StatusTalk statusTalk = StatusTalk.fromCode(status);
         User user = User.find.byId(userId);
         List<Talk> talks = Talk.findBySpeakerAndStatus(user, statusTalk);
@@ -94,7 +93,7 @@ public class TalkRestController extends Controller {
     public static Result all() {
         User user = getLoggedUser();
         if (!user.admin) {
-            return unauthorized();
+            return forbidden();
         }
         List<Talk> talks = Talk.find.all();
         for (Talk talk : talks) {
@@ -106,7 +105,6 @@ public class TalkRestController extends Controller {
         }
         return ok(toJson(talks));
     }
-
 
     public static Result save() {
         if (VoteStatus.getVoteStatus() != VoteStatusEnum.NOT_BEGIN) {
@@ -152,7 +150,7 @@ public class TalkRestController extends Controller {
 
         // HTTP 204 en cas de succès (NO CONTENT)
         return noContent();
-	}
+    }
 
     private static void updateCreneaux(Talk formTalk, Talk dbTalk) {
         Set<Long> creneauxInForm = new HashSet<Long>();
@@ -183,7 +181,6 @@ public class TalkRestController extends Controller {
 
         dbTalk.update();
     }
-
 
     public static void updateTags(String tags, Talk dbTalk) {
         if (tags == null || tags.length() == 0) {
@@ -221,25 +218,25 @@ public class TalkRestController extends Controller {
         Talk dbTalk = Talk.find.byId(idTalk);
 
         if (!user.admin && !user.id.equals(dbTalk.speaker.id)) {
-            return unauthorized(toJson(TransformValidationErrors.transform("Action non autorisée")));
+            return forbidden(toJson(TransformValidationErrors.transform("Action non autorisée")));
         }
 
         if (dbTalk != null) {
             Logger.debug("addTags: = " + tags + " init tags " + dbTalk.getTagsName());
-            updateTags(tags,dbTalk);
+            updateTags(tags, dbTalk);
             Logger.debug("fin addTags: = " + dbTalk.getTagsName() + " size : " + dbTalk.getTags().size());
             return ok();
         } else {
             return notFound();
         }
     }
-	
-	public static Result delete(Long idTalk) {
+
+    public static Result delete(Long idTalk) {
         if (VoteStatus.getVoteStatus() != VoteStatusEnum.NOT_BEGIN) {
             return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.vote.begin"))));
         }
 
-		Talk talk = Talk.find.byId(idTalk);
+        Talk talk = Talk.find.byId(idTalk);
         for (Comment comment : talk.getComments()) {
             comment.delete();
         }
@@ -279,7 +276,7 @@ public class TalkRestController extends Controller {
         }
 
         if (!user.admin && !user.id.equals(talk.speaker.id)) {
-            return unauthorized(toJson(TransformValidationErrors.transform("Action non autorisée")));
+            return forbidden(toJson(TransformValidationErrors.transform("Action non autorisée")));
         }
 
         if (commentForm.length() > 0 && commentForm.length() <= 140) {
@@ -294,12 +291,12 @@ public class TalkRestController extends Controller {
         return ok();
     }
 
-    public static Result closeComment(Long idTalk,Long idComment) {
+    public static Result closeComment(Long idTalk, Long idComment) {
         User user = getLoggedUser();
         Talk talk = Talk.find.byId(idTalk);
         Comment question = Comment.find.byId(idComment);
 
-        if(question.author.id !=user.id){
+        if (question.author.id != user.id) {
             Map<String, List<String>> errors = new HashMap<String, List<String>>();
             errors.put("error", Collections.singletonList(Messages.get("error.delete.comment.baduser")));
             return badRequest(toJson(errors));
@@ -312,18 +309,18 @@ public class TalkRestController extends Controller {
 
     }
 
-    public static Result deleteComment(Long idTalk,Long idComment) {
+    public static Result deleteComment(Long idTalk, Long idComment) {
         User user = getLoggedUser();
         Talk talk = Talk.find.byId(idTalk);
         Comment question = Comment.find.byId(idComment);
 
-        if(question.author.id !=user.id && !user.admin){
+        if (question.author.id != user.id && !user.admin) {
             Map<String, List<String>> errors = new HashMap<String, List<String>>();
             errors.put("error", Collections.singletonList(Messages.get("error.close.comment.baduser")));
             return badRequest(toJson(errors));
         }
 
-        if(question.reponses != null && question.reponses.size() >0 ){
+        if (question.reponses != null && question.reponses.size() > 0) {
             Map<String, List<String>> errors = new HashMap<String, List<String>>();
             errors.put("error", Collections.singletonList(Messages.get("error.delete.comment")));
             return badRequest(toJson(errors));
@@ -334,8 +331,7 @@ public class TalkRestController extends Controller {
         return ok();
     }
 
-
-    public static Result saveReponse(Long idTalk,Long idComment) {
+    public static Result saveReponse(Long idTalk, Long idComment) {
         User user = getLoggedUser();
         Talk talk = Talk.find.byId(idTalk);
         Comment question = Comment.find.byId(idComment);
@@ -343,7 +339,7 @@ public class TalkRestController extends Controller {
         JsonNode node = request().body().asJson();
         String commentForm = null;
         boolean privateComment = false;
-        Logger.debug("nose : "+node.asText());
+        Logger.debug("nose : " + node.asText());
         if (node != null && node.get("comment") != null) {
             commentForm = node.get("comment").asText();
             if (user.admin && node.get("private") != null) {
@@ -356,7 +352,7 @@ public class TalkRestController extends Controller {
         }
 
         if (!user.admin && !user.id.equals(talk.speaker.id)) {
-            return unauthorized(toJson(TransformValidationErrors.transform("Action non autorisée")));
+            return forbidden(toJson(TransformValidationErrors.transform("Action non autorisée")));
         }
 
         if (commentForm.length() > 0 && commentForm.length() <= 140) {
@@ -367,7 +363,7 @@ public class TalkRestController extends Controller {
             comment.talk = talk;
 
 
-            if(question.reponses == null){
+            if (question.reponses == null) {
                 question.reponses = new ArrayList<Comment>();
             }
 
@@ -382,14 +378,14 @@ public class TalkRestController extends Controller {
         return ok();
     }
 
-    public static Result editComment(Long idTalk,Long idComment) {
+    public static Result editComment(Long idTalk, Long idComment) {
         User user = getLoggedUser();
         Talk talk = Talk.find.byId(idTalk);
         Comment question = Comment.find.byId(idComment);
 
         JsonNode node = request().body().asJson();
         String commentForm = null;
-        Logger.debug("nose : "+node.asText());
+        Logger.debug("nose : " + node.asText());
         if (node != null && node.get("comment") != null) {
             commentForm = node.get("comment").asText();
         } else {
@@ -399,7 +395,7 @@ public class TalkRestController extends Controller {
         }
 
         if (!user.admin && !user.id.equals(talk.speaker.id)) {
-            return unauthorized(toJson(TransformValidationErrors.transform("Action non autorisée")));
+            return forbidden(toJson(TransformValidationErrors.transform("Action non autorisée")));
         }
 
         if (commentForm.length() > 0 && commentForm.length() <= 140) {
@@ -413,10 +409,11 @@ public class TalkRestController extends Controller {
 
     public static Result saveStatus(Long idTalk) throws MalformedURLException {
         User user = getLoggedUser();
-        Talk talk = Talk.find.byId(idTalk);
         if (!user.admin) {
-            return unauthorized();
+            return forbidden();
         }
+
+        Talk talk = Talk.find.byId(idTalk);
 
         JsonNode node = request().body().asJson();
 
@@ -432,14 +429,13 @@ public class TalkRestController extends Controller {
         return ok();
     }
 
-
-
     public static Result saveVote(Long idTalk, Integer note) {
         User user = getLoggedUser();
-        Talk talk = Talk.find.byId(idTalk);
         if (!user.admin) {
-            return unauthorized();
+            return forbidden();
         }
+
+        Talk talk = Talk.find.byId(idTalk);
 
         VoteStatusEnum voteStatus = VoteStatus.getVoteStatus();
         if (voteStatus != VoteStatusEnum.OPEN) {
@@ -459,5 +455,4 @@ public class TalkRestController extends Controller {
         vote.save();
         return ok();
     }
-
 }

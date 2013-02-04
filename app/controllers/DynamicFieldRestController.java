@@ -12,33 +12,31 @@ import play.mvc.Result;
 import securesocial.core.Identity;
 import securesocial.core.java.SecureSocial;
 
-
-@SecureSocial.SecuredAction(ajaxCall=true)
+@SecureSocial.SecuredAction(ajaxCall = true)
 public class DynamicFieldRestController extends Controller {
 
-    public static User getLoggedUser() {
+    private static User getLoggedUser() {
         Identity socialUser = (Identity) ctx().args.get(SecureSocial.USER_KEY);
         User user = User.findByExternalId(socialUser.id().id(), socialUser.id().providerId());
         return user;
     }
 
-	public static Result get(Long idDynamicField) {
-		DynamicField dynamicField = DynamicField.find.byId(idDynamicField);
+    public static Result get(Long idDynamicField) {
+        DynamicField dynamicField = DynamicField.find.byId(idDynamicField);
         if (dynamicField == null) {
             return noContent();
         }
-		return ok(toJson(dynamicField));
-	}
+        return ok(toJson(dynamicField));
+    }
 
     public static Result all() {
         return ok(toJson(DynamicField.find.all()));
     }
 
-
     public static Result save() {
         User user = getLoggedUser();
         if (!user.admin) {
-            return unauthorized();
+            return forbidden();
         }
 
         Form<DynamicField> dynamicFieldForm = form(DynamicField.class).bindFromRequest();
@@ -67,15 +65,15 @@ public class DynamicFieldRestController extends Controller {
         }
         // HTTP 204 en cas de succès (NO CONTENT)
         return noContent();
-	}
-	
-	public static Result delete(Long idDynamicField) {
+    }
+
+    public static Result delete(Long idDynamicField) {
         User user = getLoggedUser();
         if (!user.admin) {
-            return unauthorized();
+            return forbidden();
         }
 
-		DynamicField dynamicField = DynamicField.find.byId(idDynamicField);
+        DynamicField dynamicField = DynamicField.find.byId(idDynamicField);
         if (dynamicField != null) {
             for (DynamicFieldValue value : dynamicField.getDynamicFieldValues()) {
                 value.delete();
@@ -85,5 +83,4 @@ public class DynamicFieldRestController extends Controller {
         // HTTP 204 en cas de succès (NO CONTENT)
         return noContent();
     }
-
 }

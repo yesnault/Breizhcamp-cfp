@@ -15,8 +15,7 @@ import play.mvc.Result;
 import securesocial.core.Identity;
 import securesocial.core.java.SecureSocial;
 
-
-@SecureSocial.SecuredAction(ajaxCall=true)
+@SecureSocial.SecuredAction(ajaxCall = true)
 public class CreneauRestController extends Controller {
 
     public static User getLoggedUser() {
@@ -24,19 +23,18 @@ public class CreneauRestController extends Controller {
         User user = User.findByExternalId(socialUser.id().id(), socialUser.id().providerId());
         return user;
     }
-	
-	public static Result get(Long idCreneau) {
-		Creneau creneau = Creneau.find.byId(idCreneau);
+
+    public static Result get(Long idCreneau) {
+        Creneau creneau = Creneau.find.byId(idCreneau);
         if (creneau == null) {
             return noContent();
         }
-		return ok(toJson(creneau));
-	}
+        return ok(toJson(creneau));
+    }
 
     public static Result all() {
         return ok(toJson(Creneau.find.all()));
     }
-
 
     public static Result save() {
 
@@ -44,7 +42,7 @@ public class CreneauRestController extends Controller {
 
         // Vérification du rôle du user
         if (!user.admin) {
-            return unauthorized();
+            return forbidden();
         }
 
         Form<Creneau> creneauForm = form(Creneau.class).bindFromRequest();
@@ -74,15 +72,15 @@ public class CreneauRestController extends Controller {
         }
         // HTTP 204 en cas de succès (NO CONTENT)
         return noContent();
-	}
-	
-	public static Result delete(Long idCreneau) {
+    }
+
+    public static Result delete(Long idCreneau) {
         User user = getLoggedUser();
         if (!user.admin) {
-            return unauthorized();
+            return forbidden();
         }
 
-		Creneau creneau = Creneau.find.byId(idCreneau);
+        Creneau creneau = Creneau.find.byId(idCreneau);
         if (creneau != null) {
             for (Talk talk : new ArrayList<Talk>(creneau.getTalks())) {
                 creneau.getTalks().remove(talk);
@@ -93,5 +91,4 @@ public class CreneauRestController extends Controller {
         // HTTP 204 en cas de succès (NO CONTENT)
         return noContent();
     }
-
 }

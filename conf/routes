@@ -7,7 +7,7 @@ GET     /                           controllers.Assets.at(path="/public", file="
 
 #GET		/testlogin					controllers.Application.login()
 # SecureSocial Login page
-GET     /login                      securesocial.controllers.LoginPage.login
+#GET     /login                      securesocial.controllers.LoginPage.login
 GET     /logout                     securesocial.controllers.LoginPage.logout
 
 # SecureSocial User Registration and password handling (only needed if you are using UsernamePasswordProvider)

@@ -37,3 +37,4 @@ test-result
 server.pid
 modules
 *.db
+/nbproject/private/
