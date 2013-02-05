@@ -21,13 +21,13 @@
                     <div class="control-group  " id="username_field">
                         <label class="control-label" for="username">Email</label>
                         <div class="controls">
-                            <input type="text" id="username" name="username" value="" class="input-xlarge"> <span class="help-block">Required</span>
+                            <input type="text" id="username" name="username" value="" class="input-xlarge"> <span class="help-block">Champ obligatoire</span>
                         </div>
                     </div>
                     <div class="control-group  " id="password_field">
                         <label class="control-label" for="password">Password</label>
                         <div class="controls">
-                            <input type="password" id="password" name="password" value="" class="input-xlarge"> <span class="help-block">Required</span>
+                            <input type="password" id="password" name="password" value="" class="input-xlarge"> <span class="help-block">Champ obligatoire</span>
                         </div>
                     </div>
                     <div class="form-actions">
@@ -36,32 +36,49 @@
                     <div class="clearfix">
                         <a href="/reset"></a>
                         <p>
-                            <a href="/reset">Tu as oublié ton mot de passe ??</a>
+                            <a href="/reset">Vous avez oublié votre mot de passe ??</a>
                         </p>
                     </div>
                     <div class="clearfix">
                         <p>
-                            Si tu veux te créer un compte local, c'est <a data-target="#signUpModal" data-toggle="modal">par ici</a>
+                            Pour la création d'un compte local, c'est <a data-target="#signUpModal" data-toggle="modal">par ici</a>
                         </p>
-                        <!-- Modal -->
-                        <div id="signUpModal" class="modal hide fade" tabindex="-1" role="dialog">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                <h3 id="myModalLabel">Modal header</h3>
-                            </div>
-                            <div class="modal-body">
-                                <p>One fine body…</p>
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-                                <button class="btn btn-primary">Save changes</button>
-                            </div>
-                        </div>
                     </div>
                 </fieldset>
             </form>
         </div>
     </div>	
+
+    <!-- Modal -->
+    <div id="signUpModal" class="modal hide fade" tabindex="-1" role="dialog">
+        <form action="/signup" class="form-horizontal" autocomplete="off" method="post">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h3 id="signUpModalLabel">Création de compte</h3>
+            </div>
+            <div class="modal-body">
+                <fieldset>
+                    <div class="control-group  " id="email_field">
+                        <label class="control-label" for="emailpopup">Email</label>
+                        <div class="controls">
+                            <input type="email" id="emailpopup" name="email" value="" class="input-xlarge" required>
+                            <span class="help-block">Champ obligatoire</span>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal">Annuler</button>
+                <button class="btn btn-primary">Créer votre compte</button>
+            </div>
+        </form>
+        <script>
+            $('#signUpModal').on('shown', function() {
+                // Focus sur le champ email à l'ouverture de la popup
+                document.getElementById('emailpopup').focus();
+            })
+        </script>
+    </div>
 
 
 </div>
