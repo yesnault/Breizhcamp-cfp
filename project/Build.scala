@@ -20,13 +20,13 @@ object ApplicationBuild extends Build {
     lazy val s = Defaults.defaultSettings ++ Seq(generateAPIDocsTask)
 
     val main = PlayProject(appName, appVersion, appDependencies, mainLang = JAVA, settings = s)
-    .settings(cloudBeesSettings :_*)
-    .settings(CloudBees.applicationId := Some("breizhcamp/cfp")).settings(
-    // Add your own project settings here
-    resolvers += "Apache" at "http://repo1.maven.org/maven2/",
-    resolvers += "jBCrypt Repository" at "http://repo1.maven.org/maven2/org/",
-    resolvers += Resolver.url("SecureSocial Repository", url("http://securesocial.ws/repository/releases/"))(Resolver.ivyStylePatterns)
-    )
+      .settings(cloudBeesSettings :_*)
+      .settings(CloudBees.applicationId := Some("breizhcamp/cfp")).settings(
+        // Add your own project settings here
+        resolvers += "Apache" at "http://repo1.maven.org/maven2/",
+        resolvers += "jBCrypt Repository" at "http://repo1.maven.org/maven2/org/",
+        resolvers += Resolver.url("SecureSocial Repository", url("http://securesocial.ws/repository/releases/"))(Resolver.ivyStylePatterns)
+      )
 
     object Tasks {
 

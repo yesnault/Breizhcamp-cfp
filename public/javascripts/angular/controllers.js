@@ -1,31 +1,33 @@
 'use strict';
 
 /* Controllers */
+
+// Pour que l'injection de dépendances fonctionne en cas de 'minifying'
+RootController.$inject = ['$scope', 'UserService', '$log', '$location'];
 function RootController($scope, UserService, $log, $location) {
     $scope.userService = UserService;
 
-    $scope.logout = function () {
+    $scope.logout = function() {
         UserService.logout();
-
     };
 
-    $scope.checkloc = function (mustBeAdmin) {
+    $scope.checkloc = function(mustBeAdmin) {
         var user = UserService.getUserData();
-        if (user == null) {
+        if (!user) {
             $location.url("/login");
         } else {
-            if (mustBeAdmin && !UserService.isAdmin()) {
+            if (mustBeAdmin && !user.admin) {
                 $location.url("/");
             }
         }
-    }
+    };
 }
-// Pour que l'injection de dépendances fonctionne en cas de 'minifying'
-RootController.$inject = ['$scope', 'UserService', '$log', '$location'];
 
+
+DashboardController.$inject = ['$scope', 'ProfilService', 'AccountService', 'UserService'];
 function DashboardController($scope, ProfilService, AccountService, UserService) {
 
-	$scope.checkloc(false);
+    $scope.checkloc(false);
 
     //var idUSer = UserService.getUserData().id;
     //$scope.user = AccountService.getUser();
@@ -36,7 +38,7 @@ function DashboardController($scope, ProfilService, AccountService, UserService)
 
 
 }
-DashboardController.$inject = ['$scope', 'ProfilService', 'AccountService', 'UserService'];
+
 
 function LoginController($scope, $log, UserService, PasswordService, $http, $location, $cookies) {
 
@@ -46,21 +48,32 @@ function LoginController($scope, $log, UserService, PasswordService, $http, $loc
 //        $location.url("/");
 //    }
 
-	$scope.userlogged = UserService.isLogged("/dashboard", "/login");
-	
-    $scope.debug = function () {
-		//playCookie = $cookieStore.get('PLAY_SESSION');
-		$log.info('cookie play : ' + $scope.cookieValue);
-    }
+    $scope.userlogged = UserService.isLogged("/dashboard", "/login");
+
+    $scope.debug = function() {
+        //playCookie = $cookieStore.get('PLAY_SESSION');
+        $log.info('cookie play : ' + $scope.cookieValue);
+    };
 
     // Fonction de login appelée sur le bouton de formulaire
-    $scope.login = function () {
+    $scope.login = function() {
         $log.info($scope.user);
         $log.info($scope);
         // TODO Trouver un moyen pour que le routage ne soit pas fait dans le callback du XHR ?
-        UserService.login($scope.user, '/dashboard', function (data) {
+        UserService.login($scope.user, '/dashboard', function(data) {
             $scope.errors = data;
         });
+    };
+    
+    $scope.createAccount = function () {
+        $log.info($scope.email);
+        $http({method: 'POST', url: '/signup', data: '{email: "' + $scope.email+'"}'}).
+                success(function(data, status){
+                    $log.info('createAccount XHR status : ' + status);
+                }).
+                error(function(data, status){
+                    $log.error('createAccount XHR error - status : ' + status);
+                });
     };
 
 }
@@ -82,13 +95,13 @@ function NewTalkController($scope, $log, $location, TalkService, CreneauxService
     var editor = new Markdown.Editor($scope.converter);
     editor.run();
 
-    $scope.saveTalk = function () {
+    $scope.saveTalk = function() {
         $log.info("Soummission du nouveau talk");
 
-        TalkService.save($scope.talk, function (data) {
+        TalkService.save($scope.talk, function(data) {
             $log.info("Soummission du talk ok");
             $location.url('/managetalk');
-        }, function (err) {
+        }, function(err) {
             $log.info("Soummission du talk ko");
             $log.info(err.data);
             $scope.errors = err.data;
@@ -102,7 +115,7 @@ function EditTalkController($scope, $log, $location, $routeParams, TalkService, 
 
     $scope.checkloc(false);
 
-    $scope.talk = TalkService.get({id:$routeParams.talkId});
+    $scope.talk = TalkService.get({id: $routeParams.talkId});
 
     $scope.$location = $location;
 
@@ -114,13 +127,13 @@ function EditTalkController($scope, $log, $location, $routeParams, TalkService, 
     var editor = new Markdown.Editor($scope.converter);
     editor.run();
 
-    $scope.saveTalk = function () {
+    $scope.saveTalk = function() {
         $log.info("Sauvegarde du talk : " + $routeParams.talkId);
 
-        TalkService.save($scope.talk, function (data) {
+        TalkService.save($scope.talk, function(data) {
             $log.info("Soummission du talk ok");
             $location.url('/managetalk');
-        }, function (err) {
+        }, function(err) {
             $log.info("Soummission du talk ko");
             $log.info(err.data);
             $scope.errors = err.data;
@@ -128,23 +141,23 @@ function EditTalkController($scope, $log, $location, $routeParams, TalkService, 
 
     };
 
-    $scope.addTag = function () {
+    $scope.addTag = function() {
         $log.info("Ajout de tags " + $scope.tags);
 
-        var data = {'tags':$scope.talk.tagsname, 'idTalk':$scope.talk.id};
+        var data = {'tags': $scope.talk.tagsname, 'idTalk': $scope.talk.id};
 
         http({
-            method:'POST',
-            url:'/talk/' + $scope.talk.id + '/tags/' + $scope.talk.tagsname,
-            data:data
-        }).success(function (data, status, headers, config) {
-                $log.info(status);
-                $scope.errors = undefined;
-                $scope.talk = TalkService.get({id:$routeParams.talkId});
-            }).error(function (data, status, headers, config) {
-                $log.info(status);
-                $scope.errors = data;
-            });
+            method: 'POST',
+            url: '/talk/' + $scope.talk.id + '/tags/' + $scope.talk.tagsname,
+            data: data
+        }).success(function(data, status, headers, config) {
+            $log.info(status);
+            $scope.errors = undefined;
+            $scope.talk = TalkService.get({id: $routeParams.talkId});
+        }).error(function(data, status, headers, config) {
+            $log.info(status);
+            $scope.errors = data;
+        });
     }
 
 }
@@ -158,13 +171,13 @@ function ManageTalkController($scope, $log, $location, TalkService) {
 
     $scope.talks = TalkService.query();
 
-    $scope.deleteTalk = function (talk) {
-        var confirmation = confirm('Êtes vous sûr de vouloir supprimer le talk "'+talk.title+'" ?');
+    $scope.deleteTalk = function(talk) {
+        var confirmation = confirm('Êtes vous sûr de vouloir supprimer le talk "' + talk.title + '" ?');
         if (confirmation) {
-            TalkService.delete({'id':talk.id}, function (data) {
+            TalkService.delete({'id': talk.id}, function(data) {
                 $scope.talks = TalkService.query();
                 $scope.errors = undefined;
-            }, function (err) {
+            }, function(err) {
                 $log.info("Delete du talk ko");
                 $log.info(err);
                 $scope.errors = err.data;
@@ -183,30 +196,30 @@ function ManageUsersController($scope, $log, $location, ManageUsersService, http
 
     $scope.users = ManageUsersService.query();
 
-    $scope.submitUsers = function () {
+    $scope.submitUsers = function() {
 
-        var data = new Object();
+        var data = {};
 
 
-        $.each($scope.users, function (index, value) {
+        $.each($scope.users, function(index, value) {
             data[value.email] = value.admin;
         });
 
 
         http({
-            method:'POST',
-            url:'/admin/submitusers',
-            data:data
-        }).success(function (data, status, headers, config) {
-                $('#messageSuccess').text('Utilisateurs sauvegardés');
-                $('#messageSuccess').removeClass('hide');
-                $('#messageError').addClass('hide');
-            }).error(function (data, status, headers, config) {
-                $log.info('code http de la réponse : ' + status);
-                $('#messageError').text('Une erreur a eu lieu pendant la sauvegarde des utilisateurs (' + status + ')');
-                $('#messageSuccess').addClass('hide');
-                $('#messageError').removeClass('hide');
-            });
+            method: 'POST',
+            url: '/admin/submitusers',
+            data: data
+        }).success(function(data, status, headers, config) {
+            $('#messageSuccess').text('Utilisateurs sauvegardés');
+            $('#messageSuccess').removeClass('hide');
+            $('#messageError').addClass('hide');
+        }).error(function(data, status, headers, config) {
+            $log.info('code http de la réponse : ' + status);
+            $('#messageError').text('Une erreur a eu lieu pendant la sauvegarde des utilisateurs (' + status + ')');
+            $('#messageSuccess').addClass('hide');
+            $('#messageError').removeClass('hide');
+        });
     };
 
 }
@@ -235,18 +248,18 @@ function VoteController($scope, $log, VoteService, $http) {
 
     $log.info($scope.vote);
 
-    $scope.submitVote = function () {
+    $scope.submitVote = function() {
         var vote = $scope.vote;
         $http({
-            method:'POST',
-            url:'/admin/vote/' + vote.status
-        }).success(function () {
-                $scope.error = undefined;
-                $scope.success = "Le changement de status du votes a bien été pris en compte."
-            }).error(function () {
-                $scope.error = "Une erreur est survenue pendant le changement de status des votes";
-                $scope.success = undefined;
-            });
+            method: 'POST',
+            url: '/admin/vote/' + vote.status
+        }).success(function() {
+            $scope.error = undefined;
+            $scope.success = "Le changement de status du votes a bien été pris en compte."
+        }).error(function() {
+            $scope.error = "Une erreur est survenue pendant le changement de status des votes";
+            $scope.success = undefined;
+        });
     }
 }
 
@@ -256,7 +269,7 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http, VoteS
 
     $scope.checkloc(false);
 
-    $scope.talk = TalkService.get({id:$routeParams.talkId});
+    $scope.talk = TalkService.get({id: $routeParams.talkId});
 
     $scope.voteStatus = VoteService.getVote();
 
@@ -264,152 +277,152 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http, VoteS
 
 
 
-    $scope.postComment = function () {
+    $scope.postComment = function() {
         $log.info("Sauvegarde du commentaire " + $scope.comment);
 
-        var data = {'comment':$scope.comment, 'private':$scope.private};
+        var data = {'comment': $scope.comment, 'private': $scope.private};
 
         http({
-            method:'POST',
-            url:'/talks/' + $scope.talk.id + '/comment',
-            data:data
-        }).success(function (data, status, headers, config) {
-                $log.info(status);
-                $scope.errors = undefined;
-                $scope.comment = undefined;
-                $scope.talk = TalkService.get({id:$routeParams.talkId});
-            }).error(function (data, status, headers, config) {
-                $log.info(status);
-                $scope.errors = data;
-            });
+            method: 'POST',
+            url: '/talks/' + $scope.talk.id + '/comment',
+            data: data
+        }).success(function(data, status, headers, config) {
+            $log.info(status);
+            $scope.errors = null;
+            $scope.comment = null;
+            $scope.talk = TalkService.get({id: $routeParams.talkId});
+        }).error(function(data, status, headers, config) {
+            $log.info(status);
+            $scope.errors = data;
+        });
     };
 
-    $scope.postReponse = function (id) {
+    $scope.postReponse = function(id) {
         $log.info("Sauvegarde de la reponse " + $scope.commentR);
 
         var commentId = id;
-        var dataR = {'comment':$scope.commentR, 'private':$scope.privateR};
+        var dataR = {'comment': $scope.commentR, 'private': $scope.privateR};
 
         http({
-            method:'POST',
-            url:'/talks/' + $scope.talk.id + '/comment/'+ commentId +'/response',
-            data:dataR
-        }).success(function (data, status, headers, config) {
-                $log.info(status);
-                $scope.errors = undefined;
-                $scope.commentR = undefined;
-                $scope.talk = TalkService.get({id:$routeParams.talkId});
-            }).error(function (data, status, headers, config) {
-                $log.info(status);
-                $scope.errors = data;
-            });
+            method: 'POST',
+            url: '/talks/' + $scope.talk.id + '/comment/' + commentId + '/response',
+            data: dataR
+        }).success(function(data, status, headers, config) {
+            $log.info(status);
+            $scope.errors = undefined;
+            $scope.commentR = undefined;
+            $scope.talk = TalkService.get({id: $routeParams.talkId});
+        }).error(function(data, status, headers, config) {
+            $log.info(status);
+            $scope.errors = data;
+        });
     };
 
-    $scope.editComment = function (id) {
+    $scope.editComment = function(id) {
         $log.info("modification du commentaire " + $scope.commentE);
 
         var commentId = id;
-        var dataR = {'comment':$scope.commentE};
+        var dataR = {'comment': $scope.commentE};
 
         http({
-            method:'POST',
-            url:'/talks/' + $scope.talk.id + '/comment/'+ commentId +'/edit',
-            data:dataR
-        }).success(function (data, status, headers, config) {
-                $log.info(status);
-                $scope.errors = undefined;
-                $scope.commentE = undefined;
-                $scope.talk = TalkService.get({id:$routeParams.talkId});
-            }).error(function (data, status, headers, config) {
-                $log.info(status);
-                $scope.errors = data;
-            });
+            method: 'POST',
+            url: '/talks/' + $scope.talk.id + '/comment/' + commentId + '/edit',
+            data: dataR
+        }).success(function(data, status, headers, config) {
+            $log.info(status);
+            $scope.errors = undefined;
+            $scope.commentE = undefined;
+            $scope.talk = TalkService.get({id: $routeParams.talkId});
+        }).error(function(data, status, headers, config) {
+            $log.info(status);
+            $scope.errors = data;
+        });
     };
 
-    $scope.postCloseComment = function (id) {
+    $scope.postCloseComment = function(id) {
         $log.info("cloture du commentaire " + id);
 
         var data = {};
 
         http({
-            method:'POST',
-            url:'/talks/' + $scope.talk.id + '/comment/'+ id +'/close',
-            data:data
-        }).success(function (data, status, headers, config) {
-                $log.info(status);
-                $scope.errors = undefined;
-                $scope.talk = TalkService.get({id:$routeParams.talkId});
-            }).error(function (data, status, headers, config) {
-                $log.info(status);
-                $scope.errors = data;
-            });
+            method: 'POST',
+            url: '/talks/' + $scope.talk.id + '/comment/' + id + '/close',
+            data: data
+        }).success(function(data, status, headers, config) {
+            $log.info(status);
+            $scope.errors = undefined;
+            $scope.talk = TalkService.get({id: $routeParams.talkId});
+        }).error(function(data, status, headers, config) {
+            $log.info(status);
+            $scope.errors = data;
+        });
     };
 
-    $scope.deleteComment = function (id) {
+    $scope.deleteComment = function(id) {
         $log.info("suppression du commentaire " + id);
 
         var data = {};
 
         http({
-            method:'POST',
-            url:'/talks/' + $scope.talk.id + '/comment/'+ id +'/delete',
-            data:data
-        }).success(function (data, status, headers, config) {
-                $log.info(status);
-                $scope.errors = undefined;
-                $scope.talk = TalkService.get({id:$routeParams.talkId});
-            }).error(function (data, status, headers, config) {
-                $log.info(status);
-                $scope.errors = data;
-            });
+            method: 'POST',
+            url: '/talks/' + $scope.talk.id + '/comment/' + id + '/delete',
+            data: data
+        }).success(function(data, status, headers, config) {
+            $log.info(status);
+            $scope.errors = undefined;
+            $scope.talk = TalkService.get({id: $routeParams.talkId});
+        }).error(function(data, status, headers, config) {
+            $log.info(status);
+            $scope.errors = data;
+        });
     };
 
-    $scope.postStatus = function () {
+    $scope.postStatus = function() {
         $log.info("postStatus");
 
-        var data = {'status':$scope.talk.statusTalk};
+        var data = {'status': $scope.talk.statusTalk};
 
         http({
-            method:'POST',
-            url:'/talks/' + $scope.talk.id + '/status',
-            data:data
-        }).success(function (data, status, headers, config) {
-                $log.info(status);
-                $scope.errors = undefined;
-                $scope.talk = TalkService.get({id:$routeParams.talkId});
-            }).error(function (data, status, headers, config) {
-                $log.info(status);
-                $scope.errors = data;
-            });
+            method: 'POST',
+            url: '/talks/' + $scope.talk.id + '/status',
+            data: data
+        }).success(function(data, status, headers, config) {
+            $log.info(status);
+            $scope.errors = undefined;
+            $scope.talk = TalkService.get({id: $routeParams.talkId});
+        }).error(function(data, status, headers, config) {
+            $log.info(status);
+            $scope.errors = data;
+        });
     };
 
-    $scope.note = function (talk) {
+    $scope.note = function(talk) {
         $.fn.raty.defaults.path = '/assets/img/';
-        $log.info("talk : "+talk.note);
+        $log.info("talk : " + talk.note);
         $('#star').raty({
-            score : talk.note != undefined ? talk.note :1 ,
-            click : function(score, evt) {
-                  $scope.note = score;
-                 $('#note').val( score);
+            score: talk.note != undefined ? talk.note : 1,
+            click: function(score, evt) {
+                $scope.note = score;
+                $('#note').val(score);
             }
         });
     };
 
-    $scope.postVote = function () {
+    $scope.postVote = function() {
         $log.info("postVote");
         $log.info($scope.talk);
 
         http({
-            method:'POST',
-            url:'/talks/' + $scope.talk.id + '/vote/' + $scope.note
-        }).success(function (data, status, headers, config) {
-                $log.info(status);
-                $scope.errors = undefined;
-                $scope.talk = TalkService.get({id:$routeParams.talkId});
-            }).error(function (data, status, headers, config) {
-                $log.info(status);
-                $scope.errors = data;
-            });
+            method: 'POST',
+            url: '/talks/' + $scope.talk.id + '/vote/' + $scope.note
+        }).success(function(data, status, headers, config) {
+            $log.info(status);
+            $scope.errors = undefined;
+            $scope.talk = TalkService.get({id: $routeParams.talkId});
+        }).error(function(data, status, headers, config) {
+            $log.info(status);
+            $scope.errors = data;
+        });
     }
 }
 SeeTalksController.$inject = ['$scope', '$log', '$routeParams', 'TalkService', '$http', 'VoteService'];
@@ -441,60 +454,60 @@ function SettingsAccountController($scope, $log, AccountService, UserService, ht
     var editor = new Markdown.Editor($scope.converter);
     editor.run();
 
-    $scope.removeLink = function (lien) {
+    $scope.removeLink = function(lien) {
         if (confirm('Êtes vous sûr de vouloir supprimer le lien ' + lien.label + '?')) {
             $log.info("Suppression du lien " + lien.label + '(' + lien.id + ')');
             http({
-                method:'GET',
-                url:'/settings/lien/remove/' + lien.id
-            }).success(function (data, status, headers, config) {
-                    $scope.errors = undefined;
-                    var idUser = UserService.getUserData().id;
-                    $scope.user = AccountService.getUser(idUser);
-                }).error(function (data, status, headers, config) {
-                    $log.info(status);
-                    $scope.errors = data;
-                });
+                method: 'GET',
+                url: '/settings/lien/remove/' + lien.id
+            }).success(function(data, status, headers, config) {
+                $scope.errors = undefined;
+                var idUser = UserService.getUserData().id;
+                $scope.user = AccountService.getUser(idUser);
+            }).error(function(data, status, headers, config) {
+                $log.info(status);
+                $scope.errors = data;
+            });
         }
     };
 
-    $scope.saveSettings = function () {
+    $scope.saveSettings = function() {
         var user = jQuery.extend(true, {}, $scope.user);
         if ($scope.lien !== undefined) {
             user.liens.push($scope.lien);
         }
         http({
-            method:'POST',
-            url:'/settings/account',
-            data:user
-        }).success(function (data, status, headers, config) {
-                $scope.errors = undefined;
-                var idUser = UserService.getUserData().id;
-                $scope.lien = undefined;
-                $scope.user = AccountService.getUser(idUser);
-            }).error(function (data, status, headers, config) {
-                $scope.errors = data;
-                $log.info(status);
-            });
+            method: 'POST',
+            url: '/settings/account',
+            data: user
+        }).success(function(data, status, headers, config) {
+            $scope.errors = undefined;
+            var idUser = UserService.getUserData().id;
+            $scope.lien = undefined;
+            $scope.user = AccountService.getUser(idUser);
+        }).error(function(data, status, headers, config) {
+            $scope.errors = data;
+            $log.info(status);
+        });
 
     }
 
-    $scope.appercu = function () {
+    $scope.appercu = function() {
         var user = jQuery.extend(true, {}, $scope.user);
         if ($scope.lien !== undefined) {
             user.liens.push($scope.lien);
         }
         http({
-            method:'POST',
-            url:'/settings/account',
-            data:user
-        }).success(function (data, status, headers, config) {
-                var idUser = UserService.getUserData().id;
-                $location.path('/profil/' + idUser)
-            }).error(function (data, status, headers, config) {
-                $scope.errors = data;
-                $log.info(status);
-            });
+            method: 'POST',
+            url: '/settings/account',
+            data: user
+        }).success(function(data, status, headers, config) {
+            var idUser = UserService.getUserData().id;
+            $location.path('/profil/' + idUser)
+        }).error(function(data, status, headers, config) {
+            $scope.errors = data;
+            $log.info(status);
+        });
     }
 }
 SettingsAccountController.$inject = ['$scope', '$log', 'AccountService', 'UserService', '$http', '$location'];
@@ -506,24 +519,24 @@ function NotifsAccountController($scope, $log, AccountService, UserService, $htt
     var idUser = UserService.getUserData().id;
     $scope.user = AccountService.getUser(idUser);
 
-    $scope.saveSettings = function () {
+    $scope.saveSettings = function() {
         var user = jQuery.extend(true, {}, $scope.user);
         $http({
-            method:'POST',
-            url:'/settings/notifs',
-            data:user
-        }).success(function (data, status, headers, config) {
-                $('#messageError').addClass('hide');
-                $('#messageSuccess').text('Settings sauvegardés');
-                $('#messageSuccess').removeClass('hide');
-                var idUser = UserService.getUserData().id;
-                $scope.user = AccountService.getUser(idUser);
-            }).error(function (data, status, headers, config) {
-                $('#messageError').text('Une erreur a eu lieu pendant la sauvegarde des settings (' + status + ')');
-                $('#messageError').removeClass('hide');
-                $('#messageSuccess').addClass('hide');
-                $log.info(status);
-            });
+            method: 'POST',
+            url: '/settings/notifs',
+            data: user
+        }).success(function(data, status, headers, config) {
+            $('#messageError').addClass('hide');
+            $('#messageSuccess').text('Settings sauvegardés');
+            $('#messageSuccess').removeClass('hide');
+            var idUser = UserService.getUserData().id;
+            $scope.user = AccountService.getUser(idUser);
+        }).error(function(data, status, headers, config) {
+            $('#messageError').text('Une erreur a eu lieu pendant la sauvegarde des settings (' + status + ')');
+            $('#messageError').removeClass('hide');
+            $('#messageSuccess').addClass('hide');
+            $log.info(status);
+        });
     };
 }
 
@@ -536,20 +549,20 @@ function PasswordAccountController($scope, $log, UserService, AccountService, $h
     var idUser = UserService.getUserData().id;
     $scope.user = AccountService.getUser(idUser);
 
-    $scope.resetPassword = function () {
+    $scope.resetPassword = function() {
         $http({
-            method:'POST',
-            url:'/settings/password'
-        }).success(function (data, status, headers, config) {
-                $('#messageError').addClass('hide');
-                $('#messageSuccess').text('Un mail a été envoyé. Merci de vérifier vos mails.');
-                $('#messageSuccess').removeClass('hide');
-            }).error(function (data, status, headers, config) {
-                $('#messageError').text('Une erreur a eu lieu pendant le reset du password (' + status + ')');
-                $('#messageError').removeClass('hide');
-                $('#messageSuccess').addClass('hide');
-                $log.info(status);
-            });
+            method: 'POST',
+            url: '/settings/password'
+        }).success(function(data, status, headers, config) {
+            $('#messageError').addClass('hide');
+            $('#messageSuccess').text('Un mail a été envoyé. Merci de vérifier vos mails.');
+            $('#messageSuccess').removeClass('hide');
+        }).error(function(data, status, headers, config) {
+            $('#messageError').text('Une erreur a eu lieu pendant le reset du password (' + status + ')');
+            $('#messageError').removeClass('hide');
+            $('#messageSuccess').addClass('hide');
+            $log.info(status);
+        });
     }
 
 }
@@ -563,20 +576,20 @@ function EmailAccountController($scope, $log, UserService, AccountService, $http
     var idUser = UserService.getUserData().id;
     $scope.user = AccountService.getUser(idUser);
 
-    $scope.changeEmail = function () {
+    $scope.changeEmail = function() {
         $http({
-            method:'POST',
-            url:'/settings/email',
-            data:$scope.user
-        }).success(function (data, status, headers, config) {
-                $('#messageSuccess').text('Un mail a été envoyé. Merci de vérifier vos mails.');
-                $('#messageSuccess').removeClass('hide');
-                $scope.errors = undefined;
-            }).error(function (data, status, headers, config) {
-                $('#messageSuccess').addClass('hide');
-                $scope.errors = data;
-                $log.info(status);
-            });
+            method: 'POST',
+            url: '/settings/email',
+            data: $scope.user
+        }).success(function(data, status, headers, config) {
+            $('#messageSuccess').text('Un mail a été envoyé. Merci de vérifier vos mails.');
+            $('#messageSuccess').removeClass('hide');
+            $scope.errors = undefined;
+        }).error(function(data, status, headers, config) {
+            $('#messageSuccess').addClass('hide');
+            $scope.errors = data;
+            $log.info(status);
+        });
     }
 }
 EmailAccountController.$inject = ['$scope', '$log', 'UserService', 'AccountService', '$http'];
@@ -588,45 +601,45 @@ function MacAccountController($scope, $log, UserService, AccountService, $http) 
     var idUser = UserService.getUserData().id;
     $scope.user = AccountService.getUser(idUser);
 
-    $scope.changeMac = function () {
+    $scope.changeMac = function() {
         $http({
-            method:'POST',
-            url:'/settings/mac',
-            data:$scope.user
-        }).success(function (data, status, headers, config) {
-                $('#messageSuccess').text('Votre adresse mac a été enregistrée.');
-                $('#messageSuccess').removeClass('hide');
-                $scope.errors = undefined;
-            }).error(function (data, status, headers, config) {
-                $('#messageSuccess').addClass('hide');
-                $scope.errors = data;
-                $log.info(status);
-            });
+            method: 'POST',
+            url: '/settings/mac',
+            data: $scope.user
+        }).success(function(data, status, headers, config) {
+            $('#messageSuccess').text('Votre adresse mac a été enregistrée.');
+            $('#messageSuccess').removeClass('hide');
+            $scope.errors = undefined;
+        }).error(function(data, status, headers, config) {
+            $('#messageSuccess').addClass('hide');
+            $scope.errors = data;
+            $log.info(status);
+        });
     }
 }
 MacAccountController.$inject = ['$scope', '$log', 'UserService', 'AccountService', '$http'];
 
 function ResetPasswordController($scope, $log, $http) {
 
-    $scope.resetPassword = function () {
+    $scope.resetPassword = function() {
         var data = new Object();
         data.email = $scope.email;
         $http({
-            method:'POST',
-            url:'/reset/ask',
-            data:data
-        }).success(function (data, status, headers, config) {
-                $('#fieldEmail').addClass('hide');
-                $('#valider').addClass('hide');
-                $('#messageError').addClass('hide');
-                $('#messageSuccess').text('Un mail a été envoyé. Merci de vérifier vos mails.');
-                $('#messageSuccess').removeClass('hide');
-            }).error(function (data, status, headers, config) {
-                $('#messageError').text('Une erreur a eu lieu pendant le reset du password (' + status + ')');
-                $('#messageError').removeClass('hide');
-                $('#messageSuccess').addClass('hide');
-                $log.info(status);
-            });
+            method: 'POST',
+            url: '/reset/ask',
+            data: data
+        }).success(function(data, status, headers, config) {
+            $('#fieldEmail').addClass('hide');
+            $('#valider').addClass('hide');
+            $('#messageError').addClass('hide');
+            $('#messageSuccess').text('Un mail a été envoyé. Merci de vérifier vos mails.');
+            $('#messageSuccess').removeClass('hide');
+        }).error(function(data, status, headers, config) {
+            $('#messageError').text('Une erreur a eu lieu pendant le reset du password (' + status + ')');
+            $('#messageError').removeClass('hide');
+            $('#messageSuccess').addClass('hide');
+            $log.info(status);
+        });
     }
 
 }
@@ -637,15 +650,15 @@ function ConfirmSignupController($scope, $log, $http, $routeParams) {
     var token = $routeParams.token;
 
     $http({
-        method:'GET',
-        url:'/confirm/' + token
-    }).success(function (data, status, headers, config) {
-            $scope.successMessage = 'Votre compte est validé';
-            $scope.showSuccess = true;
-        }).error(function (data, status, headers, config) {
-            $scope.errorMessage = 'Une erreur a eu lieu pendant la confirmation (' + status + ')';
-            $scope.showError = true;
-        });
+        method: 'GET',
+        url: '/confirm/' + token
+    }).success(function(data, status, headers, config) {
+        $scope.successMessage = 'Votre compte est validé';
+        $scope.showSuccess = true;
+    }).error(function(data, status, headers, config) {
+        $scope.errorMessage = 'Une erreur a eu lieu pendant la confirmation (' + status + ')';
+        $scope.showError = true;
+    });
 }
 
 ConfirmSignupController.$inject = ['$scope', '$log', '$http', '$routeParams'];
@@ -653,12 +666,12 @@ ConfirmSignupController.$inject = ['$scope', '$log', '$http', '$routeParams'];
 function ConfirmResetPasswordController($scope, $log, $http, $routeParams, PasswordService) {
 
 
-    $scope.generatePassword = function () {
+    $scope.generatePassword = function() {
         $scope.generatedPassword = PasswordService.randomPassword();
         $scope.changeStrength($scope.generatedPassword, '#passwordStrengthDiv2')
     };
 
-    $scope.changeStrength = function (password, divSelected) {
+    $scope.changeStrength = function(password, divSelected) {
 
         var strength = PasswordService.getPasswordStrength(password);
 
@@ -678,22 +691,22 @@ function ConfirmResetPasswordController($scope, $log, $http, $routeParams, Passw
         $(divSelected).addClass('is' + percent);
     };
 
-    $scope.resetPassword = function () {
+    $scope.resetPassword = function() {
         var data = new Object();
         data.inputPassword = $scope.inputPassword;
         var token = $routeParams.token;
         $http({
-            method:'POST',
-            url:'/reset/' + token,
-            data:data
-        }).success(function (data, status, headers, config) {
-                $scope.successMessage = 'Votre nouveau mot de passe est enregistré.';
-                $('#valider').addClass('hide');
-                $scope.showSuccess = true;
-            }).error(function (data, status, headers, config) {
-                $scope.errorMessage = 'Une erreur a eu lieu pendant le changement de mot de passe (' + status + ')';
-                $scope.showError = true;
-            });
+            method: 'POST',
+            url: '/reset/' + token,
+            data: data
+        }).success(function(data, status, headers, config) {
+            $scope.successMessage = 'Votre nouveau mot de passe est enregistré.';
+            $('#valider').addClass('hide');
+            $scope.showSuccess = true;
+        }).error(function(data, status, headers, config) {
+            $scope.errorMessage = 'Une erreur a eu lieu pendant le changement de mot de passe (' + status + ')';
+            $scope.showError = true;
+        });
     }
 }
 
@@ -707,16 +720,16 @@ function ConfirmEmailController($scope, $log, $http, $routeParams, UserService, 
     }
 
     $http({
-        method:'GET',
-        url:'/email/' + token
-    }).success(function (data, status, headers, config) {
-            // TODO ajouter la nouvelle adresse email dans le message, une fois la vue scale supprimée.
-            $scope.successMessage = 'Votre nouvelle adresse mail est validée';
-            $scope.showSuccess = true;
-        }).error(function (data, status, headers, config) {
-            $scope.errorMessage = "Une erreur a eu lieu pendant le changement d'adresse (" + status + ')';
-            $scope.showError = true;
-        });
+        method: 'GET',
+        url: '/email/' + token
+    }).success(function(data, status, headers, config) {
+        // TODO ajouter la nouvelle adresse email dans le message, une fois la vue scale supprimée.
+        $scope.successMessage = 'Votre nouvelle adresse mail est validée';
+        $scope.showSuccess = true;
+    }).error(function(data, status, headers, config) {
+        $scope.errorMessage = "Une erreur a eu lieu pendant le changement d'adresse (" + status + ')';
+        $scope.showError = true;
+    });
 }
 
 ConfirmEmailController.$inject = ['$scope', '$log', '$http', '$routeParams', 'UserService', 'AccountService'];
@@ -729,10 +742,10 @@ function CreneauxController($scope, $log, CreneauxService) {
     $scope.deleteCreneau = function(creneauToDelete) {
         var confirmation = confirm('Êtes vous sûr de vouloir supprimer le creneau ' + creneauToDelete.libelle + '?');
         if (confirmation) {
-            CreneauxService.delete({id:creneauToDelete.id}, function (data) {
+            CreneauxService.delete({id: creneauToDelete.id}, function(data) {
                 $scope.creneaux = CreneauxService.query();
                 $scope.errors = undefined;
-            }, function (err) {
+            }, function(err) {
                 $log.info("Delete du creneau ko");
                 $log.info(err);
                 $scope.errors = err.data;
@@ -752,10 +765,10 @@ function NewCreneauController($scope, $log, CreneauxService, $location) {
         $log.info("Creneau à sauvegarder");
         $log.info($scope.creneau);
 
-        CreneauxService.save($scope.creneau, function (data) {
+        CreneauxService.save($scope.creneau, function(data) {
             $log.info("Soummission du creneau ok");
             $location.url('/admin/creneaux');
-        }, function (err) {
+        }, function(err) {
             $log.info("Soummission du creneau ko");
             $log.info(err.data);
             $scope.errors = err.data;
@@ -770,7 +783,7 @@ function EditCreneauController($scope, $log, CreneauxService, $location, $routeP
 
     var idCreneau = $routeParams.creneauId;
 
-    $scope.creneau = CreneauxService.get({id:idCreneau});
+    $scope.creneau = CreneauxService.get({id: idCreneau});
 
     $scope.isNew = false;
 
@@ -778,10 +791,10 @@ function EditCreneauController($scope, $log, CreneauxService, $location, $routeP
         $log.info("Creneau à sauvegarder");
         $log.info($scope.creneau);
 
-        CreneauxService.save($scope.creneau, function (data) {
+        CreneauxService.save($scope.creneau, function(data) {
             $log.info("Soummission du creneau ok");
             $location.url('/admin/creneaux');
-        }, function (err) {
+        }, function(err) {
             $log.info("Soummission du creneau ko");
             $log.info(err.data);
             $scope.errors = err.data;
@@ -803,10 +816,10 @@ function DynamicFieldsController($scope, $log, DynamicFieldsService) {
     $scope.deleteDynamicField = function(dynamicFieldToDelete) {
         var confirmation = confirm('Êtes vous sûr de vouloir supprimer le champ ' + dynamicFieldToDelete.name + '?');
         if (confirmation) {
-            DynamicFieldsService.delete({id:dynamicFieldToDelete.id}, function (data) {
+            DynamicFieldsService.delete({id: dynamicFieldToDelete.id}, function(data) {
                 $scope.dynamicFields = DynamicFieldsService.query();
                 $scope.errors = undefined;
-            }, function (err) {
+            }, function(err) {
                 $log.info("Delete du champ dynamique ko");
                 $log.info(err);
                 $scope.errors = err.data;
@@ -826,10 +839,10 @@ function NewDynamicFieldController($scope, $log, DynamicFieldsService, $location
         $log.info("Champ dynamique à sauvegarder");
         $log.info($scope.dynamicField);
 
-        DynamicFieldsService.save($scope.dynamicField, function (data) {
+        DynamicFieldsService.save($scope.dynamicField, function(data) {
             $log.info("Soummission du champ dynamique ok");
             $location.url('/admin/dynamicfields');
-        }, function (err) {
+        }, function(err) {
             $log.info("Soummission du champ dynamique ko");
             $log.info(err.data);
             $scope.errors = err.data;
@@ -844,7 +857,7 @@ function EditDynamicFieldController($scope, $log, DynamicFieldsService, $locatio
 
     var idDynamicField = $routeParams.dynamicFieldId;
 
-    $scope.dynamicField = DynamicFieldsService.get({id:idDynamicField});
+    $scope.dynamicField = DynamicFieldsService.get({id: idDynamicField});
 
     $scope.isNew = false;
 
@@ -852,10 +865,10 @@ function EditDynamicFieldController($scope, $log, DynamicFieldsService, $locatio
         $log.info("Champ dynamique à sauvegarder");
         $log.info($scope.dynamicField);
 
-        DynamicFieldsService.save($scope.dynamicField, function (data) {
+        DynamicFieldsService.save($scope.dynamicField, function(data) {
             $log.info("Soummission du champ dynamique ok");
             $location.url('/admin/dynamicfields');
-        }, function (err) {
+        }, function(err) {
             $log.info("Soummission du champ dynamique ko");
             $log.info(err.data);
             $scope.errors = err.data;

@@ -6,117 +6,119 @@ var Services = angular.module('breizhCampCFP.services', ['ngResource', 'ngCookie
 
 Services.factory('UserService', ['$http', '$log', '$location', '$cookieStore', function(http, logger, location, $cookieStore) {
 
-	// Service pour gérer les utilisateurs
-	function UserService(http, logger) {
-		var userdata = null;
-		var authenticated = false;
-		var admin = null;
+        // Service pour gérer les utilisateurs
+        function UserService(http, logger) {
+            var userdata;
+            var authenticated;
+            var admin;
 
-		// Fonction de login
-		this.isLogged = function(routeok, routeko) {
-	
-			logger.info("Appel isLogged (/userLogged)");
-	
-			http({
-				method : 'GET',
-				url : '/userLogged'
-			}).success(function(data, status, headers, config) {
+            // Fonction de login
+            this.isLogged = function(routeok, routeko) {
 
-				$cookieStore.put('userData', data);
-				userdata = data;
-				authenticated = true;
-				if (userdata.admin) admin = true;
-				logger.info('routage vers le dashboard');
-				location.url(routeok);
-			}).error(function(data, status, headers, config) {
-				logger.info('code http de la réponse : ' + status);
-				logger.info('routage vers la page de login');
-				authenticated = false;
-				location.url(routeko);
-			});
-		};
-		
-		this.logout = function() {
-		    var user = this.getUserData();
-		    logger.info("deconnexion de " + user.email);
-				
-		    http({
-		        method : 'GET',
-		        url : '/logout'
-		    }).success(
-		        function(data, status, headers, config) {
-		            // Suppression du cookie.
-		            $cookieStore.remove('userData');
-		            userdata = null;
-		            authenticated = false;
-		            admin = null;
-		            location.url("/login");
-		        })
-		
-		};
-		
-		// Fonction de login
-		this.login = function(user, route, failledCallBack) {
-	
-			logger.info("Tentative d'authentification de " + user);
-	
-			http({
-				method : 'POST',
-				url : '/login',
-				data : user
-			}).success(function(data, status, headers, config) {
-				logger.info(status);
-				logger.info(data);
-				$cookieStore.put('userData', data);
+                logger.info("Appel isLogged (/userLogged)");
 
-				userdata = data;
-				authenticated = true;
-				if (userdata.admin) admin = true;
-				logger.info('routage vers le dashboard');
-				location.url(route);
-				
-			}).error(function(data, status, headers, config) {
-				logger.info('code http de la réponse : ' + status);
-				logger.info(data);
-                failledCallBack(data);
-				});
-		};
-			
-		// Getters
-		this.getUserData = function() {
+                http({
+                    method: 'GET',
+                    url: '/userLogged'
+                }).success(function(data, status, headers, config) {
 
-            if (userdata == null) {
-                if ($cookieStore.get('userData') !== undefined) {
-                    userdata = $cookieStore.get('userData');
-                }
-            }
-			return userdata;
-		};
-				
-
-		this.isAuthenticated = function() {
-            if (authenticated == false) {
-                if (this.getUserData() != null) {
+                    $cookieStore.put('userData', data);
+                    userdata = data;
                     authenticated = true;
+                    if (userdata.admin)
+                        admin = true;
+                    logger.info('routage vers le dashboard');
+                    location.url(routeok);
+                }).error(function(data, status, headers, config) {
+                    logger.info('code http de la réponse : ' + status);
+                    logger.info('routage vers la page de login');
+                    authenticated = false;
+                    location.url(routeko);
+                });
+            };
+
+            this.logout = function() {
+                var user = this.getUserData();
+                logger.info("deconnexion de " + user.email);
+
+                http({
+                    method: 'GET',
+                    url: '/logout'
+                }).success(
+                        function(data, status, headers, config) {
+                            // Suppression du cookie.
+                            $cookieStore.remove('userData');
+                            userdata = null;
+                            authenticated = false;
+                            admin = null;
+                            location.url("/login");
+                        })
+
+            };
+
+            // Fonction de login
+            this.login = function(user, route, failledCallBack) {
+
+                logger.info("Tentative d'authentification de " + user);
+
+                http({
+                    method: 'POST',
+                    url: '/login',
+                    data: user
+                }).success(function(data, status, headers, config) {
+                    logger.info(status);
+                    logger.info(data);
+                    $cookieStore.put('userData', data);
+
+                    userdata = data;
+                    authenticated = true;
+                    if (userdata.admin)
+                        admin = true;
+                    logger.info('routage vers le dashboard');
+                    location.url(route);
+
+                }).error(function(data, status, headers, config) {
+                    logger.info('code http de la réponse : ' + status);
+                    logger.info(data);
+                    failledCallBack(data);
+                });
+            };
+
+            // Getters
+            this.getUserData = function() {
+
+                if (!userdata) {
+                    // la méthode get renvoie un Object ou undefined
+                    if (!$cookieStore.get('userData')) {
+                        userdata = $cookieStore.get('userData');
+                    }
                 }
-            }
-			return authenticated;
-		};
-				
-		this.isAdmin = function() {
-            if (admin == null && this.getUserData() != null) {
-                admin = this.getUserData().admin;
-            }
-			return admin;
-		};
-	}
-	// instanciation du service
-	return new UserService(http, logger);
-}]);
+                return userdata;
+            };
+
+
+            this.isAuthenticated = function() {
+                if (!authenticated) {
+                    // Conversion en booleén (double not)
+                    authenticated = !!this.getUserData();
+                }
+                return authenticated;
+            };
+
+            this.isAdmin = function() {
+                if (admin == null && this.getUserData() != null) {
+                    admin = this.getUserData().admin;
+                }
+                return admin;
+            };
+        }
+        // instanciation du service
+        return new UserService(http, logger);
+    }]);
 
 Services.factory('AccountService', function($resource) {
     function AccountService($resource) {
-        this.getUser = function () {
+        this.getUser = function() {
             //return $resource('/settings/user/:id').get({id:idUser});
             return $resource('/userLogged').get();
         }
@@ -127,23 +129,23 @@ Services.factory('AccountService', function($resource) {
 
 Services.factory('ProfilService', function($resource) {
     function ProfilService($resource) {
-        this.getTalks = function (userId) {
-            return $resource('/user/:userId/talks').query({userId:userId});
+        this.getTalks = function(userId) {
+            return $resource('/user/:userId/talks').query({userId: userId});
         };
 
-        this.getTalksAccepted = function (userId) {
-                return $resource('/user/:userId/talks/A').query({userId:userId});
+        this.getTalksAccepted = function(userId) {
+            return $resource('/user/:userId/talks/A').query({userId: userId});
         };
 
-        this.getTalksRefused = function (userId) {
-            return $resource('/user/:userId/talks/R').query({userId:userId});
+        this.getTalksRefused = function(userId) {
+            return $resource('/user/:userId/talks/R').query({userId: userId});
         };
 
-        this.getTalksWait = function (userId) {
-            return $resource('/user/:userId/talks/W').query({userId:userId});
+        this.getTalksWait = function(userId) {
+            return $resource('/user/:userId/talks/W').query({userId: userId});
         };
-        this.getUser = function (idUser) {
-            return $resource('/user/:id').get({id:idUser});
+        this.getUser = function(idUser) {
+            return $resource('/user/:id').get({id: idUser});
         }
     }
 
@@ -151,7 +153,7 @@ Services.factory('ProfilService', function($resource) {
 });
 
 Services.factory('TalkService', function($resource) {
-        return $resource('/talk/:id', {});
+    return $resource('/talk/:id', {});
 });
 
 Services.factory('AllTalkService', function($resource) {
@@ -170,7 +172,7 @@ Services.factory('DynamicFieldsService', function($resource) {
 Services.factory('VoteService', function($resource, $http, $log) {
     function VoteService($resource, $http, $log) {
 
-        this.getVote = function () {
+        this.getVote = function() {
             return $resource('/admin/vote', {}).get();
         }
     }
@@ -182,7 +184,7 @@ Services.factory('VoteService', function($resource, $http, $log) {
 
 
 Services.factory('ManageUsersService', function($resource) {
-        return $resource('/admin/users/get', {});
+    return $resource('/admin/users/get', {});
 });
 
 
