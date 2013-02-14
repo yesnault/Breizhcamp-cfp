@@ -1,0 +1,15 @@
+@(loginUrl: String, user: String)(implicit request: play.api.mvc.RequestHeader)
+
+<html>
+<body>
+<p>Bienvenue @user,</p>
+
+<p>
+    Votre compte est prêt.
+    Cliquez <a href="@loginUrl">ici</a> pour vous logguer.
+</p>
+<p>
+    <a href="mailto:team@@breizhcamp.org">L'équipe du BreizhC@@mp</a>
+</p>
+</body>
+</html>

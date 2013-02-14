@@ -1,0 +1,15 @@
+@(resetUrl: String, user: String)(implicit request: play.api.mvc.RequestHeader)
+
+
+<html>
+    <body>
+        <p>Bonjour @user,</p>
+
+        <p>Vous avez tenter de créer un compte alors que vous en possedez déjà un. Si vous avez oublié votre mot de passe, allez 
+            <a href="@resetUrl">ici</a> pour le réinitialiser.
+        </p>
+        <p>
+            <a href="mailto:team@@breizhcamp.org">L'équipe du BreizC@@mp</a>
+        </p>
+    </body>
+</html>
