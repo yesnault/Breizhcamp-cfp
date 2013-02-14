@@ -4,7 +4,6 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.joda.time.DateTime;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
@@ -13,7 +12,7 @@ import javax.persistence.*;
 import java.util.*;
 
 /**
- * 
+ *
  */
 @SuppressWarnings("serial")
 @Entity
@@ -21,68 +20,53 @@ public class User extends Model {
 
     @Id
     public Long id;
-
+    
     @Constraints.Required
     @Formats.NonEmpty
     @Column(unique = true)
     public String email;
-
+    
     @Constraints.Required
     @Formats.NonEmpty
     public String fullname;
 
+    /**
+     * Valeur de l'objet secureSocial
+     * oauth1 / oauth2 / userPassword / openId
+     */
+    @JsonIgnore
+    public String authenticationMethod;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JsonIgnore
-    public ExternalUserId extUserId;
+    public Credentials credentials;
     
-    @JsonIgnore
-    public Boolean signUp;
-    
-    @Formats.NonEmpty
-    @JsonIgnore
-    public String tokenUuid;
-
-    @Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonIgnore
-    public DateTime tokenCreationTime;
-
-    @Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonIgnore
-    public DateTime tokenModificationTime;
-
-    @Formats.NonEmpty
-    @JsonIgnore
-    public String passwordHash;
-
     @Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date dateCreation;
 
     @Formats.NonEmpty
-    @JsonIgnore
-    public Boolean validated = false;
-
     public Boolean admin = false;
-
+    
     private Boolean notifOnMyTalk;
-
     private Boolean notifAdminOnAllTalk;
-
     private Boolean notifAdminOnTalkWithComment;
-
+ 
     @Constraints.Pattern("^([0-9a-fA-F][0-9a-fA-F]:){5}([0-9a-fA-F][0-9a-fA-F])$")
     public String adresseMac;
 
-    @JsonProperty("provider")
-    public String getProvider(){
-        if (extUserId != null) {
-            return extUserId.providerId;
-        }
-        return null;
-    }
+    @Column(length = 2000)
+    public String description;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    public List<Lien> liens;
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<DynamicFieldValue> dynamicFieldValues;
+
+    public String avatar;
+    private final static String GRAVATAR_URL = "http://www.gravatar.com/avatar/";
+    
 
     public List<DynamicFieldValue> getDynamicFieldValues() {
         if (dynamicFieldValues == null) {
@@ -103,7 +87,6 @@ public class User extends Model {
         }
         return jsonFields;
     }
-
 
     public boolean getNotifOnMyTalk() {
         return BooleanUtils.isNotFalse(notifOnMyTalk);
@@ -129,22 +112,12 @@ public class User extends Model {
         this.notifAdminOnTalkWithComment = notifAdminOnTalkWithComment;
     }
 
-    @Column(length = 2000)
-    public String description;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    public List<Lien> liens;
-
     public List<Lien> getLiens() {
         if (liens == null) {
             liens = new ArrayList<Lien>();
         }
         return liens;
     }
-
-    public String avatar;
-
-    private final static String GRAVATAR_URL = "http://www.gravatar.com/avatar/";
 
     public String getAvatar() {
         if (avatar == null) {
@@ -153,7 +126,6 @@ public class User extends Model {
         }
         return avatar;
     }
-
     // -- Queries (long id, user.class)
     public static Model.Finder<Long, User> find = new Model.Finder<Long, User>(Long.class, User.class);
 
@@ -183,12 +155,24 @@ public class User extends Model {
      * @param uuid uuid to search
      * @return a user
      */
-    public static User findByExternalId(String uuid, String providerId) {
+    public static User findByExternalId(String userId, String providerId) {
 
-    	return find	.where()
-    					.eq("extUserId.providerUuid", uuid)
-    					.eq("extUserId.providerId", providerId)
-    				.findUnique();
+        // Bug de SecureSocial ? socialUser.id().providerId() renvoie parfois userPassword au lieu de userpass
+        if (providerId.equals("userPassword")) providerId = "userpass";
+        
+        return find.fetch("credentials").where()
+                    .eq("credentials.extUserId", userId)
+                    .eq("credentials.providerId", providerId)
+                    .findUnique();
+    }
+
+    
+    public static User findByEmailAndProvider(String email, String provider) {
+        
+        return find.fetch("credentials").where()
+                    .eq("credentials.providerId", provider)
+                    .eq("email", email)
+                    .findUnique();
     }
     
     /**
@@ -201,16 +185,6 @@ public class User extends Model {
         return find.where().eq("fullname", fullname).findUnique();
     }
 
-    /**
-     * Retrieves a user from a confirmation token.
-     *
-     * @param token the confirmation token to use.
-     * @return a user if the confirmation token is found, null otherwise.
-     */
-    public static User findByConfirmationToken(String token) {
-        return find.where().eq("confirmationToken", token).findUnique();
-    }
-
     public static List<User> findAll() {
         return find.all();
     }
@@ -218,5 +192,4 @@ public class User extends Model {
     public static List<User> findAllAdmin() {
         return find.where().eq("admin", Boolean.TRUE).findList();
     }
-
 }

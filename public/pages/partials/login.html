@@ -41,7 +41,7 @@
                     </div>
                     <div class="clearfix">
                         <p>
-                            Pour la création d'un compte local, c'est <a data-target="#signUpModal" data-toggle="modal">par ici</a>
+                            Pour la création d'un compte local, c'est <a href="/#signup">par ici</a>
                         </p>
                     </div>
                 </fieldset>
@@ -49,9 +49,9 @@
         </div>
     </div>	
 
-    <!-- Modal -->
-    <div id="signUpModal" class="modal hide fade" tabindex="-1" role="dialog">
-        <form action="/signup" class="form-horizontal" autocomplete="off" method="post">
+    <!-- Modal 
+    <div id="signUpModal" class="modal hide fade" tabindex="-1" role="dialog" data-keyboard="false">
+        <form ng-submit="createAccount()" class="form-horizontal" autocomplete="off">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">×</button>
                 <h3 id="signUpModalLabel">Création de compte</h3>
@@ -61,7 +61,7 @@
                     <div class="control-group  " id="email_field">
                         <label class="control-label" for="emailpopup">Email</label>
                         <div class="controls">
-                            <input type="email" id="emailpopup" name="email" value="" class="input-xlarge" required>
+                            <input ng-model="email" type="email" id="emailpopup" name="email" value="" class="input-xlarge" required>
                             <span class="help-block">Champ obligatoire</span>
                         </div>
                     </div>
@@ -69,7 +69,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn" data-dismiss="modal">Annuler</button>
-                <button class="btn btn-primary">Créer votre compte</button>
+                <button class="btn btn-primary" type="submit">Créer votre compte</button>
             </div>
         </form>
         <script>
@@ -79,6 +79,7 @@
             })
         </script>
     </div>
+    -->
 
 
 </div>
