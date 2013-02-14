@@ -38,3 +38,7 @@ server.pid
 modules
 *.db
 /nbproject/private/
+/build/
+/nbproject
+build.xml
+*.*~
