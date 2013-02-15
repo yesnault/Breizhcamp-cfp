@@ -1,7 +1,6 @@
 package models;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang.BooleanUtils;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import play.data.format.Formats;
@@ -89,15 +88,15 @@ public class User extends Model {
     }
 
     public boolean getNotifOnMyTalk() {
-        return BooleanUtils.isNotFalse(notifOnMyTalk);
+        return isNotFalse(notifOnMyTalk);
     }
 
     public boolean getNotifAdminOnAllTalk() {
-        return BooleanUtils.isNotFalse(notifAdminOnAllTalk);
+        return isNotFalse(notifAdminOnAllTalk);
     }
 
     public boolean getNotifAdminOnTalkWithComment() {
-        return BooleanUtils.isNotFalse(notifAdminOnTalkWithComment);
+        return isNotFalse(notifAdminOnTalkWithComment);
     }
 
     public void setNotifOnMyTalk(Boolean notifOnMyTalk) {
@@ -192,4 +191,20 @@ public class User extends Model {
     public static List<User> findAllAdmin() {
         return find.where().eq("admin", Boolean.TRUE).findList();
     }
+    
+    
+    
+    // Méthodes pour éviter l'import de la lib Apache Common Lang
+    
+    private static boolean isFalse(Boolean bool) {
+        if (bool == null) {
+            return false;
+        }
+        return bool.booleanValue() ? false : true; 
+    }
+    
+    private static boolean isNotFalse(Boolean bool) {
+        return !isNotFalse(bool);
+    }
+    
 }
