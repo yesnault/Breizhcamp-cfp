@@ -1,7 +1,6 @@
 package models;
 
 import models.utils.Mail;
-import org.apache.commons.lang.BooleanUtils;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
@@ -13,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import models.utils.BooleanUtils;
 
 @SuppressWarnings("serial")
 @Entity

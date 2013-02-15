@@ -9,6 +9,7 @@ import play.db.ebean.Model;
 
 import javax.persistence.*;
 import java.util.*;
+import models.utils.BooleanUtils;
 
 /**
  *
@@ -88,15 +89,15 @@ public class User extends Model {
     }
 
     public boolean getNotifOnMyTalk() {
-        return isNotFalse(notifOnMyTalk);
+        return BooleanUtils.isNotFalse(notifOnMyTalk);
     }
 
     public boolean getNotifAdminOnAllTalk() {
-        return isNotFalse(notifAdminOnAllTalk);
+        return BooleanUtils.isNotFalse(notifAdminOnAllTalk);
     }
 
     public boolean getNotifAdminOnTalkWithComment() {
-        return isNotFalse(notifAdminOnTalkWithComment);
+        return BooleanUtils.isNotFalse(notifAdminOnTalkWithComment);
     }
 
     public void setNotifOnMyTalk(Boolean notifOnMyTalk) {
@@ -191,20 +192,5 @@ public class User extends Model {
     public static List<User> findAllAdmin() {
         return find.where().eq("admin", Boolean.TRUE).findList();
     }
-    
-    
-    
-    // Méthodes pour éviter l'import de la lib Apache Common Lang
-    
-    private static boolean isFalse(Boolean bool) {
-        if (bool == null) {
-            return false;
-        }
-        return bool.booleanValue() ? false : true; 
-    }
-    
-    private static boolean isNotFalse(Boolean bool) {
-        return !isNotFalse(bool);
-    }
-    
+        
 }
