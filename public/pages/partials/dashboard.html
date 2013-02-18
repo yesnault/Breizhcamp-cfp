@@ -1,12 +1,13 @@
 <div class="row">
-    <div class="well"><h2>DASHBOARD</h2><br>
-
-        Nom : {{userService.getUserData().fullname}}
-
+    <div class="well">
+        <h2>DASHBOARD</h2><br>
     </div>
     <br/>
     <div class="well">
         <h2><a ng-href="/#/managetalk">Talks</a></h2>
+        <h4 ng-show="!talks.length">
+            - Aucun talk proposé
+        </h4>
         <h4 ng-show="talks.length == 1">
             - 1 talk proposé
         </h4>
