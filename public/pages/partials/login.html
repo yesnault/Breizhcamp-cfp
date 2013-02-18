@@ -4,17 +4,19 @@
         <div class="page-header">
             <h1>Bienvenue sur le CFP du BreizhC&#64;mp</h1>
         </div>
-        <div class="well">
-            <form>
-                <legend>Authentification avec un compte Github/Google/Twitter</legend>
-                <p>
-                    <a href="/authenticate/github"><img src="/assets/securesocial/images/providers/github.png"></a>
-                    <a href="/authenticate/google"><img src="/assets/securesocial/images/providers/google.png"></a>
-                    <a href="/authenticate/twitter"><img src="/assets/securesocial/images/providers/twitter.png"></a>
-                </p>
-            </form>
+        <div class="row well">
+            <legend>Authentification avec un compte Github/Google/Twitter</legend>
+            <div class="span3 offset1">
+                <a href="/authenticate/github" class="btn btn-large btn-info"><img src="/assets/securesocial/images/providers/github.png"> GitHub</a>
+            </div>
+            <div class="span3">
+                <a href="/authenticate/google" class="btn btn-large btn-info"><img src="/assets/securesocial/images/providers/google.png"> Google</a>
+            </div>
+            <div class="span3">
+                <a href="/authenticate/twitter" class="btn btn-large btn-info"><img src="/assets/securesocial/images/providers/twitter.png"> Twitter</a>
+            </div>
         </div>
-        <div class="well">
+        <div class="row well">
             <form action="/authenticate/userpass" class="form-horizontal" autocomplete="off" method="POST">
                 <fieldset>
                     <legend>Authentification avec un compte local</legend>
