@@ -15,7 +15,10 @@ public class BooleanUtils {
     }
     
     public static boolean isNotFalse(Boolean bool) {
-        return !isNotFalse(bool);
+        if (bool == null) {
+            return true;
+        }
+        return bool.booleanValue() ? true : false;
     }
 
     public static boolean isTrue(Boolean bool) {
