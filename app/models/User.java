@@ -87,6 +87,16 @@ public class User extends Model {
         }
         return jsonFields;
     }
+    
+    
+    @JsonProperty("provider")
+    public String getProvider(){
+        String provider = null;
+        if (credentials!=null) {
+            provider = this.credentials.providerId;
+        }
+        return provider;
+    }
 
     public boolean getNotifOnMyTalk() {
         return BooleanUtils.isNotFalse(notifOnMyTalk);
