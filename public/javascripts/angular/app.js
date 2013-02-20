@@ -30,7 +30,6 @@ App.config(['$routeProvider', function($routeProvider) {
 
     $routeProvider.when('/settings/account', {templateUrl: '/assets/pages/partials/settings/account.html', controller: SettingsAccountController});
     $routeProvider.when('/settings/notifs', {templateUrl: '/assets/pages/partials/settings/notifs.html', controller: NotifsAccountController});
-    $routeProvider.when('/settings/password', {templateUrl: '/assets/pages/partials/settings/password.html', controller: PasswordAccountController});
     $routeProvider.when('/settings/email', {templateUrl: '/assets/pages/partials/settings/email.html', controller: EmailAccountController});
     $routeProvider.when('/settings/mac', {templateUrl: '/assets/pages/partials/settings/mac.html', controller: MacAccountController});
     $routeProvider.when('/reset/ask', {templateUrl: 'assets/pages/partials/resetpassword.html', controller: ResetPasswordController});
