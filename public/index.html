@@ -9,16 +9,19 @@
         <link rel="stylesheet" media="screen" href="/assets/stylesheets/bootstrap.min.css">
     </head>
     <body>
-        <div class="navbar">
+        <div class="navbar navbar-inverse">
             <div class="navbar-inner">
                 <div class="container-fluid">
-                    <a class="brand" href="/#/dashboard"><img src="/assets/img/logoBreizhCamp_40x40.png" style="height: 20px"/> BreizhCamp CFP</a>
-
+                    <a class="brand" href="/#/dashboard">
+                        <img src="/assets/img/breizhCampLogoWithText.png" style="height: 30px"/>
+                    </a>
                     <div class="nav-collapse">
                         <ul class="nav">
-                            <li class=""><a href="/#/dashboard">Home</a></li>
+                            <li class="">
+                                <a href="/#/dashboard">Home <img style="height : 30px"></a>
+                            </li>
                             <li class="dropdown" ng-show="userService.isAuthenticated()">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Talks <b class="caret"></b></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Talks <b class="caret"></b><img style="height : 30px"></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="/#/submittalk/new">Soumettre un talk</a></li>
                                     <li><a href="/#/managetalk">Gérer vos talks</a></li>
@@ -27,30 +30,35 @@
                         </ul>
                     </div>
 
-                    <div class="btn-group pull-right" ng-show="userService.isAdmin()" ng-cloak>
-                        <a class="btn" href="#" data-toggle="dropdown" ><i class="icon-wrench"></i>Admin</a> <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
-                        <ul class="dropdown-menu" >
-                            <li><a href="/#/admin/users"><i class="icon-user"></i>Utilisateurs</a></li>
-                            <li class="divider"></li>
-                            <li><a href="/#/admin/talks/list"><i class="icon-list"></i>Liste des talks</a>
-                            <li><a href="/#/admin/vote"><i class="icon-ok"></i>Gestion des votes</a>
-                            <li><a href="/#/admin/creneaux"><i class="icon-th-list"></i>Gestion des créneaux</a>
-                            <li><a href="/#/admin/dynamicfields"><i class="icon-edit"></i>Gestion des champs dynamiques</a>
+                    <div class="nav-collapse pull-right" ng-show="userService.isAuthenticated()" ng-cloak>
+                        <ul class="nav">
+                            <li ng-show="userService.isAdmin()" class="dropdown">
+                                <a href="#" data-toggle="dropdown" class="dropdown-toggle" >
+                                    <i class="icon-wrench icon-white"></i> Admin <b class="caret"></b>
+                                    <img style="height : 30px">
+                                </a>
+                                <ul class="dropdown-menu pull-right" >
+                                    <li><a href="/#/admin/users"><i class="icon-user"></i>Utilisateurs</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="/#/admin/talks/list"><i class="icon-list"></i>Liste des talks</a>
+                                    <li><a href="/#/admin/vote"><i class="icon-ok"></i>Gestion des votes</a>
+                                    <li><a href="/#/admin/creneaux"><i class="icon-th-list"></i>Gestion des créneaux</a>
+                                    <li><a href="/#/admin/dynamicfields"><i class="icon-edit"></i>Gestion des champs dynamiques</a>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <img ng-src="{{{true:userService.getUserData().avatar, false:''}[userService.getUserData()!=null]}}" style="height : 30px"/>
+                                    {{userService.getUserData().fullname}}  <b class="caret"></b> 
+                                </a>
+                                <ul class="dropdown-menu pull-right">
+                                    <li><a href="/#/settings/account"><i class="icon-wrench"></i> settings</a></li>
+                                    <li class="divider"></li>
+                                    <li><a ng-click="logout()"><i class="icon-off"></i> D&eacute;connexion</a></li>
+                                </ul>
+                            </li>
                         </ul>
                     </div>
-
-                    <div class="btn-group pull-right" ng-show="userService.isAuthenticated()" ng-cloak>
-                        <a class="btn" href="#" data-toggle="dropdown" >
-                            <i><img ng-src="{{{true:userService.getUserData().avatar, false:''}[userService.getUserData()!=null]}}" style="height : 20px"/></i> {{userService.getUserData().fullname}}
-                        </a>
-                        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="/#/settings/account"><i class="icon-wrench"></i> settings</a></li>
-                            <li class="divider"></li>
-                            <li><a ng-click="logout()"><i class="icon-off"></i> D&eacute;connexion</a></li>
-                        </ul>
-                    </div>
-
                 </div>
             </div>
 
