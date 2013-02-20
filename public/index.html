@@ -17,11 +17,11 @@
                     </a>
                     <div class="nav-collapse">
                         <ul class="nav">
-                            <li class="">
-                                <a href="/#/dashboard">Home <img style="height : 30px"></a>
+                            <li style="margin-top: 5px;">
+                                <a href="/#/dashboard">Home</a>
                             </li>
-                            <li class="dropdown" ng-show="userService.isAuthenticated()">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Talks <b class="caret"></b><img style="height : 30px"></a>
+                            <li class="dropdown" ng-show="userService.isAuthenticated()" style="margin-top: 5px;">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Talks <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="/#/submittalk/new">Soumettre un talk</a></li>
                                     <li><a href="/#/managetalk">Gérer vos talks</a></li>
@@ -32,10 +32,9 @@
 
                     <div class="nav-collapse pull-right" ng-show="userService.isAuthenticated()" ng-cloak>
                         <ul class="nav">
-                            <li ng-show="userService.isAdmin()" class="dropdown">
+                            <li ng-show="userService.isAdmin()" class="dropdown" style="margin-top: 5px;">
                                 <a href="#" data-toggle="dropdown" class="dropdown-toggle" >
                                     <i class="icon-wrench icon-white"></i> Admin <b class="caret"></b>
-                                    <img style="height : 30px">
                                 </a>
                                 <ul class="dropdown-menu pull-right" >
                                     <li><a href="/#/admin/users"><i class="icon-user"></i>Utilisateurs</a></li>
