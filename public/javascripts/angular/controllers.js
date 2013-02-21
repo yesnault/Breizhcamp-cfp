@@ -29,12 +29,12 @@ function DashboardController($scope, ProfilService, AccountService, UserService)
 
     $scope.checkloc(false);
 
-    //var idUSer = UserService.getUserData().id;
-    //$scope.user = AccountService.getUser();
-    //$scope.talks = ProfilService.getTalks();
-    //$scope.talksok = ProfilService.getTalksAccepted();
-    //$scope.talksko = ProfilService.getTalksRefused();
-    //$scope.talks_w = ProfilService.getTalksWait();
+//    var idUSer = UserService.getUserData().id;
+//    $scope.user = AccountService.getUser();
+//    $scope.talks = ProfilService.getTalks();
+//    $scope.talksok = ProfilService.getTalksAccepted();
+//    $scope.talksko = ProfilService.getTalksRefused();
+//    $scope.talks_w = ProfilService.getTalksWait();
 
 
 }
@@ -129,6 +129,8 @@ function EditTalkController($scope, $log, $location, $routeParams, TalkService, 
 
     $scope.saveTalk = function() {
         $log.info("Sauvegarde du talk : " + $routeParams.talkId);
+        // Contournement pour ne pas soumettre l'objet speaker dans le POST JSON
+        $scope.talk.speaker = null;
 
         TalkService.save($scope.talk, function(data) {
             $log.info("Soummission du talk ok");
