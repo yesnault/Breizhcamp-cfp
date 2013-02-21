@@ -19,6 +19,7 @@ import org.codehaus.jackson.node.ArrayNode;
 
 import play.data.Form;
 import play.mvc.Controller;
+import static play.mvc.Controller.request;
 import play.mvc.Result;
 import securesocial.core.Identity;
 import securesocial.core.java.SecureSocial;
@@ -156,4 +157,14 @@ public class Account extends Controller {
                 && ((newLabel != null && newLabel.length() > 0)
                 || (newUrl != null && newUrl.length() > 0));
     }
+    
+    public static Result saveEmail() {
+        JsonNode node = request().body().asJson();
+        String email = node.get("email").asText();
+        User user = getLoggedUser();
+        user.email = email;
+        user.save();
+        return noContent();
+    }
+    
 }

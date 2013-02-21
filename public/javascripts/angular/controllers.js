@@ -555,7 +555,7 @@ function EmailAccountController($scope, $log, UserService, AccountService, $http
             url: '/settings/email',
             data: $scope.user
         }).success(function(data, status, headers, config) {
-            $('#messageSuccess').text('Un mail a été envoyé. Merci de vérifier vos mails.');
+            $('#messageSuccess').text('Merci. Cet email nous servira à vous contacter.');
             $('#messageSuccess').removeClass('hide');
             $scope.errors = undefined;
         }).error(function(data, status, headers, config) {
