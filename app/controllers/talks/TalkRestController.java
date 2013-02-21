@@ -30,6 +30,7 @@ import play.data.Form;
 import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.Result;
+import static play.mvc.Results.unauthorized;
 import securesocial.core.Identity;
 import securesocial.core.java.SecureSocial;
 
@@ -237,6 +238,15 @@ public class TalkRestController extends Controller {
         }
 
         Talk talk = Talk.find.byId(idTalk);
+        
+        User user = getLoggedUser();
+        if (!(user.id.equals(talk.speaker.id) || user.admin)) {
+            // On vérifie que le user est admin où le propriétaire du talk
+            Logger.info("Tentative de suppression de talk sans les droits requis : " + talk.id );
+            return unauthorized();
+        }
+
+        
         for (Comment comment : talk.getComments()) {
             comment.delete();
         }
