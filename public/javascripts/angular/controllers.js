@@ -29,12 +29,12 @@ function DashboardController($scope, ProfilService, AccountService, UserService)
 
     $scope.checkloc(false);
 
-//    var idUSer = UserService.getUserData().id;
-//    $scope.user = AccountService.getUser();
-//    $scope.talks = ProfilService.getTalks();
-//    $scope.talksok = ProfilService.getTalksAccepted();
-//    $scope.talksko = ProfilService.getTalksRefused();
-//    $scope.talks_w = ProfilService.getTalksWait();
+    var idUSer = UserService.getUserData().id;
+    $scope.user = AccountService.getUser();
+    $scope.talks = ProfilService.getTalks(idUSer);
+    $scope.talksok = ProfilService.getTalksAccepted(idUSer);
+    $scope.talksko = ProfilService.getTalksRefused(idUSer);
+    $scope.talks_w = ProfilService.getTalksWait(idUSer);
 
 
 }
