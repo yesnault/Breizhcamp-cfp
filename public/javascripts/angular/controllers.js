@@ -29,10 +29,8 @@ function DashboardController($rootScope, $scope, ProfilService, AccountService, 
 
     $scope.checkloc(false);
 
-    if (!$rootScope.user) {
-        $rootScope.user = AccountService.getUser();
-    }
     var idUser = UserService.getUserData().id;
+    $rootScope.user = UserService.getUserData();
     $scope.talks = ProfilService.getTalks(idUser);
     $scope.talksok = ProfilService.getTalksAccepted(idUser);
     $scope.talksko = ProfilService.getTalksRefused(idUser);
