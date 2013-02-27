@@ -1,7 +1,7 @@
 <div class="row">
-    <div class="well" ng-cloak class="ng-cloak">
+    <div class="well" >
         <h2>DASHBOARD</h2><br>
-        <div class="alert alert-error" ng-show="!user.email">
+        <div class="alert alert-error" ng-show="user && !user.email" ng-cloak class="ng-cloak">
             Merci de renseigner votre email sur votre <a href="/#/settings/email" >profil</a> pour qu'on puisse vous contacter.
         </div>
     </div>

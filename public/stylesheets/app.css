@@ -80,17 +80,20 @@
 {
     height: 300px;
     width: 100%;
-    background-color: Gainsboro;
+    margin-right: 10px;
     border: 1px solid DarkGray;
 }
 
-#previewMarkdown
+.wmd-preview
 {
     position: relative;
     padding-top: 40px;
+    border: 1px solid #DDD;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
-#previewMarkdown::after {
+.wmd-preview::after {
     content: "Prévisualisation";
     position: absolute;
     top: -1px;

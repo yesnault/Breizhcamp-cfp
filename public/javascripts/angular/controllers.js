@@ -24,22 +24,24 @@ function RootController($scope, UserService, $log, $location) {
 }
 
 
-DashboardController.$inject = ['$scope', 'ProfilService', 'AccountService', 'UserService'];
-function DashboardController($scope, ProfilService, AccountService, UserService) {
+DashboardController.$inject = ['$rootScope', '$scope', 'ProfilService', 'AccountService', 'UserService', '$log'];
+function DashboardController($rootScope, $scope, ProfilService, AccountService, UserService, $log) {
 
     $scope.checkloc(false);
 
-    var idUSer = UserService.getUserData().id;
-    $scope.user = AccountService.getUser();
-    $scope.talks = ProfilService.getTalks(idUSer);
-    $scope.talksok = ProfilService.getTalksAccepted(idUSer);
-    $scope.talksko = ProfilService.getTalksRefused(idUSer);
-    $scope.talks_w = ProfilService.getTalksWait(idUSer);
+    var idUser = UserService.getUserData().id;
+    $rootScope.user = UserService.getUserData();
+    $scope.talks = ProfilService.getTalks(idUser);
+    $scope.talksok = ProfilService.getTalksAccepted(idUser);
+    $scope.talksko = ProfilService.getTalksRefused(idUser);
+    $scope.talks_w = ProfilService.getTalksWait(idUser);
 
 
 }
 
 
+// Pour que l'injection de dépendances fonctionne en cas de 'minifying'
+LoginController.$inject = ['$scope', '$log', 'UserService', 'PasswordService', '$http', '$location', '$cookies', '$cookieStore'];
 function LoginController($scope, $log, UserService, PasswordService, $http, $location, $cookies) {
 
     // Si l'utilisateur est déjà loggué, on le redirige vers /
@@ -77,10 +79,10 @@ function LoginController($scope, $log, UserService, PasswordService, $http, $loc
     };
 
 }
+
+
 // Pour que l'injection de dépendances fonctionne en cas de 'minifying'
-LoginController.$inject = ['$scope', '$log', 'UserService', 'PasswordService', '$http', '$location', '$cookies', '$cookieStore'];
-
-
+NewTalkController.$inject = ['$scope', '$log', '$location', 'TalkService', 'CreneauxService'];
 function NewTalkController($scope, $log, $location, TalkService, CreneauxService) {
 
     $scope.checkloc(false);
@@ -91,9 +93,9 @@ function NewTalkController($scope, $log, $location, TalkService, CreneauxService
 
     $scope.creneaux = CreneauxService.query();
 
-    $scope.converter = new Markdown.Converter();
-    var editor = new Markdown.Editor($scope.converter);
-    editor.run();
+    $scope.converter = new Markdown.getSanitizingConverter();
+    $scope.editor = new Markdown.Editor($scope.converter);
+    $scope.editor.run();
 
     $scope.saveTalk = function() {
         $log.info("Soummission du nouveau talk");
@@ -108,9 +110,10 @@ function NewTalkController($scope, $log, $location, TalkService, CreneauxService
         });
     }
 }
-// Pour que l'injection de dépendances fonctionne en cas de 'minifying'
-NewTalkController.$inject = ['$scope', '$log', '$location', 'TalkService', 'CreneauxService'];
 
+
+// Pour que l'injection de dépendances fonctionne en cas de 'minifying'
+EditTalkController.$inject = ['$scope', '$log', '$location', '$routeParams', 'TalkService', '$http', 'CreneauxService'];
 function EditTalkController($scope, $log, $location, $routeParams, TalkService, http, CreneauxService) {
 
     $scope.checkloc(false);
@@ -123,9 +126,9 @@ function EditTalkController($scope, $log, $location, $routeParams, TalkService, 
 
     $scope.creneaux = CreneauxService.query();
 
-    $scope.converter = new Markdown.Converter();
-    var editor = new Markdown.Editor($scope.converter);
-    editor.run();
+    $scope.converter = new Markdown.getSanitizingConverter();
+    $scope.editor = new Markdown.Editor($scope.converter);
+    $scope.editor.run();
 
     $scope.saveTalk = function() {
         $log.info("Sauvegarde du talk : " + $routeParams.talkId);
@@ -163,10 +166,10 @@ function EditTalkController($scope, $log, $location, $routeParams, TalkService, 
     }
 
 }
+
+
 // Pour que l'injection de dépendances fonctionne en cas de 'minifying'
-EditTalkController.$inject = ['$scope', '$log', '$location', '$routeParams', 'TalkService', '$http', 'CreneauxService'];
-
-
+ManageTalkController.$inject = ['$scope', '$log', '$location', 'TalkService'];
 function ManageTalkController($scope, $log, $location, TalkService) {
 
     $scope.checkloc(false);
@@ -188,10 +191,10 @@ function ManageTalkController($scope, $log, $location, TalkService) {
     }
 
 }
+
+
 // Pour que l'injection de dépendances fonctionne en cas de 'minifying'
-ManageTalkController.$inject = ['$scope', '$log', '$location', 'TalkService'];
-
-
+ManageUsersController.$inject = ['$scope', '$log', '$location', 'ManageUsersService', '$http'];
 function ManageUsersController($scope, $log, $location, ManageUsersService, http) {
 
     $scope.checkloc(true);
@@ -225,9 +228,8 @@ function ManageUsersController($scope, $log, $location, ManageUsersService, http
     };
 
 }
-// Pour que l'injection de dépendances fonctionne en cas de 'minifying'
-ManageUsersController.$inject = ['$scope', '$log', '$location', 'ManageUsersService', '$http'];
 
+ListTalksController.$inject = ['$scope', '$log', 'AllTalkService', 'VoteService'];
 function ListTalksController($scope, $log, AllTalkService, VoteService) {
 
     $scope.checkloc(true);
@@ -240,8 +242,9 @@ function ListTalksController($scope, $log, AllTalkService, VoteService) {
 
     $scope.reverse = true;
 }
-ListTalksController.$inject = ['$scope', '$log', 'AllTalkService', 'VoteService'];
 
+
+VoteController.$inject = ['$scope', '$log', 'VoteService', '$http'];
 function VoteController($scope, $log, VoteService, $http) {
 
     $scope.checkloc(true);
@@ -265,8 +268,8 @@ function VoteController($scope, $log, VoteService, $http) {
     }
 }
 
-VoteController.$inject = ['$scope', '$log', 'VoteService', '$http'];
 
+SeeTalksController.$inject = ['$scope', '$log', '$routeParams', 'TalkService', '$http', 'VoteService'];
 function SeeTalksController($scope, $log, $routeParams, TalkService, http, VoteService) {
 
     $scope.checkloc(false);
@@ -275,9 +278,13 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http, VoteS
 
     $scope.voteStatus = VoteService.getVote();
 
-    $scope.converter = new Markdown.Converter();
+    $scope.converter = new Markdown.getSanitizingConverter();
 
-
+    $scope.getSafeDescription = function() {
+        if ($scope.talk.description) {
+            return $scope.converter.makeHtml($scope.talk.description);
+        }
+    }
 
     $scope.postComment = function() {
         $log.info("Sauvegarde du commentaire " + $scope.comment);
@@ -427,24 +434,28 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http, VoteS
         });
     }
 }
-SeeTalksController.$inject = ['$scope', '$log', '$routeParams', 'TalkService', '$http', 'VoteService'];
 
+ProfilController.$inject = ['$scope', '$log', '$routeParams', 'AccountService', 'ProfilService', 'UserService', '$http'];
 function ProfilController($scope, $log, $routeParams, AccountService, ProfilService, UserService, http) {
 
     $scope.checkloc(false);
 
-    $scope.converter = new Markdown.Converter();
+    $scope.converter = new Markdown.getSanitizingConverter();
 
     var idUSer = $routeParams.userId;
     $scope.pUser = ProfilService.getUser(idUSer);
     $scope.talks = ProfilService.getTalks(idUSer);
     $scope.talksok = ProfilService.getTalksAccepted(idUSer);
 
-
+    $scope.getSafeDescription = function() {
+        if ($scope.pUser.description) {
+            return $scope.converter.makeHtml($scope.pUser.description);
+        }
+    }
 }
-ProfilController.$inject = ['$scope', '$log', '$routeParams', 'AccountService', 'ProfilService', 'UserService', '$http'];
 
 
+SettingsAccountController.$inject = ['$scope', '$log', 'AccountService', 'UserService', '$http', '$location'];
 function SettingsAccountController($scope, $log, AccountService, UserService, http, $location) {
 
     $scope.checkloc(false);
@@ -452,10 +463,10 @@ function SettingsAccountController($scope, $log, AccountService, UserService, ht
     var idUser = UserService.getUserData().id;
     $scope.user = AccountService.getUser(idUser);
 
-    $scope.converter = new Markdown.Converter();
-    var editor = new Markdown.Editor($scope.converter);
-    editor.run();
-
+    $scope.converter = new Markdown.getSanitizingConverter();
+    $scope.editor = new Markdown.Editor($scope.converter);
+    $scope.editor.run();
+    
     $scope.removeLink = function(lien) {
         if (confirm('Êtes vous sûr de vouloir supprimer le lien ' + lien.label + '?')) {
             $log.info("Suppression du lien " + lien.label + '(' + lien.id + ')');
@@ -512,8 +523,8 @@ function SettingsAccountController($scope, $log, AccountService, UserService, ht
         });
     }
 }
-SettingsAccountController.$inject = ['$scope', '$log', 'AccountService', 'UserService', '$http', '$location'];
 
+NotifsAccountController.$inject = ['$scope', '$log', 'AccountService', 'UserService', '$http'];
 function NotifsAccountController($scope, $log, AccountService, UserService, $http) {
 
     $scope.checkloc(false);
@@ -542,14 +553,14 @@ function NotifsAccountController($scope, $log, AccountService, UserService, $htt
     };
 }
 
-NotifsAccountController.$inject = ['$scope', '$log', 'AccountService', 'UserService', '$http'];
 
-function EmailAccountController($scope, $log, UserService, AccountService, $http) {
+EmailAccountController.$inject = ['$rootScope','$scope', '$log', 'UserService', 'AccountService', '$http'];
+function EmailAccountController($rootScope,$scope, $log, UserService, AccountService, $http) {
 
     $scope.checkloc(false);
 
-    var idUser = UserService.getUserData().id;
-    $scope.user = AccountService.getUser(idUser);
+    var idUser = UserService.getUserData().id; 
+    $scope.user = $rootScope.user;
 
     $scope.changeEmail = function() {
         $http({
@@ -560,6 +571,7 @@ function EmailAccountController($scope, $log, UserService, AccountService, $http
             $('#messageSuccess').text('Merci. Cet email nous servira à vous contacter.');
             $('#messageSuccess').removeClass('hide');
             $scope.errors = undefined;
+            $rootScope.user.email = $scope.user.email;
         }).error(function(data, status, headers, config) {
             $('#messageSuccess').addClass('hide');
             $scope.errors = data;
@@ -567,8 +579,8 @@ function EmailAccountController($scope, $log, UserService, AccountService, $http
         });
     }
 }
-EmailAccountController.$inject = ['$scope', '$log', 'UserService', 'AccountService', '$http'];
 
+MacAccountController.$inject = ['$scope', '$log', 'UserService', 'AccountService', '$http'];
 function MacAccountController($scope, $log, UserService, AccountService, $http) {
 
     $scope.checkloc(false);
@@ -592,8 +604,8 @@ function MacAccountController($scope, $log, UserService, AccountService, $http) 
         });
     }
 }
-MacAccountController.$inject = ['$scope', '$log', 'UserService', 'AccountService', '$http'];
 
+ResetPasswordController.$inject = ['$scope', '$log', '$http'];
 function ResetPasswordController($scope, $log, $http) {
 
     $scope.resetPassword = function() {
@@ -619,8 +631,8 @@ function ResetPasswordController($scope, $log, $http) {
 
 }
 
-ResetPasswordController.$inject = ['$scope', '$log', '$http'];
 
+ConfirmSignupController.$inject = ['$scope', '$log', '$http', '$routeParams'];
 function ConfirmSignupController($scope, $log, $http, $routeParams) {
     var token = $routeParams.token;
 
@@ -636,8 +648,8 @@ function ConfirmSignupController($scope, $log, $http, $routeParams) {
     });
 }
 
-ConfirmSignupController.$inject = ['$scope', '$log', '$http', '$routeParams'];
 
+ConfirmResetPasswordController.$inject = ['$scope', '$log', '$http', '$routeParams', 'PasswordService'];
 function ConfirmResetPasswordController($scope, $log, $http, $routeParams, PasswordService) {
 
 
@@ -685,8 +697,8 @@ function ConfirmResetPasswordController($scope, $log, $http, $routeParams, Passw
     }
 }
 
-ConfirmResetPasswordController.$inject = ['$scope', '$log', '$http', '$routeParams', 'PasswordService'];
 
+ConfirmEmailController.$inject = ['$scope', '$log', '$http', '$routeParams', 'UserService', 'AccountService'];
 function ConfirmEmailController($scope, $log, $http, $routeParams, UserService, AccountService) {
     var token = $routeParams.token;
     if (UserService.getUserData() != null) {
@@ -707,8 +719,8 @@ function ConfirmEmailController($scope, $log, $http, $routeParams, UserService, 
     });
 }
 
-ConfirmEmailController.$inject = ['$scope', '$log', '$http', '$routeParams', 'UserService', 'AccountService'];
 
+CreneauxController.$inject = ['$scope', '$log', 'CreneauxService'];
 function CreneauxController($scope, $log, CreneauxService) {
     $scope.checkloc(true);
 
@@ -729,12 +741,16 @@ function CreneauxController($scope, $log, CreneauxService) {
     }
 }
 
-CreneauxController.$inject = ['$scope', '$log', 'CreneauxService'];
 
+NewCreneauController.$inject = ['$scope', '$log', 'CreneauxService', '$location'];
 function NewCreneauController($scope, $log, CreneauxService, $location) {
     $scope.checkloc(true);
 
     $scope.isNew = true;
+
+    $scope.converter = new Markdown.Converter();
+    $scope.editor = new Markdown.Editor($scope.converter);
+    $scope.editor.run();
 
     $scope.saveCreneau = function() {
         $log.info("Creneau à sauvegarder");
@@ -751,8 +767,8 @@ function NewCreneauController($scope, $log, CreneauxService, $location) {
     }
 }
 
-NewCreneauController.$inject = ['$scope', '$log', 'CreneauxService', '$location'];
 
+EditCreneauController.$inject = ['$scope', '$log', 'CreneauxService', '$location', '$routeParams'];
 function EditCreneauController($scope, $log, CreneauxService, $location, $routeParams) {
     $scope.checkloc(true);
 
@@ -762,6 +778,10 @@ function EditCreneauController($scope, $log, CreneauxService, $location, $routeP
 
     $scope.isNew = false;
 
+    $scope.converter = new Markdown.getSanitizingConverter();
+    $scope.editor = new Markdown.Editor($scope.converter);
+    $scope.editor.run();
+
     $scope.saveCreneau = function() {
         $log.info("Creneau à sauvegarder");
         $log.info($scope.creneau);
@@ -777,12 +797,8 @@ function EditCreneauController($scope, $log, CreneauxService, $location, $routeP
     }
 }
 
-EditCreneauController.$inject = ['$scope', '$log', 'CreneauxService', '$location', '$routeParams'];
 
-
-
-
-
+DynamicFieldsController.$inject = ['$scope', '$log', 'DynamicFieldsService'];
 function DynamicFieldsController($scope, $log, DynamicFieldsService) {
     $scope.checkloc(true);
 
@@ -803,8 +819,8 @@ function DynamicFieldsController($scope, $log, DynamicFieldsService) {
     }
 }
 
-DynamicFieldsController.$inject = ['$scope', '$log', 'DynamicFieldsService'];
 
+NewDynamicFieldController.$inject = ['$scope', '$log', 'DynamicFieldsService', '$location'];
 function NewDynamicFieldController($scope, $log, DynamicFieldsService, $location) {
     $scope.checkloc(true);
 
@@ -825,8 +841,8 @@ function NewDynamicFieldController($scope, $log, DynamicFieldsService, $location
     }
 }
 
-NewDynamicFieldController.$inject = ['$scope', '$log', 'DynamicFieldsService', '$location'];
 
+EditDynamicFieldController.$inject = ['$scope', '$log', 'DynamicFieldsService', '$location', '$routeParams'];
 function EditDynamicFieldController($scope, $log, DynamicFieldsService, $location, $routeParams) {
     $scope.checkloc(true);
 
@@ -850,6 +866,3 @@ function EditDynamicFieldController($scope, $log, DynamicFieldsService, $locatio
         });
     }
 }
-
-EditDynamicFieldController.$inject = ['$scope', '$log', 'DynamicFieldsService', '$location', '$routeParams'];
-
