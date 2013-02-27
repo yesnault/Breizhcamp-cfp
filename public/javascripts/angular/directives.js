@@ -2,29 +2,9 @@
 
 /* Directives */
 
-angular.module('breizhCampCFP.directives', [])
-        .directive('markdownpreview', function($log) {
-    // return the directive link function. (compile function not needed)
-    return function(scope, element, attrs) {
-        var content; // contenu markdown
+var directives = angular.module('breizhCampCFP.directives', []);
 
-        // used to update the UI
-        function updateContent() {
-            if (content != null) { // Si not undefined ou not null
-                element.html(scope.converter.makeHtml(content));
-            } else {
-                element.text('');
-            }
-        }
-
-        // watch the expression, and update the UI on change.
-        scope.$watch(attrs.markdownpreview, function(value) {
-            content = value;
-            updateContent();
-        });
-    };
-})
-        .directive('sessionhandler', function($location, $log) {
+directives.directive('sessionhandler', function($location, $log) {
     // Directive pour gérer la fin de session
     // Evenement envoyé par un intercepteur HTTP
     return function(scope, element, attrs) {
@@ -34,3 +14,12 @@ angular.module('breizhCampCFP.directives', [])
     };
 });
 
+directives.directive('pagedownInit', function($log) {
+    // Utilisé pour rafraîchir la zone de preview MarkDown
+    // editor.run() doit avoir été appelé dans le contrôleur auparavant
+    return function(scope, element, attrs) {
+        scope.$watch(attrs.pagedownInit, function(value) {
+            scope.editor.refreshPreview();
+        });
+    };
+});

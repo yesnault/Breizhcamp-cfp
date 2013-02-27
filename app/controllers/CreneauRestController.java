@@ -18,7 +18,7 @@ import securesocial.core.java.SecureSocial;
 @SecureSocial.SecuredAction(ajaxCall = true)
 public class CreneauRestController extends Controller {
 
-    public static User getLoggedUser() {
+    private static User getLoggedUser() {
         Identity socialUser = (Identity) ctx().args.get(SecureSocial.USER_KEY);
         User user = User.findByExternalId(socialUser.id().id(), socialUser.id().providerId());
         return user;
@@ -38,9 +38,8 @@ public class CreneauRestController extends Controller {
 
     public static Result save() {
 
+        // Vérification du rôle d'admin
         User user = getLoggedUser();
-
-        // Vérification du rôle du user
         if (!user.admin) {
             return forbidden();
         }
@@ -68,13 +67,17 @@ public class CreneauRestController extends Controller {
             }
             dbCreneau.setLibelle(formCreneau.getLibelle());
             dbCreneau.setDureeMinutes(formCreneau.getDureeMinutes());
+            dbCreneau.setDescription(formCreneau.getDescription());
             dbCreneau.update();
         }
         // HTTP 204 en cas de succès (NO CONTENT)
         return noContent();
     }
 
+    
     public static Result delete(Long idCreneau) {
+        
+        // Vérification du rôle d'admin
         User user = getLoggedUser();
         if (!user.admin) {
             return forbidden();

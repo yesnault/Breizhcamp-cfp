@@ -26,6 +26,8 @@ public class Creneau extends Model {
     @Constraints.Required
     private Integer dureeMinutes;
 
+    private String description;
+    
     @OneToMany(mappedBy ="dureePreferee")
     @JsonIgnore
     public List<Talk> talksPrefere;
@@ -72,6 +74,15 @@ public class Creneau extends Model {
         this.dureeMinutes = dureeMinutes;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    
+    
     public static Finder<Long, Creneau> find = new Finder<Long, Creneau>(Long.class, Creneau.class);
 
     public static Creneau findByLibelle(String libelle) {

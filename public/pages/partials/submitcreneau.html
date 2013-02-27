@@ -8,21 +8,31 @@
             <form ng-submit="saveCreneau()" name="formCreneau">
                 <fieldset>
                     <div class="control-group {{{true:'error', false:''}[errors.libelle != undefined || formCreneau.libelle.$error['required']]}}">
-                        <label class="control-label" for="libelle"></label>
+                        <label class="control-label" for="libelle">Libellé </label>
                         <div class="controls">
-                            <input type="text" id="libelle" name="libelle" value="" placeholder="Libelle" class="input-large" ng-model="creneau.libelle" required>
+                            <input type="text" id="libelle" name="libelle" value="" class="input-large" ng-model="creneau.libelle" required>
                             <p class="help-inline">Longueur maximum: 50, Obligatoire</p>
                             <p class="help-inline" ng-repeat="error in errors.libelle">{{error}}</p>
                         </div>
                     </div>
                     <div class="control-group {{{true:'error', false:''}[errors.dureeMinutes != undefined || formCreneau.dureeMinutes.$error['required'] || formCreneau.dureeMinutes.$error['number']]}}">
-                        <label class="control-label" for="dureeMinutes"></label>
+                        <label class="control-label" for="dureeMinutes">Durée (en mn) </label>
                         <div class="controls">
-                            <input type="number" id="dureeMinutes" name="dureeMinutes" value="" placeholder="Durée en minutes" class="input-large" ng-model="creneau.dureeMinutes" required>
+                            <input type="number" id="dureeMinutes" name="dureeMinutes" class="input-large" ng-model="creneau.dureeMinutes" required>
                             <p class="help-inline">Obligatoire</p>
                             <p class="help-inline" ng-repeat="error in errors.dureeMinutes">{{error}}</p>
                         </div>
                     </div>
+                    <div class="control-group">
+                        <label class="control-label" for="wmd-input">Description</label>
+                        <div class="controls">
+                            <div id="wmd-button-bar"></div>
+                            <textarea id="wmd-input"  name="description" class="wmd-input" rows="5" ng-model="creneau.description"></textarea>
+                            <p class="help-inline">Longueur {{creneau.description.length}}/255</p>
+                            <p class="help-inline" ng-repeat="error in errors.description">{{error}}</p>
+                            <div id="wmd-preview" class="wmd-preview" pagedown-init="creneau.description"></div>
+                        </div>
+                    </div>                    
                     <span class="badge badge-important" ng-repeat="error in errors['']">{{error}}</span>
                 </fieldset>
                 <div class="form-actions">

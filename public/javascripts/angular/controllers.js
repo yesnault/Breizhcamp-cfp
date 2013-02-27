@@ -93,9 +93,9 @@ function NewTalkController($scope, $log, $location, TalkService, CreneauxService
 
     $scope.creneaux = CreneauxService.query();
 
-    $scope.converter = new Markdown.Converter();
-    var editor = new Markdown.Editor($scope.converter);
-    editor.run();
+    $scope.converter = new Markdown.getSanitizingConverter();
+    $scope.editor = new Markdown.Editor($scope.converter);
+    $scope.editor.run();
 
     $scope.saveTalk = function() {
         $log.info("Soummission du nouveau talk");
@@ -126,9 +126,9 @@ function EditTalkController($scope, $log, $location, $routeParams, TalkService, 
 
     $scope.creneaux = CreneauxService.query();
 
-    $scope.converter = new Markdown.Converter();
-    var editor = new Markdown.Editor($scope.converter);
-    editor.run();
+    $scope.converter = new Markdown.getSanitizingConverter();
+    $scope.editor = new Markdown.Editor($scope.converter);
+    $scope.editor.run();
 
     $scope.saveTalk = function() {
         $log.info("Sauvegarde du talk : " + $routeParams.talkId);
@@ -278,7 +278,13 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http, VoteS
 
     $scope.voteStatus = VoteService.getVote();
 
-    $scope.converter = new Markdown.Converter();
+    $scope.converter = new Markdown.getSanitizingConverter();
+
+    $scope.getSafeDescription = function() {
+        if ($scope.talk.description) {
+            return $scope.converter.makeHtml($scope.talk.description);
+        }
+    }
 
     $scope.postComment = function() {
         $log.info("Sauvegarde du commentaire " + $scope.comment);
@@ -434,14 +440,18 @@ function ProfilController($scope, $log, $routeParams, AccountService, ProfilServ
 
     $scope.checkloc(false);
 
-    $scope.converter = new Markdown.Converter();
+    $scope.converter = new Markdown.getSanitizingConverter();
 
     var idUSer = $routeParams.userId;
     $scope.pUser = ProfilService.getUser(idUSer);
     $scope.talks = ProfilService.getTalks(idUSer);
     $scope.talksok = ProfilService.getTalksAccepted(idUSer);
 
-
+    $scope.getSafeDescription = function() {
+        if ($scope.pUser.description) {
+            return $scope.converter.makeHtml($scope.pUser.description);
+        }
+    }
 }
 
 
@@ -453,10 +463,10 @@ function SettingsAccountController($scope, $log, AccountService, UserService, ht
     var idUser = UserService.getUserData().id;
     $scope.user = AccountService.getUser(idUser);
 
-    $scope.converter = new Markdown.Converter();
-    var editor = new Markdown.Editor($scope.converter);
-    editor.run();
-
+    $scope.converter = new Markdown.getSanitizingConverter();
+    $scope.editor = new Markdown.Editor($scope.converter);
+    $scope.editor.run();
+    
     $scope.removeLink = function(lien) {
         if (confirm('Êtes vous sûr de vouloir supprimer le lien ' + lien.label + '?')) {
             $log.info("Suppression du lien " + lien.label + '(' + lien.id + ')');
@@ -738,6 +748,10 @@ function NewCreneauController($scope, $log, CreneauxService, $location) {
 
     $scope.isNew = true;
 
+    $scope.converter = new Markdown.Converter();
+    $scope.editor = new Markdown.Editor($scope.converter);
+    $scope.editor.run();
+
     $scope.saveCreneau = function() {
         $log.info("Creneau à sauvegarder");
         $log.info($scope.creneau);
@@ -763,6 +777,10 @@ function EditCreneauController($scope, $log, CreneauxService, $location, $routeP
     $scope.creneau = CreneauxService.get({id: idCreneau});
 
     $scope.isNew = false;
+
+    $scope.converter = new Markdown.getSanitizingConverter();
+    $scope.editor = new Markdown.Editor($scope.converter);
+    $scope.editor.run();
 
     $scope.saveCreneau = function() {
         $log.info("Creneau à sauvegarder");

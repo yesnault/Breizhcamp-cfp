@@ -23,10 +23,10 @@
                             <div class="control-group {{{true:'error', false:''}[errors.description != undefined]}}">
                                 <div class="controls">
                                     <div id="wmd-button-bar"></div>
-                                    <textarea id="wmd-input" name="description" placeholder="Description/Bio" class="input-xxlarge" ng-model="user.description" rows="10"></textarea>
-                                    <p class="help-inline">Longueur maximum: {{user.description.length}}/2&nbsp;000, Obligatoire</p>
+                                    <textarea id="wmd-input" name="description" placeholder="Description/Bio" class="wmd-input" ng-model="user.description" rows="10"></textarea>
+                                    <p class="help-inline">Longueur maximum: {{user.description.length}}/2000, Obligatoire</p>
                                     <p class="help-inline" ng-repeat="error in errors.description">{{error}}</p>
-                                    <div id="previewMarkdown" class="well" markdownpreview="user.description"></div>
+                                    <div id="wmd-preview" class="wmd-preview" pagedown-init="user.description"></div>
                                 </div>
                             </div>
                         </fieldset>
