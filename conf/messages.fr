@@ -50,6 +50,7 @@ youve.been.logged.out=Vous avez été déconnecté
 error.sending.email=Erreur lors de l'envoi du mail
 error.sending.confirm.email=Erreur lors de l'envoi du mail de confirmation
 error.email.already.exist=Cette adresse mail est déjà utilisée
+error.email.required=l'adresse mail est obligatoire
 error.talk.already.exist=Ce talk existe déjà
 error.talk.creneaux.empty=Un créneau doit être sélectionné.
 error.account.already.validated=Votre compte est déjà validé

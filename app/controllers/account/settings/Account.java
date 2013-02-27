@@ -161,8 +161,16 @@ public class Account extends Controller {
         JsonNode node = request().body().asJson();
         String email = node.get("email").asText();
 
+        if(email == null || email.equals("") ){
+            Logger.debug("error.email.required");
+            Map<String, List<String>> errors = new HashMap<String, List<String>>();
+            errors.put("email", Collections.singletonList(Messages.get("error.email.already.exist")));
+            return badRequest(toJson(errors));
+        }
+
+        User user = getLoggedUser();
         User existUser = User.findByEmail(email);
-        if(existUser != null){
+        if(existUser != null && !existUser.equals(user)){
             Logger.debug("error.email.already.exist");
             Map<String, List<String>> errors = new HashMap<String, List<String>>();
             errors.put("email", Collections.singletonList(Messages.get("error.email.already.exist")));
@@ -170,7 +178,7 @@ public class Account extends Controller {
         }
 
 
-        User user = getLoggedUser();
+
         user.email = email;
         user.save();
         return noContent();

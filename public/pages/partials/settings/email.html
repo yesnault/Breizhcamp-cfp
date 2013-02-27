@@ -20,7 +20,7 @@
                             <div class="control-group {{{true:'error', false:''}[errors.email != undefined]}}">
                                 <label class="control-label" for="email">Entrez votre nouvelle adresse mail et Valider pour recevoir les instructions par mail.</label>
                                 <div class="controls">
-                                    <input type="text" id="email" name="email" placeholder="Adresse mail" ng-model="user.email"/>
+                                    <input type="text" id="email" name="email" placeholder="Adresse mail" ng-model="user.email" required />
                                     <p class="help-inline" ng-repeat="error in errors.email">{{error}}</p>
                                 </div>
                             </div>

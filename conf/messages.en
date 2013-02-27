@@ -21,6 +21,7 @@ youve.been.logged.out=You've been logged out
 error.sending.email=Error sending email
 error.sending.confirm.email=Error while sending confirmation mail
 error.email.already.exist=Email already exist
+error.email.required=Email required
 error.talk.already.exist=Talk already exist
 error.talk.creneaux.empty=A slot must be selected.
 error.account.already.validated=Account already validated
