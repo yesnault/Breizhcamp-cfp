@@ -63,6 +63,11 @@ public class CfpUserService extends BaseUserService {
                 userCfp.avatar = socialUser.avatarUrl().get();
             }
         }
+
+        if(User.findAll().isEmpty()){
+            userCfp.admin = true;
+        }
+
         userCfp.save();
     }
 
@@ -105,7 +110,7 @@ public class CfpUserService extends BaseUserService {
     public Identity doFindByEmailAndProvider(String email, String providerId) {
         Logger.debug("doFindByEmailAndProvider SecureSocial : " + email + " / " + providerId);
         Identity result = null;
-        User user = User.findByEmailAndProvider(email, providerId);
+        User user = User.findByEmail(email);
         if (user != null) {
             result = userToIdentity(user);
         }

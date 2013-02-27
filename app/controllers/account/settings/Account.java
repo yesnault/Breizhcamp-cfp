@@ -2,10 +2,7 @@ package controllers.account.settings;
 
 import static play.libs.Json.toJson;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import models.DynamicField;
 import models.DynamicFieldJson;
@@ -17,7 +14,9 @@ import models.utils.TransformValidationErrors;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ArrayNode;
 
+import play.Logger;
 import play.data.Form;
+import play.i18n.Messages;
 import play.mvc.Controller;
 import static play.mvc.Controller.request;
 import play.mvc.Result;
@@ -161,6 +160,16 @@ public class Account extends Controller {
     public static Result saveEmail() {
         JsonNode node = request().body().asJson();
         String email = node.get("email").asText();
+
+        User existUser = User.findByEmail(email);
+        if(existUser != null){
+            Logger.debug("error.email.already.exist");
+            Map<String, List<String>> errors = new HashMap<String, List<String>>();
+            errors.put("email", Collections.singletonList(Messages.get("error.email.already.exist")));
+            return badRequest(toJson(errors));
+        }
+
+
         User user = getLoggedUser();
         user.email = email;
         user.save();
