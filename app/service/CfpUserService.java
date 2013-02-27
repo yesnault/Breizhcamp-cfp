@@ -1,12 +1,12 @@
 package service;
 
-import java.util.Date;
-import java.util.HashMap;
+import java.util.*;
 
 import models.Credentials;
 import models.User;
 import play.Application;
 import play.Logger;
+import play.i18n.Messages;
 import scala.Option;
 import securesocial.core.AuthenticationMethod;
 import securesocial.core.Identity;
@@ -17,6 +17,8 @@ import securesocial.core.SocialUser;
 import securesocial.core.UserId;
 import securesocial.core.java.BaseUserService;
 import securesocial.core.java.Token;
+
+import static play.libs.Json.toJson;
 
 /**
  * Classe utilisée par SecureSocial pour la gestion des Identity
@@ -54,6 +56,12 @@ public class CfpUserService extends BaseUserService {
         if (userCfp == null) {
             Logger.debug("Création du user : " + socialUser.fullName());
             userCfp = IdentityToUser(socialUser);
+
+            if(userCfp.fullname == null || userCfp.fullname.equals("") ){
+               // TODO renvoyer une erreur
+            }
+
+
             userCfp.admin = false;
             userCfp.dateCreation = new Date();
         } else {
