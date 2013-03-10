@@ -1,5 +1,6 @@
 package models;
 
+import models.utils.BooleanUtils;
 import models.utils.Mail;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import play.data.format.Formats;
@@ -12,7 +13,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import models.utils.BooleanUtils;
 
 @SuppressWarnings("serial")
 @Entity
@@ -105,5 +105,9 @@ public class Comment extends Model {
 		}
 		return authorsOfComments;
 	}
+
+    public static List<Comment> findByAuthor(User author) {
+        return find.where().eq("author", author).findList();
+    }
 
 }

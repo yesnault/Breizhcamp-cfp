@@ -72,7 +72,9 @@
         <div class="well">
             <h3>Questions/Réponses</h3>
             <div class="well {{{true:'privateComment',false:''}[comment.privateComment == true]}}" ng-repeat="comment in talk.comments">
-                <img ng-src="{{comment.author.avatar}}?s=20" style="max-width:20px;max-height: 20px"> {{comment.author.fullname}}<br/>
+                <div ng-show="comment.author!=null">
+                    <img ng-src="{{comment.author.avatar}}?s=20" style="max-width:20px;max-height: 20px"> {{comment.author.fullname}}</div>
+                <div ng-show="comment.author==null">compte supprimé</div><br/>
                 <div id="show-{{comment.id}}">{{comment.comment}}<br/> <br/></div>
                 <div class="well" id="edit-{{comment.id}}" style="display: none;">
                     <form ng-submit="editComment({{comment.id}})" method="POST" class="form-inline">
@@ -88,7 +90,8 @@
                 </div>
                 <br/>
                 <div class="well {{{true:'privateComment',false:''}[comment.privateComment == true]}}" ng-repeat="reponse in comment.reponses">
-                    <img ng-src="{{reponse.author.avatar}}?s=20" style="max-width:20px;max-height: 20px"> {{reponse.author.fullname}}<br/>
+                    <div ng-show="reponse.author!=null"><img ng-src="{{reponse.author.avatar}}?s=20" style="max-width:20px;max-height: 20px"> {{reponse.author.fullname}}</div>
+                    <div ng-show="reponse.author==null">compte supprimé</div><br/>
                     {{reponse.comment}}
                 </div>
                 <p class="help-inline" ng-repeat="error in errors.error">{{error}}</p>

@@ -3,11 +3,10 @@ package controllers;
 import static play.libs.Json.toJson;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
-import models.User;
-import models.VoteStatus;
-import models.VoteStatusEnum;
+import models.*;
 
 import org.codehaus.jackson.JsonNode;
 
@@ -23,6 +22,39 @@ public class Admin extends Controller {
         Identity socialUser = (Identity) ctx().args.get(SecureSocial.USER_KEY);
         User user = User.findByExternalId(socialUser.id().id(), socialUser.id().providerId());
         return user;
+    }
+
+    public static Result deleteCompte(Long id) {
+        User userRequest = getLoggedUser();
+        if (!userRequest.admin) {
+            return forbidden();
+        }
+
+        User userToDelete = User.findById(id);
+
+        if (userToDelete.admin) {
+            return badRequest();
+        }
+        // has talks ?
+        List<Talk> talks = Talk.findBySpeaker(userToDelete);
+        for (Talk talk : talks) {
+            talk.statusTalk = StatusTalk.REJETE;
+            talk.speaker = null;
+            talk.save();
+        }
+
+        //has commentaires ?
+        List<Comment> comments = Comment.findByAuthor(userToDelete);
+        for (Comment comment : comments) {
+
+            comment.author = null;
+            comment.save();
+        }
+
+
+        userToDelete.delete();
+
+        return ok();
     }
 
     public static Result submitUsers() {
@@ -57,6 +89,7 @@ public class Admin extends Controller {
         public ResultVote(VoteStatusEnum status) {
             this.status = status;
         }
+
         public VoteStatusEnum status;
     }
 

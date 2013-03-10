@@ -12,7 +12,8 @@
             </tr>
 
             <tr ng-repeat="talk in talks | orderBy:predicate:reverse">
-                <td><a ng-href="/#/profil/{{talk.speaker.id}}" ><img ng-src="{{talk.speaker.avatar}}" style="height : 30px" class="img-rounded"> {{talk.speaker.fullname}}</a></td>
+                <td><div ng-show="talk.speaker != null"><a ng-href="/#/profil/{{talk.speaker.id}}" ><img ng-src="{{talk.speaker.avatar}}" style="height : 30px" class="img-rounded"> {{talk.speaker.fullname}}</a></div>
+                    <div ng-show="talk.speaker == null">Compte Supprimé</div></td>
                 <td><a href="/#/talks/see/{{talk.id}}">{{talk.title}}</a></td>
                 <td><div ng-show="talk.statusTalk != undefined" ng-switch on="talk.statusTalk">
                     <span class="label label-important" ng-switch-when="REJETE">Rejeté</span>

@@ -227,7 +227,22 @@ function ManageUsersController($scope, $log, $location, ManageUsersService, http
         });
     };
 
-}
+    $scope.deleteCompte = function(id) {
+        var data = {"id":id};
+        $log.info("suppression du compte " + id);
+        http({
+            method: 'POST',
+            url: '/admin/deleteuser/'+id,
+            data: data
+        }).success(function(data, status, headers, config) {
+                $('#messageSuccess').text('Utilisateur supprimer');
+                $('#messageSuccess').removeClass('hide');
+                $('#messageError').addClass('hide');
+                $('#deleteCompte'+id).modal('hide');
+                $scope.users = ManageUsersService.query();
+            })
+    }
+ }
 
 ListTalksController.$inject = ['$scope', '$log', 'AllTalkService', 'VoteService'];
 function ListTalksController($scope, $log, AllTalkService, VoteService) {
