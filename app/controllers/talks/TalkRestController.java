@@ -140,7 +140,7 @@ public class TalkRestController extends Controller {
 
             if (!(user.id.equals(dbTalk.speaker.id) || user.admin)) {
                 // On vérifie que le user est admin où le propriétaire du talk
-                Logger.info("Tentative de suppression de talk sans les droits requis : " + talk.id );
+                Logger.info("Tentative de suppression de talk sans les droits requis : " + dbTalk.id );
                 return unauthorized();
             }
 
