@@ -137,6 +137,14 @@ public class TalkRestController extends Controller {
         } else {
             // Mise à jour d'un talk
             Talk dbTalk = Talk.find.byId(formTalk.id);
+
+            if (!(user.id.equals(dbTalk.speaker.id) || user.admin)) {
+                // On vérifie que le user est admin où le propriétaire du talk
+                Logger.info("Tentative de suppression de talk sans les droits requis : " + talk.id );
+                return unauthorized();
+            }
+
+
             if (!formTalk.title.equals(dbTalk.title)
                     && Talk.findByTitle(formTalk.title) != null) {
                 return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.talk.already.exist"))));
