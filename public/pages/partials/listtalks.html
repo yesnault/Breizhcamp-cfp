@@ -21,8 +21,8 @@
                     <span class="label label-warning" ng-switch-when="ATTENTE">Liste d'attente</span>
                     <span class="label label-success" ng-switch-when="ACCEPTE">Accepté</span>
                 </div></td>
-                <td>{{talk.vote.note}}</td>
                 <td>{{talk.dureePreferee.libelle}}</td>
+                <td>{{talk.vote.note}}</td>
                 <td ng-show="vote.status == 'CLOSED'">{{talk.moyenne}}</td>
             </tr>
 
