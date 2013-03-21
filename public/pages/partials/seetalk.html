@@ -72,21 +72,22 @@
         <div class="well">
             <h3>Questions/Réponses</h3>
             <div class="well {{{true:'privateComment',false:''}[comment.privateComment == true]}}" ng-repeat="comment in talk.comments">
-                <div ng-show="comment.author!=null">
+                <div  class="row">
+                    <div class="span3" ng-show="comment.author!=null">
                     <img ng-src="{{comment.author.avatar}}?s=20" style="max-width:20px;max-height: 20px"> {{comment.author.fullname}}</div>
-                <div ng-show="comment.author==null">compte supprimé</div><br/>
+                    <div class="span3" ng-show="comment.author==null">compte supprimé</div>
+                    <div class="span3">
+                                        <form  ng-submit="deleteComment({{comment.id}})" method="POST" >
+                                            <input type="submit" class="btn btn-primary" value="Supprimer"
+                                                   ng-show="!comment.clos&&(userService.isAdmin()|| userService.getUserData().id == comment.author.id )"
+                                                   ng-disabled="comment.reponses.length" >
+                                            <input type="button" class="btn btn-primary" value="Modifier"
+                                                   ng-show="!comment.clos&&(userService.isAdmin()|| userService.getUserData().id == comment.author.id )"
+                                                   onclick="displayHide('edit-{{comment.id}}');displayHide('show-{{comment.id}}');">
+                                        </form>
+                    </div>
+                </div>
                 <div id="show-{{comment.id}}">{{comment.comment}}<br/> <br/>
-
-                 <div class="span4">
-                        <form  ng-submit="deleteComment({{comment.id}})" method="POST" >
-                            <input type="submit" class="btn btn-primary" value="Supprimer"
-                                   ng-show="!comment.clos&&(userService.isAdmin()|| userService.getUserData().id == comment.author.id )"
-                                   ng-disabled="comment.reponses.length" >
-                            <input type="button" class="btn btn-primary" value="Modifier"
-                                   ng-show="!comment.clos&&(userService.isAdmin()|| userService.getUserData().id == comment.author.id )"
-                                   onclick="displayHide('edit-{{comment.id}}');displayHide('show-{{comment.id}}');">
-                        </form>
-                    </div>   <br/> <br/>
                 </div>
                 <div class="well" id="edit-{{comment.id}}" style="display: none;">
                     <form ng-submit="editComment({{comment.id}})" method="POST" class="form-inline">
@@ -100,23 +101,40 @@
                         <input type="button" class="btn btn-primary" value="Annuler" onclick="displayHide('edit-{{comment.id}}');displayHide('show-{{comment.id}}');">
                     </form>
                 </div>
-                <br/>
                 <div class="well {{{true:'privateComment',false:''}[comment.privateComment == true]}}" ng-repeat="reponse in comment.reponses">
-                    <div ng-show="reponse.author!=null"><img ng-src="{{reponse.author.avatar}}?s=20" style="max-width:20px;max-height: 20px"> {{reponse.author.fullname}}</div>
-                    <div ng-show="reponse.author==null">compte supprimé</div><br/>
-                    {{reponse.comment}}
-                </div>
+                    <div  class="row"><div class="span3" ng-show="reponse.author!=null"><img ng-src="{{reponse.author.avatar}}?s=20" style="max-width:20px;max-height: 20px"> {{reponse.author.fullname}}</div>
+                    <div class="span3" ng-show="reponse.author==null">compte supprimé</div>
+                        <div class="span3">
+                                             <input type="button" class="btn btn-primary" value="Modifier"
+                                                ng-show="!comment.clos&&(userService.isAdmin()|| userService.getUserData().id == reponse.author.id )"
+                                                onclick="displayHide('editReponse-{{reponse.id}}');displayHide('showReponse-{{reponse.id}}');">
+                        </div>
+                       <br/>
+                    <div class="span3" id="showReponse-{{reponse.id}}">{{reponse.comment}}<br/> <br/>
+                </div></div>
+                <div class="well" id="editReponse-{{reponse.id}}" style="display: none;">
+                                   <form ng-submit="editComment({{reponse.id}})" method="POST" class="form-inline">
+                                       <div class="control-group {{{true:'error', false:''}[errors.commentE != undefined]}}">
+                                           <div class="controls">             <!--      -->
+                                               <textarea name="comment" class="input-xlarge"  ng-model="$parent.commentE[reponse.id]" ng-init="$parent.commentE[reponse.id]=reponse.comment"   rows="5" >{{reponse.comment}}</textarea>
+                                               <p class="help-inline" ng-repeat="error in errors.comment">{{error}}</p>
+                                           </div>
+                                       </div>
+                                       <input type="submit" class="btn btn-primary" value="Valider">
+                                       <input type="button" class="btn btn-primary" value="Annuler" onclick="displayHide('edit-{{comment.id}}');displayHide('show-{{comment.id}}');">
+                                   </form>
+                </div> </div>
                 <p class="help-inline" ng-repeat="error in errors.error">{{error}}</p>
-                <div  class="row"><div class="span4">
+                <div  class="row">
+                    <div class="span3">
 
-                <form  ng-submit="postCloseComment({{comment.id}})" method="POST" >
-                    <input type="button" class="btn btn-primary" value="Repondre" ng-show="!comment.clos" onclick="displayHide('resp-{{comment.id}}')">
-                    <input type="submit" class="btn btn-primary" value="Clore"
-                           ng-show="!comment.clos&&(userService.isAdmin()|| userService.getUserData().id == comment.author.id )" >
-                </form> </div>
-
-
-            </div>
+                        <form  ng-submit="postCloseComment({{comment.id}})" method="POST" >
+                            <input type="button" class="btn btn-primary" value="Repondre" ng-show="!comment.clos" onclick="displayHide('resp-{{comment.id}}')">
+                            <input type="submit" class="btn btn-primary" value="Clore"
+                                   ng-show="!comment.clos&&(userService.isAdmin()|| userService.getUserData().id == comment.author.id )" >
+                        </form>
+                   </div>
+                </div>
                 <span class="label" ng-show="comment.clos">Clos</span>
                 <div class="well" id="resp-{{comment.id}}" style="display: none;">
                     <form ng-submit="postReponse({{comment.id}})" method="POST" class="form-inline">
