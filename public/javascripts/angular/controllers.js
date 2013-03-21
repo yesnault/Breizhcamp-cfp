@@ -293,6 +293,8 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http, VoteS
 
     $scope.voteStatus = VoteService.getVote();
 
+    $scope.commentE = Array();
+
     $scope.converter = new Markdown.getSanitizingConverter();
 
     $scope.getSafeDescription = function() {
@@ -343,10 +345,10 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http, VoteS
     };
 
     $scope.editComment = function(id) {
-        $log.info("modification du commentaire " + $scope.commentE);
+        $log.info("modification du commentaire " + $scope.commentE[id]);
 
         var commentId = id;
-        var dataR = {'comment': $scope.commentE};
+        var dataR = {'comment': $scope.commentE[id]};
 
         http({
             method: 'POST',
@@ -355,7 +357,7 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http, VoteS
         }).success(function(data, status, headers, config) {
             $log.info(status);
             $scope.errors = undefined;
-            $scope.commentE = undefined;
+            $scope.commentE = Array();
             $scope.talk = TalkService.get({id: $routeParams.talkId});
         }).error(function(data, status, headers, config) {
             $log.info(status);
