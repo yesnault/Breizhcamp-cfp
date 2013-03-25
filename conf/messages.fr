@@ -124,7 +124,7 @@ admin.users.manage.email=Email
 admin.talks.see=Liste des talks
 admin.talks.submit.by=Soumis par {0}
 
-home.message=Bienvenue sur le site du Call For Paper du BreihCamp.
+home.message=Bienvenue sur le site du Call For Paper du BreizhCamp.
 
 talks=Talks
 talks.speaker=Speaker
@@ -148,7 +148,7 @@ talks.status.mail.subject.rejected=Votre talk "{0}" est rejeté
 talks.status.mail.subject.waiting=Votre talk "{0}" est gardé en backup
 talks.status.mail.message.accepted=Bonjour,<br/><br/>Votre talk <i><a href="{0}">{1}</a></i> a été accepté pour le Breizhcamp.
 talks.status.mail.message.rejected=Bonjour,<br/><br/>Votre talk <i><a href="{0}">{1}</a></i> a été rejeté pour le Breizhcamp.
-talks.status.mail.message.waiting=Bonjour,<br/><br/>Votre talk <i><a href="{0}">{1}</a></i> n'a pas été choisi lors de la première sélection, mais a été sélectionné en BACKUP pour le Breizhcamp.<br/>Si l'un d'eux se désiste, alors nous pourrons vous proposer de venir à leur place.
+talks.status.mail.message.waiting=Bonjour,<br/><br/>Votre talk <i><a href="{0}">{1}</a></i> n''a pas été choisi lors de la première sélection, mais a été sélectionné en BACKUP pour le Breizhcamp.<br/>Si l''un d'eux se désiste, alors nous pourrons vous proposer de venir à leur place.
 
 error.creneau.already.exist=Ce créneau existe déjà.
 error.dynamicField.already.exist=Ce champ dynamique existe déjà.
