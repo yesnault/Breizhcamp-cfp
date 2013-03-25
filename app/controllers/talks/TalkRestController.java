@@ -282,7 +282,7 @@ public class TalkRestController extends Controller {
         JsonNode node = request().body().asJson();
         String commentForm = null;
         boolean privateComment = false;
-        if (node != null && node.get("comment") != null) {
+        if (node != null && node.get("comment") != null && !node.get("comment").equals("null")) {
             commentForm = node.get("comment").asText();
             if (user.admin && node.get("private") != null) {
                 privateComment = node.get("private").asBoolean();
@@ -297,7 +297,7 @@ public class TalkRestController extends Controller {
             return forbidden(toJson(TransformValidationErrors.transform("Action non autorisée")));
         }
 
-        if (commentForm.length() > 0 && commentForm.length() <= 140) {
+        if (commentForm.length() > 0 && commentForm.length() <= 140 && !commentForm.equals("null")) {
             Comment comment = new Comment();
             comment.author = user;
             comment.comment = commentForm;
@@ -358,7 +358,7 @@ public class TalkRestController extends Controller {
         String commentForm = null;
         boolean privateComment = false;
         Logger.debug("nose : " + node.asText());
-        if (node != null && node.get("comment") != null) {
+        if (node != null && node.get("comment") != null && !node.get("comment").equals("null")) {
             commentForm = node.get("comment").asText();
             if (user.admin && node.get("private") != null) {
                 privateComment = node.get("private").asBoolean();
@@ -373,7 +373,7 @@ public class TalkRestController extends Controller {
             return forbidden(toJson(TransformValidationErrors.transform("Action non autorisée")));
         }
 
-        if (commentForm.length() > 0 && commentForm.length() <= 140) {
+        if (commentForm.length() > 0 && commentForm.length() <= 140 && !commentForm.equals("null") ) {
             Comment comment = new Comment();
             comment.author = user;
             comment.comment = commentForm;
@@ -404,7 +404,7 @@ public class TalkRestController extends Controller {
         JsonNode node = request().body().asJson();
         String commentForm = null;
         Logger.debug("nose : " + node.asText());
-        if (node != null && node.get("comment") != null) {
+        if (node != null && node.get("comment") != null && !node.get("comment").equals("null")) {
             commentForm = node.get("comment").asText();
         } else {
             Map<String, List<String>> errors = new HashMap<String, List<String>>();
@@ -416,7 +416,7 @@ public class TalkRestController extends Controller {
             return forbidden(toJson(TransformValidationErrors.transform("Action non autorisée")));
         }
 
-        if (commentForm.length() > 0 && commentForm.length() <= 140) {
+        if (commentForm.length() > 0 && commentForm.length() <= 140 && !commentForm.equals("null")) {
             question.comment = commentForm;
             question.save();
 
