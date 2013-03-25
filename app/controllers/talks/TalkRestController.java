@@ -316,7 +316,7 @@ public class TalkRestController extends Controller {
 
         if (question.author.id != user.id) {
             Map<String, List<String>> errors = new HashMap<String, List<String>>();
-            errors.put("error", Collections.singletonList(Messages.get("error.delete.comment.baduser")));
+            errors.put("error", Collections.singletonList(Messages.get("error.close.comment.baduser")));
             return badRequest(toJson(errors));
         }
 
@@ -334,7 +334,7 @@ public class TalkRestController extends Controller {
 
         if (question.author.id != user.id && !user.admin) {
             Map<String, List<String>> errors = new HashMap<String, List<String>>();
-            errors.put("error", Collections.singletonList(Messages.get("error.close.comment.baduser")));
+            errors.put("error", Collections.singletonList(Messages.get("error.delete.comment.baduser")));
             return badRequest(toJson(errors));
         }
 
