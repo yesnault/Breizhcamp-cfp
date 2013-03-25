@@ -256,6 +256,9 @@ public class TalkRestController extends Controller {
 
         
         for (Comment comment : talk.getComments()) {
+            for(Comment reponse :comment.reponses) {
+                reponse.delete();
+            }
             comment.delete();
         }
 
