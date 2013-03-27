@@ -147,6 +147,7 @@ public class TalkRestController extends Controller {
 
             if (!formTalk.title.equals(dbTalk.title)
                     && Talk.findByTitle(formTalk.title) != null) {
+                Logger.error("error.talk.already.exist :"+formTalk.title);
                 return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.talk.already.exist"))));
             }
             dbTalk.title = formTalk.title;
