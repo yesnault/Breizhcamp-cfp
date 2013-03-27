@@ -254,9 +254,16 @@ public class TalkRestController extends Controller {
             return unauthorized();
         }
 
-        
-        for (Comment comment : talk.getComments()) {
+
+        List<Comment> comments = new ArrayList<Comment>(talk.getComments());
+        for (Comment comment : comments ) {
             talk.getComments().remove(comment);
+            for (Comment reponse : comment.reponses ) {
+                reponse.question = null;
+                reponse.delete();
+            }
+            comment.update();
+            comment.reponses = new ArrayList<Comment>();
             comment.delete();
         }
 
