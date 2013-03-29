@@ -42,7 +42,7 @@
                             <select id="creneaux" name="creneaux" multiple="true" ng-model="talk.creneaux" ng-options="creneau.libelle + ' (' + creneau.dureeMinutes + 'min)' for creneau in creneaux"></select>
                             <p class="help-inline" ng-repeat="error in errors.creneaux">{{error}}</p>
                             <p class="help-inline" ng-repeat="creneau in talk.creneaux">
-                                <span class="label">{{creneau.libelle + ' (' + creneau.dureeMinutes + 'min)'}}</span>
+                                <span class="label" title="{{creneau.description}}">{{creneau.libelle + ' (' + creneau.dureeMinutes + 'min)'}}</span>
                             </p>
                         </div>
                     </div>
@@ -53,7 +53,7 @@
                             <select id="dureePreferee" name="dureePreferee" ng-model="talk.dureePreferee" ng-options="creneau.libelle + ' (' + creneau.dureeMinutes + 'min)' for creneau in creneaux"></select>
                             <p class="help-inline" ng-repeat="error in errors.dureePreferee">{{error}}</p>
                             <p class="help-inline">
-                                <span class="label">{{talk.dureePreferee.libelle + ' (' + talk.dureePreferee.dureeMinutes + 'min)'}}</span>
+                                <span class="label" title="{{talk.dureePreferee.description}}">{{talk.dureePreferee.libelle + ' (' + talk.dureePreferee.dureeMinutes + 'min)'}}</span>
                             </p>
                         </div>
                     </div>
