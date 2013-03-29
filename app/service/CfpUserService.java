@@ -70,6 +70,15 @@ public class CfpUserService extends BaseUserService {
             if (socialUser.avatarUrl().isDefined()) {
                 userCfp.avatar = socialUser.avatarUrl().get();
             }
+
+            if (socialUser.passwordInfo().isDefined()) {
+                PasswordInfo pInfo = socialUser.passwordInfo().get();
+                userCfp.credentials.passwordHasher = pInfo.hasher();
+                userCfp.credentials.password = pInfo.password();
+                if (pInfo.salt().isDefined()) {
+                     userCfp.credentials.passwordSalt = pInfo.salt().get();
+                }
+            }
         }
 
         if(User.findAll().isEmpty()){

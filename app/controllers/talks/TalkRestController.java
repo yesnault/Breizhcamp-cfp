@@ -147,6 +147,7 @@ public class TalkRestController extends Controller {
 
             if (!formTalk.title.equals(dbTalk.title)
                     && Talk.findByTitle(formTalk.title) != null) {
+                Logger.error("error.talk.already.exist :"+formTalk.title);
                 return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.talk.already.exist"))));
             }
             dbTalk.title = formTalk.title;
@@ -254,9 +255,16 @@ public class TalkRestController extends Controller {
             return unauthorized();
         }
 
-        
-        for (Comment comment : talk.getComments()) {
+
+        List<Comment> comments = new ArrayList<Comment>(talk.getComments());
+        for (Comment comment : comments ) {
             talk.getComments().remove(comment);
+            for (Comment reponse : comment.reponses ) {
+                reponse.question = null;
+                reponse.delete();
+            }
+            comment.update();
+            comment.reponses = new ArrayList<Comment>();
             comment.delete();
         }
 
