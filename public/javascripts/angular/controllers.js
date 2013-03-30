@@ -1,5 +1,13 @@
 'use strict';
 
+Array.prototype.contains = function ( needle ) {
+    var i;
+    for (i in this) {
+        if (this[i] == needle) return true;
+    }
+    return false;
+}
+
 /* Controllers */
 
 // Pour que l'injection de dépendances fonctionne en cas de 'minifying'
@@ -249,6 +257,8 @@ function ListTalksController($scope, $log, AllTalkService, VoteService) {
 
     $scope.checkloc(true);
 
+    $scope.status = ['ACCEPTE','ATTENTE','REJETE'];
+
     $scope.talks = AllTalkService.query();
 
     $scope.vote = VoteService.getVote();
@@ -256,6 +266,11 @@ function ListTalksController($scope, $log, AllTalkService, VoteService) {
     $scope.predicate = 'moyenne';
 
     $scope.reverse = true;
+
+    $scope.doStatus = function(talk){
+        $log.info('call doStatus');
+        return talk.statusTalk == undefined || $scope.status.contains(talk.statusTalk);
+    };
 }
 
 
