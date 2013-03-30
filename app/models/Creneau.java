@@ -27,6 +27,8 @@ public class Creneau extends Model {
     private Integer dureeMinutes;
 
     private String description;
+
+    private Integer nbInstance;
     
     @OneToMany(mappedBy ="dureePreferee")
     @JsonIgnore
@@ -87,5 +89,13 @@ public class Creneau extends Model {
 
     public static Creneau findByLibelle(String libelle) {
         return find.query().where().eq("libelle", libelle).findUnique();
+    }
+
+    public Integer getNbInstance() {
+        return nbInstance;
+    }
+
+    public void setNbInstance(Integer nbInstance) {
+        this.nbInstance = nbInstance;
     }
 }

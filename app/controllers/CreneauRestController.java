@@ -68,6 +68,7 @@ public class CreneauRestController extends Controller {
             dbCreneau.setLibelle(formCreneau.getLibelle());
             dbCreneau.setDureeMinutes(formCreneau.getDureeMinutes());
             dbCreneau.setDescription(formCreneau.getDescription());
+            dbCreneau.setNbInstance(formCreneau.getNbInstance());
             dbCreneau.update();
         }
         // HTTP 204 en cas de succès (NO CONTENT)

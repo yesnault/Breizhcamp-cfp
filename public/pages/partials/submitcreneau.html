@@ -23,6 +23,13 @@
                             <p class="help-inline" ng-repeat="error in errors.dureeMinutes">{{error}}</p>
                         </div>
                     </div>
+                    <div class="control-group {{{true:'error', false:''}[errors.nbInstance != undefined || formCreneau.nbInstance.$error['number']]}}">
+                        <label class="control-label" for="nbInstance">Nombre de slot </label>
+                        <div class="controls">
+                            <input type="number" id="nbInstance" name="nbInstance" class="input-large" ng-model="creneau.nbInstance">
+                            <p class="help-inline" ng-repeat="error in errors.nbInstance">{{error}}</p>
+                        </div>
+                    </div>
                     <div class="control-group">
                         <label class="control-label" for="wmd-input">Description</label>
                         <div class="controls">
