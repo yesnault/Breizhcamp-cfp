@@ -117,6 +117,10 @@ public class Talk extends Model {
         return find.where().eq("statusTalk", status.getInterne()).eq("speaker", speaker).findList();
     }
 
+    public static List<Talk> findByStatus(StatusTalk status) {
+        return find.where().eq("statusTalk", status.getInterne()).findList();
+    }
+
     @JsonIgnore
     public transient Vote vote;
 

@@ -194,3 +194,36 @@
 	font-size: 0.8em;
 	font-weight: bold;
 }
+
+
+.talk {
+    float: left;
+    margin: 0;
+    border-top: 1px solid #954d5a;
+    border-left: 1px solid #954d5a;
+    width: 200px;
+    height: 200px;
+}
+
+.talk .avatar {
+    width: 200px;
+    height: 200px;
+}
+
+.talk .caption {
+    background-color: rgba(0, 0, 0, 0.4);
+    color: #ffffff;
+    position: relative;
+    overflow: hidden;
+    bottom: 60px;
+    height: 60px;
+    line-height: 1.2em;
+}
+
+.talk .caption .speaker {
+    font-size: 20px;
+    width:200px;
+    text-align:center;
+}
+
+
