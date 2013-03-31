@@ -13,7 +13,7 @@ Services.factory('UserService', ['$http', '$log', '$location', '$cookieStore', f
             var admin;
 
             // Fonction de login
-            this.isLogged = function(routeok, routeko) {
+            this.isLogged = function(success, error) {
 
                 logger.info("Appel isLogged (/userLogged)");
 
@@ -28,12 +28,12 @@ Services.factory('UserService', ['$http', '$log', '$location', '$cookieStore', f
                     if (userdata.admin)
                         admin = true;
                     logger.info('routage vers le dashboard');
-                    location.url(routeok);
+                    success();
                 }).error(function(data, status, headers, config) {
                     logger.info('code http de la réponse : ' + status);
                     logger.info('routage vers la page de login');
                     authenticated = false;
-                    location.url(routeko);
+                    error();
                 });
             };
 

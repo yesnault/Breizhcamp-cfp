@@ -19,14 +19,27 @@ function RootController($scope, UserService, $log, $location) {
         UserService.logout();
     };
 
-    $scope.checkloc = function(mustBeAdmin) {
-        var user = UserService.getUserData();
+    $scope.verifyUser = function(user, mustBeAdmin) {
         if (!user) {
             $location.url("/login");
         } else {
             if (mustBeAdmin && !user.admin) {
                 $location.url("/");
             }
+        }
+    };
+
+    $scope.checkloc = function(mustBeAdmin) {
+        var user = UserService.getUserData();
+        if (!user) {
+            UserService.isLogged(function(){
+                $scope.verifyUser(UserService.getUserData(), mustBeAdmin);
+            },
+            function(){
+                $scope.verifyUser(UserService.getUserData(), mustBeAdmin);
+            })
+        } else {
+            $scope.verifyUser(user, mustBeAdmin);
         }
     };
 }
@@ -58,7 +71,12 @@ function LoginController($scope, $log, UserService, PasswordService, $http, $loc
 //        $location.url("/");
 //    }
 
-    $scope.userlogged = UserService.isLogged("/dashboard", "/login");
+    $log.info("appel a isLogged");
+    $scope.userlogged = UserService.isLogged(function(){
+        $location.url("/dashboard")
+    }, function() {
+        $location.url("/login");
+    });
 
     $scope.debug = function() {
         //playCookie = $cookieStore.get('PLAY_SESSION');
