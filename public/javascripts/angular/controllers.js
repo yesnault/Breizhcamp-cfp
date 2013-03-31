@@ -285,6 +285,10 @@ function ListTalksController($scope, $log, AllTalkService, VoteService) {
 
     $scope.reverse = true;
 
+    $scope.talksAcceptes = function(talk){
+        return talk.statusTalk =='ACCEPTE';
+    };
+
     $scope.doStatus = function(talk){
         $log.info('call doStatus');
         return (talk.statusTalk == undefined && $scope.status.contains("NULL")) || $scope.status.contains(talk.statusTalk);

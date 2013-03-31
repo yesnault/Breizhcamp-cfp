@@ -1,17 +1,26 @@
 <div class="row">
 
     <div class="span12">
-        <div class="well">
-                <fieldset>
-                    <form>
-                       <select id="status" name="status" multiple="true" ng-model="status">
-                           <option value="REJETE" >Rejeté</option>
-                           <option value="ACCEPTE" >Accepté</option>
-                           <option value="ATTENTE" >Attente</option>
-                           <option value="NULL" >Sans status</option>
-                       </select>
-                    </form>
-            </fieldset>
+        <div class="row">
+            <div class="span6">
+                <div class="well">
+                        <fieldset>
+                            <form>
+                               <select id="status" name="status" multiple="true" ng-model="status">
+                                   <option value="REJETE" >Rejeté</option>
+                                   <option value="ACCEPTE" >Accepté</option>
+                                   <option value="ATTENTE" >Attente</option>
+                                   <option value="NULL" >Sans status</option>
+                               </select>
+                            </form>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="span6">
+                <div class="well">
+                    <p>{{(talks|filter:talksAcceptes).length}} talks acceptés</p>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -26,7 +35,7 @@
                 <th class="span1" ng-show="vote.status == 'CLOSED'"><a ng-click="predicate = 'moyenne'; reverse=!reverse">Moyenne</a></th>
             </tr>
 
-            <tr ng-repeat="talk in talks | filter:doStatus | orderBy:predicate:reverse ">
+            <tr ng-repeat="talk in talks | filter:doStatus(status) | orderBy:predicate:reverse ">
                 <td><div ng-show="talk.speaker != null"><a ng-href="/#/profil/{{talk.speaker.id}}" ><img ng-src="{{talk.speaker.avatar}}" style="height : 30px" class="img-rounded"> {{talk.speaker.fullname}}</a></div>
                     <div ng-show="talk.speaker == null">Compte Supprimé</div></td>
                 <td><a href="/#/talks/see/{{talk.id}}">{{talk.title}}</a></td>
