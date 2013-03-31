@@ -257,7 +257,7 @@ function ListTalksController($scope, $log, AllTalkService, VoteService) {
 
     $scope.checkloc(true);
 
-    $scope.status = ['ACCEPTE','ATTENTE','REJETE'];
+    $scope.status = ['ACCEPTE','ATTENTE','REJETE', 'NULL'];
 
     $scope.talks = AllTalkService.query();
 
@@ -269,7 +269,7 @@ function ListTalksController($scope, $log, AllTalkService, VoteService) {
 
     $scope.doStatus = function(talk){
         $log.info('call doStatus');
-        return talk.statusTalk == undefined || $scope.status.contains(talk.statusTalk);
+        return (talk.statusTalk == undefined && $scope.status.contains("NULL")) || $scope.status.contains(talk.statusTalk);
     };
 }
 
