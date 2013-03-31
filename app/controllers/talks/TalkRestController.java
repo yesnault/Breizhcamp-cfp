@@ -47,6 +47,12 @@ public class TalkRestController extends Controller {
         Talk talk = Talk.find.byId(idTalk);
 
         User user = getLoggedUser();
+
+        if (!user.admin && !user.id.equals(talk.speaker.id)) {
+            // On vérifie que le user est admin où le propriétaire du talk
+            return forbidden(toJson(TransformValidationErrors.transform("Action non autorisée")));
+        }
+;
         if (user.admin) {
             talk.vote = Vote.findVoteByUserAndTalk(user, talk);
         }
@@ -228,6 +234,7 @@ public class TalkRestController extends Controller {
         Talk dbTalk = Talk.find.byId(idTalk);
 
         if (!user.admin && !user.id.equals(dbTalk.speaker.id)) {
+            // On vérifie que le user est admin où le propriétaire du talk
             return forbidden(toJson(TransformValidationErrors.transform("Action non autorisée")));
         }
 
