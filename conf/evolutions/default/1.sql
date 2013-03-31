@@ -42,6 +42,9 @@ create table creneau (
   constraint pk_creneau primary key (id))
 ;
 
+
+alter table creneau add colone nb_instance integer
+
 create table dynamic_field (
   id                        bigint not null,
   name                      varchar(50),
