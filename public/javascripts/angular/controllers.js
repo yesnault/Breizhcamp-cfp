@@ -261,7 +261,7 @@ function ManageUsersController($scope, $log, $location, ManageUsersService, http
             url: '/admin/deleteuser/'+id,
             data: data
         }).success(function(data, status, headers, config) {
-                $('#messageSuccess').text('Utilisateur supprimer');
+                $('#messageSuccess').text('Utilisateur supprimé');
                 $('#messageSuccess').removeClass('hide');
                 $('#messageError').addClass('hide');
                 $('#deleteCompte'+id).modal('hide');
@@ -270,8 +270,8 @@ function ManageUsersController($scope, $log, $location, ManageUsersService, http
     }
  }
 
-ListTalksController.$inject = ['$scope', '$log', 'AllTalkService', 'VoteService'];
-function ListTalksController($scope, $log, AllTalkService, VoteService) {
+ListTalksController.$inject = ['$scope', '$log', 'AllTalkService', 'VoteService','TalkService'];
+function ListTalksController($scope, $log, AllTalkService, VoteService,TalkService) {
 
     $scope.checkloc(true);
 
@@ -299,6 +299,10 @@ function ListTalksController($scope, $log, AllTalkService, VoteService) {
             TalkService.delete({'id': talk.id}, function(data) {
                 $scope.talks = TalkService.query();
                 $scope.errors = undefined;
+                $('#messageSuccess').text('Talk supprimé');
+                $('#messageSuccess').removeClass('hide');
+                $('#messageError').addClass('hide');
+                $('#deleteTalk'+talk.id).modal('hide');
             }, function(err) {
                 $log.info("Delete du talk ko");
                 $log.info(err);
@@ -455,7 +459,7 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http, VoteS
     $scope.postStatus = function() {
         $log.info("postStatus");
 
-        var data = {'status': $scope.talk.statusTalk};
+        var data = {'status': $scope.talk.statusTalk,'dureeApprouve': $scope.talk.dureeApprouve.id};
 
         http({
             method: 'POST',

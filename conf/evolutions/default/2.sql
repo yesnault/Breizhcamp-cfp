@@ -1,7 +1,7 @@
 # --- !Ups
-alter table creneau add nb_instance integer;
+alter table talk add duree_approuve_id bigint;
 
 
 # --- !Downs
 
-ALTER TABLE creneau DROP COLUMN nb_instance;
+ALTER TABLE talk DROP COLUMN duree_approuve_id;

@@ -80,6 +80,7 @@ create table talk (
   speaker_id                bigint,
   status_talk               varchar(1),
   duree_preferee_id         bigint,
+  duree_approuve_id         bigint,
   constraint ck_talk_status_talk check (status_talk in ('A','W','R')),
   constraint uq_talk_title unique (title),
   constraint pk_talk primary key (id))
@@ -170,12 +171,14 @@ alter table talk add constraint fk_talk_speaker_8 foreign key (speaker_id) refer
 create index ix_talk_speaker_8 on talk (speaker_id);
 alter table talk add constraint fk_talk_dureePreferee_9 foreign key (duree_preferee_id) references creneau (id) on delete restrict on update restrict;
 create index ix_talk_dureePreferee_9 on talk (duree_preferee_id);
-alter table user add constraint fk_user_credentials_10 foreign key (credentials_id) references credentials (id) on delete restrict on update restrict;
-create index ix_user_credentials_10 on user (credentials_id);
-alter table vote add constraint fk_vote_user_11 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_vote_user_11 on vote (user_id);
-alter table vote add constraint fk_vote_talk_12 foreign key (talk_id) references talk (id) on delete restrict on update restrict;
-create index ix_vote_talk_12 on vote (talk_id);
+alter table talk add constraint fk_talk_dureeApprouve_10 foreign key (duree_approuve_id) references creneau (id) on delete restrict on update restrict;
+create index ix_talk_dureeApprouve_10 on talk (duree_approuve_id);
+alter table user add constraint fk_user_credentials_11 foreign key (credentials_id) references credentials (id) on delete restrict on update restrict;
+create index ix_user_credentials_11 on user (credentials_id);
+alter table vote add constraint fk_vote_user_12 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_vote_user_12 on vote (user_id);
+alter table vote add constraint fk_vote_talk_13 foreign key (talk_id) references talk (id) on delete restrict on update restrict;
+create index ix_vote_talk_13 on vote (talk_id);
 
 
 

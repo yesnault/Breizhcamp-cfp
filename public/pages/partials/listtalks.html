@@ -58,8 +58,9 @@
                     <div ng-show="talk.speaker == null">Compte Supprimé</div></td>
                 <td><a href="/#/talks/see/{{talk.id}}">{{talk.title}}</a></td>
                 <td><p class="help-inline" ng-repeat="creneau in talk.creneaux">
-                        <span class="label" ng-show="talk.dureePreferee == null || creneau.id!=talk.dureePreferee.id">{{creneau.libelle + ' (' + creneau.dureeMinutes + 'min)'}}</span>
-                        <span class="label label-info" ng-show="talk.dureePreferee != null &&  creneau.id==talk.dureePreferee.id">{{creneau.libelle + ' (' + creneau.dureeMinutes + 'min)'}}</span>
+                        <span class="label" ng-show="(talk.dureePreferee == null || creneau.id!=talk.dureePreferee.id) && (talk.dureeApprouve == null || creneau.id!=talk.dureeApprouve.id)">{{creneau.libelle + ' (' + creneau.dureeMinutes + 'min)'}}</span>
+                        <span class="label label-info" ng-show="(talk.dureePreferee != null &&  creneau.id==talk.dureePreferee.id) && (talk.dureeApprouve == null ||  creneau.id!=talk.dureeApprouve.id) ">{{creneau.libelle + ' (' + creneau.dureeMinutes + 'min)'}}</span>
+                        <span class="label label-success" ng-show="talk.dureeApprouve != null &&  creneau.id==talk.dureeApprouve.id">{{creneau.libelle + ' (' + creneau.dureeMinutes + 'min)'}}</span>
                     </p>
                 </td>
                 <td><div ng-show="talk.statusTalk != undefined" ng-switch on="talk.statusTalk">

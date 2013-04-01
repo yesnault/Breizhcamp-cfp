@@ -451,8 +451,18 @@ public class TalkRestController extends Controller {
         JsonNode node = request().body().asJson();
 
         StatusTalk newStatus = StatusTalk.fromValue(node.get("status").asText());
+
         if (talk.statusTalk != newStatus) {
             talk.statusTalk = newStatus;
+
+            if(talk.statusTalk.equals(StatusTalk.ACCEPTE)) {
+                Creneau dureeApprouve = Creneau.find.byId(Long.valueOf(node.get("dureeApprouve").asText()));
+
+                talk.dureeApprouve =  dureeApprouve;
+            }  else{
+                talk.dureeApprouve = null;
+            }
+
             talk.save();
             if (talk.statusTalk != null) {
                 talk.statusTalk.sendMail(talk, talk.speaker.email);

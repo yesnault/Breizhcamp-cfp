@@ -1,6 +1,7 @@
 package models;
 
 import com.google.common.base.Joiner;
+import models.utils.BooleanUtils;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import play.data.format.Formats;
@@ -10,7 +11,6 @@ import play.db.ebean.Model;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import models.utils.BooleanUtils;
 
 @SuppressWarnings("serial")
 @Entity
@@ -94,6 +94,9 @@ public class Talk extends Model {
 
     @ManyToOne
     public Creneau dureePreferee;
+
+    @ManyToOne
+    public Creneau dureeApprouve;
 
     public List<Creneau> getCreneaux() {
         if (creneaux == null) {

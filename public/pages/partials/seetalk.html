@@ -24,6 +24,11 @@
                                 <option value="ATTENTE">Liste d'attente</option>
                                 <option value="ACCEPTE">Accepté</option>
                             </select>
+
+                            <select id="dureeApprouve" name="dureeApprouve"  ng-model="talk.dureeApprouve" >
+                                <option value="{{creneau}}" selected="{{talk.dureeApprouve==undefined && talk.dureePreferee || talk.dureeApprouve}}" ng-repeat="creneau in talk.creneaux">{{creneau.libelle + ' (' + creneau.dureeMinutes + 'min)'}}</option>
+
+                            </select>
                             <p class="help-inline" ng-repeat="error in errors.status">{{error}}</p>
                         </div>
                     </div>
