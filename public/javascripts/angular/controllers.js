@@ -293,6 +293,20 @@ function ListTalksController($scope, $log, AllTalkService, VoteService) {
         $log.info('call doStatus');
         return (talk.statusTalk == undefined && $scope.status.contains("NULL")) || $scope.status.contains(talk.statusTalk);
     };
+
+    $scope.deleteTalk = function(talk) {
+        var confirmation = confirm('Êtes vous sûr de vouloir supprimer le talk "' + talk.title + '" ?');
+        if (confirmation) {
+            TalkService.delete({'id': talk.id}, function(data) {
+                $scope.talks = TalkService.query();
+                $scope.errors = undefined;
+            }, function(err) {
+                $log.info("Delete du talk ko");
+                $log.info(err);
+                $scope.errors = err.data;
+            });
+        }
+    }
 }
 
 
