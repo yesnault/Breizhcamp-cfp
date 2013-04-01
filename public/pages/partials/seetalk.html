@@ -42,7 +42,7 @@
                 <span class="label label-success" ng-switch-when="ACCEPTE">Accepté</span>
             </div>
 
-            <div class="well" ng-show="userService.isAdmin() && voteStatus.status == 'OPEN'">
+            <div class="well" ng-show="userService.isAdmin() && (voteStatus.status == 'OPEN' || voteStatus.status == 'NOT_BEGIN')">
                 <form ng-submit="postVote()" class="form-inline">
                     <div class="control-group {{{true:'error', false:''}[errors.vote != undefined]}}">
                         <label for="note">Note du talk</label>

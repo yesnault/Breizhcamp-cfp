@@ -481,7 +481,7 @@ public class TalkRestController extends Controller {
         Talk talk = Talk.find.byId(idTalk);
 
         VoteStatusEnum voteStatus = VoteStatus.getVoteStatus();
-        if (voteStatus != VoteStatusEnum.OPEN) {
+        if (voteStatus != VoteStatusEnum.OPEN && voteStatus != VoteStatusEnum.NOT_BEGIN) {
             return unauthorized();
         }
         if (note == null || note < 1 || note > 5) {
