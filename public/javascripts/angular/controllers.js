@@ -295,8 +295,7 @@ function ListTalksController($scope, $log, AllTalkService, VoteService) {
     };
 
     $scope.deleteTalk = function(talk) {
-        var confirmation = confirm('Êtes vous sûr de vouloir supprimer le talk "' + talk.title + '" ?');
-        if (confirmation) {
+            $log.info('deleteTalk '+talk.title);
             TalkService.delete({'id': talk.id}, function(data) {
                 $scope.talks = TalkService.query();
                 $scope.errors = undefined;
@@ -305,7 +304,6 @@ function ListTalksController($scope, $log, AllTalkService, VoteService) {
                 $log.info(err);
                 $scope.errors = err.data;
             });
-        }
     }
 }
 
