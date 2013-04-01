@@ -35,7 +35,7 @@
                 <th class="span1" ng-show="vote.status == 'CLOSED'"><a ng-click="predicate = 'moyenne'; reverse=!reverse">Moyenne</a></th>
             </tr>
 
-            <tr ng-repeat="talk in talks | filter:doStatus(status) | orderBy:predicate:reverse ">
+            <tr ng-repeat="talk in talks | filter:doStatus | orderBy:predicate:reverse ">
                 <td><div ng-show="talk.speaker != null"><a ng-href="/#/profil/{{talk.speaker.id}}" ><img ng-src="{{talk.speaker.avatar}}" style="height : 30px" class="img-rounded"> {{talk.speaker.fullname}}</a></div>
                     <div ng-show="talk.speaker == null">Compte Supprimé</div></td>
                 <td><a href="/#/talks/see/{{talk.id}}">{{talk.title}}</a></td>

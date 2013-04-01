@@ -38,12 +38,10 @@ create table creneau (
   libelle                   varchar(50),
   duree_minutes             integer,
   description               varchar(255),
+  nb_instance               integer,
   constraint uq_creneau_libelle unique (libelle),
   constraint pk_creneau primary key (id))
 ;
-
-
-alter table creneau add colone nb_instance integer
 
 create table dynamic_field (
   id                        bigint not null,
