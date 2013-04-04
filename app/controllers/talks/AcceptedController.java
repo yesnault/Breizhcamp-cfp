@@ -32,9 +32,6 @@ public class AcceptedController extends Controller {
     public static Result index() {
         List<Talk> talksAccepted = Talk.findByStatus(StatusTalk.ACCEPTE);
         for (Talk talk : talksAccepted) {
-            talk.getComments().clear();
-            talk.getCreneaux().clear();
-            talk.moyenne = null;
             if (talk.speaker.fullname != null) {
                 talk.speaker.fullname.toString();
             }
@@ -46,6 +43,9 @@ public class AcceptedController extends Controller {
 
         List<Talk> talksAccepted = Talk.findByStatus(StatusTalk.ACCEPTE);
         for (Talk talk : talksAccepted) {
+            talk.getComments().clear();
+            talk.getCreneaux().clear();
+            talk.moyenne = null;
             filterSpeaker(talk.speaker);
         }
         return ok(jsonp(callback, toJson(talksAccepted)));
