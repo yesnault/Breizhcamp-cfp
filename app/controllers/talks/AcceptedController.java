@@ -33,6 +33,8 @@ public class AcceptedController extends Controller {
         List<Talk> talksAccepted = Talk.findByStatus(StatusTalk.ACCEPTE);
         for (Talk talk : talksAccepted) {
             talk.getComments().clear();
+            talk.getCreneaux().clear();
+            talk.moyenne = null;
             if (talk.speaker.fullname != null) {
                 talk.speaker.fullname.toString();
             }
@@ -55,5 +57,8 @@ public class AcceptedController extends Controller {
         speaker.admin = null;
         speaker.dateCreation = null;
         speaker.email = null;
+        speaker.setNotifAdminOnAllTalk(null);
+        speaker.setNotifAdminOnTalkWithComment(null);
+        speaker.setNotifOnMyTalk(null);
     }
 }
