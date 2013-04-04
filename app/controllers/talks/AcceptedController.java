@@ -18,20 +18,42 @@ package controllers.talks;
 
 import models.StatusTalk;
 import models.Talk;
+import models.User;
 import play.mvc.Controller;
 import play.mvc.Result;
 
 import java.util.List;
+
+import static play.libs.Json.toJson;
+import static play.libs.Jsonp.jsonp;
 
 public class AcceptedController extends Controller {
 
     public static Result index() {
         List<Talk> talksAccepted = Talk.findByStatus(StatusTalk.ACCEPTE);
         for (Talk talk : talksAccepted) {
+            talk.getComments().clear();
             if (talk.speaker.fullname != null) {
                 talk.speaker.fullname.toString();
             }
         }
         return ok(views.html.talks.accepted.render(talksAccepted));
+    }
+
+    public static Result acceptedTalksToJson(String callback) {
+
+        List<Talk> talksAccepted = Talk.findByStatus(StatusTalk.ACCEPTE);
+        for (Talk talk : talksAccepted) {
+            filterSpeaker(talk.speaker);
+        }
+        return ok(jsonp(callback, toJson(talksAccepted)));
+    }
+
+    private static void filterSpeaker(User speaker) {
+        speaker.adresseMac = null;
+        speaker.authenticationMethod = null;
+        speaker.admin = null;
+        speaker.dateCreation = null;
+        speaker.email = null;
     }
 }

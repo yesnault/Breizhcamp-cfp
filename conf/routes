@@ -72,6 +72,7 @@ GET	/userLogged                 controllers.UserRestController.getUserLogged()
 GET     /admin/users/get            controllers.UserRestController.get()
 
 GET     /accepted                   controllers.talks.AcceptedController.index()
+GET     /accepted/jsonp             controllers.talks.AcceptedController.acceptedTalksToJson(callback:String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
