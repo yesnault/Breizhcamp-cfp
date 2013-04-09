@@ -97,8 +97,10 @@
                     <form ng-submit="editComment({{comment.id}})" method="POST" class="form-inline">
                         <div class="control-group {{{true:'error', false:''}[errors.commentE != undefined]}}">
                             <div class="controls">             <!--      -->
-                                <textarea name="comment" class="input-xlarge"  ng-model="$parent.commentE[comment.id]" ng-init="$parent.commentE[comment.id]=comment.comment"   rows="5" >{{comment.comment}}</textarea>
+                                <textarea name="comment" class="input-xlarge"  ng-model="$parent.commentE[comment.id]" ng-init="$parent.commentE[comment.id]=comment.comment"   rows="5" maxlength="140">{{comment.comment}}</textarea>
+                                <p class="help-inline">Longueur maximum: 140, </p>
                                 <p class="help-inline" ng-repeat="error in errors.comment">{{error}}</p>
+                                <p class="help-inline">{{$parent.commentE[comment.id].length}}/140</p>
                             </div>
                         </div>
                         <input type="submit" class="btn btn-primary" value="Valider">
@@ -120,8 +122,10 @@
                                    <form ng-submit="editComment({{reponse.id}})" method="POST" class="form-inline">
                                        <div class="control-group {{{true:'error', false:''}[errors.commentE != undefined]}}">
                                            <div class="controls">             <!--      -->
-                                               <textarea name="comment" class="input-xlarge"  ng-model="$parent.commentE[reponse.id]" ng-init="$parent.commentE[reponse.id]=reponse.comment"   rows="5" >{{reponse.comment}}</textarea>
+                                               <textarea name="comment" class="input-xlarge"  ng-model="$parent.commentE[reponse.id]" ng-init="$parent.commentE[reponse.id]=reponse.comment"   rows="5" maxlength="140">{{reponse.comment}}</textarea>
+                                               <p class="help-inline">Longueur maximum: 140, </p>
                                                <p class="help-inline" ng-repeat="error in errors.comment">{{error}}</p>
+                                               <p class="help-inline">{{$parent.commentE[reponse.id].length}}/140</p>
                                            </div>
                                        </div>
                                        <input type="submit" class="btn btn-primary" value="Valider">
@@ -145,8 +149,10 @@
 
                         <div class="control-group {{{true:'error', false:''}[errors.commentR != undefined]}}">
                             <div class="controls">
-                                <textarea name="commentR" ng-model="$parent.commentR" class="input-xlarge"  rows="3" placeholder="Repondre au commentaire" ></textarea>
+                                <textarea name="commentR" ng-model="$parent.commentR" class="input-xlarge"  rows="3" placeholder="Repondre au commentaire" maxlength="140"></textarea>
+                                <p class="help-inline">Longueur maximum: 140, </p>
                                 <p class="help-inline" ng-repeat="error in errors.commentR">{{error}}</p>
+                                <p class="help-inline">{{$parent.commentR.length}}/140</p>
                                 <label class="checkbox" ng-show="userService.isAdmin()">
                                     <input type="checkbox" name="privateR" ng-model="$parent.privateR" ng-show="userService.isAdmin()">Commentaire privé</input>
                                 </label>
@@ -162,8 +168,10 @@
 
                     <div class="control-group {{{true:'error', false:''}[errors.comment != undefined]}}">
                         <div class="controls">
-                            <textarea name="comment" class="input-xxlarge" ng-model="comment" rows="5" placeholder="Nouveau commentaire" ></textarea>
+                            <textarea name="comment" class="input-xxlarge" ng-model="comment" rows="5" placeholder="Nouveau commentaire" maxlength="140"></textarea>
+                            <p class="help-inline">Longueur maximum: 140, </p>
                             <p class="help-inline" ng-repeat="error in errors.comment">{{error}}</p>
+                            <p class="help-inline">{{comment.length}}/140</p>
                             <label class="checkbox" ng-show="userService.isAdmin()">
                                 <input type="checkbox" id="private" name="private" ng-model="private" ng-show="userService.isAdmin()">Commentaire privé</input>
                             </label>
