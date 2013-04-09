@@ -154,7 +154,7 @@
                                 <p class="help-inline" ng-repeat="error in errors.commentR">{{error}}</p>
                                 <p class="help-inline">{{$parent.commentR.length}}/140</p>
                                 <label class="checkbox" ng-show="userService.isAdmin()">
-                                    <input type="checkbox" name="privateR" ng-model="$parent.privateR" ng-show="userService.isAdmin()">Commentaire privé</input>
+                                    <br/><input type="checkbox" name="privateR" ng-model="$parent.privateR" ng-show="userService.isAdmin()">Commentaire privé</input>
                                 </label>
                             </div>
                         </div>
@@ -173,7 +173,7 @@
                             <p class="help-inline" ng-repeat="error in errors.comment">{{error}}</p>
                             <p class="help-inline">{{comment.length}}/140</p>
                             <label class="checkbox" ng-show="userService.isAdmin()">
-                                <input type="checkbox" id="private" name="private" ng-model="private" ng-show="userService.isAdmin()">Commentaire privé</input>
+                                <br/><input type="checkbox" id="private" name="private" ng-model="private" ng-show="userService.isAdmin()">Commentaire privé</input>
                             </label>
                         </div>
                     </div>
