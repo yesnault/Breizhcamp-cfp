@@ -342,7 +342,15 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http, VoteS
 
     $scope.checkloc(false);
 
-    $scope.talk = TalkService.get({id: $routeParams.talkId});
+    $scope.talk = TalkService.get({id: $routeParams.talkId}, function success(data) {
+        $scope.talk = data;
+        if (!$scope.talk.dureeApprouve) {
+            $scope.talk.dureeApprouve = $scope.talk.dureePreferee;
+        }
+
+        $log.info($scope.talk.dureeApprouve);
+        $log.info($scope.talk.creneaux);
+    });
 
     $scope.voteStatus = VoteService.getVote();
 
