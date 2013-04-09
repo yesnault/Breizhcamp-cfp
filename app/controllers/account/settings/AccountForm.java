@@ -8,6 +8,12 @@ import play.data.format.Formats;
 import play.data.validation.Constraints;
 
 public class AccountForm {
+
+    @Constraints.Required
+    @Formats.NonEmpty
+    @Constraints.MaxLength(255)
+    public String avatar;
+
     @Constraints.Required
     @Formats.NonEmpty
     @Constraints.MaxLength(2000)

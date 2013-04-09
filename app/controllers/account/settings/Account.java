@@ -100,6 +100,7 @@ public class Account extends Controller {
         }
         
         user.description = accountForm.get().description;
+        user.avatar = accountForm.get().avatar;
         
         if (newLinkExists(newLink, newLabel, newUrl)) {
         	Lien lien = newLink.get();
