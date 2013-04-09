@@ -22,7 +22,7 @@
                             <legend>Avatar</legend>
                             <div class="control-group {{{true:'error', false:''}[errors.avatar != undefined]}}">
                                 <div class="controls">
-                                    <input name="avatar" placeholder="Avatar" class="wmd-input" ng-model="user.avatar"/>
+                                    <input type="text" name="avatar" placeholder="Avatar" ng-model="user.avatar" class="input-xxlarge" />
                                     <p class="help-inline">Longueur maximum: {{user.avatar.length}}/255, Obligatoire</p>
                                     <p class="help-inline" ng-repeat="error in errors.avatar">{{error}}</p>
                                 </div>
