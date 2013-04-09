@@ -19,6 +19,16 @@
                     <a ng-click="appercu()" >aperçu</a>
                     <form ng-submit="saveSettings()">
                         <fieldset>
+                            <legend>Avatar</legend>
+                            <div class="control-group {{{true:'error', false:''}[errors.avatar != undefined]}}">
+                                <div class="controls">
+                                    <input name="avatar" placeholder="Avatar" class="wmd-input" ng-model="user.avatar"/>
+                                    <p class="help-inline">Longueur maximum: {{user.avatar.length}}/255, Obligatoire</p>
+                                    <p class="help-inline" ng-repeat="error in errors.avatar">{{error}}</p>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
                             <legend>Description/Bio</legend>
                             <div class="control-group {{{true:'error', false:''}[errors.description != undefined]}}">
                                 <div class="controls">
