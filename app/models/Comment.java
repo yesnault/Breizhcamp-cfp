@@ -3,12 +3,15 @@ package models;
 import models.utils.BooleanUtils;
 import models.utils.Mail;
 import org.codehaus.jackson.annotate.JsonIgnore;
+import play.Configuration;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
 import play.i18n.Messages;
 
 import javax.persistence.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -48,7 +51,7 @@ public class Comment extends Model {
 
     public static Model.Finder<Long, Comment> find = new Model.Finder<Long, Comment>(Long.class, Comment.class);
     
-    public void sendMail() {
+    public void sendMail() throws MalformedURLException {
     	List<String> emails = new ArrayList<String>();
         if (BooleanUtils.isNotTrue(privateComment)) {
     	    addMailIfNotAuthorAndWantReceive(talk.speaker, emails);
@@ -58,8 +61,12 @@ public class Comment extends Model {
     	}
 
         if (!emails.isEmpty()) {
+            String urlString = "http://" + Configuration.root().getString("server.hostname");
+            urlString += "/#/talks/see/" + talk.id;
+            URL url = new URL(urlString);
+
             String subjet = Messages.get("talks.comment.new.mail.subject", talk.title);
-            String message = Messages.get("talks.comment.new.mail.message", talk.title, author.fullname, comment);
+            String message = Messages.get("talks.comment.new.mail.message", talk.title, author.fullname, comment,url);
 
             Mail.sendMail(new Mail.Envelop(subjet, message, emails));
         }

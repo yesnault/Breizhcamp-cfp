@@ -291,7 +291,7 @@ public class TalkRestController extends Controller {
         return noContent();
     }
 
-    public static Result saveComment(Long idTalk) {
+    public static Result saveComment(Long idTalk)throws MalformedURLException  {
         User user = getLoggedUser();
         Talk talk = Talk.find.byId(idTalk);
 
@@ -364,7 +364,7 @@ public class TalkRestController extends Controller {
         return ok();
     }
 
-    public static Result saveReponse(Long idTalk, Long idComment) {
+    public static Result saveReponse(Long idTalk, Long idComment)throws MalformedURLException  {
         User user = getLoggedUser();
         Talk talk = Talk.find.byId(idTalk);
         Comment question = Comment.find.byId(idComment);
@@ -411,7 +411,7 @@ public class TalkRestController extends Controller {
         return ok();
     }
 
-    public static Result editComment(Long idTalk, Long idComment) {
+    public static Result editComment(Long idTalk, Long idComment)throws MalformedURLException  {
         User user = getLoggedUser();
         Talk talk = Talk.find.byId(idTalk);
         Comment question = Comment.find.byId(idComment);

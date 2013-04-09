@@ -141,7 +141,7 @@ talks.questions=Questions/Réponses
 talks.comment.new=Nouveau commentaire
 
 talks.comment.new.mail.subject=Nouveau commentaire sur le talk {0}
-talks.comment.new.mail.message=Bonjour,<br/><br/>Un nouveau commentaire a été posté sur le talk {0} par {1} :<br/><i>{2}</i>
+talks.comment.new.mail.message=Bonjour,<br/><br/>Un nouveau commentaire a été posté sur le talk <a href="{3}">{0}</a> par {1} :<br/><i>{2}</i>
 
 talks.status.mail.subject.accepted=Votre talk "{0}" est accepté
 talks.status.mail.subject.rejected=Votre talk "{0}" est rejeté
