@@ -134,9 +134,25 @@ function NewTalkController($scope, $log, $location, TalkService, CreneauxService
             $log.info(err.data);
             $scope.errors = err.data;
         });
-    }
+    };
+
+    $scope.changeDureePreferee = changeDureePreferee;
 }
 
+
+function changeDureePreferee(newId, talk, creneaux) {
+
+    var found = false;
+    angular.forEach(creneaux, function(creneau) {
+        if (creneau.id === newId) {
+            talk.dureePreferee  = creneau;
+            found = true;
+        }
+    });
+    if (!found) {
+        talk.dureePreferee = undefined;
+    }
+}
 
 // Pour que l'injection de dépendances fonctionne en cas de 'minifying'
 EditTalkController.$inject = ['$scope', '$log', '$location', '$routeParams', 'TalkService', '$http', 'CreneauxService'];
@@ -189,8 +205,9 @@ function EditTalkController($scope, $log, $location, $routeParams, TalkService, 
             $log.info(status);
             $scope.errors = data;
         });
-    }
+    };
 
+    $scope.changeDureePreferee = changeDureePreferee;
 }
 
 
