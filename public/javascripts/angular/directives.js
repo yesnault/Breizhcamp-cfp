@@ -23,3 +23,28 @@ directives.directive('pagedownInit', function($log) {
         });
     };
 });
+
+
+directives.directive('star', function factory() {
+    var directiveDefinitionObject = {
+        template: '<div id="star"> </div>',
+        restrict: 'E',
+        replace: true,
+        transclude: true,
+        link: function postLink(scope, iElement, iAttrs) {
+            $.fn.raty.defaults.path = '/assets/img/';
+            $('#star').raty({
+                click: function(score, evt) {
+                    scope.talk.note = score;
+                    scope.$digest();
+                }
+            });
+
+            scope.$watch('talk.note', function(value) {
+                $('#star').raty('score', value != undefined ? value : 1);
+            });
+        }
+
+    };
+    return directiveDefinitionObject;
+});

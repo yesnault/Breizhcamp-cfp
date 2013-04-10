@@ -44,9 +44,8 @@
             <div class="well" ng-show="userService.isAdmin() && (voteStatus.status == 'OPEN' || voteStatus.status == 'NOT_BEGIN')">
                 <form ng-submit="postVote()" class="form-inline">
                     <div class="control-group {{{true:'error', false:''}[errors.vote != undefined]}}">
-                        <label for="note">Note du talk</label>
-                        <input id="note" name="note" type="hidden"    ng-model="$parent.note" />
-                        <div id="star" ng-init="note(talk)"> </div>
+                        <label>Note du talk</label>
+                        <star/>
                         note : {{talk.note}}
                     </div>
                     <input  type="submit" class="btn btn-primary" value="Valider">

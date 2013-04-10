@@ -483,25 +483,13 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http, VoteS
         });
     };
 
-    $scope.note = function(talk) {
-        $.fn.raty.defaults.path = '/assets/img/';
-        $log.info("talk : " + talk.note);
-        $('#star').raty({
-            score: talk.note != undefined ? talk.note : 1,
-            click: function(score, evt) {
-                $scope.note = score;
-                $('#note').val(score);
-            }
-        });
-    };
-
     $scope.postVote = function() {
         $log.info("postVote");
         $log.info($scope.talk);
 
         http({
             method: 'POST',
-            url: '/talks/' + $scope.talk.id + '/vote/' + $scope.note
+            url: '/talks/' + $scope.talk.id + '/vote/' + $scope.talk.note
         }).success(function(data, status, headers, config) {
             $log.info(status);
             $scope.errors = undefined;
