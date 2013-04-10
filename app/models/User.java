@@ -64,6 +64,10 @@ public class User extends Model {
     @JsonIgnore
     private List<DynamicFieldValue> dynamicFieldValues;
 
+    @ManyToMany
+    @JsonIgnore
+    private List<Talk> coSpeakedTalks;
+
     public String avatar;
     private final static String GRAVATAR_URL = "http://www.gravatar.com/avatar/";
     

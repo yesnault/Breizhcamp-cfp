@@ -33,6 +33,16 @@ public class Talk extends Model {
 	
 	@ManyToOne
 	public User speaker;
+
+    @ManyToMany(mappedBy = "coSpeakedTalks")
+    public List<User> coSpeakers;
+
+    public List<User> getCoSpeakers() {
+        if (coSpeakers == null) {
+            coSpeakers = new ArrayList<User>();
+        }
+        return coSpeakers;
+    }
 	
 	@OneToMany(mappedBy ="talk")
     @JsonIgnore

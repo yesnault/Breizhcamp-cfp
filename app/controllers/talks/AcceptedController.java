@@ -47,6 +47,9 @@ public class AcceptedController extends Controller {
             talk.getCreneaux().clear();
             talk.moyenne = null;
             filterSpeaker(talk.speaker);
+            for (User coSpeaker : talk.getCoSpeakers()) {
+                filterSpeaker(coSpeaker);
+            }
         }
         return ok(jsonp(callback, toJson(talksAccepted)));
     }

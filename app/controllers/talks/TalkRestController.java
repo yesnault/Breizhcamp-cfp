@@ -52,7 +52,7 @@ public class TalkRestController extends Controller {
             // On vérifie que le user est admin où le propriétaire du talk
             return forbidden(toJson(TransformValidationErrors.transform("Action non autorisée")));
         }
-;
+
         if (user.admin) {
             talk.vote = Vote.findVoteByUserAndTalk(user, talk);
         }
@@ -138,6 +138,7 @@ public class TalkRestController extends Controller {
 
             formTalk.save();
             formTalk.saveManyToManyAssociations("creneaux");
+            formTalk.saveManyToManyAssociations("coSpeakers");
             formTalk.update();
             updateTags(talkForm.data().get("tagsname"), formTalk);
         } else {
@@ -159,6 +160,7 @@ public class TalkRestController extends Controller {
             dbTalk.title = formTalk.title;
             dbTalk.description = formTalk.description;
             dbTalk.save();
+            updateCoSpeakers(formTalk, dbTalk);
             updateCreneaux(formTalk, dbTalk);
             updateTags(talkForm.data().get("tagsname"), dbTalk);
         }
@@ -196,6 +198,29 @@ public class TalkRestController extends Controller {
         //formTalk.dureePreferee.save();
 
         dbTalk.update();
+    }
+
+    private static void updateCoSpeakers(Talk formTalk, Talk dbTalk) {
+        Set<Long> coSpeakersInForm = new HashSet<Long>();
+        for (User coSpeaker : formTalk.getCoSpeakers()) {
+            coSpeakersInForm.add(coSpeaker.id);
+        }
+        List<User> coSpeakersTmp = new ArrayList<User>(dbTalk.getCoSpeakers());
+        Set<Long> coSpeakersInDb = new HashSet<Long>();
+        for (User coSpeaker : coSpeakersTmp) {
+            if (!coSpeakersInForm.contains(coSpeaker.id)) {
+                dbTalk.getCoSpeakers().remove(coSpeaker);
+            } else {
+                coSpeakersInDb.add(coSpeaker.id);
+            }
+        }
+
+        for (Long idCoSpeaker : coSpeakersInForm) {
+            if (!coSpeakersInDb.contains(idCoSpeaker)) {
+                dbTalk.getCoSpeakers().add(User.findById(idCoSpeaker));
+            }
+        }
+        dbTalk.saveManyToManyAssociations("coSpeakers");
     }
 
     public static void updateTags(String tags, Talk dbTalk) {
@@ -286,6 +311,11 @@ public class TalkRestController extends Controller {
             talk.getCreneaux().remove(creneau);
         }
         talk.saveManyToManyAssociations("creneaux");
+        List<User> coSpeakersTmp = new ArrayList<User>(talk.getCoSpeakers());
+        for (User coSpeaker : coSpeakersTmp) {
+            talk.getCoSpeakers().remove(coSpeaker);
+        }
+        talk.saveManyToManyAssociations("coSpeakers");
         talk.delete();
         // HTTP 204 en cas de succès (NO CONTENT)
         return noContent();
