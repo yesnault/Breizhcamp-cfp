@@ -7,6 +7,8 @@ import play.i18n.Messages;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashSet;
+import java.util.Set;
 
 public enum StatusTalk {
 
@@ -84,6 +86,12 @@ public enum StatusTalk {
         urlString += "/#/talks/see/" + talk.id;
         URL url = new URL(urlString);
 
-        Mail.sendMail(new Mail.Envelop(getSubject(talk.title), getMessage(url.toString(),talk.title), mail));
+        Set<String> emails = new HashSet<String>();
+        emails.add(mail);
+        for (User coSpeaker : talk.getCoSpeakers()) {
+            emails.add(coSpeaker.email);
+        }
+
+        Mail.sendMail(new Mail.Envelop(getSubject(talk.title), getMessage(url.toString(),talk.title), emails));
     }
 }

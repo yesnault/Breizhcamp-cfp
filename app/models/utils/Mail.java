@@ -1,17 +1,16 @@
 package models.utils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
+import akka.util.Duration;
+import akka.util.FiniteDuration;
+import com.typesafe.plugin.MailerAPI;
+import com.typesafe.plugin.MailerPlugin;
 import play.Configuration;
 import play.Logger;
 import play.libs.Akka;
-import akka.util.Duration;
-import akka.util.FiniteDuration;
 
-import com.typesafe.plugin.MailerAPI;
-import com.typesafe.plugin.MailerPlugin;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Send a mail with Play20StartApp.
@@ -30,7 +29,7 @@ public class Mail {
     public static class Envelop {
         private String subject;
         private String message;
-        private List<String> toEmails;
+        private Collection<String> toEmails;
 
         /**
          * Constructor of Envelop.
@@ -39,7 +38,7 @@ public class Mail {
          * @param message  a message
          * @param toEmails list of emails adress
          */
-        public Envelop(String subject, String message, List<String> toEmails) {
+        public Envelop(String subject, String message, Collection<String> toEmails) {
             this.subject = subject;
             this.message = message;
             this.toEmails = toEmails;

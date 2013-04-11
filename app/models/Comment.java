@@ -52,9 +52,12 @@ public class Comment extends Model {
     public static Model.Finder<Long, Comment> find = new Model.Finder<Long, Comment>(Long.class, Comment.class);
     
     public void sendMail() throws MalformedURLException {
-    	List<String> emails = new ArrayList<String>();
+    	Set<String> emails = new HashSet<String>();
         if (BooleanUtils.isNotTrue(privateComment)) {
     	    addMailIfNotAuthorAndWantReceive(talk.speaker, emails);
+            for (User coSpeaker : talk.getCoSpeakers()) {
+                addMailIfNotAuthorAndWantReceive(coSpeaker, emails);
+            }
         }
     	for (User admin : User.findAllAdmin()) {
     		addMailIfNotAuthorAndWantReceive(admin, emails);
@@ -72,7 +75,7 @@ public class Comment extends Model {
         }
     }
     
-    private void addMailIfNotAuthorAndWantReceive(User contact, List<String> emails) {
+    private void addMailIfNotAuthorAndWantReceive(User contact, Set<String> emails) {
 		if (isNotAuthor(contact)
 				&& wantReceive(contact)) {
 			emails.add(contact.email);
