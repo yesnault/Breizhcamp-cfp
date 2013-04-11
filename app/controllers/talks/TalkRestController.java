@@ -107,15 +107,33 @@ public class TalkRestController extends Controller {
             return forbidden();
         }
         List<Talk> talks = Talk.find.all();
+
+        List<Talk> talksOut = new ArrayList<Talk>();
+
         for (Talk talk : talks) {
-            talk.vote = Vote.findVoteByUserAndTalk(user, talk);
-            if (VoteStatus.getVoteStatus() == VoteStatusEnum.CLOSED) {
-                talk.moyenne = Vote.calculMoyenne(talk);
+            Talk talkOut = new Talk();
+            talkOut.id = talk.id;
+            talkOut.title = talk.title;
+            for (Creneau creneau : talk.getCreneaux()) {
+                talkOut.getCreneaux().add(creneau);
             }
-            talk.fiteredComments(user);
-            talk.fiteredCoSpeakers();
+            talkOut.dureePreferee = talk.dureeApprouve;
+            if (talk.speaker != null) {
+                User speaker = new User();
+                speaker.id = talk.speaker.id;
+                speaker.fullname = talk.speaker.fullname;
+                speaker.avatar = talk.speaker.getAvatar();
+                talkOut.speaker = speaker;
+            }
+
+            talkOut.vote = Vote.findVoteByUserAndTalk(user, talk);
+            if (VoteStatus.getVoteStatus() == VoteStatusEnum.CLOSED) {
+                talkOut.moyenne = Vote.calculMoyenne(talk);
+            }
+            talksOut.add(talk);
+
         }
-        return ok(toJson(talks));
+        return ok(toJson(talksOut));
     }
 
     public static Result save() {
