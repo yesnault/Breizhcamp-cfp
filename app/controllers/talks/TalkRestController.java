@@ -119,6 +119,7 @@ public class TalkRestController extends Controller {
             }
             talkOut.dureePreferee = talk.dureePreferee;
             talkOut.dureeApprouve = talk.dureeApprouve;
+            talkOut.statusTalk = talk.statusTalk;
             if (talk.speaker != null) {
                 User speaker = new User();
                 speaker.id = talk.speaker.id;
