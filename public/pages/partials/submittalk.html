@@ -50,7 +50,7 @@
                     <div class="control-group {{{true:'error', false:''}[errors.dureePreferee != undefined]}}">
                         <label class="control-label" for="dureePreferee">Creneau Optimal</label>
                         <div class="controls">
-                            <select id="dureePreferee" name="dureePreferee" ng-model="talk.dureePreferee.id" ng-options="creneau.id as creneau.libelle + ' (' + creneau.dureeMinutes + 'min)' for creneau in creneaux"></select>
+                            <select id="dureePreferee" name="dureePreferee" ng-change="changeDureePreferee(talk.dureePreferee.id, talk, creneaux)" ng-model="talk.dureePreferee.id" ng-options="creneau.id as creneau.libelle + ' (' + creneau.dureeMinutes + 'min)' for creneau in creneaux"></select>
                             <p class="help-inline" ng-repeat="error in errors.dureePreferee">{{error}}</p>
                             <p class="help-inline">
                                 <span class="label" title="{{talk.dureePreferee.description}}">{{talk.dureePreferee.libelle + ' (' + talk.dureePreferee.dureeMinutes + 'min)'}}</span>
