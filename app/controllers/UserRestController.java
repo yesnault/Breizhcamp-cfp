@@ -44,16 +44,10 @@ public class UserRestController extends Controller {
         List<User> coSpeakers = new ArrayList<User>();
         for (User coSpeaker : User.findAll()) {
             if (!coSpeaker.id.equals(user.id)) {
-                coSpeaker.adresseMac = null;
-                coSpeaker.authenticationMethod = null;
-                coSpeaker.admin = null;
-                coSpeaker.dateCreation = null;
-                coSpeaker.email = null;
-                coSpeaker.description = null;
-                coSpeaker.setNotifAdminOnAllTalk(null);
-                coSpeaker.setNotifAdminOnTalkWithComment(null);
-                coSpeaker.setNotifOnMyTalk(null);
-                coSpeakers.add(coSpeaker);
+                User coSpeakerOut = new User();
+                coSpeakerOut.id = coSpeaker.id;
+                coSpeakerOut.fullname = coSpeaker.fullname;
+                coSpeakers.add(coSpeakerOut);
             }
         }
         return ok(toJson(coSpeakers));
