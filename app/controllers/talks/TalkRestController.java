@@ -130,7 +130,7 @@ public class TalkRestController extends Controller {
             if (VoteStatus.getVoteStatus() == VoteStatusEnum.CLOSED) {
                 talkOut.moyenne = Vote.calculMoyenne(talk);
             }
-            talksOut.add(talk);
+            talksOut.add(talkOut);
 
         }
         return ok(toJson(talksOut));
