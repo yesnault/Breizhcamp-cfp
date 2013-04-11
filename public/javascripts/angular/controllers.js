@@ -419,8 +419,8 @@ function VoteController($scope, $log, VoteService, $http) {
 }
 
 
-SeeTalksController.$inject = ['$scope', '$log', '$routeParams', 'TalkService', '$http', 'VoteService'];
-function SeeTalksController($scope, $log, $routeParams, TalkService, http, VoteService) {
+SeeTalksController.$inject = ['$scope', '$log', '$routeParams', 'TalkService', '$http', 'VoteService', 'UserService'];
+function SeeTalksController($scope, $log, $routeParams, TalkService, http, VoteService, UserService) {
 
     $scope.checkloc(false);
 
@@ -429,12 +429,11 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http, VoteS
         if (!$scope.talk.dureeApprouve) {
             $scope.talk.dureeApprouve = $scope.talk.dureePreferee;
         }
-
-        $log.info($scope.talk.dureeApprouve);
-        $log.info($scope.talk.creneaux);
     });
 
-    $scope.voteStatus = VoteService.getVote();
+    if (UserService.isAdmin()) {
+        $scope.voteStatus = VoteService.getVote();
+    }
 
     $scope.commentE = Array();
 

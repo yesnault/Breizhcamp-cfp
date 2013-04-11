@@ -10,6 +10,12 @@
             </h3>
             <p>Soumis par <a ng-href="/#/profil/{{talk.speaker.id}}" >{{talk.speaker.fullname}}</a>
             </p>
+            <p ng-show="talk.coSpeakers && talk.coSpeakers.length > 0">
+                Co-speakers :
+                <ul>
+                    <li ng-repeat="coSpeaker in talk.coSpeakers"><a ng-href="/#/profil/{{coSpeaker.id}}" >{{coSpeaker.fullname}}</a></li>
+                </ul>
+            </p>
             <div class="well" ng-bind-html-unsafe="getSafeDescription()"></div>
             <p></p>
             <div class="well" ng-show="userService.isAdmin()">
