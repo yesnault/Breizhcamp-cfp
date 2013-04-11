@@ -66,6 +66,7 @@ DELETE	/dynamicfield/:idDynamicField   controllers.DynamicFieldRestController.de
 GET	/user/:userId/talks		controllers.talks.TalkRestController.getTalks(userId:Long)
 GET	/user/:userId/talks/:status	controllers.talks.TalkRestController.getTalksByStatus(userId:Long,status:String)
 
+GET     /user/cospeakers            controllers.UserRestController.getCoSpeakers()
 GET     /user/:id                   controllers.UserRestController.getUser(id:Long)
 GET	/userLogged                 controllers.UserRestController.getUserLogged()
 

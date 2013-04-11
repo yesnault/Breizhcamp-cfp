@@ -187,8 +187,6 @@ Services.factory('ManageUsersService', function($resource) {
     return $resource('/admin/users/get', {});
 });
 
-
-
 Services.factory('PasswordService', function() {
 
     function PasswordService() {

@@ -108,12 +108,45 @@ function LoginController($scope, $log, UserService, PasswordService, $http, $loc
 
 
 // Pour que l'injection de dépendances fonctionne en cas de 'minifying'
-NewTalkController.$inject = ['$scope', '$log', '$location', 'TalkService', 'CreneauxService'];
-function NewTalkController($scope, $log, $location, TalkService, CreneauxService) {
+NewTalkController.$inject = ['$scope', '$log', '$location', 'TalkService', 'CreneauxService', '$http'];
+function NewTalkController($scope, $log, $location, TalkService, CreneauxService, $http) {
 
     $scope.checkloc(false);
 
     $scope.$location = $location;
+
+    $http.get("/user/cospeakers").success(function(data) {
+        $scope.coSpeakers = data;
+    });
+
+    $scope.addSelectedCoSpeaker = function() {
+        if ($scope.talk === undefined) {
+            $scope.talk = {};
+        }
+        if ($scope.talk.coSpeakers === undefined) {
+            $scope.talk.coSpeakers = [];
+        }
+        if ($scope.coSpeakerSelected !== undefined) {
+
+            var found = false;
+
+            angular.forEach($scope.talk.coSpeakers, function(coSpeaker) {
+                if (coSpeaker.id === $scope.coSpeakerSelected.id) {
+                    found = true;
+                }
+            });
+
+            if (!found) {
+                $scope.talk.coSpeakers.push($scope.coSpeakerSelected);
+            }
+            $scope.coSpeakerSelected = undefined;
+        }
+    };
+
+    $scope.removeCoSpeaker = function(coSpeaker) {
+        $scope.talk.coSpeakers.splice($scope.talk.coSpeakers.indexOf(coSpeaker), 1);
+    };
+
 
     $scope.isNew = true;
 
@@ -161,6 +194,38 @@ function EditTalkController($scope, $log, $location, $routeParams, TalkService, 
     $scope.checkloc(false);
 
     $scope.talk = TalkService.get({id: $routeParams.talkId});
+
+    http.get("/user/cospeakers").success(function(data) {
+        $scope.coSpeakers = data;
+    });
+
+    $scope.addSelectedCoSpeaker = function() {
+        if ($scope.talk === undefined) {
+            $scope.talk = {};
+        }
+        if ($scope.talk.coSpeakers === undefined) {
+            $scope.talk.coSpeakers = [];
+        }
+        if ($scope.coSpeakerSelected !== undefined) {
+
+            var found = false;
+
+            angular.forEach($scope.talk.coSpeakers, function(coSpeaker) {
+                if (coSpeaker.id === $scope.coSpeakerSelected.id) {
+                    found = true;
+                }
+            });
+
+            if (!found) {
+                $scope.talk.coSpeakers.push($scope.coSpeakerSelected);
+            }
+            $scope.coSpeakerSelected = undefined;
+        }
+    };
+
+    $scope.removeCoSpeaker = function(coSpeaker) {
+        $scope.talk.coSpeakers.splice($scope.talk.coSpeakers.indexOf(coSpeaker), 1);
+    };
 
     $scope.$location = $location;
 

@@ -7,6 +7,9 @@ import play.mvc.Result;
 import securesocial.core.Identity;
 import securesocial.core.java.SecureSocial;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Controlleur pour gérer les requêtes Ajax liées aux utilisateurs
  * 
@@ -33,6 +36,27 @@ public class UserRestController extends Controller {
             return forbidden();
         }
         return ok(toJson(User.findAll()));
+    }
+
+    public static Result getCoSpeakers() {
+        User user = getLoggedUser();
+
+        List<User> coSpeakers = new ArrayList<User>();
+        for (User coSpeaker : User.findAll()) {
+            if (!coSpeaker.id.equals(user.id)) {
+                coSpeaker.adresseMac = null;
+                coSpeaker.authenticationMethod = null;
+                coSpeaker.admin = null;
+                coSpeaker.dateCreation = null;
+                coSpeaker.email = null;
+                coSpeaker.description = null;
+                coSpeaker.setNotifAdminOnAllTalk(null);
+                coSpeaker.setNotifAdminOnTalkWithComment(null);
+                coSpeaker.setNotifOnMyTalk(null);
+                coSpeakers.add(coSpeaker);
+            }
+        }
+        return ok(toJson(coSpeakers));
     }
 
     /**

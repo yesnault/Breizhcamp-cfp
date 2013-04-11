@@ -57,6 +57,18 @@
                             </p>
                         </div>
                     </div>
+
+
+                    <div class="control-group">
+                        <label class="control-label" for="coSpeakerSelected">Co-speakers</label>
+                        <div class="controls">
+                            <input type="text" id="coSpeakerSelected" ng-model="coSpeakerSelected" ng-change="addSelectedCoSpeaker()" typeahead="coSpeaker as coSpeaker.fullname for coSpeaker in coSpeakers | filter:$viewValue">
+                            <p class="help-inline" ng-repeat="coSpeaker in talk.coSpeakers">
+                                <span class="label label-info">{{coSpeaker.fullname}} <a class="badge badge-important" ng-click="removeCoSpeaker(coSpeaker)">x</a></span>
+                            </p>
+                        </div>
+                    </div>
+
                     <span class="badge badge-important" ng-repeat="error in errors['']">{{error}}</span>
                 </fieldset>
                 <div class="form-actions">

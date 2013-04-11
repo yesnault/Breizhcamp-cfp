@@ -57,6 +57,7 @@ public class TalkRestController extends Controller {
             talk.vote = Vote.findVoteByUserAndTalk(user, talk);
         }
         talk.fiteredComments(user);
+        talk.fiteredCoSpeakers();
         return ok(toJson(talk));
     }
 
@@ -74,6 +75,7 @@ public class TalkRestController extends Controller {
             }
 
             talk.fiteredComments(user);
+            talk.fiteredCoSpeakers();
         }
         return ok(toJson(talks));
     }
@@ -83,6 +85,7 @@ public class TalkRestController extends Controller {
         List<Talk> talks = Talk.findBySpeaker(user);
         for (Talk talk : talks) {
             talk.fiteredComments(user);
+            talk.fiteredCoSpeakers();
         }
         return ok(toJson(talks));
     }
@@ -93,6 +96,7 @@ public class TalkRestController extends Controller {
         List<Talk> talks = Talk.findBySpeakerAndStatus(user, statusTalk);
         for (Talk talk : talks) {
             talk.fiteredComments(user);
+            talk.fiteredCoSpeakers();
         }
         return ok(toJson(talks));
     }
@@ -109,6 +113,7 @@ public class TalkRestController extends Controller {
                 talk.moyenne = Vote.calculMoyenne(talk);
             }
             talk.fiteredComments(user);
+            talk.fiteredCoSpeakers();
         }
         return ok(toJson(talks));
     }
@@ -138,6 +143,12 @@ public class TalkRestController extends Controller {
 
             formTalk.save();
             formTalk.saveManyToManyAssociations("creneaux");
+            List<User> coSpeakersInDb = new ArrayList<User>();
+            for (User coSpeaker : formTalk.getCoSpeakers()) {
+                coSpeakersInDb.add(User.findById(coSpeaker.id));
+            }
+            formTalk.getCoSpeakers().clear();
+            formTalk.getCoSpeakers().addAll(coSpeakersInDb);
             formTalk.saveManyToManyAssociations("coSpeakers");
             formTalk.update();
             updateTags(talkForm.data().get("tagsname"), formTalk);

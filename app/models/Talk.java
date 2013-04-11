@@ -143,4 +143,18 @@ public class Talk extends Model {
     public Integer note() {
         return vote ==null ? 0 : vote.getNote();
     }
+
+    public void fiteredCoSpeakers() {
+        for (User coSpeaker : getCoSpeakers()) {
+            coSpeaker.adresseMac = null;
+            coSpeaker.authenticationMethod = null;
+            coSpeaker.admin = null;
+            coSpeaker.dateCreation = null;
+            coSpeaker.email = null;
+            coSpeaker.description = null;
+            coSpeaker.setNotifAdminOnAllTalk(null);
+            coSpeaker.setNotifAdminOnTalkWithComment(null);
+            coSpeaker.setNotifOnMyTalk(null);
+        }
+    }
 }

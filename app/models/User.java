@@ -68,6 +68,7 @@ public class User extends Model {
     @JsonIgnore
     private List<Talk> coSpeakedTalks;
 
+    @JsonIgnore
     public String avatar;
     private final static String GRAVATAR_URL = "http://www.gravatar.com/avatar/";
     
@@ -133,8 +134,9 @@ public class User extends Model {
         return liens;
     }
 
+    @JsonProperty("avatar")
     public String getAvatar() {
-        if (avatar == null) {
+        if (avatar == null && email != null) {
             String emailHash = DigestUtils.md5Hex(email.toLowerCase().trim());
             avatar = GRAVATAR_URL + emailHash + ".jpg";
         }
