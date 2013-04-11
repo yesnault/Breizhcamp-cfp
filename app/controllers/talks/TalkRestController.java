@@ -117,7 +117,8 @@ public class TalkRestController extends Controller {
             for (Creneau creneau : talk.getCreneaux()) {
                 talkOut.getCreneaux().add(creneau);
             }
-            talkOut.dureePreferee = talk.dureeApprouve;
+            talkOut.dureePreferee = talk.dureePreferee;
+            talkOut.dureeApprouve = talk.dureeApprouve;
             if (talk.speaker != null) {
                 User speaker = new User();
                 speaker.id = talk.speaker.id;
