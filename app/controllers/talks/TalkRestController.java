@@ -391,10 +391,9 @@ public class TalkRestController extends Controller {
 
     public static Result closeComment(Long idTalk, Long idComment) {
         User user = getLoggedUser();
-        Talk talk = Talk.find.byId(idTalk);
         Comment question = Comment.find.byId(idComment);
 
-        if (question.author.id != user.id) {
+        if (!question.author.id.equals(user.id) && !user.admin) {
             Map<String, List<String>> errors = new HashMap<String, List<String>>();
             errors.put("error", Collections.singletonList(Messages.get("error.close.comment.baduser")));
             return badRequest(toJson(errors));
@@ -411,7 +410,10 @@ public class TalkRestController extends Controller {
         User user = getLoggedUser();
         Comment question = Comment.find.byId(idComment);
 
-        if (question.author.id != user.id || !user.admin) {
+        System.out.println(question.author.id);
+        System.out.println(user.id);
+
+        if (!question.author.id.equals(user.id) && !user.admin) {
             Map<String, List<String>> errors = new HashMap<String, List<String>>();
             errors.put("error", Collections.singletonList(Messages.get("error.delete.comment.baduser")));
             return badRequest(toJson(errors));
