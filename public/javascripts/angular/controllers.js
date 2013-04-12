@@ -431,9 +431,7 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http, VoteS
         }
     });
 
-    if (UserService.isAdmin()) {
-        $scope.voteStatus = VoteService.getVote();
-    }
+    $scope.voteStatus = VoteService.getVote();
 
     $scope.commentE = Array();
 
