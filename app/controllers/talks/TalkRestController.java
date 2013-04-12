@@ -364,7 +364,7 @@ public class TalkRestController extends Controller {
         Talk talk = Talk.find.byId(idTalk);
         
         User user = getLoggedUser();
-        if (user.admin || !(user.id.equals(talk.speaker.id))) {
+        if (!user.admin && !(user.id.equals(talk.speaker.id))) {
             // On vérifie que le user est admin où le propriétaire du talk
             Logger.info("Tentative de suppression de talk sans les droits requis : " + talk.id );
             return unauthorized();
