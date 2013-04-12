@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Set;
 
 import fr.ybonnel.csvengine.CsvEngine;
+import fr.ybonnel.csvengine.adapter.AdapterDouble;
 import fr.ybonnel.csvengine.annotation.CsvColumn;
 import fr.ybonnel.csvengine.annotation.CsvFile;
 import models.Comment;
@@ -622,15 +623,53 @@ public class TalkRestController extends Controller {
         @CsvColumn(value = "status", order = 3)
         public String status;
 
+        @CsvColumn(value = "moyenne", order = 4, adapter = AdapterDouble.class)
+        public Double moyenne;
+
+        @CsvColumn(value = "formatPrefere", order = 5)
+        public String formatPrefere;
+
+        @CsvColumn(value = "formats", order = 6)
+        public String formats;
+
+        @CsvColumn(value = "description", order = 7)
+        public String description;
+
+
+
         public static TalkCsv fromTalk(Talk talk) {
             TalkCsv talkCsv = new TalkCsv();
             if (talk.speaker != null) {
                 talkCsv.speakerFullName = talk.speaker.fullname;
+                for (User coSpeaker : talk.getCoSpeakers()) {
+                    talkCsv.speakerFullName += "\n" + coSpeaker.fullname;
+                }
             }
+
+
             talkCsv.title = talk.title;
             if (talk.statusTalk != null) {
                 talkCsv.status = talk.statusTalk.name();
             }
+
+            if (VoteStatus.getVoteStatus() == VoteStatusEnum.CLOSED) {
+                talkCsv.moyenne = Vote.calculMoyenne(talk);
+            }
+
+            if (talk.dureePreferee != null) {
+                talkCsv.formatPrefere = talk.dureePreferee.getLibelle();
+            }
+
+            StringBuilder builderFormats = new StringBuilder();
+            for (Creneau creneau : talk.getCreneaux()) {
+                if (builderFormats.length() > 0) {
+                    builderFormats.append('\n');
+                }
+                builderFormats.append(creneau.getLibelle());
+            }
+            talkCsv.formats = builderFormats.toString();
+
+            talkCsv.description = talk.description;
             return talkCsv;
         }
     }
