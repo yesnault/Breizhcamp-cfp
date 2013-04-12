@@ -69,7 +69,7 @@ public class Vote extends Model {
     public static Map<Long, Vote> findVotesUserByTalkId(User user) {
         
         List<Vote> listeVotes = find.query().fetch("talk").where().eq("user", user).findList();
-        Map<Long, Vote> votes = new HashMap<>();
+        Map<Long, Vote> votes = new HashMap<Long, Vote>();
         for (Vote vote : listeVotes) {
             votes.put(vote.talk.id, vote);
         }
