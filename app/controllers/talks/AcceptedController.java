@@ -19,6 +19,7 @@ package controllers.talks;
 import models.Lien;
 import models.StatusTalk;
 import models.Talk;
+import models.User;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.JsonNodeFactory;
 import org.codehaus.jackson.node.ObjectNode;
@@ -43,6 +44,7 @@ public class AcceptedController extends Controller {
         // talk.speaker.description
         // talk.speaker.liens.url
         // talk.speaker.liens.label
+        // talk.coSpeakers
 
         List<Talk> talksAccepted = Talk.findByStatusForMinimalData(StatusTalk.ACCEPTE);
         ArrayNode result = new ArrayNode(JsonNodeFactory.instance);
@@ -53,25 +55,34 @@ public class AcceptedController extends Controller {
             talkJson.put("description", talk.description);
 
             if (talk.speaker != null) {
-                ObjectNode speakerJson = Json.newObject();
-                speakerJson.put("id", talk.speaker.id);
-                speakerJson.put("fullname", talk.speaker.fullname);
-                speakerJson.put("avatar", talk.speaker.getAvatar());
-                speakerJson.put("description", talk.speaker.description);
-
-
-                ArrayNode liens = new ArrayNode(JsonNodeFactory.instance);
-                for (Lien lien : talk.speaker.getLiens()) {
-                    ObjectNode lienJson = Json.newObject();
-                    lienJson.put("url", lien.url);
-                    lienJson.put("label", lien.label);
-                    liens.add(lienJson);
-                }
-                speakerJson.put("liens", liens);
-                talkJson.put("speaker", speakerJson);
+                talkJson.put("speaker", getSpeakerInJson(talk.speaker));
             }
+            ArrayNode coSpeakers = new ArrayNode(JsonNodeFactory.instance);
+            for (User speaker : talk.getCoSpeakers()) {
+                coSpeakers.add(getSpeakerInJson(speaker));
+            }
+            talkJson.put("coSpeakers", coSpeakers);
             result.add(talkJson);
         }
         return ok(jsonp(callback, result));
+    }
+
+    private static ObjectNode getSpeakerInJson(User speaker) {
+        ObjectNode speakerJson = Json.newObject();
+        speakerJson.put("id", speaker.id);
+        speakerJson.put("fullname", speaker.fullname);
+        speakerJson.put("avatar", speaker.getAvatar());
+        speakerJson.put("description", speaker.description);
+
+
+        ArrayNode liens = new ArrayNode(JsonNodeFactory.instance);
+        for (Lien lien : speaker.getLiens()) {
+            ObjectNode lienJson = Json.newObject();
+            lienJson.put("url", lien.url);
+            lienJson.put("label", lien.label);
+            liens.add(lienJson);
+        }
+        speakerJson.put("liens", liens);
+        return speakerJson;
     }
 }

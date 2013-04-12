@@ -148,8 +148,10 @@ public class Talk extends Model {
         // talk.speaker.description
         // talk.speaker.liens.url
         // talk.speaker.liens.label
-        return find.select("id, title, description, speaker.id, speaker.fullname, speaker.avatar, speaker.description, speaker.liens")
-                .fetch("speaker").fetch("speaker.liens")
+        // talk.coSpeakers
+        return find.select("id, title, description, speaker.id, speaker.fullname, speaker.avatar, speaker.description, speaker.liens, " +
+                "talk.coSpeakers.id, talk.coSpeakers.fullname, talk.coSpeakers.avatar, talk.coSpeakers.description, talk.coSpeakers.liens")
+                .fetch("speaker").fetch("speaker.liens").fetch("coSpeakers").fetch("coSpeakers.liens")
                 .where().eq("statusTalk", status.getInterne()).findList();
     }
 
