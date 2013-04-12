@@ -53,6 +53,7 @@ POST	/talk                       controllers.talks.TalkRestController.save()
 DELETE	/talk/:idTalk               controllers.talks.TalkRestController.delete(idTalk:Long)
 GET	/talk/:idTalk/tags/:tags    controllers.talks.TalkRestController.addTag(idTalk:Long,tags:String)
 POST	/talk/:idTalk/tags/:tags    controllers.talks.TalkRestController.addTag(idTalk:Long,tags:String)
+GET     /talkStat                   controllers.talks.TalkRestController.talkStat()
 
 GET	/creneau/:idCreneau         controllers.CreneauRestController.get(idCreneau:Long)
 GET	/creneau                    controllers.CreneauRestController.all()

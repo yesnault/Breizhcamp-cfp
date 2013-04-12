@@ -176,11 +176,17 @@ Services.factory('VoteService', function($resource, $http, $log) {
             return $resource('/admin/vote', {}).get();
         }
     }
-
-
     return new VoteService($resource, $http, $log);
 });
 
+Services.factory('StatService', function($resource) {
+    function StatService($resource) {
+        this.getTalkStat = function() {
+            return $resource('/talkStat').get();
+        }
+    }
+    return new StatService($resource);
+});
 
 
 Services.factory('ManageUsersService', function($resource) {

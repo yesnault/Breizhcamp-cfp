@@ -1,5 +1,6 @@
 package models;
 
+import com.avaje.ebean.Ebean;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,6 +76,12 @@ public class Vote extends Model {
         }
         return votes;
     }
+    
+    public static int findNbVotesUser(User user) {
+        String sql = "select count(*) as c from vote v where v.user_id='" + user.id + "'";
+        return Ebean.createSqlQuery(sql).findUnique().getInteger("c");
+    }
+
     
     public static Double calculMoyenne(Talk talk) {
         Double moyenne = null;

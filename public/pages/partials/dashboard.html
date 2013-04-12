@@ -7,6 +7,16 @@
     </div>
     <br/>
     <div class="well">
+        <div ng-show="userService.isAdmin()">
+            <h2 >Status<h2>
+            <h4>- Nb de Talks proposés : {{talkstats.nbTalks}}</h4>
+            <h4>- Nb de Talks rejetés : {{talkstats.nbRejetes}}</h4>
+            <h4>- Nb de Talks acceptés : {{talkstats.nbAcceptes}}</h4>
+            <h4>- Nb de Talks en attente : {{talkstats.nbTalks - talkstats.nbRejetes - talkstats.nbAcceptes}}</h4>
+            <h4>- Nb de votes de {{user.fullname}} : {{talkstats.nbVotesUser}}</h4>
+
+        </div>
+        <br/>
         <h2><a ng-href="/#/managetalk">Talks</a></h2>
         <h4 ng-show="!talks.length">
             - Aucun talk proposé

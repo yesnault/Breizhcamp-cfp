@@ -610,6 +610,21 @@ public class TalkRestController extends Controller {
         vote.save();
         return ok();
     }
+    
+    public static Result talkStat() {
+
+        User user = getLoggedUser();
+        if (!user.admin) {
+            return forbidden();
+        }
+        ObjectNode result = Json.newObject();
+        result.put("nbTalks", Talk.findNbTalks());
+        result.put("nbAcceptes", Talk.findNbTalksAcceptes());
+        result.put("nbRejetes", Talk.findNbTalksRejetes());
+        result.put("nbVotesUser", Vote.findNbVotesUser(user));
+        return ok(result);
+    }
+    
 
     @CsvFile(separator = ";")
     public static class TalkCsv {

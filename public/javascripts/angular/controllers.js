@@ -45,18 +45,22 @@ function RootController($scope, UserService, $log, $location) {
 }
 
 
-DashboardController.$inject = ['$rootScope', '$scope', 'ProfilService', 'AccountService', 'UserService', '$log'];
-function DashboardController($rootScope, $scope, ProfilService, AccountService, UserService, $log) {
+DashboardController.$inject = ['$rootScope', '$scope', 'ProfilService', 'AccountService', 'UserService', 'StatService','$log'];
+function DashboardController($rootScope, $scope, ProfilService, AccountService, UserService, StatService, $log) {
 
     $scope.checkloc(false);
 
     var idUser = UserService.getUserData().id;
     $rootScope.user = UserService.getUserData();
+    
     $scope.talks = ProfilService.getTalks(idUser);
     $scope.talksok = ProfilService.getTalksAccepted(idUser);
     $scope.talksko = ProfilService.getTalksRefused(idUser);
     $scope.talks_w = ProfilService.getTalksWait(idUser);
 
+    if (UserService.isAdmin()) {
+        $scope.talkstats = StatService.getTalkStat();
+    }
 
 }
 

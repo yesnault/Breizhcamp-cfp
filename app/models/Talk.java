@@ -1,5 +1,6 @@
 package models;
 
+import com.avaje.ebean.Ebean;
 import com.google.common.base.Joiner;
 import models.utils.BooleanUtils;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -15,25 +16,21 @@ import java.util.List;
 @SuppressWarnings("serial")
 @Entity
 public class Talk extends Model {
-	
-	@Id
-	public Long id;
-	
-	@Constraints.Required
-	@Constraints.MaxLength(50)	
-	@Formats.NonEmpty
-	@Column(unique = true, length = 50)
-	public String title;
-	
-	@Constraints.Required
-	@Constraints.MaxLength(2000)
-	@Formats.NonEmpty
-	@Column(length = 2000)
-	public String description;
-	
-	@ManyToOne
-	public User speaker;
 
+    @Id
+    public Long id;
+    @Constraints.Required
+    @Constraints.MaxLength(50)
+    @Formats.NonEmpty
+    @Column(unique = true, length = 50)
+    public String title;
+    @Constraints.Required
+    @Constraints.MaxLength(2000)
+    @Formats.NonEmpty
+    @Column(length = 2000)
+    public String description;
+    @ManyToOne
+    public User speaker;
     @ManyToMany(mappedBy = "coSpeakedTalks")
     public List<User> coSpeakers;
 
@@ -43,20 +40,17 @@ public class Talk extends Model {
         }
         return coSpeakers;
     }
-	
-	@OneToMany(mappedBy ="talk")
+    @OneToMany(mappedBy = "talk")
     @JsonIgnore
-	public List<Comment> comments;
-	
-	public List<Comment> getComments() {
-		if (comments == null) {
-			comments = new ArrayList<Comment>();
-		}
-		return comments;
-	}
+    public List<Comment> comments;
 
+    public List<Comment> getComments() {
+        if (comments == null) {
+            comments = new ArrayList<Comment>();
+        }
+        return comments;
+    }
     public StatusTalk statusTalk;
-
     @ManyToMany(mappedBy = "talks")
     @JsonIgnore
     public List<Tag> tags = new ArrayList<Tag>();
@@ -72,7 +66,6 @@ public class Talk extends Model {
     public String getTagsName() {
         return Joiner.on(",").join(tags);
     }
-
     @JsonIgnore
     public transient List<Comment> commentsFiltered;
 
@@ -98,13 +91,10 @@ public class Talk extends Model {
     public List<Comment> getCommentsFiltered() {
         return commentsFiltered;
     }
-
-    @ManyToMany( mappedBy = "talks" )
+    @ManyToMany(mappedBy = "talks")
     private List<Creneau> creneaux;
-
     @ManyToOne
     public Creneau dureePreferee;
-
     @ManyToOne
     public Creneau dureeApprouve;
 
@@ -114,39 +104,47 @@ public class Talk extends Model {
         }
         return creneaux;
     }
-
     public static Finder<Long, Talk> find = new Finder<Long, Talk>(Long.class, Talk.class);
-	
-    
-    public static List<Talk> findAllForDisplay(){
+
+    public static List<Talk> findAllForDisplay() {
         return find.select("id, title, creneaux, dureePreferee, dureeApprouve, statusTalk, speaker.id, speaker.fullname, speaker.avatar")
                 .fetch("speaker").fetch("dureePreferee").fetch("dureeApprouve").fetch("creneaux").findList();
     }
-	
-	public static Talk findByTitle(String title) {
-		return find.where().eq("title", title).findUnique();
-	}
-	
-	public static List<Talk> findBySpeaker(User speaker) {
-		return find.where().eq("speaker", speaker).findList();
-	}
 
-    public static List<Talk> findBySpeakerAndStatus(User speaker,StatusTalk status) {
+    public static int findNbTalks() {
+        return Ebean.createSqlQuery("select count(*) as c from talk").findUnique().getInteger("c");
+    }
+
+    public static int findNbTalksAcceptes() {
+        return Ebean.createSqlQuery("select count(*) as c from talk t where t.status_talk='A'").findUnique().getInteger("c");
+    }
+
+    public static int findNbTalksRejetes() {
+        return Ebean.createSqlQuery("select count(*) as c from talk t where t.status_talk='R'").findUnique().getInteger("c");
+    }
+
+    public static Talk findByTitle(String title) {
+        return find.where().eq("title", title).findUnique();
+    }
+
+    public static List<Talk> findBySpeaker(User speaker) {
+        return find.where().eq("speaker", speaker).findList();
+    }
+
+    public static List<Talk> findBySpeakerAndStatus(User speaker, StatusTalk status) {
         return find.where().eq("statusTalk", status.getInterne()).eq("speaker", speaker).findList();
     }
 
     public static List<Talk> findByStatus(StatusTalk status) {
         return find.where().eq("statusTalk", status.getInterne()).findList();
     }
-
     @JsonIgnore
     public transient Vote vote;
-
     public transient Double moyenne;
 
     @JsonProperty("note")
     public Integer note() {
-        return vote ==null ? 0 : vote.getNote();
+        return vote == null ? 0 : vote.getNote();
     }
 
     public void fiteredCoSpeakers() {
