@@ -610,9 +610,13 @@ public class TalkRestController extends Controller {
 
         engine.writeFile(writer, talks, TalkCsv.class);
 
-        response().setContentType("text/csv");
+        response().setContentType("application/octet-stream");
+        response().setHeader("Content-Description", "File Transfer");
         response().setHeader("Content-Disposition", "attachment;filename=talks.csv");
-        return ok(writer.toString());
-
+        response().setHeader("Content-Transfer-Encoding", "binary");
+        response().setHeader("Expires", "0");
+        response().setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
+        response().setHeader("Pragma", "public");
+        return ok(writer.toString(), "ISO-8859-1");
     }
 }
