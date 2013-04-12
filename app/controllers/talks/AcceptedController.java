@@ -27,11 +27,79 @@ import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 
-import java.util.List;
+import java.util.*;
 
 import static play.libs.Jsonp.jsonp;
 
 public class AcceptedController extends Controller {
+
+    public static Result acceptedSpeakersToJson(String callback) {
+
+        List<Talk> talksAccepted = Talk.findByStatusForMinimalData(StatusTalk.ACCEPTE);
+
+        Map<User, List<Talk>> speakers = new HashMap<User, List<Talk>>();
+
+        for (Talk talk : talksAccepted) {
+            if (talk.speaker != null) {
+                if (!speakers.containsKey(talk.speaker)) {
+                    speakers.put(talk.speaker, new ArrayList<Talk>());
+                }
+                speakers.get(talk.speaker).add(talk);
+            }
+            for (User speaker : talk.getCoSpeakers()) {
+                if (!speakers.containsKey(speaker)) {
+                    speakers.put(speaker, new ArrayList<Talk>());
+                }
+                speakers.get(speaker).add(talk);
+            }
+        }
+
+        List<User> speakersSorted = new ArrayList<User>(speakers.keySet());
+        Collections.sort(speakersSorted, new Comparator<User>() {
+            @Override
+            public int compare(User o1, User o2) {
+                return o1.id.compareTo(o2.id);
+            }
+        });
+
+        // Data used in html :
+        // speaker.id
+        // speaker.fullname
+        // speaker.avatar
+        // speaker.description
+        // speaker.liens.url
+        // speaker.liens.label
+        // speaker.talks.id
+        // speaker.talks.title
+        // speaker.talks.description
+        // speaker.talks.otherspeakers
+
+        ArrayNode result = new ArrayNode(JsonNodeFactory.instance);
+        for (User speaker : speakersSorted) {
+            ObjectNode speakerJson = getSpeakerInJson(speaker);
+            ArrayNode talksJson = new ArrayNode(JsonNodeFactory.instance);
+            for (Talk talk : speakers.get(speaker)) {
+                ObjectNode talkJson = Json.newObject();
+                talkJson.put("id", talk.id);
+                talkJson.put("title", talk.title);
+                talkJson.put("description", talk.description);
+                ArrayNode otherSpeakers = new ArrayNode(JsonNodeFactory.instance);
+                if (talk.speaker != null && !speaker.equals(talk.speaker)) {
+                    otherSpeakers.add(getSpeakerInJson(talk.speaker));
+                }
+                for (User otherSpeaker : talk.getCoSpeakers()) {
+                    if (!otherSpeaker.equals(speaker)) {
+                        otherSpeakers.add(getSpeakerInJson(otherSpeaker));
+                    }
+                }
+                talkJson.put("otherspeakers", otherSpeakers);
+                talksJson.add(talkJson);
+            }
+            speakerJson.put("talks", talksJson);
+            result.add(speakerJson);
+        }
+        return ok(jsonp(callback, result));
+    }
 
     public static Result acceptedTalksToJson(String callback) {
 

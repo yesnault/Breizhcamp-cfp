@@ -220,5 +220,46 @@ public class User extends Model {
         setNotifAdminOnTalkWithComment(null);
         setNotifOnMyTalk(null);
     }
-        
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        User user = (User) o;
+
+        if (admin != null ? !admin.equals(user.admin) : user.admin != null) return false;
+        if (adresseMac != null ? !adresseMac.equals(user.adresseMac) : user.adresseMac != null) return false;
+        if (authenticationMethod != null ? !authenticationMethod.equals(user.authenticationMethod) : user.authenticationMethod != null)
+            return false;
+        if (avatar != null ? !avatar.equals(user.avatar) : user.avatar != null) return false;
+        if (coSpeakedTalks != null ? !coSpeakedTalks.equals(user.coSpeakedTalks) : user.coSpeakedTalks != null)
+            return false;
+        if (credentials != null ? !credentials.equals(user.credentials) : user.credentials != null) return false;
+        if (dateCreation != null ? !dateCreation.equals(user.dateCreation) : user.dateCreation != null) return false;
+        if (description != null ? !description.equals(user.description) : user.description != null) return false;
+        if (dynamicFieldValues != null ? !dynamicFieldValues.equals(user.dynamicFieldValues) : user.dynamicFieldValues != null)
+            return false;
+        if (email != null ? !email.equals(user.email) : user.email != null) return false;
+        if (fullname != null ? !fullname.equals(user.fullname) : user.fullname != null) return false;
+        if (id != null ? !id.equals(user.id) : user.id != null) return false;
+        if (liens != null ? !liens.equals(user.liens) : user.liens != null) return false;
+        if (notifAdminOnAllTalk != null ? !notifAdminOnAllTalk.equals(user.notifAdminOnAllTalk) : user.notifAdminOnAllTalk != null)
+            return false;
+        if (notifAdminOnTalkWithComment != null ? !notifAdminOnTalkWithComment.equals(user.notifAdminOnTalkWithComment) : user.notifAdminOnTalkWithComment != null)
+            return false;
+        if (notifOnMyTalk != null ? !notifOnMyTalk.equals(user.notifOnMyTalk) : user.notifOnMyTalk != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (id != null ? id.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        return result;
+    }
 }
