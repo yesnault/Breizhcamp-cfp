@@ -82,10 +82,13 @@ public class TalkRestController extends Controller {
 
     public static Result getTalks(Long userId) {
         User user = User.find.byId(userId);
+
+
         List<Talk> talks = Talk.findBySpeaker(user);
         for (Talk talk : talks) {
             talk.fiteredComments(user);
             talk.fiteredCoSpeakers();
+            talk.filtereSpeaker();
         }
         return ok(toJson(talks));
     }

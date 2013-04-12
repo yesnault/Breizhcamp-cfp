@@ -146,15 +146,13 @@ public class Talk extends Model {
 
     public void fiteredCoSpeakers() {
         for (User coSpeaker : getCoSpeakers()) {
-            coSpeaker.adresseMac = null;
-            coSpeaker.authenticationMethod = null;
-            coSpeaker.admin = null;
-            coSpeaker.dateCreation = null;
-            coSpeaker.email = null;
-            coSpeaker.description = null;
-            coSpeaker.setNotifAdminOnAllTalk(null);
-            coSpeaker.setNotifAdminOnTalkWithComment(null);
-            coSpeaker.setNotifOnMyTalk(null);
+            coSpeaker.filterInfos();
+        }
+    }
+
+    public void filtereSpeaker() {
+        if (speaker != null) {
+            speaker.filterInfos();
         }
     }
 }

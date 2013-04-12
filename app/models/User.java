@@ -208,5 +208,17 @@ public class User extends Model {
     public static List<User> findAllAdmin() {
         return find.where().eq("admin", Boolean.TRUE).findList();
     }
+
+    public void filterInfos() {
+        adresseMac = null;
+        authenticationMethod = null;
+        admin = null;
+        dateCreation = null;
+        email = null;
+        description = null;
+        setNotifAdminOnAllTalk(null);
+        setNotifAdminOnTalkWithComment(null);
+        setNotifOnMyTalk(null);
+    }
         
 }

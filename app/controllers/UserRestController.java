@@ -2,6 +2,7 @@ package controllers;
 
 import static play.libs.Json.toJson;
 import models.User;
+import models.utils.TransformValidationErrors;
 import play.mvc.Controller;
 import play.mvc.Result;
 import securesocial.core.Identity;
@@ -60,10 +61,15 @@ public class UserRestController extends Controller {
      * @return Objet utilisateur en JSON
      */
     public static Result getUser(Long id) {
-        // TODO: Vérifier getUser(id) n'est pas réservé à un admin => Pb de secu !
         User user = User.findById(id);
         if (user == null) {
             return notFound();
+        }
+        User userLogged = getLoggedUser();
+
+        if (!userLogged.admin && !user.id.equals(userLogged.id)) {
+            // Si on est pas admin ou le speaker, on filtre les infos retournées.
+            user.filterInfos();
         }
 
         return ok(toJson(user));
