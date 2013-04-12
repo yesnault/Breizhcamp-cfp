@@ -2,6 +2,7 @@ package controllers.talks;
 
 import static play.libs.Json.toJson;
 
+import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,6 +13,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import fr.ybonnel.csvengine.CsvEngine;
+import fr.ybonnel.csvengine.annotation.CsvColumn;
+import fr.ybonnel.csvengine.annotation.CsvFile;
 import models.Comment;
 import models.Creneau;
 import models.StatusTalk;
@@ -563,5 +567,52 @@ public class TalkRestController extends Controller {
         vote.setNote(note);
         vote.save();
         return ok();
+    }
+
+    @CsvFile(separator = ";")
+    public static class TalkCsv {
+
+        @CsvColumn(value = "speakerFullName", order = 1)
+        public String speakerFullName;
+
+        @CsvColumn(value = "title", order = 2)
+        public String title;
+
+        @CsvColumn(value = "status", order = 3)
+        public String status;
+
+        public static TalkCsv fromTalk(Talk talk) {
+            TalkCsv talkCsv = new TalkCsv();
+            if (talk.speaker != null) {
+                talkCsv.speakerFullName = talk.speaker.fullname;
+            }
+            talkCsv.title = talk.title;
+            if (talk.statusTalk != null) {
+                talkCsv.status = talk.statusTalk.name();
+            }
+            return talkCsv;
+        }
+    }
+
+    public static Result getAllTalksInCsv() {
+        User user = getLoggedUser();
+        if (!user.admin) {
+            return forbidden();
+        }
+        List<TalkCsv> talks = new ArrayList<TalkCsv>();
+        for (Talk talk : Talk.find.all()) {
+            talks.add(TalkCsv.fromTalk(talk));
+        }
+
+        CsvEngine engine = new CsvEngine(TalkCsv.class);
+
+        StringWriter writer = new StringWriter();
+
+        engine.writeFile(writer, talks, TalkCsv.class);
+
+        response().setContentType("text/csv");
+        response().setHeader("Content-Disposition", "attachment;filename=talks.csv");
+        return ok(writer.toString());
+
     }
 }

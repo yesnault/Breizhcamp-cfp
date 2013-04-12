@@ -34,13 +34,24 @@
                 </div>
             </div>
             <div class="span6">
-                <div class="well">
-                    <p>{{(talks|filter:talksAcceptes).length}} talks acceptés</p>
+                <div class="row">
+                    <div class="span4 well">
+                        <p>{{(talks|filter:talksAcceptes).length}} talks acceptés</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span4 well">
+                        <a href="/talk/all/csv" class="btn btn-info">Export CSV</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
+</div>
+
+
+<div class="row">
     <div class="span12">
         <table class="table table-bordered table-striped">
             <tbody><tr>

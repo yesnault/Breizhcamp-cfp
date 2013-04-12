@@ -14,7 +14,8 @@ object ApplicationBuild extends Build {
       "com.typesafe" %% "play-plugins-mailer" % "2.0.2",
       "org.mindrot" % "jbcrypt" % "0.3m",
       "mysql" % "mysql-connector-java" % "5.1.21",
-      "securesocial" % "securesocial_2.9.1" % "2.0.8"
+      "securesocial" % "securesocial_2.9.1" % "2.0.8",
+      "fr.ybonnel" % "csvengine" % "1.3.5"
     )
 
     lazy val s = Defaults.defaultSettings ++ Seq(generateAPIDocsTask)
