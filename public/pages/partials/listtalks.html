@@ -61,6 +61,7 @@
                 <th class="span2">Statut</th>
                 <th class="span1">Note</th>
                 <th class="span1" ng-show="vote.status == 'CLOSED'"><a ng-click="predicate = 'moyenne'; reverse=!reverse">Moyenne</a></th>
+                <th class="span1" ng-show="vote.status == 'CLOSED'">Nb Votes</th>
                 <th class="span1">Actions</th>
             </tr>
 
@@ -82,6 +83,7 @@
 
                 <td>{{talk.vote}}</td>
                 <td ng-show="vote.status == 'CLOSED'">{{talk.moyenne}}</td>
+                <td ng-show="vote.status == 'CLOSED'">{{talk.nbvote}}</td>
                 <td><a  class="btn" href="#deleteTalk{{talk.id}}" data-toggle="modal">Supprimer</a></td>
             </tr>
 

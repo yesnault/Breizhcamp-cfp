@@ -1,6 +1,7 @@
 package models;
 
 import com.avaje.ebean.Ebean;
+import com.avaje.ebean.SqlRow;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,8 @@ import play.db.ebean.Model;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 @SuppressWarnings("serial")
 @Entity
@@ -82,6 +85,19 @@ public class Vote extends Model {
         return Ebean.createSqlQuery(sql).findUnique().getInteger("c");
     }
 
+    // Retour d'une chaine formatée "moyenne;nbvote"
+    public static Map<Long, Pair<Double, Integer>> caculMoyennes() {
+        String sql = "SELECT v.talk_id as talkId, avg(v.note) as moy, count(v.talk_id) as nbVote, t.title as talkTitle FROM vote v, talk t where (v.talk_id=t.id) group by v.talk_id order by moy desc";
+        List<SqlRow> rows = Ebean.createSqlQuery(sql).findList();
+        
+        Map<Long, Pair<Double, Integer>> moyennes = new HashMap<>();
+        for (SqlRow row : rows) {
+            Pair<Double, Integer> moyTalk = new ImmutablePair(row.getDouble("moy"), row.getInteger("nbVote"));
+            moyennes.put(row.getLong("talkId"), moyTalk);
+        }
+        
+        return moyennes;
+    }
     
     public static Double calculMoyenne(Talk talk) {
         Double moyenne = null;

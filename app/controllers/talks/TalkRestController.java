@@ -26,6 +26,7 @@ import models.Vote;
 import models.VoteStatus;
 import models.VoteStatusEnum;
 import models.utils.TransformValidationErrors;
+import org.apache.commons.lang3.tuple.Pair;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.JsonNodeFactory;
@@ -124,6 +125,8 @@ public class TalkRestController extends Controller {
 
         Map<Long, Vote> votes = Vote.findVotesUserByTalkId(user);
         
+        Map<Long, Pair<Double, Integer>> moyennes = Vote.caculMoyennes();
+        
         ArrayNode result = new ArrayNode(JsonNodeFactory.instance);
         
         for (Talk talk : talks) {
@@ -165,24 +168,24 @@ public class TalkRestController extends Controller {
                 talkJson.put("speaker", speakerJson);
             }
 
-            //Vote voteUser = Vote.findVoteByUserAndTalk(user, talk);
             Vote voteUser = votes.get(talk.id);
             if (voteUser != null) {
                 talkJson.put("vote", voteUser.getNote());
             } else {
                 talkJson.putNull("vote");
             }
-
-            //talkOut.vote = Vote.findVoteByUserAndTalk(user, talk);
-//            if (VoteStatus.getVoteStatus() == VoteStatusEnum.CLOSED) {
-//                talkOut.moyenne = Vote.calculMoyenne(talk);
-//            }
-
+            
+            Pair<Double, Integer> moyenne = moyennes.get(talk.id);
+            if (moyenne != null) {
+                talkJson.put("moyenne", moyenne.getLeft());
+                talkJson.put("nbvote", moyenne.getRight());
+            } else {
+                talkJson.putNull("moyenne");
+            }            
+            
             result.add(talkJson);
-
         }
         
-        //return ok(toJson(talksOut));
         return ok(result);
     }
 
