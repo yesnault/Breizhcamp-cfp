@@ -117,6 +117,11 @@ public class Talk extends Model {
 
     public static Finder<Long, Talk> find = new Finder<Long, Talk>(Long.class, Talk.class);
 	
+    
+    public static List<Talk> findAllForDisplay(){
+        return find.select("id, title, creneaux, dureePreferee, dureeApprouve, statusTalk, speaker.id, speaker.fullname, speaker.avatar")
+                .fetch("speaker").fetch("dureePreferee").fetch("dureeApprouve").fetch("creneaux").findList();
+    }
 	
 	public static Talk findByTitle(String title) {
 		return find.where().eq("title", title).findUnique();

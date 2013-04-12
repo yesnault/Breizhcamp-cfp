@@ -1,6 +1,5 @@
 package controllers.talks;
 
-import static play.libs.Json.toJson;
 
 import java.io.StringWriter;
 import java.net.MalformedURLException;
@@ -26,14 +25,20 @@ import models.Vote;
 import models.VoteStatus;
 import models.VoteStatusEnum;
 import models.utils.TransformValidationErrors;
-
 import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
 
 import play.Logger;
 import play.data.Form;
 import play.i18n.Messages;
+import play.libs.Json;
+import static play.libs.Json.toJson;
 import play.mvc.Controller;
 import play.mvc.Result;
+import static play.mvc.Results.forbidden;
+import static play.mvc.Results.ok;
 import static play.mvc.Results.unauthorized;
 import securesocial.core.Identity;
 import securesocial.core.java.SecureSocial;
@@ -108,43 +113,79 @@ public class TalkRestController extends Controller {
         return ok(toJson(talks));
     }
 
+
     public static Result all() {
         User user = getLoggedUser();
         if (!user.admin) {
             return forbidden();
         }
-        List<Talk> talks = Talk.find.all();
+        List<Talk> talks = Talk.findAllForDisplay();
 
-        List<Talk> talksOut = new ArrayList<Talk>();
-
+        Map<Long, Vote> votes = Vote.findVotesUserByTalkId(user);
+        
+        ArrayNode result = new ArrayNode(JsonNodeFactory.instance);
+        
         for (Talk talk : talks) {
-            Talk talkOut = new Talk();
-            talkOut.id = talk.id;
-            talkOut.title = talk.title;
+            ObjectNode talkJson = Json.newObject();
+            
+            talkJson.put("id", talk.id);
+            talkJson.put("title", talk.title);
+            
+            ArrayNode creneaux = new ArrayNode(JsonNodeFactory.instance);
             for (Creneau creneau : talk.getCreneaux()) {
-                talkOut.getCreneaux().add(creneau);
+                ObjectNode creneauJson = Json.newObject();
+                creneauJson.put("id", creneau.getId());
+                creneauJson.put("libelle", creneau.getLibelle());
+                creneauJson.put("dureeMinutes", creneau.getDureeMinutes());
+                creneaux.add(creneauJson);
             }
-            talkOut.dureePreferee = talk.dureePreferee;
-            talkOut.dureeApprouve = talk.dureeApprouve;
-            talkOut.statusTalk = talk.statusTalk;
-            if (talk.speaker != null) {
-                User speaker = new User();
-                speaker.id = talk.speaker.id;
-                speaker.fullname = talk.speaker.fullname;
-                speaker.avatar = talk.speaker.getAvatar();
-                talkOut.speaker = speaker;
+            talkJson.put("creneaux", creneaux);
+            if (talk.dureePreferee != null) {
+                talkJson.put("dureePreferee", talk.dureePreferee.getId());
+            } else {
+                talkJson.putNull("dureePreferee");
+            }
+            if (talk.dureeApprouve != null) {
+                talkJson.put("dureeApprouve", talk.dureeApprouve.getId());
+            } else {
+                talkJson.putNull("dureeApprouve");
+            }
+            if (talk.statusTalk != null) {
+                talkJson.put("statusTalk", talk.statusTalk.name());
+            } else {
+                talkJson.putNull("statusTalk");
             }
 
-            talkOut.vote = Vote.findVoteByUserAndTalk(user, talk);
-            if (VoteStatus.getVoteStatus() == VoteStatusEnum.CLOSED) {
-                talkOut.moyenne = Vote.calculMoyenne(talk);
+            if (talk.speaker != null) {
+                ObjectNode speakerJson = Json.newObject();
+                speakerJson.put("id", talk.speaker.id);
+                speakerJson.put("fullname", talk.speaker.fullname);
+                speakerJson.put("avatar", talk.speaker.getAvatar());
+                talkJson.put("speaker", speakerJson);
             }
-            talksOut.add(talkOut);
+
+            //Vote voteUser = Vote.findVoteByUserAndTalk(user, talk);
+            Vote voteUser = votes.get(talk.id);
+            if (voteUser != null) {
+                talkJson.put("vote", voteUser.getNote());
+            } else {
+                talkJson.putNull("vote");
+            }
+
+            //talkOut.vote = Vote.findVoteByUserAndTalk(user, talk);
+//            if (VoteStatus.getVoteStatus() == VoteStatusEnum.CLOSED) {
+//                talkOut.moyenne = Vote.calculMoyenne(talk);
+//            }
+
+            result.add(talkJson);
 
         }
-        return ok(toJson(talksOut));
+        
+        //return ok(toJson(talksOut));
+        return ok(result);
     }
 
+    
     public static Result save() {
         if (VoteStatus.getVoteStatus() != VoteStatusEnum.NOT_BEGIN) {
             return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.vote.begin"))));

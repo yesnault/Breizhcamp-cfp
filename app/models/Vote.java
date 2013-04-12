@@ -1,5 +1,8 @@
 package models;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import play.db.ebean.Model;
 
@@ -63,6 +66,16 @@ public class Vote extends Model {
         return find.query().where().eq("user", user).eq("talk", talk).findUnique();
     }
 
+    public static Map<Long, Vote> findVotesUserByTalkId(User user) {
+        
+        List<Vote> listeVotes = find.query().fetch("talk").where().eq("user", user).findList();
+        Map<Long, Vote> votes = new HashMap<>();
+        for (Vote vote : listeVotes) {
+            votes.put(vote.talk.id, vote);
+        }
+        return votes;
+    }
+    
     public static Double calculMoyenne(Talk talk) {
         Double moyenne = null;
         int sum = 0;
