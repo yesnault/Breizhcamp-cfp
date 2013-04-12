@@ -138,6 +138,21 @@ public class Talk extends Model {
     public static List<Talk> findByStatus(StatusTalk status) {
         return find.where().eq("statusTalk", status.getInterne()).findList();
     }
+
+    public static List<Talk> findByStatusForMinimalData(StatusTalk status) {
+        // talk.id
+        // talk.title
+        // talk.description
+        // talk.speaker.fullname
+        // talk.speaker.avatar
+        // talk.speaker.description
+        // talk.speaker.liens.url
+        // talk.speaker.liens.label
+        return find.select("id, title, description, speaker.id, speaker.fullname, speaker.avatar, speaker.description, speaker.liens")
+                .fetch("speaker").fetch("speaker.liens")
+                .where().eq("statusTalk", status.getInterne()).findList();
+    }
+
     @JsonIgnore
     public transient Vote vote;
     public transient Double moyenne;

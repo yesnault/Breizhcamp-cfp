@@ -16,52 +16,62 @@
  */
 package controllers.talks;
 
+import models.Lien;
 import models.StatusTalk;
 import models.Talk;
-import models.User;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
+import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 
 import java.util.List;
 
-import static play.libs.Json.toJson;
 import static play.libs.Jsonp.jsonp;
 
 public class AcceptedController extends Controller {
 
-    public static Result index() {
-        List<Talk> talksAccepted = Talk.findByStatus(StatusTalk.ACCEPTE);
-        for (Talk talk : talksAccepted) {
-            if (talk.speaker.fullname != null) {
-                talk.speaker.fullname.toString();
-            }
-        }
-        return ok(views.html.talks.accepted.render(talksAccepted));
-    }
-
     public static Result acceptedTalksToJson(String callback) {
 
-        List<Talk> talksAccepted = Talk.findByStatus(StatusTalk.ACCEPTE);
-        for (Talk talk : talksAccepted) {
-            talk.getComments().clear();
-            talk.getCreneaux().clear();
-            talk.moyenne = null;
-            filterSpeaker(talk.speaker);
-            for (User coSpeaker : talk.getCoSpeakers()) {
-                filterSpeaker(coSpeaker);
-            }
-        }
-        return ok(jsonp(callback, toJson(talksAccepted)));
-    }
+        // Data used in html :
+        // talk.id
+        // talk.title
+        // talk.description
+        // talk.speaker.fullname
+        // talk.speaker.avatar
+        // talk.speaker.description
+        // talk.speaker.liens.url
+        // talk.speaker.liens.label
 
-    private static void filterSpeaker(User speaker) {
-        speaker.adresseMac = null;
-        speaker.authenticationMethod = null;
-        speaker.admin = null;
-        speaker.dateCreation = null;
-        speaker.email = null;
-        speaker.setNotifAdminOnAllTalk(null);
-        speaker.setNotifAdminOnTalkWithComment(null);
-        speaker.setNotifOnMyTalk(null);
+        List<Talk> talksAccepted = Talk.findByStatusForMinimalData(StatusTalk.ACCEPTE);
+        ArrayNode result = new ArrayNode(JsonNodeFactory.instance);
+        for (Talk talk : talksAccepted) {
+            ObjectNode talkJson = Json.newObject();
+            talkJson.put("id", talk.id);
+            talkJson.put("title", talk.title);
+            talkJson.put("description", talk.description);
+
+            if (talk.speaker != null) {
+                ObjectNode speakerJson = Json.newObject();
+                speakerJson.put("id", talk.speaker.id);
+                speakerJson.put("fullname", talk.speaker.fullname);
+                speakerJson.put("avatar", talk.speaker.getAvatar());
+                speakerJson.put("description", talk.speaker.description);
+
+
+                ArrayNode liens = new ArrayNode(JsonNodeFactory.instance);
+                for (Lien lien : talk.speaker.getLiens()) {
+                    ObjectNode lienJson = Json.newObject();
+                    lienJson.put("url", lien.url);
+                    lienJson.put("label", lien.label);
+                    liens.add(lienJson);
+                }
+                speakerJson.put("liens", liens);
+                talkJson.put("speaker", speakerJson);
+            }
+            result.add(talkJson);
+        }
+        return ok(jsonp(callback, result));
     }
 }
