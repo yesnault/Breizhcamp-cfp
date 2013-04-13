@@ -111,7 +111,8 @@
                                         </div>
 
                                         <h4>Description :</h4>
-                                        <p ng-bind-html-unsafe="getSafeDescription()">{{talkModal.description}}</p>
+                                        <p>{{talkModal.description}}</p>
+                                        <p ng-bind-html-unsafe="getSafeDescription()"></p>
                                         <p><a href="/#/talks/see/{{talkModal.id}}" data-dismiss="modal">détails</a></p>
                                     </div>
                                     <div class="modal-footer">
