@@ -110,8 +110,7 @@
                                             <span class="label label-success" ng-switch-when="ACCEPTE">Accepté</span>
                                         </div>
                                         <h4>Description :</h4>
-                                        {{talkModal.description}}
-                                        <p ng-bind-html-unsafe="getSafeDescription()"></p>
+                                        <p ng-bind-html-unsafe="getSafeDescription(talkModal.description)"></p>
                                         <p><a href="/#/talks/see/{{talkModal.id}}" data-dismiss="modal">détails</a></p>
                                     </div>
                                     <div class="modal-footer">
