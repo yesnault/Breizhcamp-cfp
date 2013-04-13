@@ -73,6 +73,11 @@
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                                         <h3 id="talkLabel{{talkModal.id}}"><a href="/#/talks/see/{{talkModal.id}}" data-dismiss="modal">{{talkModal.title}}</a></h3>
+                                            <div ng-show="talkModal.statusTalk != undefined" ng-switch on="talkModal.statusTalk">
+                                            <span class="label label-important" ng-switch-when="REJETE">Rejeté</span>
+                                            <span class="label label-warning" ng-switch-when="ATTENTE">Liste d'attente</span>
+                                            <span class="label label-success" ng-switch-when="ACCEPTE">Accepté</span>
+                                        </div>
                                     </div>
                                     <div class="modal-body">
                                         <h4>Speakers :</h4>
@@ -104,11 +109,7 @@
                                             </form>
 
                                         </div>
-                                        <div ng-show="talkModal.statusTalk != undefined" ng-switch on="talkModal.statusTalk">
-                                            <span class="label label-important" ng-switch-when="REJETE">Rejeté</span>
-                                            <span class="label label-warning" ng-switch-when="ATTENTE">Liste d'attente</span>
-                                            <span class="label label-success" ng-switch-when="ACCEPTE">Accepté</span>
-                                        </div>
+
                                         <h4>Description :</h4>
                                         <p ng-bind-html-unsafe="getSafeDescription(talkModal.description)"></p>
                                         <p><a href="/#/talks/see/{{talkModal.id}}" data-dismiss="modal">détails</a></p>
