@@ -88,9 +88,9 @@
                                         </ul>
                                         <br />
                                         <p class="help-inline" ng-repeat="creneau in talkModal.creneaux">
-                                            <span class="label" ng-show="(talkModal.dureePreferee == null || creneau.id!=talkModal.dureePreferee) && (talkModal.dureeApprouve == null || creneau.id!=talkModal.dureeApprouve)">{{creneau.libelle + ' (' + creneau.dureeMinutes + 'min)'}}</span>
-                                            <span class="label label-info" ng-show="(talkModal.dureePreferee != null &&  creneau.id==talkModal.dureePreferee) && (talkModal.dureeApprouve == null ||  creneau.id!=talkModal.dureeApprouve) ">{{creneau.libelle + ' (' + creneau.dureeMinutes + 'min)'}}</span>
-                                            <span class="label label-success" ng-show="talkModal.dureeApprouve != null &&  creneau.id==talkModal.dureeApprouve">{{creneau.libelle + ' (' + creneau.dureeMinutes + 'min)'}}</span>
+                                            <span class="label" ng-show="(talkModal.dureePreferee == null || creneau.id!=talkModal.dureePreferee.id) && (talkModal.dureeApprouve == null || creneau.id!=talkModal.dureeApprouve.id)">{{creneau.libelle + ' (' + creneau.dureeMinutes + 'min)'}}</span>
+                                            <span class="label label-info" ng-show="(talkModal.dureePreferee != null &&  creneau.id==talkModal.dureePreferee.id) && (talkModal.dureeApprouve == null ||  creneau.id!=talkModal.dureeApprouve.id) ">{{creneau.libelle + ' (' + creneau.dureeMinutes + 'min)'}}</span>
+                                            <span class="label label-success" ng-show="talkModal.dureeApprouve != null &&  creneau.id==talkModal.dureeApprouve.id">{{creneau.libelle + ' (' + creneau.dureeMinutes + 'min)'}}</span>
                                         </p>
                                         <div ng-show="userService.isAdmin() && (vote.status == 'OPEN' || vote.status == 'NOT_BEGIN')">
                                             <form ng-submit="postVote(talkModal)" class="form-inline">

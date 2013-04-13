@@ -399,9 +399,7 @@ function ListTalksController($scope, $log,http, AllTalkService, VoteService,Talk
     $scope.getTalkDetails = function(idTalk) {
         $scope.talkModal = TalkService.get({id:idTalk}, function success(data) {
             $scope.talkModal = data;
-            if (!$scope.talkModal.dureeApprouve) {
-                $scope.talkModal.dureeApprouve = $scope.talkModal.dureePreferee;
-            }
+
         });
     };
 
