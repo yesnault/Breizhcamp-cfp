@@ -51,7 +51,7 @@
                 <form ng-submit="postVote()" class="form-inline">
                     <div class="control-group {{{true:'error', false:''}[errors.vote != undefined]}}">
                         <label>Note du talk</label>
-                        <star/>
+                        <star ng-model="talk"/>
                         note : {{talk.note}}
                     </div>
                     <input  type="submit" class="btn btn-primary" value="Valider">

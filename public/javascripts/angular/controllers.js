@@ -356,8 +356,8 @@ function ManageUsersController($scope, $log, $location, ManageUsersService, http
     }
  }
 
-ListTalksController.$inject = ['$scope', '$log', 'AllTalkService', 'VoteService','TalkService'];
-function ListTalksController($scope, $log, AllTalkService, VoteService,TalkService) {
+ListTalksController.$inject = ['$scope', '$log','$http', 'AllTalkService', 'VoteService','TalkService', 'UserService'];
+function ListTalksController($scope, $log,http, AllTalkService, VoteService,TalkService,UserService) {
 
     $scope.checkloc(true);
 
@@ -393,6 +393,31 @@ function ListTalksController($scope, $log, AllTalkService, VoteService,TalkServi
                 $log.info("Delete du talk ko");
                 $log.info(err);
                 $scope.errors = err.data;
+            });
+    };
+
+    $scope.getTalkDetails = function(idTalk) {
+        $scope.talkModal = TalkService.get({id:idTalk}, function success(data) {
+            $scope.talkModal = data;
+            if (!$scope.talkModal.dureeApprouve) {
+                $scope.talkModal.dureeApprouve = $scope.talkModal.dureePreferee;
+            }
+        });
+    };
+
+    $scope.postVote = function(talk) {
+        $log.info("postVote");
+        $log.info(talk);
+
+        http({
+            method: 'POST',
+            url: '/talks/' + talk.id + '/vote/' + talk.note
+        }).success(function(data, status, headers, config) {
+                $log.info(status);
+                $scope.errors = undefined;
+            }).error(function(data, status, headers, config) {
+                $log.info(status);
+                $scope.errors = data;
             });
     }
 }

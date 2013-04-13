@@ -68,7 +68,57 @@
             <tr ng-repeat="talk in talks | filter:doStatus | orderBy:predicate:reverse ">
                 <td><div ng-show="talk.speaker != null"><a ng-href="/#/profil/{{talk.speaker.id}}" ><img ng-src="{{talk.speaker.avatar}}" style="height : 30px" class="img-rounded"> {{talk.speaker.fullname}}</a></div>
                     <div ng-show="talk.speaker == null">Compte Supprimé</div></td>
-                <td><a href="/#/talks/see/{{talk.id}}">{{talk.title}}</a></td>
+                <td><a href="#talk{{talk.id}}" ng-click="getTalkDetails(talk.id)" data-toggle="modal">{{talk.title}}</a>
+                    <div id="talk{{talk.id}}" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="talkLabel{{talk.id}}" aria-hidden="true">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                        <h3 id="talkLabel{{talkModal.id}}"><a href="/#/talks/see/{{talkModal.id}}" data-dismiss="modal">{{talkModal.title}}</a></h3>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h4>Speakers :</h4>
+                                        <p><div ng-show="talkModal.speaker != null"><a ng-href="/#/profil/{{talkModal.speaker.id}}" data-dismiss="modal"><img ng-src="{{talkModal.speaker.avatar}}" style="height : 30px" class="img-rounded"> {{talk.speaker.fullname}}</a></div>
+                                            <div ng-show="talkModal.speaker == null">Compte Supprimé</div></p>
+                                        <ul>
+                                            <li ng-repeat="coSpeaker in talkModal.coSpeakers"><a ng-href="/#/profil/{{coSpeaker.id}}" >{{coSpeaker.fullname}}</a></li>
+                                        </ul>
+                                        <br />
+                                        <p class="help-inline" ng-repeat="creneau in talkModal.creneaux">
+                                            <span class="label" ng-show="(talkModal.dureePreferee == null || creneau.id!=talkModal.dureePreferee) && (talkModal.dureeApprouve == null || creneau.id!=talkModal.dureeApprouve)">{{creneau.libelle + ' (' + creneau.dureeMinutes + 'min)'}}</span>
+                                            <span class="label label-info" ng-show="(talkModal.dureePreferee != null &&  creneau.id==talkModal.dureePreferee) && (talkModal.dureeApprouve == null ||  creneau.id!=talkModal.dureeApprouve) ">{{creneau.libelle + ' (' + creneau.dureeMinutes + 'min)'}}</span>
+                                            <span class="label label-success" ng-show="talkModal.dureeApprouve != null &&  creneau.id==talkModal.dureeApprouve">{{creneau.libelle + ' (' + creneau.dureeMinutes + 'min)'}}</span>
+                                        </p>
+                                        <div ng-show="userService.isAdmin() && (vote.status == 'OPEN' || vote.status == 'NOT_BEGIN')">
+                                            <form ng-submit="postVote(talkModal)" class="form-inline">
+                                                <div class="control-group {{{true:'error', false:''}[errors.vote != undefined]}}">
+                                                    <stars ng-model="talkModal" talkid="{{talkModal.id}}" />
+                                                    <select id="note" name="note" ng-model="talkModal.note">
+                                                        <option value="null"></option>
+                                                        <option value="1">1 - Null</option>
+                                                        <option value="2">2 - Mouais</option>
+                                                        <option value="3">3 - Pourquoi pas</option>
+                                                        <option value="4">4 - Vraiment bien</option>
+                                                        <option value="5">5 - Exceptionnel</option>
+                                                    </select>
+                                                </div>
+                                                <input  type="submit" class="btn btn-primary" value="Valider">
+                                            </form>
+
+                                        </div>
+                                        <div ng-show="talkModal.statusTalk != undefined" ng-switch on="talkModal.statusTalk">
+                                            <span class="label label-important" ng-switch-when="REJETE">Rejeté</span>
+                                            <span class="label label-warning" ng-switch-when="ATTENTE">Liste d'attente</span>
+                                            <span class="label label-success" ng-switch-when="ACCEPTE">Accepté</span>
+                                        </div>
+                                        <h4>Description :</h4>
+                                        {{talkModal.description}}
+                                        <p ng-bind-html-unsafe="getSafeDescription()"></p>
+                                        <p><a href="/#/talks/see/{{talkModal.id}}" data-dismiss="modal">détails</a></p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                                    </div>
+                                </div>
+                </td>
                 <td><p class="help-inline" ng-repeat="creneau in talk.creneaux">
                         <span class="label" ng-show="(talk.dureePreferee == null || creneau.id!=talk.dureePreferee) && (talk.dureeApprouve == null || creneau.id!=talk.dureeApprouve)">{{creneau.libelle + ' (' + creneau.dureeMinutes + 'min)'}}</span>
                         <span class="label label-info" ng-show="(talk.dureePreferee != null &&  creneau.id==talk.dureePreferee) && (talk.dureeApprouve == null ||  creneau.id!=talk.dureeApprouve) ">{{creneau.libelle + ' (' + creneau.dureeMinutes + 'min)'}}</span>
@@ -81,7 +131,8 @@
                     <span class="label label-success" ng-switch-when="ACCEPTE">Accepté</span>
                 </div></td>
 
-                <td>{{talk.vote}}</td>
+                <td>{{talk.vote}}
+                </td>
                 <td ng-show="vote.status == 'CLOSED'">{{talk.moyenne}}</td>
                 <td ng-show="vote.status == 'CLOSED'">{{talk.nbvote}}</td>
                 <td><a  class="btn" href="#deleteTalk{{talk.id}}" data-toggle="modal">Supprimer</a></td>
