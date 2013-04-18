@@ -126,7 +126,7 @@
                             {"id":140,"time":"10:15", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/140", "title":"Kata Soft & Hard !"},
                             {"id":44 ,"time":"11:30", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/44",  "title":"Introduction aux DVCS / Git"},
                             {"id":100,"time":"12:45", "format":"quickie",         "url":"http://cfp.breizhcamp.org/#/talks/see/100", "title":"Gestion des évolutions SQL avec Liquibase"},
-                            {"id":118,"time":"13:30", "format":"lab",             "url":"http://cfp.breizhcamp.org/#/talks/see/118", "title":"Performance tests for the dummies"},
+                            {"id":104,"time":"13:30", "format":"lab",             "url":"http://cfp.breizhcamp.org/#/talks/see/104", "title":"Performance tests for the dummies"},
                             {"id":8  ,"time":"14:45", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/8",   "title":"Les androïdes rêvent-ils de Gradle ?"},
                             {"id":79 ,"time":"16:15", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/79",  "title":"Crash test à haute vitesse"},
                             {"id":142,"time":"17:30", "format":"tools in action", "url":"http://cfp.breizhcamp.org/#/talks/see/142", "title":"L'ALM en action avec TFS 2012"},
