@@ -47,7 +47,7 @@
      "date":"14/06/2013",
      "tracks":[
         "keynote": [
-            {"time":"9:30 "format":"conference",         "title":"Winter is coming"}
+            {"time":"9:30", "format":"conference",         "title":"Winter is coming"}
         ],
         "cloud et architecture":[
             {"time":"10:15", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/38",  "title":"Cloud patterns"},
