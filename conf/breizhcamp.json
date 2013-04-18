@@ -67,7 +67,7 @@
                     {
                         "type":"keynote",
                         "talks":[
-                            {"time":"9:30", "format":"conference", "title":"Winter is coming"}
+                            {"time":"9:30", "format":"keynote", "title":"Winter is coming"}
                         ]
                     },
                     {
