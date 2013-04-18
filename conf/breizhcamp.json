@@ -9,9 +9,9 @@
                     {
                         "type":"web",
                         "talks":[
-                            {"id":4  , "time":"9:30",  "format":"universite",      "url":"http://cfp.breizhcamp.org/#/talks/see/4",   "title":"javasript du sol au plafond"},
-                            {"id":99 , "time":"12:30", "format":"quickie",         "url":"http://cfp.breizhcamp.org/#/talks/see/99",  "title":"javasript de façon profesionnelle"},
-                            {"id":72 , "time":"13:15", "format":"quickie",         "url":"http://cfp.breizhcamp.org/#/talks/see/72",  "title":"angularjs - démystification des directives"},
+                            {"id":4  , "time":"9:30",  "format":"universite",      "url":"http://cfp.breizhcamp.org/#/talks/see/4",   "title":"Javascript du sol au plafond"},
+                            {"id":99 , "time":"12:30", "format":"quickie",         "url":"http://cfp.breizhcamp.org/#/talks/see/99",  "title":"Javascript de façon professionnelle"},
+                            {"id":72 , "time":"13:15", "format":"quickie",         "url":"http://cfp.breizhcamp.org/#/talks/see/72",  "title":"Angularjs - démystification des directives"},
                             {"id":59 , "time":"14:00", "format":"hands-on",        "url":"http://cfp.breizhcamp.org/#/talks/see/59",  "title":"Hands On AngularJS. Cette fois, vous allez coder !"},
                             {"id":136, "time":"17:30", "format":"tools in action", "url":"http://cfp.breizhcamp.org/#/talks/see/136", "title":"Reférencer sa Single Page App avec PhantomJS"},
                             {"id":73 , "time":"18:00", "format":"tools in action", "url":"http://cfp.breizhcamp.org/#/talks/see/73",  "title":"Automatisez votre build web avec Grunt"}
@@ -98,7 +98,7 @@
                     {
                         "type":"découverte",
                         "talks":[
-                            {"id":88 ,"time":"10:15", "format":"lab",             "url":"http://cfp.breizhcamp.org/#/talks/see/88",  "title":"meteor"},
+                            {"id":88 ,"time":"10:15", "format":"lab",             "url":"http://cfp.breizhcamp.org/#/talks/see/88",  "title":"Meteor"},
                             {"id":41 ,"time":"11:30", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/41",  "title":"Une application Web simple en Java, c'est possible"},
                             {"id":82 ,"time":"12:45", "format":"quickie",         "url":"http://cfp.breizhcamp.org/#/talks/see/82",  "title":"Un jeu iOS/Android sans HTML, Objective-C, Java ?"},
                             {"id":87 ,"time":"13:30", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/87",  "title":"Utilisation de python sur le robot humanoïde NAO"},
