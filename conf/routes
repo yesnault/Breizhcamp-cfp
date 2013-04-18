@@ -76,6 +76,7 @@ GET     /admin/users/get            controllers.UserRestController.get()
 
 GET     /accepted/jsonp             controllers.talks.AcceptedController.acceptedTalksToJson(callback:String)
 GET     /accepted/speakers/jsonp    controllers.talks.AcceptedController.acceptedSpeakersToJson(callback:String)
+GET     /accepted/talk/:id/jsonp    controllers.talks.AcceptedController.acceptedTalkById(id:Long, callback:String)
 
 GET     /programme/jsonp            controllers.talks.ProgrammeController.programmeAsJsonp(callback:String)
 GET     /programme                  controllers.talks.ProgrammeController.programme()
