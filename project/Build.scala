@@ -15,7 +15,8 @@ object ApplicationBuild extends Build {
       "org.mindrot" % "jbcrypt" % "0.3m",
       "mysql" % "mysql-connector-java" % "5.1.21",
       "securesocial" % "securesocial_2.9.1" % "2.0.8",
-      "fr.ybonnel" % "csvengine" % "1.3.5"
+      "fr.ybonnel" % "csvengine" % "1.3.5",
+      "org.pegdown" % "pegdown" % "1.2.1"
     )
 
     lazy val s = Defaults.defaultSettings ++ Seq(generateAPIDocsTask)

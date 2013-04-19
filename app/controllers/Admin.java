@@ -10,6 +10,7 @@ import models.*;
 import models.utils.Mail;
 import org.codehaus.jackson.JsonNode;
 
+import org.pegdown.PegDownProcessor;
 import play.Configuration;
 import play.i18n.Messages;
 import play.mvc.Controller;
@@ -117,7 +118,10 @@ public class Admin extends Controller {
 
         JsonNode body = request().body().asJson();
         String subjet = body.get("subject").asText();
-        String mail = body.get("mail").asText();
+        String mailMarkdown = body.get("mail").asText();
+
+        PegDownProcessor pegDownProcessor = new PegDownProcessor();
+        String mailHtml = pegDownProcessor.markdownToHtml(mailMarkdown);
 
         Set<String> mailsOfSpeakers = new HashSet<String>();
 
@@ -133,7 +137,7 @@ public class Admin extends Controller {
         }
 
         if (!mailsOfSpeakers.isEmpty()) {
-            Mail.sendMail(new Mail.Envelop(subjet, mail, mailsOfSpeakers));
+            Mail.sendMail(new Mail.Envelop(subjet, mailHtml, mailsOfSpeakers));
         }
 
         return ok();

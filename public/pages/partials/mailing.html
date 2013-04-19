@@ -22,9 +22,11 @@
                 </div>
 
                 <div class="control-group">
-                    <label class="control-label" for="mail">Contenu du mail</label>
+                    <label class="control-label" for="wmd-input">Contenu du mail</label>
                     <div class="controls">
-                        <textarea id="mail" rows="6" ng-model="mail" class="input-xxlarge" required></textarea>
+                        <div id="wmd-button-bar"></div>
+                        <textarea id="wmd-input"  name="mail" class="wmd-input" rows="10" ng-model="mail" maxlength="2000" required></textarea>
+                        <div id="wmd-preview" class="wmd-preview" pagedown-init="mail"></div>
                     </div>
                 </div>
             </fieldset>

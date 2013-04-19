@@ -1054,6 +1054,11 @@ MailingController.$inject = [ '$scope', '$http', '$log', '$location'];
 function MailingController($scope, $http, $log, $location) {
     $scope.checkloc(true);
 
+    $scope.converter = new Markdown.getSanitizingConverter();
+    $scope.editor = new Markdown.Editor($scope.converter);
+    $scope.editor.run();
+
+
     $scope.sendMail = function() {
         if ($scope.status !== undefined && $scope.mail !== undefined && $scope.subject !== undefined) {
             $http({
