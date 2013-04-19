@@ -418,6 +418,17 @@ function ListTalksController($scope, $log,http, AllTalkService, VoteService,Talk
                 $scope.errors = data;
             });
     }
+
+    $scope.rejeterRestant = function() {
+
+        http({
+            method: 'POST',
+            url: '/talks/rejectall'
+        }).success(function(data, status, headers, config){
+                $scope.talks = TalkService.query();
+            });
+
+    }
 }
 
 

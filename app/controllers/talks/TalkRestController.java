@@ -587,6 +587,22 @@ public class TalkRestController extends Controller {
         return ok();
     }
 
+    public static Result rejectAllTalkWithoutStatus() throws MalformedURLException {
+        User user = getLoggedUser();
+        if (!user.admin) {
+            return forbidden();
+        }
+
+        for (Talk talk : Talk.findByNoStatus()) {
+            talk.statusTalk = StatusTalk.REJETE;
+            talk.save();
+            if (talk.speaker != null) {
+                talk.statusTalk.sendMail(talk, talk.speaker.email);
+            }
+        }
+        return ok();
+    }
+
     public static Result saveVote(Long idTalk, Integer note) {
         User user = getLoggedUser();
         if (!user.admin) {

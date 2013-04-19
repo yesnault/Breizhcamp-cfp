@@ -139,6 +139,10 @@ public class Talk extends Model {
         return find.where().eq("statusTalk", status.getInterne()).findList();
     }
 
+    public static List<Talk> findByNoStatus() {
+        return find.where().isNull("statusTalk").findList();
+    }
+
     public static List<Talk> findByStatusForMinimalData(StatusTalk status) {
         // talk.id
         // talk.title
