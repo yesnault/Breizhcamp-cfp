@@ -245,6 +245,7 @@ function EditTalkController($scope, $log, $location, $routeParams, TalkService, 
         $log.info("Sauvegarde du talk : " + $routeParams.talkId);
         // Contournement pour ne pas soumettre l'objet speaker dans le POST JSON
         $scope.talk.speaker = null;
+        $scope.talk.comments = null;
 
         TalkService.save($scope.talk, function(data) {
             $log.info("Soummission du talk ok");
