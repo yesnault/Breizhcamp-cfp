@@ -1,0 +1,38 @@
+<div class="row">
+	<div class="span8">
+        <form class="form-horizontal" ng-submit="sendMail()">
+            <fieldset>
+
+                <div class="control-group">
+                    <label class="control-label" for="status">Choix du status auquel envoyé le mail</label>
+                    <div class="controls">
+                        <select id="status" name="status" ng-model="status" required>
+                            <option value="REJETE" >Rejeté</option>
+                            <option value="ACCEPTE" >Accepté</option>
+                            <option value="ATTENTE" >Attente</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="subject">Sujet du mail</label>
+                    <div class="controls">
+                        <input id="subject" type="text" ng-model="subject" class="input-xxlarge" required></textarea>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="mail">Contenu du mail</label>
+                    <div class="controls">
+                        <textarea id="mail" rows="6" ng-model="mail" class="input-xxlarge" required></textarea>
+                    </div>
+                </div>
+            </fieldset>
+
+
+            <div class="form-actions">
+                <input type="submit" class="btn btn-primary" value="Envoyer"/>
+            </div>
+        </form>
+	</div>
+</div>

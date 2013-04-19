@@ -1049,3 +1049,29 @@ function EditDynamicFieldController($scope, $log, DynamicFieldsService, $locatio
         });
     }
 }
+
+MailingController.$inject = [ '$scope', '$http', '$log', '$location'];
+function MailingController($scope, $http, $log, $location) {
+    $scope.checkloc(true);
+
+    $scope.sendMail = function() {
+        if ($scope.status !== undefined && $scope.mail !== undefined && $scope.subject !== undefined) {
+            $http({
+                method: 'POST',
+                url: '/admin/mailing/' + $scope.status,
+                data: {
+                    subject: $scope.subject,
+                    mail: $scope.mail
+                }
+            }).
+                success(function(data, status){
+                    $location.url('/admin/talks/list');
+                }).
+                error(function(data, status){
+                    $log.error(data);
+                });
+
+        }
+    }
+
+}

@@ -37,6 +37,7 @@ POST    /admin/submitusers          controllers.Admin.submitUsers()
 GET     /admin/vote                 controllers.Admin.getVoteStatus()
 POST    /admin/vote/:newStatus      controllers.Admin.changeVoteStatus(newStatus:String)
 POST    /admin/deleteuser/:id       controllers.Admin.deleteCompte(id:Long)
+POST    /admin/mailing/:status      controllers.Admin.mailing(status:String)
 
 POST    /talks/:idTalk/comment      controllers.talks.TalkRestController.saveComment(idTalk:Long)
 POST    /talks/:idTalk/comment/:idComment/response  controllers.talks.TalkRestController.saveReponse(idTalk:Long,idComment:Long)

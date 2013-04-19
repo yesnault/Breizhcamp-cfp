@@ -2,14 +2,16 @@ package controllers;
 
 import static play.libs.Json.toJson;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.net.URL;
+import java.util.*;
 
 import models.*;
 
+import models.utils.Mail;
 import org.codehaus.jackson.JsonNode;
 
+import play.Configuration;
+import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.Result;
 import securesocial.core.Identity;
@@ -107,6 +109,33 @@ public class Admin extends Controller {
             return forbidden();
         }
         VoteStatus.changeVoteStatus(VoteStatusEnum.valueOf(newStatus));
+        return ok();
+    }
+
+    public static Result mailing(String status) {
+        StatusTalk statusTalk = StatusTalk.fromValue(status);
+
+        JsonNode body = request().body().asJson();
+        String subjet = body.get("subject").asText();
+        String mail = body.get("mail").asText();
+
+        Set<String> mailsOfSpeakers = new HashSet<String>();
+
+        for (Talk talk : Talk.findByStatus(statusTalk)) {
+            if (talk.speaker != null && talk.speaker.email != null) {
+                mailsOfSpeakers.add(talk.speaker.email);
+            }
+            for (User coSpeakers : talk.getCoSpeakers()) {
+                if (coSpeakers.email != null) {
+                    mailsOfSpeakers.add(coSpeakers.email);
+                }
+            }
+        }
+
+        if (!mailsOfSpeakers.isEmpty()) {
+            Mail.sendMail(new Mail.Envelop(subjet, mail, mailsOfSpeakers));
+        }
+
         return ok();
     }
 }
