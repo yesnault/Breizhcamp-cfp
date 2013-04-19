@@ -191,9 +191,6 @@ public class TalkRestController extends Controller {
 
     
     public static Result save() {
-        if (VoteStatus.getVoteStatus() != VoteStatusEnum.NOT_BEGIN) {
-            return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.vote.begin"))));
-        }
         User user = getLoggedUser();
         Form<Talk> talkForm = form(Talk.class).bindFromRequest();
 
@@ -204,6 +201,10 @@ public class TalkRestController extends Controller {
         Talk formTalk = talkForm.get();
 
         if (formTalk.id == null) {
+
+            if (VoteStatus.getVoteStatus() != VoteStatusEnum.NOT_BEGIN) {
+                return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.vote.begin"))));
+            }
             // Nouveau talk
             formTalk.speaker = user;
             if (Talk.findByTitle(formTalk.title) != null) {
