@@ -43,6 +43,9 @@ public class UserRestController extends Controller {
             User userOut = new User();
             userOut.id = userJson.id;
             userOut.fullname = userJson.fullname;
+            userOut.email =  userJson.email;
+            userOut.admin  =  userJson.admin;
+            userOut.credentials =  userJson.credentials;
             users.add(userOut);
         }
 
