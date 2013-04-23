@@ -23,6 +23,7 @@ App.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/admin/dynamicfields', {templateUrl: 'assets/pages/partials/dynamicfields.html', controller: DynamicFieldsController});
     $routeProvider.when('/admin/dynamicfield/new', {templateUrl: 'assets/pages/partials/submitdynamicfield.html', controller: NewDynamicFieldController});
     $routeProvider.when('/admin/dynamicfield/edit/:dynamicFieldId', {templateUrl: 'assets/pages/partials/submitdynamicfield.html', controller: EditDynamicFieldController});
+    $routeProvider.when('/admin/mailing', {templateUrl: 'assets/pages/partials/mailing.html', controller: MailingController});
 
     $routeProvider.when('/talks/see/:talkId', {templateUrl: '/assets/pages/partials/seetalk.html', controller: SeeTalksController});
 

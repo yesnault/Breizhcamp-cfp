@@ -245,6 +245,7 @@ function EditTalkController($scope, $log, $location, $routeParams, TalkService, 
         $log.info("Sauvegarde du talk : " + $routeParams.talkId);
         // Contournement pour ne pas soumettre l'objet speaker dans le POST JSON
         $scope.talk.speaker = null;
+        $scope.talk.comments = null;
 
         TalkService.save($scope.talk, function(data) {
             $log.info("Soummission du talk ok");
@@ -417,6 +418,17 @@ function ListTalksController($scope, $log,http, AllTalkService, VoteService,Talk
                 $log.info(status);
                 $scope.errors = data;
             });
+    }
+
+    $scope.rejeterRestant = function() {
+
+        http({
+            method: 'POST',
+            url: '/talks/rejectall'
+        }).success(function(data, status, headers, config){
+                $scope.talks = TalkService.query();
+            });
+
     }
 }
 
@@ -1037,4 +1049,35 @@ function EditDynamicFieldController($scope, $log, DynamicFieldsService, $locatio
             $scope.errors = err.data;
         });
     }
+}
+
+MailingController.$inject = [ '$scope', '$http', '$log', '$location'];
+function MailingController($scope, $http, $log, $location) {
+    $scope.checkloc(true);
+
+    $scope.converter = new Markdown.getSanitizingConverter();
+    $scope.editor = new Markdown.Editor($scope.converter);
+    $scope.editor.run();
+
+
+    $scope.sendMail = function() {
+        if ($scope.status !== undefined && $scope.mail !== undefined && $scope.subject !== undefined) {
+            $http({
+                method: 'POST',
+                url: '/admin/mailing/' + $scope.status,
+                data: {
+                    subject: $scope.subject,
+                    mail: $scope.mail
+                }
+            }).
+                success(function(data, status){
+                    $location.url('/admin/talks/list');
+                }).
+                error(function(data, status){
+                    $log.error(data);
+                });
+
+        }
+    }
+
 }

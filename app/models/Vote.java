@@ -90,7 +90,7 @@ public class Vote extends Model {
         String sql = "SELECT v.talk_id as talkId, avg(v.note) as moy, count(v.talk_id) as nbVote, t.title as talkTitle FROM vote v, talk t where (v.talk_id=t.id) group by v.talk_id order by moy desc";
         List<SqlRow> rows = Ebean.createSqlQuery(sql).findList();
         
-        Map<Long, Pair<Double, Integer>> moyennes = new HashMap<>();
+        Map<Long, Pair<Double, Integer>> moyennes = new HashMap<Long, Pair<Double, Integer>>();
         for (SqlRow row : rows) {
             Pair<Double, Integer> moyTalk = new ImmutablePair(row.getDouble("moy"), row.getInteger("nbVote"));
             moyennes.put(row.getLong("talkId"), moyTalk);

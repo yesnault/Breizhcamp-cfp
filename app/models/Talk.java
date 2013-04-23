@@ -139,6 +139,10 @@ public class Talk extends Model {
         return find.where().eq("statusTalk", status.getInterne()).findList();
     }
 
+    public static List<Talk> findByNoStatus() {
+        return find.where().isNull("statusTalk").findList();
+    }
+
     public static List<Talk> findByStatusForMinimalData(StatusTalk status) {
         // talk.id
         // talk.title
@@ -153,6 +157,13 @@ public class Talk extends Model {
                 "talk.coSpeakers.id, talk.coSpeakers.fullname, talk.coSpeakers.avatar, talk.coSpeakers.description, talk.coSpeakers.liens")
                 .fetch("speaker").fetch("speaker.liens").fetch("coSpeakers").fetch("coSpeakers.liens")
                 .where().eq("statusTalk", status.getInterne()).findList();
+    }
+
+    public static Talk findByIdWithFetch(Long id) {
+        return find.select("id, title, description, speaker.id, speaker.fullname, speaker.avatar, speaker.description, speaker.liens, " +
+                "talk.coSpeakers.id, talk.coSpeakers.fullname, talk.coSpeakers.avatar, talk.coSpeakers.description, talk.coSpeakers.liens")
+                .fetch("speaker").fetch("speaker.liens").fetch("coSpeakers").fetch("coSpeakers.liens")
+                .where().idEq(id).findUnique();
     }
 
     @JsonIgnore

@@ -191,9 +191,6 @@ public class TalkRestController extends Controller {
 
     
     public static Result save() {
-        if (VoteStatus.getVoteStatus() != VoteStatusEnum.NOT_BEGIN) {
-            return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.vote.begin"))));
-        }
         User user = getLoggedUser();
         Form<Talk> talkForm = form(Talk.class).bindFromRequest();
 
@@ -204,6 +201,10 @@ public class TalkRestController extends Controller {
         Talk formTalk = talkForm.get();
 
         if (formTalk.id == null) {
+
+            if (VoteStatus.getVoteStatus() != VoteStatusEnum.NOT_BEGIN) {
+                return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.vote.begin"))));
+            }
             // Nouveau talk
             formTalk.speaker = user;
             if (Talk.findByTitle(formTalk.title) != null) {
@@ -584,6 +585,22 @@ public class TalkRestController extends Controller {
             }
         }
 
+        return ok();
+    }
+
+    public static Result rejectAllTalkWithoutStatus() throws MalformedURLException {
+        User user = getLoggedUser();
+        if (!user.admin) {
+            return forbidden();
+        }
+
+        for (Talk talk : Talk.findByNoStatus()) {
+            talk.statusTalk = StatusTalk.REJETE;
+            talk.save();
+            if (talk.speaker != null) {
+                talk.statusTalk.sendMail(talk, talk.speaker.email);
+            }
+        }
         return ok();
     }
 

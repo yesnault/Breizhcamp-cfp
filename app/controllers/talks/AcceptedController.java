@@ -33,6 +33,28 @@ import static play.libs.Jsonp.jsonp;
 
 public class AcceptedController extends Controller {
 
+    public static Result acceptedTalkById(Long id, String callback) {
+        Talk talk = Talk.findByIdWithFetch(id);
+
+        if (talk == null) {
+            return notFound();
+        }
+
+        ObjectNode talkJson = Json.newObject();
+        talkJson.put("id", talk.id);
+        talkJson.put("title", talk.title);
+        talkJson.put("description", talk.description);
+        ArrayNode speakers = new ArrayNode(JsonNodeFactory.instance);
+        if (talk.speaker != null) {
+            speakers.add(getSpeakerInJson(talk.speaker));
+        }
+        for (User otherSpeaker : talk.getCoSpeakers()) {
+            speakers.add(getSpeakerInJson(otherSpeaker));
+        }
+        talkJson.put("speakers", speakers);
+        return ok(jsonp(callback, talkJson));
+    }
+
     public static Result acceptedSpeakersToJson(String callback) {
 
         List<Talk> talksAccepted = Talk.findByStatusForMinimalData(StatusTalk.ACCEPTE);
