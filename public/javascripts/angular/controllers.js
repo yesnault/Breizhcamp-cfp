@@ -645,7 +645,7 @@ function ProfilController($scope, $log, $routeParams, AccountService, ProfilServ
 
         http({
             method: 'POST',
-            url: '/profil/'+id+'/edit',
+            url: '/admin/profil/'+id+'/edit',
             data: data
         }).success(function(data, status, headers, config) {
                 $scope.errors = undefined;
