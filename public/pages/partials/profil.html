@@ -23,10 +23,10 @@
                     <p ng-show="pUser.admin && talks.length==0">(Organisateur)</p>
                     <p ng-show="pUser.admin && talks.length!=0 ">(Speaker/Organisateur)</p>
                     <p ng-show="!pUser.admin && talks.length!=0 ">(Speaker)</p><br />
-
-                    <div id="showDescription" class="well" ng-bind-html-unsafe="getSafeDescription()"></div>
+                    <div id="showDescription">
+                    <div class="well" ng-bind-html-unsafe="getSafeDescription()"></div>
                     <input type="button" class="btn btn-primary" value="Modifier" ng-show="userService.isAdmin()"
-                           onclick="displayHide('editDescription');displayHide('showDescription');">
+                           onclick="displayHide('editDescription');displayHide('showDescription');">   </div>
                     <div class="well" id="editDescription" style="display: none;">
                         <form ng-submit="editProfil({{pUser.id}})" method="POST" class="form-inline">
                             <div class="control-group {{{true:'error', false:''}[errors.descriptionE != undefined]}}">

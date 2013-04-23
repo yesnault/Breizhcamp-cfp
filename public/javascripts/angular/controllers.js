@@ -625,6 +625,8 @@ function ProfilController($scope, $log, $routeParams, AccountService, ProfilServ
     $scope.checkloc(false);
 
     $scope.converter = new Markdown.getSanitizingConverter();
+    $scope.editor = new Markdown.Editor($scope.converter);
+    $scope.editor.run();
 
     var idUSer = $routeParams.userId;
     $scope.pUser = ProfilService.getUser(idUSer);
