@@ -636,6 +636,25 @@ function ProfilController($scope, $log, $routeParams, AccountService, ProfilServ
             return $scope.converter.makeHtml($scope.pUser.description);
         }
     }
+
+    $scope.editProfil = function(id) {
+
+        var data = {'description': $scope.descriptionE};
+
+        http({
+            method: 'POST',
+            url: '/profil/'+id+'/edit',
+            data: data
+        }).success(function(data, status, headers, config) {
+                $scope.errors = undefined;
+                var idUser = UserService.getUserData().id;
+                $scope.lien = undefined;
+                $scope.user = AccountService.getUser(idUser);
+            }).error(function(data, status, headers, config) {
+                $scope.errors = data;
+                $log.info(status);
+            });
+    }
 }
 
 

@@ -1,6 +1,17 @@
 <div class="row">
 
+    <script type="text/javascript">
+        function displayHide(id){
+            var respStyle = document.getElementById(id).style;
+            if(respStyle.display == 'none'){
+                document.getElementById(id).style.display = 'block';
+            } else {
+                document.getElementById(id).style.display = 'none';
+            }
+        }
 
+
+    </script>
     <div class="container-fluid">
         <div class="row-fluid">
             <div class="span2 breadcrumb">
@@ -13,7 +24,24 @@
                     <p ng-show="pUser.admin && talks.length!=0 ">(Speaker/Organisateur)</p>
                     <p ng-show="!pUser.admin && talks.length!=0 ">(Speaker)</p><br />
 
-                    <div class="well" ng-bind-html-unsafe="getSafeDescription()"></div>
+                    <div id="showDescription" class="well" ng-bind-html-unsafe="getSafeDescription()"></div>
+                    <input type="button" class="btn btn-primary" value="Modifier" ng-show="userService.isAdmin()"
+                           onclick="displayHide('editDescription');displayHide('showDescription');">
+                    <div class="well" id="editDescription" style="display: none;">
+                        <form ng-submit="editProfil({{pUser.id}})" method="POST" class="form-inline">
+                            <div class="control-group {{{true:'error', false:''}[errors.descriptionE != undefined]}}">
+                                <div class="controls">
+                                    <div id="wmd-button-bar"></div>
+                                    <textarea id="wmd-input" name="descriptionE" placeholder="Description/Bio" ng-init="$parent.descriptionE=pUser.description" class="wmd-input" ng-model="descriptionE" rows="10"></textarea>
+                                    <p class="help-inline">Longueur maximum: {{descriptionE.length}}/2000, Obligatoire</p>
+                                    <p class="help-inline" ng-repeat="error in errors.descriptionE">{{error}}</p>
+                                    <div id="wmd-preview" class="wmd-preview" pagedown-init="descriptionE"></div>
+                                </div>
+                            </div>
+                            <input type="submit" class="btn btn-primary" value="Valider">
+                            <input type="button" class="btn btn-primary" value="Annuler" onclick="displayHide('editDescription');displayHide('showDescription');">
+                        </form>
+                    </div>
                     <h3>Liens</h3>
                     <p ng-show="pUser.liens.length == 0">
                         - aucun lien

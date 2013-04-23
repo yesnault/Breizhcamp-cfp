@@ -27,6 +27,29 @@ public class Admin extends Controller {
         return user;
     }
 
+    public static Result editProfil(Long id) {
+        User userRequest = getLoggedUser();
+        if (!userRequest.admin) {
+            return forbidden();
+        }
+        User userToEdit = User.findById(id);
+
+        JsonNode node = request().body().asJson();
+
+        if (node != null && node.get("description") != null && !node.get("description").equals("null")) {
+            String description = node.get("description").asText();
+            userToEdit.description = description;
+            userToEdit.save();
+            return ok();
+        }  else {
+            Map<String, List<String>> errors = new HashMap<String, List<String>>();
+            errors.put("descriptionE", Collections.singletonList(Messages.get("error.required")));
+            return badRequest(toJson(errors));
+        }
+
+
+    }
+
     public static Result deleteCompte(Long id) {
         User userRequest = getLoggedUser();
         if (!userRequest.admin) {
