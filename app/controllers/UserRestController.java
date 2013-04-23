@@ -1,6 +1,7 @@
 package controllers;
 
 import static play.libs.Json.toJson;
+
 import models.User;
 import models.utils.TransformValidationErrors;
 import play.mvc.Controller;
@@ -13,7 +14,7 @@ import java.util.List;
 
 /**
  * Controlleur pour gérer les requêtes Ajax liées aux utilisateurs
- * 
+ *
  * @author lhuet
  */
 @SecureSocial.SecuredAction(ajaxCall = true)
@@ -36,7 +37,16 @@ public class UserRestController extends Controller {
         if (!user.admin) {
             return forbidden();
         }
-        return ok(toJson(User.findAll()));
+
+        List<User> users = new ArrayList<User>();
+        for (User userJson : User.findAll()) {
+            User userOut = new User();
+            userOut.id = userJson.id;
+            userOut.fullname = userJson.fullname;
+            users.add(userOut);
+        }
+
+        return ok(toJson(users));
     }
 
     public static Result getCoSpeakers() {
@@ -77,7 +87,7 @@ public class UserRestController extends Controller {
 
     /**
      * Récupère les données de l'utilisateur loggué
-     * 
+     *
      * @return Objet Utilisateur en JSON
      */
     public static Result getUserLogged() {
