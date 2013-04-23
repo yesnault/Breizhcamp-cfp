@@ -649,9 +649,7 @@ function ProfilController($scope, $log, $routeParams, AccountService, ProfilServ
             data: data
         }).success(function(data, status, headers, config) {
                 $scope.errors = undefined;
-                var idUser = UserService.getUserData().id;
-                $scope.lien = undefined;
-                $scope.user = AccountService.getUser(idUser);
+                $scope.pUser = ProfilService.getUser(idUSer);
             }).error(function(data, status, headers, config) {
                 $scope.errors = data;
                 $log.info(status);
