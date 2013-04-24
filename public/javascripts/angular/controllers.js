@@ -630,12 +630,12 @@ function ProfilController($scope, $log, $routeParams, AccountService, ProfilServ
 
     var idUSer = $routeParams.userId;
     $scope.pUser = ProfilService.getUser(idUSer);
-	$scope.descriptionE = $scope.pUser.description;
     $scope.talks = ProfilService.getTalks(idUSer);
     $scope.talksok = ProfilService.getTalksAccepted(idUSer);
 
     $scope.getSafeDescription = function() {
         if ($scope.pUser.description) {
+			$scope.descriptionE = $scope.pUser.description;
             return $scope.converter.makeHtml($scope.pUser.description);
         }
     }
