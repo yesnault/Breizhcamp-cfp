@@ -32,7 +32,7 @@
                             <div class="control-group {{{true:'error', false:''}[errors.descriptionE != undefined]}}">
                                 <div class="controls">
                                     <div id="wmd-button-bar"></div>
-                                    <textarea id="wmd-input" name="descriptionE" placeholder="Description/Bio" ng-init="descriptionE=pUser.description" class="wmd-input" ng-model="descriptionE" rows="10"></textarea>
+                                    <textarea id="wmd-input" name="descriptionE" placeholder="Description/Bio" class="wmd-input" ng-model="descriptionE" rows="10"></textarea>
                                     <p class="help-inline">Longueur maximum: {{descriptionE.length}}/2000, Obligatoire</p>
                                     <p class="help-inline" ng-repeat="error in errors.descriptionE">{{error}}</p>
                                     <div id="wmd-preview" class="wmd-preview" pagedown-init="descriptionE"></div>

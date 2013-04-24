@@ -630,6 +630,7 @@ function ProfilController($scope, $log, $routeParams, AccountService, ProfilServ
 
     var idUSer = $routeParams.userId;
     $scope.pUser = ProfilService.getUser(idUSer);
+	$scope.descriptionE = $scope.pUser.description;
     $scope.talks = ProfilService.getTalks(idUSer);
     $scope.talksok = ProfilService.getTalksAccepted(idUSer);
 
