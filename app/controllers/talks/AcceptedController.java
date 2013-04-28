@@ -33,7 +33,7 @@ import static play.libs.Jsonp.jsonp;
 
 public class AcceptedController extends Controller {
 
-    public static Result acceptedTalkById(Long id, String callback) {
+    public static Result acceptedTalkByIdJsonp(Long id, String callback) {
         Talk talk = Talk.findByIdWithFetch(id);
 
         if (talk == null) {
