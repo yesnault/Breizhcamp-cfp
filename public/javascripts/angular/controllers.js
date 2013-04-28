@@ -625,6 +625,8 @@ function ProfilController($scope, $log, $routeParams, AccountService, ProfilServ
     $scope.checkloc(false);
 
     $scope.converter = new Markdown.getSanitizingConverter();
+    $scope.editor = new Markdown.Editor($scope.converter);
+    $scope.editor.run();
 
     var idUSer = $routeParams.userId;
     $scope.pUser = ProfilService.getUser(idUSer);
@@ -633,8 +635,26 @@ function ProfilController($scope, $log, $routeParams, AccountService, ProfilServ
 
     $scope.getSafeDescription = function() {
         if ($scope.pUser.description) {
+			$scope.descriptionE = $scope.pUser.description;
             return $scope.converter.makeHtml($scope.pUser.description);
         }
+    }
+
+    $scope.editProfil = function(id) {
+
+        var data = {'description': $scope.descriptionE};
+
+        http({
+            method: 'POST',
+            url: '/admin/profil/'+id+'/edit',
+            data: data
+        }).success(function(data, status, headers, config) {
+                $scope.errors = undefined;
+                $scope.pUser = ProfilService.getUser(idUSer);
+            }).error(function(data, status, headers, config) {
+                $scope.errors = data;
+                $log.info(status);
+            });
     }
 }
 
