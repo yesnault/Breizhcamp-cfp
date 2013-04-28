@@ -161,8 +161,8 @@ public class Talk extends Model {
 
     public static Talk findByIdWithFetch(Long id) {
         return find.select("id, title, description, speaker.id, speaker.fullname, speaker.avatar, speaker.description, speaker.liens, " +
-                "talk.coSpeakers.id, talk.coSpeakers.fullname, talk.coSpeakers.avatar, talk.coSpeakers.description, talk.coSpeakers.liens")
-                .fetch("speaker").fetch("speaker.liens").fetch("coSpeakers").fetch("coSpeakers.liens")
+                "talk.coSpeakers.id, talk.coSpeakers.fullname, talk.coSpeakers.avatar, talk.coSpeakers.description, talk.coSpeakers.liens, talks.tags.nom")
+                .fetch("speaker").fetch("speaker.liens").fetch("coSpeakers").fetch("coSpeakers.liens").fetch("tags")
                 .where().idEq(id).findUnique();
     }
 

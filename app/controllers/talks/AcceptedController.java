@@ -16,10 +16,7 @@
  */
 package controllers.talks;
 
-import models.Lien;
-import models.StatusTalk;
-import models.Talk;
-import models.User;
+import models.*;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.JsonNodeFactory;
 import org.codehaus.jackson.node.ObjectNode;
@@ -60,6 +57,12 @@ public class AcceptedController extends Controller {
         talkJson.put("id", talk.id);
         talkJson.put("title", talk.title);
         talkJson.put("description", talk.description);
+        ArrayNode tags = new ArrayNode(JsonNodeFactory.instance);
+        for (Tag tag : talk.getTags()) {
+            tags.add(tag.nom);
+        }
+        talkJson.put("tags", tags);
+
         ArrayNode speakers = new ArrayNode(JsonNodeFactory.instance);
         if (talk.speaker != null) {
             speakers.add(getSpeakerInJson(talk.speaker));
