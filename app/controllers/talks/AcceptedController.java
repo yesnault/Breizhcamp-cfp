@@ -40,6 +40,22 @@ public class AcceptedController extends Controller {
             return notFound();
         }
 
+        ObjectNode talkJson = talkToJson(talk);
+        return ok(jsonp(callback, talkJson));
+    }
+
+    public static Result acceptedTalkById(Long id) {
+        Talk talk = Talk.findByIdWithFetch(id);
+
+        if (talk == null) {
+            return notFound();
+        }
+
+        ObjectNode talkJson = talkToJson(talk);
+        return ok(talkJson);
+    }
+
+    private static ObjectNode talkToJson(Talk talk) {
         ObjectNode talkJson = Json.newObject();
         talkJson.put("id", talk.id);
         talkJson.put("title", talk.title);
@@ -52,8 +68,9 @@ public class AcceptedController extends Controller {
             speakers.add(getSpeakerInJson(otherSpeaker));
         }
         talkJson.put("speakers", speakers);
-        return ok(jsonp(callback, talkJson));
+        return talkJson;
     }
+
 
     public static Result acceptedSpeakersToJson(String callback) {
 
