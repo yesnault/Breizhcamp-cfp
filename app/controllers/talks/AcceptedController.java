@@ -74,6 +74,52 @@ public class AcceptedController extends Controller {
         return talkJson;
     }
 
+    public static Result acceptedSpeakers() {
+        List<Talk> talksAccepted = Talk.findByStatusForMinimalData(StatusTalk.ACCEPTE);
+
+
+        Set<User> speakers = new HashSet<User>();
+
+        for (Talk talk : talksAccepted) {
+            if (talk.speaker != null) {
+                if (!speakers.contains(talk.speaker)) {
+                    speakers.add(talk.speaker);
+                }
+            }
+            for (User speaker : talk.getCoSpeakers()) {
+                speakers.add(speaker);
+            }
+        }
+
+        List<User> speakersSorted = new ArrayList<User>(speakers);
+        Collections.sort(speakersSorted, new Comparator<User>() {
+            @Override
+            public int compare(User o1, User o2) {
+                return o1.id.compareTo(o2.id);
+            }
+        });
+
+        // Data used in html :
+        // speaker.id
+        // speaker.fullname
+        // speaker.avatar
+        // speaker.description
+        // speaker.liens.url
+        // speaker.liens.label
+        // speaker.talks.id
+        // speaker.talks.title
+        // speaker.talks.description
+        // speaker.talks.otherspeakers
+
+        ArrayNode result = new ArrayNode(JsonNodeFactory.instance);
+        for (User speaker : speakersSorted) {
+            ObjectNode speakerJson = getSpeakerInJson(speaker);
+            result.add(speakerJson);
+        }
+
+        return ok(result);
+    }
+
 
     public static Result acceptedSpeakersToJson(String callback) {
 
