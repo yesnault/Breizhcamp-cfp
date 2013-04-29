@@ -75,54 +75,17 @@ public class AcceptedController extends Controller {
     }
 
     public static Result acceptedSpeakers() {
-        List<Talk> talksAccepted = Talk.findByStatusForMinimalData(StatusTalk.ACCEPTE);
-
-
-        Set<User> speakers = new HashSet<User>();
-
-        for (Talk talk : talksAccepted) {
-            if (talk.speaker != null) {
-                if (!speakers.contains(talk.speaker)) {
-                    speakers.add(talk.speaker);
-                }
-            }
-            for (User speaker : talk.getCoSpeakers()) {
-                speakers.add(speaker);
-            }
-        }
-
-        List<User> speakersSorted = new ArrayList<User>(speakers);
-        Collections.sort(speakersSorted, new Comparator<User>() {
-            @Override
-            public int compare(User o1, User o2) {
-                return o1.id.compareTo(o2.id);
-            }
-        });
-
-        // Data used in html :
-        // speaker.id
-        // speaker.fullname
-        // speaker.avatar
-        // speaker.description
-        // speaker.liens.url
-        // speaker.liens.label
-        // speaker.talks.id
-        // speaker.talks.title
-        // speaker.talks.description
-        // speaker.talks.otherspeakers
-
-        ArrayNode result = new ArrayNode(JsonNodeFactory.instance);
-        for (User speaker : speakersSorted) {
-            ObjectNode speakerJson = getSpeakerInJson(speaker);
-            result.add(speakerJson);
-        }
-
-        return ok(result);
+        return ok(getAcceptedTalksToJson());
     }
 
 
     public static Result acceptedSpeakersToJson(String callback) {
 
+        ArrayNode result = getAcceptedTalksToJson();
+        return ok(jsonp(callback, result));
+    }
+
+    private static ArrayNode getAcceptedTalksToJson() {
         List<Talk> talksAccepted = Talk.findByStatusForMinimalData(StatusTalk.ACCEPTE);
 
         Map<User, List<Talk>> speakers = new HashMap<User, List<Talk>>();
@@ -186,7 +149,7 @@ public class AcceptedController extends Controller {
             speakerJson.put("talks", talksJson);
             result.add(speakerJson);
         }
-        return ok(jsonp(callback, result));
+        return result;
     }
 
     public static Result acceptedTalksToJson(String callback) {
