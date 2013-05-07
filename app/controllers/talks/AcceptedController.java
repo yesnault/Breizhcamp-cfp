@@ -17,6 +17,9 @@
 package controllers.talks;
 
 import models.*;
+import fr.ybonnel.csvengine.CsvEngine;
+import fr.ybonnel.csvengine.annotation.CsvColumn;
+import fr.ybonnel.csvengine.annotation.CsvFile;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.JsonNodeFactory;
 import org.codehaus.jackson.node.ObjectNode;
@@ -24,6 +27,7 @@ import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 
+import java.io.StringWriter;
 import java.util.*;
 
 import static play.libs.Jsonp.jsonp;
@@ -78,6 +82,72 @@ public class AcceptedController extends Controller {
         return ok(getAcceptedTalksToJson());
     }
 
+    @CsvFile(separator = ";")
+    private static class AdressMacForSpeakers {
+
+        private AdressMacForSpeakers(String speaker, String mac) {
+            this.speaker = speaker;
+            this.mac = mac;
+        }
+
+        @CsvColumn("speaker")
+        public String speaker;
+
+        @CsvColumn("@MAC")
+        public String mac;
+    }
+
+    public static Result adressMacOfAcceptedSpeakers() {
+
+        List<Talk> talksAccepted = Talk.findByStatusForMinimalData(StatusTalk.ACCEPTE);
+
+        Map<User, List<Talk>> speakers = new HashMap<User, List<Talk>>();
+
+        for (Talk talk : talksAccepted) {
+            if (talk.speaker != null) {
+                if (!speakers.containsKey(talk.speaker)) {
+                    speakers.put(talk.speaker, new ArrayList<Talk>());
+                }
+                speakers.get(talk.speaker).add(talk);
+            }
+            for (User speaker : talk.getCoSpeakers()) {
+                if (!speakers.containsKey(speaker)) {
+                    speakers.put(speaker, new ArrayList<Talk>());
+                }
+                speakers.get(speaker).add(talk);
+            }
+        }
+
+        List<User> speakersSorted = new ArrayList<User>(speakers.keySet());
+        Collections.sort(speakersSorted, new Comparator<User>() {
+            @Override
+            public int compare(User o1, User o2) {
+                return o1.id.compareTo(o2.id);
+            }
+        });
+
+        List<AdressMacForSpeakers> macAddressOfSpeakers = new ArrayList<AdressMacForSpeakers>();
+
+        for (User speaker : speakersSorted) {
+            macAddressOfSpeakers.add(new AdressMacForSpeakers(speaker.fullname, speaker.adresseMac));
+        }
+
+
+        CsvEngine engine = new CsvEngine(AdressMacForSpeakers.class);
+
+        StringWriter writer = new StringWriter();
+
+        engine.writeFile(writer, macAddressOfSpeakers, AdressMacForSpeakers.class);
+
+        response().setContentType("application/octet-stream");
+        response().setHeader("Content-Description", "File Transfer");
+        response().setHeader("Content-Disposition", "attachment;filename=macaddress.csv");
+        response().setHeader("Content-Transfer-Encoding", "binary");
+        response().setHeader("Expires", "0");
+        response().setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
+        response().setHeader("Pragma", "public");
+        return ok(writer.toString(), "ISO-8859-1");
+    }
 
     public static Result acceptedSpeakersToJson(String callback) {
 
