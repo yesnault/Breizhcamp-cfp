@@ -85,9 +85,12 @@ public class AcceptedController extends Controller {
     @CsvFile(separator = ";")
     private static class AdressMacForSpeakers {
 
-        private AdressMacForSpeakers(String speaker, String mac) {
+        public AdressMacForSpeakers(String speaker, String mac) {
             this.speaker = speaker;
             this.mac = mac;
+        }
+
+        public AdressMacForSpeakers() {
         }
 
         @CsvColumn("speaker")
