@@ -42,7 +42,7 @@
                     {
                         "type":"devops",
                         "talks":[
-                            {"id":141,"time":"9:30",  "format":"universite",      "url":"http://cfp.breizhcamp.org/#/talks/see/141", "title":"Monitoring Open Source en Java avec JMX & Graphite"},
+                            {"id":98,"time":"9:30",   "format":"hands-on",        "url":"http://cfp.breizhcamp.org/#/talks/see/98", "title":"The Magnificent Java EE 7"},
                             {"id":36 ,"time":"14:00", "format":"universite",      "url":"http://cfp.breizhcamp.org/#/talks/see/36",  "title":"DevOps ou l'admin système par tous les bouts"},
                             {"id":95 ,"time":"17:30", "format":"lab",             "url":"http://cfp.breizhcamp.org/#/talks/see/95",  "title":"HackidsGarten"}
                         ]
