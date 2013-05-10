@@ -16,10 +16,13 @@
  */
 package controllers.talks;
 
-import models.*;
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Iterables;
 import fr.ybonnel.csvengine.CsvEngine;
 import fr.ybonnel.csvengine.annotation.CsvColumn;
 import fr.ybonnel.csvengine.annotation.CsvFile;
+import models.*;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.JsonNodeFactory;
 import org.codehaus.jackson.node.ObjectNode;
@@ -85,16 +88,24 @@ public class AcceptedController extends Controller {
     @CsvFile(separator = ";")
     private static class AdressMacForSpeakers {
 
-        public AdressMacForSpeakers(String speaker, String mac) {
+        public AdressMacForSpeakers(String speaker, String mac, String mail, String talks) {
             this.speaker = speaker;
             this.mac = mac;
+            this.mail = mail;
+            this.talks = talks;
         }
 
         public AdressMacForSpeakers() {
         }
 
-        @CsvColumn("speaker")
+        @CsvColumn("speaker_fullname")
         public String speaker;
+
+        @CsvColumn("speaker_mail")
+        public String mail;
+
+        @CsvColumn("talks")
+        public String talks;
 
         @CsvColumn("@MAC")
         public String mac;
@@ -132,7 +143,13 @@ public class AcceptedController extends Controller {
         List<AdressMacForSpeakers> macAddressOfSpeakers = new ArrayList<AdressMacForSpeakers>();
 
         for (User speaker : speakersSorted) {
-            macAddressOfSpeakers.add(new AdressMacForSpeakers(speaker.fullname, speaker.adresseMac));
+            macAddressOfSpeakers.add(new AdressMacForSpeakers(speaker.fullname, speaker.adresseMac, speaker.email, Joiner.on('\n').join(
+                    Iterables.transform(speakers.get(speaker), new Function<Talk, String>() {
+                        @Override
+                        public String apply(Talk talk) {
+                            return talk.title;
+                        }
+                    }))));
         }
 
 
