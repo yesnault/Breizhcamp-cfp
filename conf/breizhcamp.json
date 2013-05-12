@@ -67,7 +67,7 @@
                     {
                         "type":"keynote",
                         "talks":[
-                            {"time":"9:30", "format":"keynote", "title":"Winter is coming"}
+                            {"id":145, "time":"9:30", "format":"keynote", "url":"http://cfp.breizhcamp.org/#/talks/see/145", "title":"Winter is coming"}
                         ]
                     },
                     {
