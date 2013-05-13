@@ -49,5 +49,8 @@ public class ProgrammeController extends Controller {
         return ok(jsonp(callback, getProgrammeJson()));
     }
 
+    public static Result redirectRoom(Long day) {
+        return redirect("http://breizhjug.github.io/breizhcamp-rooms/#/day/" + day + "/horizontal");
+    }
 
 }
