@@ -290,7 +290,7 @@ function ManageTalkController($scope, $log, $location, TalkService) {
     $scope.talks = TalkService.query();
 
     $scope.deleteTalk = function(talk) {
-        var confirmation = confirm('Êtes vous sûr de vouloir supprimer le talk "' + talk.title + '" ?');
+        var confirmation = confirm('\u00cates vous s\u00fbr de vouloir supprimer le talk "' + talk.title + '" ?');
         if (confirmation) {
             TalkService.delete({'id': talk.id}, function(data) {
                 $scope.talks = TalkService.query();
@@ -329,7 +329,7 @@ function ManageUsersController($scope, $log, $location, ManageUsersService, http
             url: '/admin/submitusers',
             data: data
         }).success(function(data, status, headers, config) {
-            $('#messageSuccess').text('Utilisateurs sauvegardés');
+            $('#messageSuccess').text('Utilisateurs sauvegard\u00e9s');
             $('#messageSuccess').removeClass('hide');
             $('#messageError').addClass('hide');
         }).error(function(data, status, headers, config) {
@@ -348,7 +348,7 @@ function ManageUsersController($scope, $log, $location, ManageUsersService, http
             url: '/admin/deleteuser/'+id,
             data: data
         }).success(function(data, status, headers, config) {
-                $('#messageSuccess').text('Utilisateur supprimé');
+                $('#messageSuccess').text('Utilisateur supprim\u00e9');
                 $('#messageSuccess').removeClass('hide');
                 $('#messageError').addClass('hide');
                 $('#deleteCompte'+id).modal('hide');
@@ -386,7 +386,7 @@ function ListTalksController($scope, $log,http, AllTalkService, VoteService,Talk
             TalkService.delete({'id': talk.id}, function(data) {
                 $scope.talks = TalkService.query();
                 $scope.errors = undefined;
-                $('#messageSuccess').text('Talk supprimé');
+                $('#messageSuccess').text('Talk supprim\u00e9');
                 $('#messageSuccess').removeClass('hide');
                 $('#messageError').addClass('hide');
                 $('#deleteTalk'+talk.id).modal('hide');
@@ -449,7 +449,7 @@ function VoteController($scope, $log, VoteService, $http) {
             url: '/admin/vote/' + vote.status
         }).success(function() {
             $scope.error = undefined;
-            $scope.success = "Le changement de status du votes a bien été pris en compte."
+            $scope.success = "Le changement de status du votes a bien \u00e9t\u00e9 pris en compte."
         }).error(function() {
             $scope.error = "Une erreur est survenue pendant le changement de status des votes";
             $scope.success = undefined;
@@ -635,7 +635,7 @@ function ProfilController($scope, $log, $routeParams, AccountService, ProfilServ
 
     $scope.getSafeDescription = function() {
         if ($scope.pUser.description) {
-			$scope.descriptionE = $scope.pUser.description;
+            $scope.descriptionE = $scope.pUser.description;
             return $scope.converter.makeHtml($scope.pUser.description);
         }
     }
@@ -672,7 +672,7 @@ function SettingsAccountController($scope, $log, AccountService, UserService, ht
     $scope.editor.run();
     
     $scope.removeLink = function(lien) {
-        if (confirm('Êtes vous sûr de vouloir supprimer le lien ' + lien.label + '?')) {
+        if (confirm('\u00cates vous s\u00fbr de vouloir supprimer le lien ' + lien.label + '?')) {
             $log.info("Suppression du lien " + lien.label + '(' + lien.id + ')');
             http({
                 method: 'GET',
@@ -744,7 +744,7 @@ function NotifsAccountController($scope, $log, AccountService, UserService, $htt
             data: user
         }).success(function(data, status, headers, config) {
             $('#messageError').addClass('hide');
-            $('#messageSuccess').text('Settings sauvegardés');
+            $('#messageSuccess').text('Settings sauvegard\u00e9s');
             $('#messageSuccess').removeClass('hide');
             var idUser = UserService.getUserData().id;
             $scope.user = AccountService.getUser(idUser);
@@ -772,7 +772,7 @@ function EmailAccountController($rootScope,$scope, $log, UserService, AccountSer
             url: '/settings/email',
             data: $scope.user
         }).success(function(data, status, headers, config) {
-            $('#messageSuccess').text('Merci. Cet email nous servira à vous contacter.');
+            $('#messageSuccess').text('Merci. Cet email nous servira \u00e0 vous contacter.');
             $('#messageSuccess').removeClass('hide');
             $scope.errors = undefined;
             $rootScope.user.email = $scope.user.email;
@@ -798,7 +798,7 @@ function MacAccountController($scope, $log, UserService, AccountService, $http) 
             url: '/settings/mac',
             data: $scope.user
         }).success(function(data, status, headers, config) {
-            $('#messageSuccess').text('Votre adresse mac a \u00e9t\u00e9 enregistr\u00e9;e.');
+            $('#messageSuccess').text('Votre adresse mac a \u00e9t\u00e9 enregistr\u00e9e.');
             $('#messageSuccess').removeClass('hide');
             $scope.errors = undefined;
         }).error(function(data, status, headers, config) {
@@ -823,7 +823,7 @@ function ResetPasswordController($scope, $log, $http) {
             $('#fieldEmail').addClass('hide');
             $('#valider').addClass('hide');
             $('#messageError').addClass('hide');
-            $('#messageSuccess').text('Un mail a été envoyé. Merci de vérifier vos mails.');
+            $('#messageSuccess').text('Un mail a \u00e9t\u00e9 envoy\u00e9. Merci de v\u00e9rifier vos mails.');
             $('#messageSuccess').removeClass('hide');
         }).error(function(data, status, headers, config) {
             $('#messageError').text('Une erreur a eu lieu pendant le reset du password (' + status + ')');
@@ -844,7 +844,7 @@ function ConfirmSignupController($scope, $log, $http, $routeParams) {
         method: 'GET',
         url: '/confirm/' + token
     }).success(function(data, status, headers, config) {
-        $scope.successMessage = 'Votre compte est validé';
+        $scope.successMessage = 'Votre compte est valid\u00e9';
         $scope.showSuccess = true;
     }).error(function(data, status, headers, config) {
         $scope.errorMessage = 'Une erreur a eu lieu pendant la confirmation (' + status + ')';
@@ -891,7 +891,7 @@ function ConfirmResetPasswordController($scope, $log, $http, $routeParams, Passw
             url: '/reset/' + token,
             data: data
         }).success(function(data, status, headers, config) {
-            $scope.successMessage = 'Votre nouveau mot de passe est enregistré.';
+            $scope.successMessage = 'Votre nouveau mot de passe est enregistr\u00e9.';
             $('#valider').addClass('hide');
             $scope.showSuccess = true;
         }).error(function(data, status, headers, config) {
@@ -915,7 +915,7 @@ function ConfirmEmailController($scope, $log, $http, $routeParams, UserService, 
         url: '/email/' + token
     }).success(function(data, status, headers, config) {
         // TODO ajouter la nouvelle adresse email dans le message, une fois la vue scale supprimée.
-        $scope.successMessage = 'Votre nouvelle adresse mail est validée';
+        $scope.successMessage = 'Votre nouvelle adresse mail est valid\u00e9e';
         $scope.showSuccess = true;
     }).error(function(data, status, headers, config) {
         $scope.errorMessage = "Une erreur a eu lieu pendant le changement d'adresse (" + status + ')';
@@ -931,7 +931,7 @@ function CreneauxController($scope, $log, CreneauxService) {
     $scope.creneaux = CreneauxService.query();
 
     $scope.deleteCreneau = function(creneauToDelete) {
-        var confirmation = confirm('Êtes vous sûr de vouloir supprimer le creneau ' + creneauToDelete.libelle + '?');
+        var confirmation = confirm('\u00cates vous s\u00fbr de vouloir supprimer le creneau ' + creneauToDelete.libelle + '?');
         if (confirmation) {
             CreneauxService.delete({id: creneauToDelete.id}, function(data) {
                 $scope.creneaux = CreneauxService.query();
@@ -957,7 +957,7 @@ function NewCreneauController($scope, $log, CreneauxService, $location) {
     $scope.editor.run();
 
     $scope.saveCreneau = function() {
-        $log.info("Creneau à sauvegarder");
+        $log.info("Creneau \u00e0 sauvegarder");
         $log.info($scope.creneau);
 
         CreneauxService.save($scope.creneau, function(data) {
@@ -987,7 +987,7 @@ function EditCreneauController($scope, $log, CreneauxService, $location, $routeP
     $scope.editor.run();
 
     $scope.saveCreneau = function() {
-        $log.info("Creneau à sauvegarder");
+        $log.info("Creneau \u00e0 sauvegarder");
         $log.info($scope.creneau);
 
         CreneauxService.save($scope.creneau, function(data) {
@@ -1009,7 +1009,7 @@ function DynamicFieldsController($scope, $log, DynamicFieldsService) {
     $scope.dynamicFields = DynamicFieldsService.query();
 
     $scope.deleteDynamicField = function(dynamicFieldToDelete) {
-        var confirmation = confirm('Êtes vous sûr de vouloir supprimer le champ ' + dynamicFieldToDelete.name + '?');
+        var confirmation = confirm('\u00cates vous s\u00fbr de vouloir supprimer le champ ' + dynamicFieldToDelete.name + '?');
         if (confirmation) {
             DynamicFieldsService.delete({id: dynamicFieldToDelete.id}, function(data) {
                 $scope.dynamicFields = DynamicFieldsService.query();
@@ -1031,7 +1031,7 @@ function NewDynamicFieldController($scope, $log, DynamicFieldsService, $location
     $scope.isNew = true;
 
     $scope.saveDynamicField = function() {
-        $log.info("Champ dynamique à sauvegarder");
+        $log.info("Champ dynamique \u00e0 sauvegarder");
         $log.info($scope.dynamicField);
 
         DynamicFieldsService.save($scope.dynamicField, function(data) {
@@ -1057,7 +1057,7 @@ function EditDynamicFieldController($scope, $log, DynamicFieldsService, $locatio
     $scope.isNew = false;
 
     $scope.saveDynamicField = function() {
-        $log.info("Champ dynamique à sauvegarder");
+        $log.info("Champ dynamique \u00e0 sauvegarder");
         $log.info($scope.dynamicField);
 
         DynamicFieldsService.save($scope.dynamicField, function(data) {
