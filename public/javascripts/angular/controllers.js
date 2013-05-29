@@ -798,7 +798,7 @@ function MacAccountController($scope, $log, UserService, AccountService, $http) 
             url: '/settings/mac',
             data: $scope.user
         }).success(function(data, status, headers, config) {
-            $('#messageSuccess').text('Votre adresse mac a &eacute;t&eacute; enregistr&eacute;e.');
+            $('#messageSuccess').text('Votre adresse mac a \u00e9t\u00e9 enregistr\u00e9;e.');
             $('#messageSuccess').removeClass('hide');
             $scope.errors = undefined;
         }).error(function(data, status, headers, config) {
