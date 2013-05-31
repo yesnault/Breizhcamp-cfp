@@ -9,53 +9,53 @@
                     {
                         "type":"web",
                         "talks":[
-                            {"id":4  , "time":"9:30",  "format":"hands-on",      "url":"http://cfp.breizhcamp.org/#/talks/see/4",   "title":"Javascript du sol au plafond" room="amphi"},
-                            {"id":99 , "time":"12:30", "format":"quickie",         "url":"http://cfp.breizhcamp.org/#/talks/see/99",  "title":"Javascript de façon professionnelle" room="amphi"},
-                            {"id":72 , "time":"13:15", "format":"quickie",         "url":"http://cfp.breizhcamp.org/#/talks/see/72",  "title":"Angularjs - démystification des directives" room="amphi"},
-                            {"id":59 , "time":"14:00", "format":"hands-on",        "url":"http://cfp.breizhcamp.org/#/talks/see/59",  "title":"Hands On AngularJS. Cette fois, vous allez coder !" room="amphi"},
-                            {"id":136, "time":"17:30", "format":"tools in action", "url":"http://cfp.breizhcamp.org/#/talks/see/136", "title":"Référencer sa Single Page App avec PhantomJS" room="amphi"},
-                            {"id":73 , "time":"18:00", "format":"tools in action", "url":"http://cfp.breizhcamp.org/#/talks/see/73",  "title":"Automatisez votre build web avec Grunt" room="amphi"}
+                            {"id":4  , "time":"9:30",  "format":"hands-on",      "url":"http://cfp.breizhcamp.org/#/talks/see/4",   "title":"Javascript du sol au plafond", room:"amphi"},
+                            {"id":99 , "time":"12:30", "format":"quickie",         "url":"http://cfp.breizhcamp.org/#/talks/see/99",  "title":"Javascript de façon professionnelle", room:"amphi"},
+                            {"id":72 , "time":"13:15", "format":"quickie",         "url":"http://cfp.breizhcamp.org/#/talks/see/72",  "title":"Angularjs - démystification des directives", room:"amphi"},
+                            {"id":59 , "time":"14:00", "format":"hands-on",        "url":"http://cfp.breizhcamp.org/#/talks/see/59",  "title":"Hands On AngularJS. Cette fois, vous allez coder !", room:"amphi"},
+                            {"id":136, "time":"17:30", "format":"tools in action", "url":"http://cfp.breizhcamp.org/#/talks/see/136", "title":"Référencer sa Single Page App avec PhantomJS", room:"amphi"},
+                            {"id":73 , "time":"18:00", "format":"tools in action", "url":"http://cfp.breizhcamp.org/#/talks/see/73",  "title":"Automatisez votre build web avec Grunt", room:"amphi"}
                         ]
                     },
                     {
                         "type":"cloud et bigdata",
                         "talks":[
-                            {"id":15 ,"time":"9:30",  "format":"hands-on",        "url":"http://cfp.breizhcamp.org/#/talks/see/15",  "title":"NoSQL labs: découvrez le NoSQL avec couchbase" room="i60"},
-                            {"id":121,"time":"12:30", "format":"quickie",         "url":"http://cfp.breizhcamp.org/#/talks/see/121", "title":"Dart aussi dans le cloud !" room="i50"},
-                            {"id":139,"time":"13:15", "format":"quickie",         "url":"http://cfp.breizhcamp.org/#/talks/see/139", "title":"Minitel on the cloud" room="i50"},
-                            {"id":132,"time":"14:00", "format":"hands-on",        "url":"http://cfp.breizhcamp.org/#/talks/see/132", "title":"C'est le moment de s'lancer dans s'cas là !" room="i60"},
-                            {"id":29 ,"time":"17:30", "format":"tools in action", "url":"http://cfp.breizhcamp.org/#/talks/see/29",  "title":"Google cloud messaging en action !" room="i50"},
-                            {"id":113,"time":"18:00", "format":"tools in action", "url":"http://cfp.breizhcamp.org/#/talks/see/113", "title":"L'amour est dans le graphe" room="i60"}
+                            {"id":15 ,"time":"9:30",  "format":"hands-on",        "url":"http://cfp.breizhcamp.org/#/talks/see/15",  "title":"NoSQL labs: découvrez le NoSQL avec couchbase", room:"i60"},
+                            {"id":121,"time":"12:30", "format":"quickie",         "url":"http://cfp.breizhcamp.org/#/talks/see/121", "title":"Dart aussi dans le cloud !", room:"i50"},
+                            {"id":139,"time":"13:15", "format":"quickie",         "url":"http://cfp.breizhcamp.org/#/talks/see/139", "title":"Minitel on the cloud", room:"i50"},
+                            {"id":132,"time":"14:00", "format":"hands-on",        "url":"http://cfp.breizhcamp.org/#/talks/see/132", "title":"C'est le moment de s'lancer dans s'cas là !", room:"i60"},
+                            {"id":29 ,"time":"17:30", "format":"tools in action", "url":"http://cfp.breizhcamp.org/#/talks/see/29",  "title":"Google cloud messaging en action !", room:"i50"},
+                            {"id":113,"time":"18:00", "format":"tools in action", "url":"http://cfp.breizhcamp.org/#/talks/see/113", "title":"L'amour est dans le graphe", room:"i60"}
                         ]
                     },
                     {
                         "type":"agilité",
                         "talks":[
-                            {"id":43 ,"time":"9:30",  "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/43",  "title":"Introduction aux méthodes agiles" room="jersey"},
-                            {"id":124,"time":"10:30", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/124", "title":"Auto-organisez vous !" room="jersey"},
-                            {"id":26 ,"time":"11:30", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/26",  "title":"Personnal Kanban - Retrouvez votre efficacité !" room="jersey"},
-                            {"id":143 ,"time":"14:00", "format":"biglab",             "url":"http://cfp.breizhcamp.org/#/talks/see/143", "title":"Lego 4 Scrum" room="jersey"},
-                            {"id":144 ,"time":"16:00", "format":"lab",             "url":"http://cfp.breizhcamp.org/#/talks/see/144", "title":"Buy a game" room="jersey"},
-                            {"id":114,"time":"17:30", "format":"tools in action", "url":"http://cfp.breizhcamp.org/#/talks/see/114", "title":"Le backlog, un ring pour un match de catch ?" room="jersey"},
-                            {"id":138,"time":"18:00", "format":"tools in action", "url":"http://cfp.breizhcamp.org/#/talks/see/138", "title":"Apache Flex is dead ? user stories, business, devs" room="jersey"}
+                            {"id":43 ,"time":"9:30",  "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/43",  "title":"Introduction aux méthodes agiles", room:"jersey"},
+                            {"id":124,"time":"10:30", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/124", "title":"Auto-organisez vous !", room:"jersey"},
+                            {"id":26 ,"time":"11:30", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/26",  "title":"Personnal Kanban - Retrouvez votre efficacité !", room:"jersey"},
+                            {"id":143 ,"time":"14:00", "format":"biglab",             "url":"http://cfp.breizhcamp.org/#/talks/see/143", "title":"Lego 4 Scrum", room:"jersey"},
+                            {"id":144 ,"time":"16:00", "format":"lab",             "url":"http://cfp.breizhcamp.org/#/talks/see/144", "title":"Buy a game", room:"jersey"},
+                            {"id":114,"time":"17:30", "format":"tools in action", "url":"http://cfp.breizhcamp.org/#/talks/see/114", "title":"Le backlog, un ring pour un match de catch ?", room:"jersey"},
+                            {"id":138,"time":"18:00", "format":"tools in action", "url":"http://cfp.breizhcamp.org/#/talks/see/138", "title":"Apache Flex is dead ? user stories, business, devs", room:"jersey"}
                         ]},
                     {
                         "type":"devops",
                         "talks":[
-                            {"id":98,"time":"9:30",   "format":"hands-on",        "url":"http://cfp.breizhcamp.org/#/talks/see/98", "title":"The Magnificent Java EE 7" room="i50"},
-                            {"id":36 ,"time":"14:00", "format":"universite",      "url":"http://cfp.breizhcamp.org/#/talks/see/36",  "title":"DevOps ou l'admin système par tous les bouts" room="i50"},
-                            {"id":95 ,"time":"17:30", "format":"lab",             "url":"http://cfp.breizhcamp.org/#/talks/see/95",  "title":"HackidsGarten" room="guernesey"}
+                            {"id":98,"time":"9:30",   "format":"hands-on",        "url":"http://cfp.breizhcamp.org/#/talks/see/98", "title":"The Magnificent Java EE 7", room:"i50"},
+                            {"id":36 ,"time":"14:00", "format":"universite",      "url":"http://cfp.breizhcamp.org/#/talks/see/36",  "title":"DevOps ou l'admin système par tous les bouts", room:"i50"},
+                            {"id":95 ,"time":"17:30", "format":"lab",             "url":"http://cfp.breizhcamp.org/#/talks/see/95",  "title":"HackidsGarten", room:"guernesey"}
                         ]
                     },
                     {
                         "type":"eXtreme",
                         "talks":[
-                            {"id":45 ,"time":"9:30",  "format":"hands-on",        "url":"http://cfp.breizhcamp.org/#/talks/see/45",  "title":"Extreme startup" room="guernesey"},
-                            {"id":31 ,"time":"12:30", "format":"quickie",         "url":"http://cfp.breizhcamp.org/#/talks/see/31",  "title":"Datomic, la base qui détonne" room="i60"},
-                            {"id":133,"time":"13:15", "format":"quickie",         "url":"http://cfp.breizhcamp.org/#/talks/see/133", "title":"Accélérer vos projets JEE avec JBossForge" room="i60"},
-                            {"id":137,"time":"14:00", "format":"hands-on",        "url":"http://cfp.breizhcamp.org/#/talks/see/137", "title":"Stratégie de testing de code legacy" room="guernesey"},
-                            {"id":70 ,"time":"17:30", "format":"tools in action", "url":"http://cfp.breizhcamp.org/#/talks/see/70",  "title":"Mieux vivre avec ses tests d'acceptance" room="i60"},
-                            {"id":61 ,"time":"18:00", "format":"tools in action", "url":"http://cfp.breizhcamp.org/#/talks/see/61",  "title":"Stresser vos applications web avec Gatling" room="i50"}
+                            {"id":45 ,"time":"9:30",  "format":"hands-on",        "url":"http://cfp.breizhcamp.org/#/talks/see/45",  "title":"Extreme startup", room:"guernesey"},
+                            {"id":31 ,"time":"12:30", "format":"quickie",         "url":"http://cfp.breizhcamp.org/#/talks/see/31",  "title":"Datomic, la base qui détonne", room:"i60"},
+                            {"id":133,"time":"13:15", "format":"quickie",         "url":"http://cfp.breizhcamp.org/#/talks/see/133", "title":"Accélérer vos projets JEE avec JBossForge", room:"i60"},
+                            {"id":137,"time":"14:00", "format":"hands-on",        "url":"http://cfp.breizhcamp.org/#/talks/see/137", "title":"Stratégie de testing de code legacy", room:"guernesey"},
+                            {"id":70 ,"time":"17:30", "format":"tools in action", "url":"http://cfp.breizhcamp.org/#/talks/see/70",  "title":"Mieux vivre avec ses tests d'acceptance", room:"i60"},
+                            {"id":61 ,"time":"18:00", "format":"tools in action", "url":"http://cfp.breizhcamp.org/#/talks/see/61",  "title":"Stresser vos applications web avec Gatling", room:"i50"}
                         ]
                     }
                 ]
@@ -67,70 +67,70 @@
                     {
                         "type":"keynote",
                         "talks":[
-                            {"id":145, "time":"9:30", "format":"keynote", "url":"http://cfp.breizhcamp.org/#/talks/see/145", "title":"Winter is coming" room="amphi"}
+                            {"id":145, "time":"9:30", "format":"keynote", "url":"http://cfp.breizhcamp.org/#/talks/see/145", "title":"Winter is coming", room:"amphi"}
                         ]
                     },
                     {
                         "type":"cloud et architecture",
                         "talks":[
-                            {"id":38 ,"time":"10:15", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/38",  "title":"Cloud patterns" room="amphi"},
-                            {"id":76 ,"time":"11:30", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/76",  "title":"Tour de la plateforme Cloud de Google" room="amphi"},
-                            {"id":118,"time":"13:30", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/118", "title":"Construire un SaaS dans son propre nuage" room="guernesey"},
-                            {"id":123,"time":"14:45", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/123", "title":"Pimp my backend !" room="guernesey"},
-                            {"id":27 ,"time":"16:15", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/27",  "title":"Vert.x ? C'est bon pour dans ton corps" room="guernesey"},
-                            {"id":55 ,"time":"17:30", "format":"tools in action", "url":"http://cfp.breizhcamp.org/#/talks/see/55",  "title":"Elasticsearch sous pression collective" room="jersey"},
-                            {"id":68 ,"time":"18:00", "format":"tools in action", "url":"http://cfp.breizhcamp.org/#/talks/see/68",  "title":"Solr 4" room="jersey"}
+                            {"id":38 ,"time":"10:15", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/38",  "title":"Cloud patterns", room:"amphi"},
+                            {"id":76 ,"time":"11:30", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/76",  "title":"Tour de la plateforme Cloud de Google", room:"amphi"},
+                            {"id":118,"time":"13:30", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/118", "title":"Construire un SaaS dans son propre nuage", room:"guernesey"},
+                            {"id":123,"time":"14:45", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/123", "title":"Pimp my backend !", room:"guernesey"},
+                            {"id":27 ,"time":"16:15", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/27",  "title":"Vert.x ? C'est bon pour dans ton corps", room:"guernesey"},
+                            {"id":55 ,"time":"17:30", "format":"tools in action", "url":"http://cfp.breizhcamp.org/#/talks/see/55",  "title":"Elasticsearch sous pression collective", room:"jersey"},
+                            {"id":68 ,"time":"18:00", "format":"tools in action", "url":"http://cfp.breizhcamp.org/#/talks/see/68",  "title":"Solr 4", room:"jersey"}
                         ]
                     },
                     {
                         "type":"langages",
                         "talks":[
-                            {"id":134,"time":"10:15", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/134", "title":"SASS, Compass et Blueprint, ou les css à la cool" room="i50"},
-                            {"id":13 ,"time":"11:30", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/13",  "title":"Web Components, l'avenir des développeurs web" room="jersey"},
-                            {"id":129,"time":"12:45", "format":"quickie",         "url":"http://cfp.breizhcamp.org/#/talks/see/129", "title":"Toi aussi traite du CSV avec ton Ruby" room="i50"},
-                            {"id":116,"time":"13:30", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/116", "title":"La Dartologie, découverte du langage Dart" room="i50"},
-                            {"id":17 ,"time":"14:45", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/17",  "title":"Révolution du 9/9 : les lambdas au pouvoir !" room="amphi"},
-                            {"id":46 ,"time":"16:15", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/46",  "title":"Papy fait du Scala" room="jersey"},
-                            {"id":62 ,"time":"17:30", "format":"tools in action", "url":"http://cfp.breizhcamp.org/#/talks/see/62",  "title":"Programmation fonctionnelle en java ? Si, si" room="amphi"},
-                            {"id":86 ,"time":"18:00", "format":"tools in action", "url":"http://cfp.breizhcamp.org/#/talks/see/86",  "title":"Soon, in a galaxy not so far away" room="amphi"}
+                            {"id":134,"time":"10:15", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/134", "title":"SASS, Compass et Blueprint, ou les css à la cool", room:"i50"},
+                            {"id":13 ,"time":"11:30", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/13",  "title":"Web Components, l'avenir des développeurs web", room:"jersey"},
+                            {"id":129,"time":"12:45", "format":"quickie",         "url":"http://cfp.breizhcamp.org/#/talks/see/129", "title":"Toi aussi traite du CSV avec ton Ruby", room:"i50"},
+                            {"id":116,"time":"13:30", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/116", "title":"La Dartologie, découverte du langage Dart", room:"i50"},
+                            {"id":17 ,"time":"14:45", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/17",  "title":"Révolution du 9/9 : les lambdas au pouvoir !", room:"amphi"},
+                            {"id":46 ,"time":"16:15", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/46",  "title":"Papy fait du Scala", room:"jersey"},
+                            {"id":62 ,"time":"17:30", "format":"tools in action", "url":"http://cfp.breizhcamp.org/#/talks/see/62",  "title":"Programmation fonctionnelle en java ? Si, si", room:"amphi"},
+                            {"id":86 ,"time":"18:00", "format":"tools in action", "url":"http://cfp.breizhcamp.org/#/talks/see/86",  "title":"Soon, in a galaxy not so far away", room:"amphi"}
                         ]
                     },
                     {
                         "type":"découverte",
                         "talks":[
-                            {"id":88 ,"time":"10:15", "format":"lab",             "url":"http://cfp.breizhcamp.org/#/talks/see/88",  "title":"Meteor" room="guernesey"},
-                            {"id":41 ,"time":"11:30", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/41",  "title":"Une application Web simple en Java, c'est possible" room="guernesey"},
-                            {"id":82 ,"time":"12:45", "format":"quickie",         "url":"http://cfp.breizhcamp.org/#/talks/see/82",  "title":"Un jeu iOS/Android sans HTML, Objective-C, Java ?" room="i60"},
-                            {"id":87 ,"time":"13:30", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/87",  "title":"Utilisation de python sur le robot humanoïde NAO" room="i60"},
-                            {"id":90 ,"time":"14:45", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/90",  "title":"WinJS dans tous ses états" room="jersey"},
-                            {"id":24 ,"time":"16:15", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/24",  "title":"Concilier architecture et agilité" room="amphi"},
-                            {"id":103,"time":"17:30", "format":"tools in action", "url":"http://cfp.breizhcamp.org/#/talks/see/103", "title":"Industrialisons EasyMock" room="i50"},
-                            {"id":130,"time":"18:00", "format":"tools in action", "url":"http://cfp.breizhcamp.org/#/talks/see/130", "title":"Jouez avec des feux tricolores en Ruby" room="i50"}
+                            {"id":88 ,"time":"10:15", "format":"lab",             "url":"http://cfp.breizhcamp.org/#/talks/see/88",  "title":"Meteor", room:"guernesey"},
+                            {"id":41 ,"time":"11:30", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/41",  "title":"Une application Web simple en Java, c'est possible", room:"guernesey"},
+                            {"id":82 ,"time":"12:45", "format":"quickie",         "url":"http://cfp.breizhcamp.org/#/talks/see/82",  "title":"Un jeu iOS/Android sans HTML, Objective-C, Java ?", room:"i60"},
+                            {"id":87 ,"time":"13:30", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/87",  "title":"Utilisation de python sur le robot humanoïde NAO", room:"i60"},
+                            {"id":90 ,"time":"14:45", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/90",  "title":"WinJS dans tous ses états", room:"jersey"},
+                            {"id":24 ,"time":"16:15", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/24",  "title":"Concilier architecture et agilité", room:"amphi"},
+                            {"id":103,"time":"17:30", "format":"tools in action", "url":"http://cfp.breizhcamp.org/#/talks/see/103", "title":"Industrialisons EasyMock", room:"i50"},
+                            {"id":130,"time":"18:00", "format":"tools in action", "url":"http://cfp.breizhcamp.org/#/talks/see/130", "title":"Jouez avec des feux tricolores en Ruby", room:"i50"}
                         ]
                     },
                     {
                         "type":"web et mobile",
                         "talks":[
-                            {"id":80 ,"time":"10:15", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/80",  "title":"Crafting Custom Android Views" room="i60"},
-                            {"id":135,"time":"11:30", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/135", "title":"Bleeding Edge HTML5, JAX-RS and MongoDB case study" room="i50"},
-                            {"id":3  ,"time":"13:30", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/3",   "title":"Responsive Web Design : Les IHM Web adaptatives" room="amphi"},
-                            {"id":32 ,"time":"14:45", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/32",  "title":"Android BootStrap : Rex sur les librairies android" room="i50"},
-                            {"id":33 ,"time":"16:15", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/33",  "title":"NFC et Android : New Future Communication" room="i50"},
-                            {"id":5  ,"time":"17:30", "format":"tools in action", "url":"http://cfp.breizhcamp.org/#/talks/see/5",   "title":"Spock, le testing nouvelle génération" room="guernesey"},
-                            {"id":92 ,"time":"18:00", "format":"tools in action", "url":"http://cfp.breizhcamp.org/#/talks/see/92",  "title":"BDD et Concordion" room="guernesey"}
+                            {"id":80 ,"time":"10:15", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/80",  "title":"Crafting Custom Android Views", room:"i60"},
+                            {"id":135,"time":"11:30", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/135", "title":"Bleeding Edge HTML5, JAX-RS and MongoDB case study", room:"i50"},
+                            {"id":3  ,"time":"13:30", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/3",   "title":"Responsive Web Design : Les IHM Web adaptatives", room:"amphi"},
+                            {"id":32 ,"time":"14:45", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/32",  "title":"Android BootStrap : Rex sur les librairies android", room:"i50"},
+                            {"id":33 ,"time":"16:15", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/33",  "title":"NFC et Android : New Future Communication", room:"i50"},
+                            {"id":5  ,"time":"17:30", "format":"tools in action", "url":"http://cfp.breizhcamp.org/#/talks/see/5",   "title":"Spock, le testing nouvelle génération", room:"guernesey"},
+                            {"id":92 ,"time":"18:00", "format":"tools in action", "url":"http://cfp.breizhcamp.org/#/talks/see/92",  "title":"BDD et Concordion", room:"guernesey"}
                         ]
                     },
                     {
                         "type":"tooling",
                         "talks":[
-                            {"id":140,"time":"10:15", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/140", "title":"Kata Soft & Hard !" room="jersey"},
-                            {"id":44 ,"time":"11:30", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/44",  "title":"Introduction aux DVCS / Git" room="i60"},
+                            {"id":140,"time":"10:15", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/140", "title":"Kata Soft & Hard !", room:"jersey"},
+                            {"id":44 ,"time":"11:30", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/44",  "title":"Introduction aux DVCS / Git", room:"i60"},
                             {"id":100,"time":"12:45", "format":"quickie",         "url":"http://cfp.breizhcamp.org/#/talks/see/100", "title":"Gestion des évolutions SQL avec Liquibase"},
-                            {"id":104,"time":"13:30", "format":"lab",             "url":"http://cfp.breizhcamp.org/#/talks/see/104", "title":"Performance tests for the dummies" room="jersey"},
-                            {"id":8  ,"time":"14:45", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/8",   "title":"Les androïdes rêvent-ils de Gradle ?" room="i60"},
-                            {"id":79 ,"time":"16:15", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/79",  "title":"Crash test à haute vitesse" room="i60"},
-                            {"id":142,"time":"17:30", "format":"tools in action", "url":"http://cfp.breizhcamp.org/#/talks/see/142", "title":"L'ALM en action avec TFS 2012" room="i60"},
-                            {"id":53 ,"time":"18:00", "format":"tools in action", "url":"http://cfp.breizhcamp.org/#/talks/see/53",  "title":"Bien configurer Scala SBT en entreprise" room="i60"}
+                            {"id":104,"time":"13:30", "format":"lab",             "url":"http://cfp.breizhcamp.org/#/talks/see/104", "title":"Performance tests for the dummies", room:"jersey"},
+                            {"id":8  ,"time":"14:45", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/8",   "title":"Les androïdes rêvent-ils de Gradle ?", room:"i60"},
+                            {"id":79 ,"time":"16:15", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/79",  "title":"Crash test à haute vitesse", room:"i60"},
+                            {"id":142,"time":"17:30", "format":"tools in action", "url":"http://cfp.breizhcamp.org/#/talks/see/142", "title":"L'ALM en action avec TFS 2012", room:"i60"},
+                            {"id":53 ,"time":"18:00", "format":"tools in action", "url":"http://cfp.breizhcamp.org/#/talks/see/53",  "title":"Bien configurer Scala SBT en entreprise", room:"i60"}
                         ]
                     }
                 ]
