@@ -12,7 +12,7 @@
                             {"id":4  , "time":"9:30",  "format":"hands-on",      "url":"http://cfp.breizhcamp.org/#/talks/see/4",   "title":"Javascript du sol au plafond", "room":"Ouessant"},
                             {"id":99 , "time":"12:30", "format":"quickie",         "url":"http://cfp.breizhcamp.org/#/talks/see/99",  "title":"Javascript de façon professionnelle", "room":"Ouessant"},
                             {"id":72 , "time":"13:15", "format":"quickie",         "url":"http://cfp.breizhcamp.org/#/talks/see/72",  "title":"Angularjs - démystification des directives", "room":"Ouessant"},
-                            {"id":59 , "time":"14:00", "format":"hands-on",        "url":"http://cfp.breizhcamp.org/#/talks/see/59",  "title":"Hands On AngularJS. Cette fois, vous allez coder !", "room":"Ouessant"},
+                            {"id":59 , "time":"14:00", "format":"hands-on",        "url":"http://cfp.breizhcamp.org/#/talks/see/59",  "title":"Hands On AngularJS. Cette fois, vous allez coder !", "room":"Molène"},
                             {"id":136, "time":"17:30", "format":"tools in action", "url":"http://cfp.breizhcamp.org/#/talks/see/136", "title":"Référencer sa Single Page App avec PhantomJS", "room":"Ouessant"},
                             {"id":73 , "time":"18:00", "format":"tools in action", "url":"http://cfp.breizhcamp.org/#/talks/see/73",  "title":"Automatisez votre build web avec Grunt", "room":"Ouessant"}
                         ]
@@ -43,7 +43,7 @@
                         "type":"devops",
                         "talks":[
                             {"id":98,"time":"9:30",   "format":"hands-on",        "url":"http://cfp.breizhcamp.org/#/talks/see/98", "title":"The Magnificent Java EE 7", "room":"Molène"},
-                            {"id":36 ,"time":"14:00", "format":"universite",      "url":"http://cfp.breizhcamp.org/#/talks/see/36",  "title":"DevOps ou l'admin système par tous les bouts", "room":"Molène"},
+                            {"id":36 ,"time":"14:00", "format":"universite",      "url":"http://cfp.breizhcamp.org/#/talks/see/36",  "title":"DevOps ou l'admin système par tous les bouts", "room":"Ouessant"},
                             {"id":95 ,"time":"17:30", "format":"lab",             "url":"http://cfp.breizhcamp.org/#/talks/see/95",  "title":"HackidsGarten", "room":"Bréhat"}
                         ]
                     },
