@@ -112,7 +112,7 @@
                         "type":"web et mobile",
                         "talks":[
                             {"id":80 ,"time":"10:15", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/80",  "title":"Crafting Custom Android Views", "room":"Groix"},
-                            {"id":135,"time":"11:30", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/135", "title":"Bleeding Edge HTML5, JAX-RS and MongoDB case study", "room":"Molène"},
+                            {"id":146,"time":"11:30", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/146", "title":"Nagare, le développement Web facile en Python", "room":"Molène"},
                             {"id":3  ,"time":"13:30", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/3",   "title":"Responsive Web Design : Les IHM Web adaptatives", "room":"Ouessant"},
                             {"id":32 ,"time":"14:45", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/32",  "title":"Android BootStrap : Rex sur les librairies android", "room":"Molène"},
                             {"id":33 ,"time":"16:15", "format":"conference",      "url":"http://cfp.breizhcamp.org/#/talks/see/33",  "title":"NFC et Android : New Future Communication", "room":"Molène"},
