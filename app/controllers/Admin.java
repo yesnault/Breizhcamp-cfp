@@ -23,7 +23,7 @@ public class Admin extends Controller {
 
     public static User getLoggedUser() {
         Identity socialUser = (Identity) ctx().args.get(SecureSocial.USER_KEY);
-        User user = User.findByExternalId(socialUser.id().id(), socialUser.id().providerId());
+        User user = User.findByExternalId(socialUser.identityId().userId(), socialUser.identityId().providerId());
         return user;
     }
 
@@ -89,7 +89,7 @@ public class Admin extends Controller {
             return forbidden();
         }
         JsonNode node = request().body().asJson();
-        Iterator<Map.Entry<String, JsonNode>> iteratorMails = node.getFields();
+        Iterator<Map.Entry<String, JsonNode>> iteratorMails = node.fields();
         while (iteratorMails.hasNext()) {
             Map.Entry<String, JsonNode> entry = iteratorMails.next();
             String mail = entry.getKey();

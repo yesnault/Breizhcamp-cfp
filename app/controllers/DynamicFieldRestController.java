@@ -1,6 +1,8 @@
 package controllers;
 
 import static play.libs.Json.toJson;
+import static play.data.Form.form;
+
 import models.DynamicField;
 import models.DynamicFieldValue;
 import models.User;
@@ -17,7 +19,7 @@ public class DynamicFieldRestController extends Controller {
 
     private static User getLoggedUser() {
         Identity socialUser = (Identity) ctx().args.get(SecureSocial.USER_KEY);
-        User user = User.findByExternalId(socialUser.id().id(), socialUser.id().providerId());
+        User user = User.findByExternalId(socialUser.identityId().userId(), socialUser.identityId().providerId());
         return user;
     }
 

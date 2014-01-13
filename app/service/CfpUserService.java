@@ -14,7 +14,7 @@ import securesocial.core.OAuth1Info;
 import securesocial.core.OAuth2Info;
 import securesocial.core.PasswordInfo;
 import securesocial.core.SocialUser;
-import securesocial.core.UserId;
+import securesocial.core.IdentityId;
 import securesocial.core.java.BaseUserService;
 import securesocial.core.java.Token;
 
@@ -36,10 +36,10 @@ public class CfpUserService extends BaseUserService {
     }
 
     @Override
-    public Identity doFind(UserId userId) {
-        Logger.debug("doFind SecureSocial Find User by Id : " + userId.id() + " / " + userId.providerId());
+    public Identity doFind(IdentityId identityId) {
+        Logger.debug("doFind SecureSocial Find User by Id : " + identityId.id() + " / " + identityId.providerId());
         // Recherche d'un user existant et création ou mise à jour des données en SGBD
-        User userCfp = User.findByExternalId(userId.id(), userId.providerId());
+        User userCfp = User.findByExternalId(identityId.id(), identityId.providerId());
         Identity identity = null;
         if (userCfp!=null) {
             identity = userToIdentity(userCfp);
@@ -52,7 +52,7 @@ public class CfpUserService extends BaseUserService {
 
         // Recherche d'un user existant et création ou mise à jour des données en SGBD
         User userCfp = User.findByExternalId(socialUser.id().id(), socialUser.id().providerId());
-        Logger.debug("doSave " + socialUser.fullName() + " / socialUserId : " + socialUser.id().id() + " - " + socialUser.id().providerId());
+        Logger.debug("doSave " + socialUser.fullName() + " / socialIdentityId : " + socialUser.id().id() + " - " + socialUser.id().providerId());
         if (userCfp == null) {
             Logger.debug("Création du user : " + socialUser.fullName());
             userCfp = IdentityToUser(socialUser);
@@ -183,7 +183,7 @@ public class CfpUserService extends BaseUserService {
         user.authenticationMethod = socialUser.authMethod().method();
 
         user.credentials = new Credentials();
-        user.credentials.extUserId = socialUser.id().id();
+        user.credentials.extIdentityId = socialUser.id().id();
         user.credentials.providerId = socialUser.id().providerId();
         user.credentials.firstName = socialUser.firstName();
         user.credentials.lastName = socialUser.lastName();
@@ -228,13 +228,13 @@ public class CfpUserService extends BaseUserService {
      */
     private Identity userToIdentity(User user) {
 
-        UserId userId;
+        IdentityId identityId;
         String firstName = null;
         String lastName = null;
         if (user.authenticationMethod.equals("userPassword")) {
-            userId = new UserId(user.email, "userPassword");
+            identityId = new IdentityId(user.email, "userPassword");
         } else {
-            userId = new UserId(user.credentials.extUserId, user.credentials.providerId);
+            identityId = new IdentityId(user.credentials.extIdentityId, user.credentials.providerId);
             firstName = user.credentials.firstName;
             lastName = user.credentials.lastName;
         }
@@ -256,7 +256,7 @@ public class CfpUserService extends BaseUserService {
                     Option.apply(user.credentials.passwordSalt));
         }
 
-        SocialUser socialUser = new SocialUser(userId,
+        SocialUser socialUser = new SocialUser(identityId,
                 firstName,
                 lastName,
                 user.fullname,

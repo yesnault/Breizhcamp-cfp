@@ -14,7 +14,7 @@ public class Notifs extends Controller {
 
     public static User getLoggedUser() {
         Identity socialUser = (Identity) ctx().args.get(SecureSocial.USER_KEY);
-        User user = User.findByExternalId(socialUser.id().id(), socialUser.id().providerId());
+        User user = User.findByExternalId(socialUser.identityId().userId(), socialUser.identityId().providerId());
         return user;
     }
 

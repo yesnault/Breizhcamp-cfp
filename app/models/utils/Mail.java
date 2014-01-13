@@ -1,7 +1,7 @@
 package models.utils;
 
-import akka.util.Duration;
-import akka.util.FiniteDuration;
+import scala.concurrent.duration.Duration;
+import scala.concurrent.duration.FiniteDuration;
 import com.typesafe.plugin.MailerAPI;
 import com.typesafe.plugin.MailerPlugin;
 import play.Configuration;
