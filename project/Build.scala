@@ -14,7 +14,7 @@ object ApplicationBuild extends Build {
       "com.typesafe" %% "play-plugins-mailer" % "2.1.0",
       "org.mindrot" % "jbcrypt" % "0.3m",
       "mysql" % "mysql-connector-java" % "5.1.21",
-      "securesocial" % "securesocial_2.9.1" % "2.0.8",
+      "securesocial" %% "securesocial" % "2.1.2",
       "fr.ybonnel" % "csvengine" % "1.3.5",
       "org.pegdown" % "pegdown" % "1.2.1"
     )
@@ -27,7 +27,8 @@ object ApplicationBuild extends Build {
       .settings(
         // Add your own project settings here
         resolvers += "Apache" at "http://repo1.maven.org/maven2/",
-        resolvers += "jBCrypt Repository" at "http://repo1.maven.org/maven2/org/",
+        resolvers += Resolver.url("sbt-plugin-releases", url("http://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/"))(Resolver.ivyStylePatterns),
+        resolvers += "jBCrypt Repository" at "http://repo1.maven.org/maven2/org/",        
         resolvers += Resolver.url("SecureSocial Repository", url("http://securesocial.ws/repository/releases/"))(Resolver.ivyStylePatterns)
       )
 
