@@ -1,7 +1,7 @@
 package models;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;

@@ -11,8 +11,8 @@ import models.Lien;
 import models.User;
 import models.utils.TransformValidationErrors;
 
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.node.ArrayNode;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import play.Logger;
 import play.data.Form;

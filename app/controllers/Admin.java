@@ -8,7 +8,7 @@ import java.util.*;
 import models.*;
 
 import models.utils.Mail;
-import org.codehaus.jackson.JsonNode;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import org.pegdown.PegDownProcessor;
 import play.Configuration;

@@ -2,7 +2,7 @@ package models;
 
 import models.utils.BooleanUtils;
 import models.utils.Mail;
-import org.codehaus.jackson.annotate.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import play.Configuration;
 import play.data.format.Formats;
 import play.data.validation.Constraints;

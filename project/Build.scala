@@ -11,6 +11,7 @@ object ApplicationBuild extends Build {
     val appVersion      = "1.1"
 
     val appDependencies = Seq(
+      javaEbean,
       "com.typesafe" %% "play-plugins-mailer" % "2.1.0",
       "org.mindrot" % "jbcrypt" % "0.3m",
       "mysql" % "mysql-connector-java" % "5.1.21",

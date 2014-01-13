@@ -18,7 +18,7 @@ package controllers.talks;
 
 import com.google.common.io.CharStreams;
 import com.google.common.io.Closeables;
-import org.codehaus.jackson.JsonNode;
+import com.fasterxml.jackson.databind.JsonNode;
 import play.mvc.Controller;
 import play.mvc.Result;
 
