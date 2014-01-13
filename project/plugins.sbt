@@ -14,10 +14,10 @@ resolvers ++= Seq(
     DefaultMavenRepository,
     Resolver.url("Play", url("http://download.playframework.org/ivy-releases/"))(Resolver.ivyStylePatterns),
     "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/",
-    "Sonatype OSS Snasphots" at "http://oss.sonatype.org/content/repositories/snapshots"
+    "Sonatype OSS Snasphots" at "http://oss.sonatype.org/content/repositories/snapshots/"
 )
 
 
-addSbtPlugin("play" % "sbt-plugin" % "2.0.4")
+addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.2.0")
 
-addSbtPlugin("com.cloudbees.deploy.play" % "sbt-cloudbees-play-plugin" % "0.4-SNAPSHOT")
+addSbtPlugin("com.cloudbees.deploy.play" % "sbt-cloudbees-play-plugin" % "0.5-SNAPSHOT")
