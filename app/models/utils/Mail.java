@@ -60,7 +60,7 @@ public class Mail {
     public static void sendMail(Mail.Envelop envelop) {
         EnvelopJob envelopJob = new EnvelopJob(envelop);
         final FiniteDuration delay = Duration.create(DELAY, TimeUnit.SECONDS);
-        Akka.system().scheduler().scheduleOnce(delay, envelopJob);
+        Akka.system().scheduler().scheduleOnce(delay, envelopJob, null);
     }
 
     static class EnvelopJob implements Runnable {
@@ -95,9 +95,9 @@ public class Mail {
 		private void sendEmail(final String mailFrom, String messageText,
 				String messageHtml, String subject, String toEmail) {
 			MailerAPI email = play.Play.application().plugin(MailerPlugin.class).email();
-			email.addFrom(mailFrom);
+			email.setFrom(mailFrom);
 			email.setSubject(subject);
-			email.addRecipient(toEmail);
+			email.setRecipient(toEmail);
 			Logger.debug("Mail.sendMail: Mail will be sent to " + toEmail);
 			email.send(messageText, messageHtml);
 		}
