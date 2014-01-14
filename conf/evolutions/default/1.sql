@@ -4,18 +4,18 @@
 # --- !Ups
 
 create table comment (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   author_id                 bigint,
   talk_id                   bigint,
   comment                   varchar(140),
-  clos                      boolean,
-  private_comment           boolean,
+  clos                      tinyint(1) default 0,
+  private_comment           tinyint(1) default 0,
   question_id               bigint,
   constraint pk_comment primary key (id))
 ;
 
 create table credentials (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   user_id                   bigint,
   ext_user_id               varchar(255),
   provider_id               varchar(255),
@@ -34,7 +34,7 @@ create table credentials (
 ;
 
 create table creneau (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   libelle                   varchar(50),
   duree_minutes             integer,
   description               varchar(255),
@@ -44,14 +44,14 @@ create table creneau (
 ;
 
 create table dynamic_field (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   name                      varchar(50),
   constraint uq_dynamic_field_name unique (name),
   constraint pk_dynamic_field primary key (id))
 ;
 
 create table dynamic_field_value (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   value                     varchar(255),
   dynamic_field_id          bigint,
   user_id                   bigint,
@@ -59,7 +59,7 @@ create table dynamic_field_value (
 ;
 
 create table lien (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   user_id                   bigint not null,
   label                     varchar(50),
   url                       varchar(200),
@@ -67,14 +67,14 @@ create table lien (
 ;
 
 create table tag (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   nom                       varchar(255),
   constraint uq_tag_nom unique (nom),
   constraint pk_tag primary key (id))
 ;
 
 create table talk (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   title                     varchar(50),
   description               varchar(2000),
   speaker_id                bigint,
@@ -87,16 +87,16 @@ create table talk (
 ;
 
 create table user (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   email                     varchar(255),
   fullname                  varchar(255),
   authentication_method     varchar(255),
   credentials_id            bigint,
-  date_creation             timestamp,
-  admin                     boolean,
-  notif_on_my_talk          boolean,
-  notif_admin_on_all_talk   boolean,
-  notif_admin_on_talk_with_comment boolean,
+  date_creation             datetime,
+  admin                     tinyint(1) default 0,
+  notif_on_my_talk          tinyint(1) default 0,
+  notif_admin_on_all_talk   tinyint(1) default 0,
+  notif_admin_on_talk_with_comment tinyint(1) default 0,
   adresse_mac               varchar(255),
   description               varchar(2000),
   avatar                    varchar(255),
@@ -105,7 +105,7 @@ create table user (
 ;
 
 create table vote (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   user_id                   bigint,
   talk_id                   bigint,
   note                      integer,
@@ -113,7 +113,7 @@ create table vote (
 ;
 
 create table vote_status (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   status                    integer,
   constraint ck_vote_status_status check (status in (0,1,2)),
   constraint pk_vote_status primary key (id))
@@ -131,28 +131,12 @@ create table tag_talk (
   talk_id                        bigint not null,
   constraint pk_tag_talk primary key (tag_id, talk_id))
 ;
-create sequence comment_seq;
 
-create sequence credentials_seq;
-
-create sequence creneau_seq;
-
-create sequence dynamic_field_seq;
-
-create sequence dynamic_field_value_seq;
-
-create sequence lien_seq;
-
-create sequence tag_seq;
-
-create sequence talk_seq;
-
-create sequence user_seq;
-
-create sequence vote_seq;
-
-create sequence vote_status_seq;
-
+create table user_talk (
+  user_id                        bigint not null,
+  talk_id                        bigint not null,
+  constraint pk_user_talk primary key (user_id, talk_id))
+;
 alter table comment add constraint fk_comment_author_1 foreign key (author_id) references user (id) on delete restrict on update restrict;
 create index ix_comment_author_1 on comment (author_id);
 alter table comment add constraint fk_comment_talk_2 foreign key (talk_id) references talk (id) on delete restrict on update restrict;
@@ -161,8 +145,8 @@ alter table comment add constraint fk_comment_question_3 foreign key (question_i
 create index ix_comment_question_3 on comment (question_id);
 alter table credentials add constraint fk_credentials_user_4 foreign key (user_id) references user (id) on delete restrict on update restrict;
 create index ix_credentials_user_4 on credentials (user_id);
-alter table dynamic_field_value add constraint fk_dynamic_field_value_dynamic_5 foreign key (dynamic_field_id) references dynamic_field (id) on delete restrict on update restrict;
-create index ix_dynamic_field_value_dynamic_5 on dynamic_field_value (dynamic_field_id);
+alter table dynamic_field_value add constraint fk_dynamic_field_value_dynamicField_5 foreign key (dynamic_field_id) references dynamic_field (id) on delete restrict on update restrict;
+create index ix_dynamic_field_value_dynamicField_5 on dynamic_field_value (dynamic_field_id);
 alter table dynamic_field_value add constraint fk_dynamic_field_value_user_6 foreign key (user_id) references user (id) on delete restrict on update restrict;
 create index ix_dynamic_field_value_user_6 on dynamic_field_value (user_id);
 alter table lien add constraint fk_lien_user_7 foreign key (user_id) references user (id) on delete restrict on update restrict;
@@ -190,57 +174,41 @@ alter table tag_talk add constraint fk_tag_talk_tag_01 foreign key (tag_id) refe
 
 alter table tag_talk add constraint fk_tag_talk_talk_02 foreign key (talk_id) references talk (id) on delete restrict on update restrict;
 
+alter table user_talk add constraint fk_user_talk_user_01 foreign key (user_id) references user (id) on delete restrict on update restrict;
+
+alter table user_talk add constraint fk_user_talk_talk_02 foreign key (talk_id) references talk (id) on delete restrict on update restrict;
+
 # --- !Downs
 
-SET REFERENTIAL_INTEGRITY FALSE;
+SET FOREIGN_KEY_CHECKS=0;
 
-drop table if exists comment;
+drop table comment;
 
-drop table if exists credentials;
+drop table credentials;
 
-drop table if exists creneau;
+drop table creneau;
 
-drop table if exists creneau_talk;
+drop table creneau_talk;
 
-drop table if exists dynamic_field;
+drop table dynamic_field;
 
-drop table if exists dynamic_field_value;
+drop table dynamic_field_value;
 
-drop table if exists lien;
+drop table lien;
 
-drop table if exists tag;
+drop table tag;
 
-drop table if exists tag_talk;
+drop table tag_talk;
 
-drop table if exists talk;
+drop table talk;
 
-drop table if exists user;
+drop table user_talk;
 
-drop table if exists vote;
+drop table user;
 
-drop table if exists vote_status;
+drop table vote;
 
-SET REFERENTIAL_INTEGRITY TRUE;
+drop table vote_status;
 
-drop sequence if exists comment_seq;
-
-drop sequence if exists credentials_seq;
-
-drop sequence if exists creneau_seq;
-
-drop sequence if exists dynamic_field_seq;
-
-drop sequence if exists dynamic_field_value_seq;
-
-drop sequence if exists lien_seq;
-
-drop sequence if exists tag_seq;
-
-drop sequence if exists talk_seq;
-
-drop sequence if exists user_seq;
-
-drop sequence if exists vote_seq;
-
-drop sequence if exists vote_status_seq;
+SET FOREIGN_KEY_CHECKS=1;
 
