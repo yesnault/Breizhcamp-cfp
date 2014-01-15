@@ -1,6 +1,6 @@
 <div class="row">
 
-    <div class="span8">
+    <div class="col-md-8">
         <div class="well">
             <h3>{{talk.title}}
                 <p class="help-inline" ng-repeat="creneau in talk.creneaux">
@@ -82,10 +82,10 @@
             <h3>Questions/Réponses</h3>
             <div class="well {{{true:'privateComment',false:''}[comment.privateComment == true]}}" ng-repeat="comment in talk.comments">
                 <div  class="row">
-                    <div class="span3" ng-show="comment.author!=null">
+                    <div class="col-md-3" ng-show="comment.author!=null">
                     <img ng-src="{{comment.author.avatar}}?s=20" style="max-width:20px;max-height: 20px"> {{comment.author.fullname}}</div>
-                    <div class="span3" ng-show="comment.author==null">compte supprimé</div>
-                    <div class="span3">
+                    <div class="col-md-3" ng-show="comment.author==null">compte supprimé</div>
+                    <div class="col-md-3">
                                         <form  ng-submit="deleteComment({{comment.id}})" method="POST" >
                                             <input type="submit" class="btn btn-primary" value="Supprimer"
                                                    ng-show="!comment.clos&&(userService.isAdmin()|| userService.getUserData().id == comment.author.id )"
@@ -113,15 +113,15 @@
                     </form>
                 </div>
                 <div class="well {{{true:'privateComment',false:''}[comment.privateComment == true]}}" ng-repeat="reponse in comment.reponses">
-                    <div  class="row"><div class="span3" ng-show="reponse.author!=null"><img ng-src="{{reponse.author.avatar}}?s=20" style="max-width:20px;max-height: 20px"> {{reponse.author.fullname}}</div>
-                    <div class="span3" ng-show="reponse.author==null">compte supprimé</div>
-                        <div class="span3">
+                    <div  class="row"><div class="col-md-3" ng-show="reponse.author!=null"><img ng-src="{{reponse.author.avatar}}?s=20" style="max-width:20px;max-height: 20px"> {{reponse.author.fullname}}</div>
+                    <div class="col-md-3" ng-show="reponse.author==null">compte supprimé</div>
+                        <div class="col-md-3">
                                              <input type="button" class="btn btn-primary" value="Modifier"
                                                 ng-show="!comment.clos&&(userService.isAdmin()|| userService.getUserData().id == reponse.author.id )"
                                                 onclick="displayHide('editReponse-{{reponse.id}}');displayHide('showReponse-{{reponse.id}}');">
                         </div>
                        <br/>
-                    <div class="span3" id="showReponse-{{reponse.id}}">{{reponse.comment}}<br/> <br/>
+                    <div class="col-md-3" id="showReponse-{{reponse.id}}">{{reponse.comment}}<br/> <br/>
                 </div></div>
                 <div class="well" id="editReponse-{{reponse.id}}" style="display: none;">
                                    <form ng-submit="editComment({{reponse.id}})" method="POST" class="form-inline">
@@ -139,7 +139,7 @@
                 </div> </div>
                 <p class="help-inline" ng-repeat="error in errors.error">{{error}}</p>
                 <div  class="row">
-                    <div class="span3">
+                    <div class="col-md-3">
 
                         <form  ng-submit="postCloseComment({{comment.id}})" method="POST" >
                             <input type="button" class="btn btn-primary" value="Repondre" ng-show="!comment.clos" onclick="displayHide('resp-{{comment.id}}')">

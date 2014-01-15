@@ -17,9 +17,9 @@
         </div>
     </div>
 
-    <div class="span12">
+    <div class="col-md-12">
         <div class="row">
-            <div class="span6">
+            <div class="col-md-6">
                 <div class="well">
                         <fieldset>
                             <form>
@@ -33,14 +33,14 @@
                     </fieldset>
                 </div>
             </div>
-            <div class="span6">
+            <div class="col-md-6">
                 <div class="row">
-                    <div class="span4 well">
+                    <div class="col-md-4 well">
                         <p>{{(talks|filter:talksAcceptes).length}} talks acceptés</p>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="span4 well">
+                    <div class="col-md-4 well">
                         <a href="/talk/all/csv" class="btn btn-info">Export CSV</a>
                         <a ng-click="rejeterRestant()" class="btn btn-danger">Rejeter les talks restant</a>
                     </div>
@@ -55,17 +55,17 @@
 <div class="row">
 
 
-    <div class="span12">
+    <div class="col-md-12">
         <table class="table table-bordered table-striped">
             <tbody><tr>
-                <th class="span2"><a ng-click="predicate = 'speaker.fullname'; reverse=!reverse">Speaker</a></th>
-                <th class="span6"><a ng-click="predicate = 'title'; reverse=!reverse">Titre</a></th>
-                <th class="span6">Créneaux</th>
-                <th class="span2">Statut</th>
-                <th class="span1">Note</th>
-                <th class="span1" ng-show="vote.status == 'CLOSED'"><a ng-click="predicate = 'moyenne'; reverse=!reverse">Moyenne</a></th>
-                <th class="span1" ng-show="vote.status == 'CLOSED'">Nb Votes</th>
-                <th class="span1">Actions</th>
+                <th class="col-md-2"><a ng-click="predicate = 'speaker.fullname'; reverse=!reverse">Speaker</a></th>
+                <th class="col-md-6"><a ng-click="predicate = 'title'; reverse=!reverse">Titre</a></th>
+                <th class="col-md-6">Créneaux</th>
+                <th class="col-md-2">Statut</th>
+                <th class="col-md-1">Note</th>
+                <th class="col-md-1" ng-show="vote.status == 'CLOSED'"><a ng-click="predicate = 'moyenne'; reverse=!reverse">Moyenne</a></th>
+                <th class="col-md-1" ng-show="vote.status == 'CLOSED'">Nb Votes</th>
+                <th class="col-md-1">Actions</th>
             </tr>
 
             <tr ng-repeat="talk in talks | filter:doStatus | orderBy:predicate:reverse ">

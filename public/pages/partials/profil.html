@@ -14,10 +14,10 @@
     </script>
     <div class="container-fluid">
         <div class="row-fluid">
-            <div class="span2 breadcrumb">
+            <div class="col-md-2 breadcrumb">
                 <img ng-src="{{pUser.avatar}}?s=100" style="max-width:100px;max-height: 100px"><br/>
             </div>
-            <div class="span10">
+            <div class="col-md-10">
                 <div class="well">
                     <h2>{{pUser.fullname}}</h2>
                     <p ng-show="pUser.admin && talks.length==0">(Organisateur)</p>
@@ -58,8 +58,8 @@
                     <h3 ng-show="talks.length > 0">Talks proposés</h3>
                     <table class="table table-bordered table-striped">
                         <tbody><tr>
-                            <th class="span6">Titre</th>
-                            <th class="span2">Statut</th>
+                            <th class="col-md-6">Titre</th>
+                            <th class="col-md-2">Statut</th>
                         </tr>
 
                         <tr ng-repeat="talk in talks | orderBy:predicate:reverse">
