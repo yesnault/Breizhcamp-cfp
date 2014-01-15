@@ -97,7 +97,7 @@
                                         </p>
                                         <div ng-show="userService.isAdmin() && (vote.status == 'OPEN' || vote.status == 'NOT_BEGIN')">
                                             <form ng-submit="postVote(talkModal)" class="form-inline">
-                                                <div class="control-group {{{true:'error', false:''}[errors.vote != undefined]}}">
+                                                <div class="form-group {{{true:'error', false:''}[errors.vote != undefined]}}">
                                                     <stars ng-model="talkModal" talkid="{{talkModal.id}}" />
                                                     <select id="note" name="note" ng-model="talkModal.note">
                                                         <option value="null"></option>

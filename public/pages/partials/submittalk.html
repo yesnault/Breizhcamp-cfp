@@ -8,7 +8,7 @@
             </div>
             <form ng-submit="saveTalk()">
                 <fieldset>
-                    <div class="control-group {{{true:'error', false:''}[errors.title != undefined]}}">
+                    <div class="form-group {{{true:'error', false:''}[errors.title != undefined]}}">
                         <label class="control-label" for="title"></label>
                         <div class="controls">
                             <input type="text" id="title" name="title" value="" placeholder="Titre" class="input-xxlarge" ng-model="talk.title" maxlength="50">
@@ -17,7 +17,7 @@
                             <p class="help-inline">{{talk.title.length}}/50</p>
                         </div>
                     </div>
-                    <div class="control-group {{{true:'error', false:''}[errors.description != undefined]}}">
+                    <div class="form-group {{{true:'error', false:''}[errors.description != undefined]}}">
                         <label class="control-label" for="wmd-input"></label>
                         <div class="controls">
                             <div id="wmd-button-bar"></div>
@@ -29,14 +29,14 @@
                         </div>
                     </div>
                     
-                    <div class="control-group {{{true:'error', false:''}[errors.tags != undefined]}}">
+                    <div class="form-group {{{true:'error', false:''}[errors.tags != undefined]}}">
                         <label class="control-label" for="creneaux">Tags :</label>
                         <div class="controls">
                             <input type="text" id="tags" name="tags" ng-model="talk.tagsname"  placeholder="Tags séparés par une virgule" class="input-xxlarge" >
                             <p class="help-inline" ng-repeat="error in errors.tags">{{error}}</p>
                         </div>
                     </div>
-                    <div class="control-group {{{true:'error', false:''}[errors.creneaux != undefined]}}">
+                    <div class="form-group {{{true:'error', false:''}[errors.creneaux != undefined]}}">
                         <label class="control-label" for="creneaux">Creneaux</label>
                         <div class="controls">
                             <select id="creneaux" name="creneaux" multiple="true" ng-model="talk.creneaux" ng-options="creneau.libelle + ' (' + creneau.dureeMinutes + 'min)' for creneau in creneaux"></select>
@@ -47,7 +47,7 @@
                         </div>
                     </div>
 
-                    <div class="control-group {{{true:'error', false:''}[errors.dureePreferee != undefined]}}">
+                    <div class="form-group {{{true:'error', false:''}[errors.dureePreferee != undefined]}}">
                         <label class="control-label" for="dureePreferee">Creneau Optimal</label>
                         <div class="controls">
                             <select id="dureePreferee" name="dureePreferee" ng-change="changeDureePreferee(talk.dureePreferee.id, talk, creneaux)" ng-model="talk.dureePreferee.id" ng-options="creneau.id as creneau.libelle + ' (' + creneau.dureeMinutes + 'min)' for creneau in creneaux"></select>
@@ -59,7 +59,7 @@
                     </div>
 
 
-                    <div class="control-group">
+                    <div class="form-group">
                         <label class="control-label" for="coSpeakerSelected">Co-speakers</label>
                         <div class="controls">
                             <input type="text" id="coSpeakerSelected" ng-model="coSpeakerSelected" ng-change="addSelectedCoSpeaker()" typeahead="coSpeaker as coSpeaker.fullname for coSpeaker in coSpeakers | filter:$viewValue">

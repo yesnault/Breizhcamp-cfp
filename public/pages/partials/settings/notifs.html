@@ -19,7 +19,7 @@
                     <form ng-submit="saveSettings()">
                         <fieldset>
                             <legend>Notifications par mail pour les nouveaux commentaires :</legend>
-                            <div class="control-group ">
+                            <div class="form-group ">
                                 <div class="controls">
                                     <label class="checkbox">
                                         <input type="checkbox" id="notifOnMyTalk" name="notifOnMyTalk" ng-model="user.notifOnMyTalk">
@@ -28,7 +28,7 @@
                                     </label>
                                 </div>
                             </div>
-                            <div class="control-group" ng-show="userService.isAdmin()">
+                            <div class="form-group" ng-show="userService.isAdmin()">
                                 <div class="controls">
                                     <label class="checkbox">
                                         <input type="checkbox" id="notifAdminOnAllTalk" name="notifAdminOnAllTalk" ng-model="user.notifAdminOnAllTalk">
@@ -37,7 +37,7 @@
                                     </label>
                                 </div>
                             </div>
-                            <div class="control-group " ng-show="userService.isAdmin()">
+                            <div class="form-group " ng-show="userService.isAdmin()">
                                 <div class="controls">
                                     <label class="checkbox">
                                         <input type="checkbox" id="notifAdminOnTalkWithComment" name="notifAdminOnTalkWithComment" ng-model="user.notifAdminOnTalkWithComment">

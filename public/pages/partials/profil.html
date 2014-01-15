@@ -29,7 +29,7 @@
                            onclick="displayHide('editDescription');displayHide('showDescription');">   </div>
                     <div class="well" id="editDescription" style="display: none;">
                         <form ng-submit="editProfil({{pUser.id}})" method="POST" class="form-inline">
-                            <div class="control-group {{{true:'error', false:''}[errors.descriptionE != undefined]}}">
+                            <div class="form-group {{{true:'error', false:''}[errors.descriptionE != undefined]}}">
                                 <div class="controls">
                                     <div id="wmd-button-bar"></div>
                                     <textarea id="wmd-input" name="descriptionE" placeholder="Description/Bio" class="wmd-input" ng-model="descriptionE" rows="10"></textarea>

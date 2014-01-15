@@ -7,7 +7,7 @@
 			</div>
 			<form ng-submit="saveDynamicField()" name="formDynamicField">
 				<fieldset>
-					<div class="control-group {{{true:'error', false:''}[errors.name != undefined || formDynamicField.name.$error['required']]}}">
+					<div class="form-group {{{true:'error', false:''}[errors.name != undefined || formDynamicField.name.$error['required']]}}">
 						<label class="control-label" for="name"></label>
 						<div class="controls">
 							<input type="text" id="name" name="name" value="" placeholder="Nom" class="input-large" ng-model="dynamicField.name" required>

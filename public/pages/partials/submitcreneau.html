@@ -7,7 +7,7 @@
             </div>
             <form ng-submit="saveCreneau()" name="formCreneau">
                 <fieldset>
-                    <div class="control-group {{{true:'error', false:''}[errors.libelle != undefined || formCreneau.libelle.$error['required']]}}">
+                    <div class="form-group {{{true:'error', false:''}[errors.libelle != undefined || formCreneau.libelle.$error['required']]}}">
                         <label class="control-label" for="libelle">Libellé </label>
                         <div class="controls">
                             <input type="text" id="libelle" name="libelle" value="" class="input-large" ng-model="creneau.libelle" required>
@@ -15,7 +15,7 @@
                             <p class="help-inline" ng-repeat="error in errors.libelle">{{error}}</p>
                         </div>
                     </div>
-                    <div class="control-group {{{true:'error', false:''}[errors.dureeMinutes != undefined || formCreneau.dureeMinutes.$error['required'] || formCreneau.dureeMinutes.$error['number']]}}">
+                    <div class="form-group {{{true:'error', false:''}[errors.dureeMinutes != undefined || formCreneau.dureeMinutes.$error['required'] || formCreneau.dureeMinutes.$error['number']]}}">
                         <label class="control-label" for="dureeMinutes">Durée (en mn) </label>
                         <div class="controls">
                             <input type="number" id="dureeMinutes" name="dureeMinutes" class="input-large" ng-model="creneau.dureeMinutes" required>
@@ -23,14 +23,14 @@
                             <p class="help-inline" ng-repeat="error in errors.dureeMinutes">{{error}}</p>
                         </div>
                     </div>
-                    <div class="control-group {{{true:'error', false:''}[errors.nbInstance != undefined || formCreneau.nbInstance.$error['number']]}}">
+                    <div class="form-group {{{true:'error', false:''}[errors.nbInstance != undefined || formCreneau.nbInstance.$error['number']]}}">
                         <label class="control-label" for="nbInstance">Nombre de slot </label>
                         <div class="controls">
                             <input type="number" id="nbInstance" name="nbInstance" class="input-large" ng-model="creneau.nbInstance">
                             <p class="help-inline" ng-repeat="error in errors.nbInstance">{{error}}</p>
                         </div>
                     </div>
-                    <div class="control-group">
+                    <div class="form-group">
                         <label class="control-label" for="wmd-input">Description</label>
                         <div class="controls">
                             <div id="wmd-button-bar"></div>
