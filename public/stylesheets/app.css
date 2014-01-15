@@ -81,7 +81,7 @@ input[type="checkbox"] {
 
 .form-submit {
     position: absolute;
-    left: 260px;
+    right: 15px;
 }
 
 .form-separator {
