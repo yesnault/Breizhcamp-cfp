@@ -11,21 +11,21 @@
             <form action="/authenticate/userpass" class="form-horizontal" autocomplete="off" method="POST">
                 <fieldset>
                     <div class="form-group">
-                      <div class="col-sm-10">
+                      <div class="col-sm-offset-1 col-sm-10">
                         <i class="form-icon icon-user"></i>
-                        <input type="text" id="username" name="username" placeholder="Nom d'utilisateur" class="input-xlarge" required>
+                        <input type="text" id="username" name="username" placeholder="Nom d'utilisateur" required>
                       </div>
                     </div>
                     <div class="form-group">
-                      <div class="col-sm-10">
+                      <div class="col-sm-offset-1 col-sm-10">
                         <i class="form-icon icon-key"></i>
-                        <input type="password" id="password" name="password" placeholder="Mot de passe" class="input-xlarge" required>
+                        <input type="password" id="password" name="password" placeholder="Mot de passe" required>
                         <br>
                         <a href="/reset" class="form-text">Mot de passe oublié ?</a>
                       </div>
                     </div>
                     <div class="form-group">
-                      <div class="col-sm-10">
+                      <div class="col-sm-offset-1 col-sm-10">
                         <input type="checkbox" id="rememberMe" name="rememberMe"/><label for="rememberMe">Se souvenir de moi</label>
                         <button type="submit" class="btn btn-primary form-submit">Login</button>
                       </div>
@@ -34,14 +34,14 @@
                 </fieldset>
             </form>
           </div>
-          <div class="col-md-2">
+          <div class="col-md-2" style="text-align: center">
               <span class="form-separator">ou</span>
           </div>
           <div class="col-md-5">
               <ul class="social-stack">
-                  <li><a href="/authenticate/github" class="btn btn-inverse"><span class="icon-github-sign"></span> Connexion via GitHub</a></li>
-                  <li><a href="/authenticate/google" class="btn btn-inverse"><span class="icon-google-plus-sign"></span> Connexion via Google</a></li>
-                  <li><a href="/authenticate/twitter" class="btn btn-inverse"><span class="icon-twitter-sign"></span> Connexion via Twitter</a></li>
+                  <li><a href="/authenticate/github" class="btn btn-primary"><span class="icon-github-sign"></span> Connexion via GitHub</a></li>
+                  <li><a href="/authenticate/google" class="btn btn-primary"><span class="icon-google-plus-sign"></span> Connexion via Google</a></li>
+                  <li><a href="/authenticate/twitter" class="btn btn-primary"><span class="icon-twitter-sign"></span> Connexion via Twitter</a></li>
               </ul>
           </div>
 

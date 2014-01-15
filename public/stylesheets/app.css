@@ -68,6 +68,7 @@ input[type="checkbox"] {
 
 #username, #password {
     padding-left: 40px;
+    width: 100%;
 }
 
 .control-group label {
@@ -85,8 +86,7 @@ input[type="checkbox"] {
 
 .form-separator {
     position: relative;
-    top: 50px;
-    left: 50px;
+    top:50px;
     padding: 20px;
     font-size: 18px;
     background: #888;
