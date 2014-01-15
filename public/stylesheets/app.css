@@ -46,6 +46,67 @@
     padding-top: 40px;
 }
 
+.form-icon {
+    position: absolute;
+    display: inline-block;
+    color: #888;
+    padding: 10px 10px;
+    line-height:10px;
+}
+
+.form-text {
+    padding-left: 40px;
+}
+
+input[type="checkbox"] {
+    margin: 0 5px;
+}
+
+#remember_me {
+    margin-top: -10px;
+}
+
+#username, #password {
+    padding-left: 40px;
+}
+
+.control-group label {
+    display: inline-block;
+}
+
+#remember_me {
+    position: relative;
+}
+
+.form-submit {
+    position: absolute;
+    left: 260px;
+}
+
+.form-separator {
+    position: relative;
+    top: 50px;
+    left: 50px;
+    padding: 20px;
+    font-size: 18px;
+    background: #888;
+    border-radius: 50%;
+    color: #ffffff;
+}
+
+.social-stack li {
+    list-style: none;
+    padding-bottom: 5px;
+}
+
+.social-stack li a {
+    min-width: 200px;
+}
+
+.pg-top-openid {
+    list-style: none;
+}
+
 .privateComment::after {
     content: "Commentaire Privé";
     position: absolute;
@@ -60,6 +121,14 @@
     -webkit-border-radius: 4px 0 4px 0;
     -moz-border-radius: 4px 0 4px 0;
     border-radius: 4px 0 4px 0;
+}
+
+.accordion-heading {
+    font-size: 21px;
+    line-height: 40px;
+    color: #333333;
+    border: 0;
+    border-bottom: 1px solid #e5e5e5;
 }
 
 .wmd-panel

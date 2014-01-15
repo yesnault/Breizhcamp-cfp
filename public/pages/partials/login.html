@@ -4,84 +4,48 @@
         <div class="page-header">
             <h1>Bienvenue sur le CFP du BreizhC&#64;mp</h1>
         </div>
-        <div class="row well">
-            <legend>Authentification avec un compte Github/Google/Twitter</legend>
-            <div class="span3 offset1">
-                <a href="/authenticate/github" class="btn btn-large btn-info"><img src="/assets/securesocial/images/providers/github.png"> GitHub</a>
-            </div>
-            <div class="span3">
-                <a href="/authenticate/google" class="btn btn-large btn-info"><img src="/assets/img/GooglePlus.png"> Google</a>
-            </div>
-            <div class="span3">
-                <a href="/authenticate/twitter" class="btn btn-large btn-info"><img src="/assets/img/Twitter_logo_white.png"> Twitter</a>
-            </div>
-        </div>
-        <div class="row well">
+
+        <legend>Connexion</legend>
+        <div class="row">
+            <div class="span5">
             <form action="/authenticate/userpass" class="form-horizontal" autocomplete="off" method="POST">
                 <fieldset>
-                    <legend>Authentification avec un compte local</legend>
                     <div class="control-group  " id="username_field">
-                        <label class="control-label" for="username">Email</label>
-                        <div class="controls">
-                            <input type="text" id="username" name="username" value="" class="input-xlarge" required> <span class="help-block">Champ obligatoire</span>
-                        </div>
+                        <i class="form-icon icon-user"></i>
+                        <input type="text" id="username" name="username" placeholder="Nom d'utilisateur" class="input-xlarge" required>
                     </div>
                     <div class="control-group  " id="password_field">
-                        <label class="control-label" for="password">Mot de passe</label>
-                        <div class="controls">
-                            <input type="password" id="password" name="password" value="" class="input-xlarge" required> <span class="help-block">Champ obligatoire</span>
-                        </div>
+                        <i class="form-icon icon-key"></i>
+                        <input type="password" id="password" name="password" placeholder="Mot de passe" class="input-xlarge" required>
+                        <br>
+                        <a href="/reset" class="form-text">Mot de passe oublié ?</a>
                     </div>
-                    <div class="form-actions">
-                        <button type="submit" class="btn btn-primary">Login</button>
+                    <div class="control-group  " id="remember_me">
+                        <input type="checkbox" id="rememberMe" name="rememberMe"/><label for="rememberMe">Se souvenir de moi</label>
+                        <button type="submit" class="btn btn-primary form-submit">Login</button>
                     </div>
-                    <div class="clearfix">
-                        <a href="/reset"></a>
-                        <p>
-                            <a href="/reset">Vous avez oublié votre mot de passe ??</a>
-                        </p>
-                    </div>
-                    <div class="clearfix">
-                        <p>
-                            Pour la création d'un compte local, c'est <a href="/signup">par ici</a>
-                        </p>
-                    </div>
+
                 </fieldset>
             </form>
+          </div>
+          <div class="span2">
+              <span class="form-separator">ou</span>
+          </div>
+          <div class="span5">
+              <ul class="social-stack">
+                  <li><a href="/authenticate/github" class="btn btn-inverse"><span class="icon-github-sign"></span> Connexion via GitHub</a></li>
+                  <li><a href="/authenticate/google" class="btn btn-inverse"><span class="icon-google-plus-sign"></span> Connexion via Google</a></li>
+                  <li><a href="/authenticate/twitter" class="btn btn-inverse"><span class="icon-twitter-sign"></span> Connexion via Twitter</a></li>
+              </ul>
+          </div>
+
         </div>
+        <div class="row">
+            <div class="span5">
+                <a href="/signup">Creer un compte</a>
+            </div>
+        </div>
+
     </div>	
-
-    <!-- Modal 
-    <div id="signUpModal" class="modal hide fade" tabindex="-1" role="dialog" data-keyboard="false">
-        <form ng-submit="createAccount()" class="form-horizontal" autocomplete="off">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">×</button>
-                <h3 id="signUpModalLabel">Création de compte</h3>
-            </div>
-            <div class="modal-body">
-                <fieldset>
-                    <div class="control-group  " id="email_field">
-                        <label class="control-label" for="emailpopup">Email</label>
-                        <div class="controls">
-                            <input ng-model="email" type="email" id="emailpopup" name="email" value="" class="input-xlarge" required>
-                            <span class="help-block">Champ obligatoire</span>
-                        </div>
-                    </div>
-                </fieldset>
-            </div>
-            <div class="modal-footer">
-                <button class="btn" data-dismiss="modal">Annuler</button>
-                <button class="btn btn-primary" type="submit">Créer votre compte</button>
-            </div>
-        </form>
-        <script>
-            $('#signUpModal').on('shown', function() {
-                // Focus sur le champ email à l'ouverture de la popup
-                document.getElementById('emailpopup').focus();
-            })
-        </script>
-    </div>
-    -->
-
 
 </div>
