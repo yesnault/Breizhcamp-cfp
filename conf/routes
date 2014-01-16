@@ -51,6 +51,7 @@ POST    /talks/rejectall            controllers.talks.TalkRestController.rejectA
 GET     /talk/all/csv               controllers.talks.TalkRestController.getAllTalksInCsv()
 GET     /talk/all                   controllers.talks.TalkRestController.all()
 GET     /talk/:idTalk               controllers.talks.TalkRestController.getById(idTalk:Long)
+POST     /talk/submit/:idTalk               controllers.talks.TalkRestController.submitTalk(idTalk:Long)
 GET     /talk                       controllers.talks.TalkRestController.get()
 POST	/talk                       controllers.talks.TalkRestController.save()
 DELETE	/talk/:idTalk               controllers.talks.TalkRestController.delete(idTalk:Long)

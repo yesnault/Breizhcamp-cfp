@@ -80,6 +80,7 @@ create table talk (
   description               varchar(2000),
   speaker_id                bigint,
   status_talk               varchar(1),
+  draft                     tinyint(1) default 0,
   event_id                  bigint,
   duree_preferee_id         bigint,
   duree_approuve_id         bigint,
@@ -110,7 +111,7 @@ create table event (
   id                        bigint not null,
   name                      varchar(50),
   description               varchar(1000),
-  clos                      boolean,
+  clos                      tinyint(1) default 0,
   constraint uq_event_name unique (name),
   constraint pk_event primary key (id))
 ;

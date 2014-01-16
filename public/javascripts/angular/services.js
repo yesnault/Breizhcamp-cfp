@@ -156,6 +156,11 @@ Services.factory('TalkService', function($resource) {
     return $resource('/talk/:id', {});
 });
 
+Services.factory('SubmitTalkService', function($resource) {
+    return $resource('/talk/submit/:id', {});
+});
+
+
 Services.factory('AllTalkService', function($resource) {
     return $resource('/talk/all', {});
 });
@@ -166,11 +171,6 @@ Services.factory('CreneauxService', function($resource) {
 
 Services.factory('DynamicFieldsService', function($resource) {
     return $resource('/dynamicfield/:id', {});
-});
-
-
-Services.factory('EventService', function($resource) {
-    return $resource('/event/:id', {});
 });
 
 

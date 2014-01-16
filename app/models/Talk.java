@@ -34,6 +34,8 @@ public class Talk extends Model {
     @ManyToMany(mappedBy = "coSpeakedTalks")
     public List<User> coSpeakers;
 
+    public boolean draft;
+
     @ManyToOne
     public Event event;
 

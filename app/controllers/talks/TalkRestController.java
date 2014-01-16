@@ -1,50 +1,31 @@
 package controllers.talks;
 
-import static play.data.Form.form;
-
-import java.io.StringWriter;
-import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import fr.ybonnel.csvengine.CsvEngine;
-import fr.ybonnel.csvengine.adapter.AdapterDouble;
-import fr.ybonnel.csvengine.annotation.CsvColumn;
-import fr.ybonnel.csvengine.annotation.CsvFile;
-import models.Comment;
-import models.Creneau;
-import models.StatusTalk;
-import models.Tag;
-import models.Talk;
-import models.User;
-import models.Vote;
-import models.VoteStatus;
-import models.VoteStatusEnum;
-import models.utils.TransformValidationErrors;
-import org.apache.commons.lang3.tuple.Pair;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
+import fr.ybonnel.csvengine.CsvEngine;
+import fr.ybonnel.csvengine.adapter.AdapterDouble;
+import fr.ybonnel.csvengine.annotation.CsvColumn;
+import fr.ybonnel.csvengine.annotation.CsvFile;
+import models.*;
+import models.utils.TransformValidationErrors;
+import org.apache.commons.lang3.tuple.Pair;
 import play.Logger;
 import play.data.Form;
 import play.i18n.Messages;
 import play.libs.Json;
-import static play.libs.Json.toJson;
 import play.mvc.Controller;
 import play.mvc.Result;
-import static play.mvc.Results.forbidden;
-import static play.mvc.Results.ok;
-import static play.mvc.Results.unauthorized;
 import securesocial.core.Identity;
 import securesocial.core.java.SecureSocial;
+
+import java.io.StringWriter;
+import java.net.MalformedURLException;
+import java.util.*;
+
+import static play.data.Form.form;
+import static play.libs.Json.toJson;
 
 @SecureSocial.SecuredAction(ajaxCall = true)
 public class TalkRestController extends Controller {
@@ -70,6 +51,22 @@ public class TalkRestController extends Controller {
         }
         talk.fiteredComments(user);
         talk.fiteredCoSpeakers();
+        return ok(toJson(talk));
+    }
+
+    public static Result submitTalk(Long idTalk) {
+        Talk talk = Talk.find.byId(idTalk);
+
+        User user = getLoggedUser();
+
+        if (!user.id.equals(talk.speaker.id) && !talk.getCoSpeakers().contains(user) ) {
+            // On vérifie que le user est admin où le propriétaire du talk
+            return forbidden(toJson(TransformValidationErrors.transform("Action non autorisée")));
+        }
+
+        talk.draft = false;
+        talk.update();
+
         return ok(toJson(talk));
     }
 
@@ -118,6 +115,10 @@ public class TalkRestController extends Controller {
 
 
     public static Result all() {
+        return all(false);
+    }
+
+    public static Result all(boolean draft) {
         User user = getLoggedUser();
         if (!user.admin) {
             return forbidden();
@@ -125,72 +126,75 @@ public class TalkRestController extends Controller {
         List<Talk> talks = Talk.findAllForDisplay();
 
         Map<Long, Vote> votes = Vote.findVotesUserByTalkId(user);
-        
+
         Map<Long, Pair<Double, Integer>> moyennes = Vote.caculMoyennes();
-        
+
         ArrayNode result = new ArrayNode(JsonNodeFactory.instance);
-        
+
         for (Talk talk : talks) {
-            ObjectNode talkJson = Json.newObject();
-            
-            talkJson.put("id", talk.id);
-            talkJson.put("title", talk.title);
-            
-            ArrayNode creneaux = new ArrayNode(JsonNodeFactory.instance);
-            for (Creneau creneau : talk.getCreneaux()) {
-                ObjectNode creneauJson = Json.newObject();
-                creneauJson.put("id", creneau.getId());
-                creneauJson.put("libelle", creneau.getLibelle());
-                creneauJson.put("dureeMinutes", creneau.getDureeMinutes());
-                creneaux.add(creneauJson);
-            }
-            talkJson.put("creneaux", creneaux);
-            if (talk.dureePreferee != null) {
-                talkJson.put("dureePreferee", talk.dureePreferee.getId());
-            } else {
-                talkJson.putNull("dureePreferee");
-            }
-            if (talk.dureeApprouve != null) {
-                talkJson.put("dureeApprouve", talk.dureeApprouve.getId());
-            } else {
-                talkJson.putNull("dureeApprouve");
-            }
-            if (talk.statusTalk != null) {
-                talkJson.put("statusTalk", talk.statusTalk.name());
-            } else {
-                talkJson.putNull("statusTalk");
-            }
+            if (talk.draft == draft) {
 
-            if (talk.speaker != null) {
-                ObjectNode speakerJson = Json.newObject();
-                speakerJson.put("id", talk.speaker.id);
-                speakerJson.put("fullname", talk.speaker.fullname);
-                speakerJson.put("avatar", talk.speaker.getAvatar());
-                talkJson.put("speaker", speakerJson);
-            }
+                ObjectNode talkJson = Json.newObject();
 
-            Vote voteUser = votes.get(talk.id);
-            if (voteUser != null) {
-                talkJson.put("vote", voteUser.getNote());
-            } else {
-                talkJson.putNull("vote");
+                talkJson.put("id", talk.id);
+                talkJson.put("title", talk.title);
+
+                ArrayNode creneaux = new ArrayNode(JsonNodeFactory.instance);
+                for (Creneau creneau : talk.getCreneaux()) {
+                    ObjectNode creneauJson = Json.newObject();
+                    creneauJson.put("id", creneau.getId());
+                    creneauJson.put("libelle", creneau.getLibelle());
+                    creneauJson.put("dureeMinutes", creneau.getDureeMinutes());
+                    creneaux.add(creneauJson);
+                }
+                talkJson.put("creneaux", creneaux);
+                if (talk.dureePreferee != null) {
+                    talkJson.put("dureePreferee", talk.dureePreferee.getId());
+                } else {
+                    talkJson.putNull("dureePreferee");
+                }
+                if (talk.dureeApprouve != null) {
+                    talkJson.put("dureeApprouve", talk.dureeApprouve.getId());
+                } else {
+                    talkJson.putNull("dureeApprouve");
+                }
+                if (talk.statusTalk != null) {
+                    talkJson.put("statusTalk", talk.statusTalk.name());
+                } else {
+                    talkJson.putNull("statusTalk");
+                }
+
+                if (talk.speaker != null) {
+                    ObjectNode speakerJson = Json.newObject();
+                    speakerJson.put("id", talk.speaker.id);
+                    speakerJson.put("fullname", talk.speaker.fullname);
+                    speakerJson.put("avatar", talk.speaker.getAvatar());
+                    talkJson.put("speaker", speakerJson);
+                }
+
+                Vote voteUser = votes.get(talk.id);
+                if (voteUser != null) {
+                    talkJson.put("vote", voteUser.getNote());
+                } else {
+                    talkJson.putNull("vote");
+                }
+
+                Pair<Double, Integer> moyenne = moyennes.get(talk.id);
+                if (moyenne != null) {
+                    talkJson.put("moyenne", moyenne.getLeft());
+                    talkJson.put("nbvote", moyenne.getRight());
+                } else {
+                    talkJson.putNull("moyenne");
+                }
+
+                result.add(talkJson);
             }
-            
-            Pair<Double, Integer> moyenne = moyennes.get(talk.id);
-            if (moyenne != null) {
-                talkJson.put("moyenne", moyenne.getLeft());
-                talkJson.put("nbvote", moyenne.getRight());
-            } else {
-                talkJson.putNull("moyenne");
-            }            
-            
-            result.add(talkJson);
         }
-        
+
         return ok(result);
     }
 
-    
+
     public static Result save() {
         User user = getLoggedUser();
         Form<Talk> talkForm = form(Talk.class).bindFromRequest();
@@ -214,7 +218,7 @@ public class TalkRestController extends Controller {
             if (formTalk.getCreneaux() == null || formTalk.getCreneaux().isEmpty()) {
                 return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.talk.creneaux.empty"))));
             }
-
+            formTalk.draft = true;
             formTalk.save();
             formTalk.saveManyToManyAssociations("creneaux");
             List<User> coSpeakersInDb = new ArrayList<User>();
@@ -232,18 +236,19 @@ public class TalkRestController extends Controller {
 
             if (!(user.id.equals(dbTalk.speaker.id) || user.admin)) {
                 // On vérifie que le user est admin où le propriétaire du talk
-                Logger.info("Tentative de suppression de talk sans les droits requis : " + dbTalk.id );
+                Logger.info("Tentative de suppression de talk sans les droits requis : " + dbTalk.id);
                 return unauthorized();
             }
 
 
             if (!formTalk.title.equals(dbTalk.title)
                     && Talk.findByTitle(formTalk.title) != null) {
-                Logger.error("error.talk.already.exist :"+formTalk.title);
+                Logger.error("error.talk.already.exist :" + formTalk.title);
                 return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.talk.already.exist"))));
             }
             dbTalk.title = formTalk.title;
             dbTalk.description = formTalk.description;
+            dbTalk.draft = true;
             dbTalk.save();
             updateCoSpeakers(formTalk, dbTalk);
             updateCreneaux(formTalk, dbTalk);
@@ -364,19 +369,19 @@ public class TalkRestController extends Controller {
         }
 
         Talk talk = Talk.find.byId(idTalk);
-        
+
         User user = getLoggedUser();
         if (!user.admin && !(user.id.equals(talk.speaker.id))) {
             // On vérifie que le user est admin où le propriétaire du talk
-            Logger.info("Tentative de suppression de talk sans les droits requis : " + talk.id );
+            Logger.info("Tentative de suppression de talk sans les droits requis : " + talk.id);
             return unauthorized();
         }
 
 
         List<Comment> comments = new ArrayList<Comment>(talk.getComments());
-        for (Comment comment : comments ) {
+        for (Comment comment : comments) {
             talk.getComments().remove(comment);
-            for (Comment reponse : comment.reponses ) {
+            for (Comment reponse : comment.reponses) {
                 reponse.question = null;
                 reponse.delete();
             }
@@ -406,7 +411,7 @@ public class TalkRestController extends Controller {
         return noContent();
     }
 
-    public static Result saveComment(Long idTalk)throws MalformedURLException  {
+    public static Result saveComment(Long idTalk) throws MalformedURLException {
         User user = getLoggedUser();
         Talk talk = Talk.find.byId(idTalk);
 
@@ -481,7 +486,7 @@ public class TalkRestController extends Controller {
         return ok();
     }
 
-    public static Result saveReponse(Long idTalk, Long idComment)throws MalformedURLException  {
+    public static Result saveReponse(Long idTalk, Long idComment) throws MalformedURLException {
         User user = getLoggedUser();
         Talk talk = Talk.find.byId(idTalk);
         Comment question = Comment.find.byId(idComment);
@@ -505,7 +510,7 @@ public class TalkRestController extends Controller {
             return forbidden(toJson(TransformValidationErrors.transform("Action non autorisée")));
         }
 
-        if (commentForm.length() > 0 && commentForm.length() <= 140 && !commentForm.equals("null") ) {
+        if (commentForm.length() > 0 && commentForm.length() <= 140 && !commentForm.equals("null")) {
             Comment comment = new Comment();
             comment.author = user;
             comment.comment = commentForm;
@@ -528,7 +533,7 @@ public class TalkRestController extends Controller {
         return ok();
     }
 
-    public static Result editComment(Long idTalk, Long idComment)throws MalformedURLException  {
+    public static Result editComment(Long idTalk, Long idComment) throws MalformedURLException {
         User user = getLoggedUser();
         Talk talk = Talk.find.byId(idTalk);
         Comment question = Comment.find.byId(idComment);
@@ -572,11 +577,11 @@ public class TalkRestController extends Controller {
         if (talk.statusTalk != newStatus) {
             talk.statusTalk = newStatus;
 
-            if(talk.statusTalk.equals(StatusTalk.ACCEPTE)) {
+            if (talk.statusTalk.equals(StatusTalk.ACCEPTE)) {
                 Creneau dureeApprouve = Creneau.find.byId(Long.valueOf(node.get("dureeApprouve").asText()));
 
-                talk.dureeApprouve =  dureeApprouve;
-            }  else{
+                talk.dureeApprouve = dureeApprouve;
+            } else {
                 talk.dureeApprouve = null;
             }
 
@@ -631,7 +636,7 @@ public class TalkRestController extends Controller {
         vote.save();
         return ok();
     }
-    
+
     public static Result talkStat() {
 
         User user = getLoggedUser();
@@ -645,7 +650,7 @@ public class TalkRestController extends Controller {
         result.put("nbVotesUser", Vote.findNbVotesUser(user));
         return ok(result);
     }
-    
+
 
     @CsvFile(separator = ";")
     public static class TalkCsv {
@@ -670,7 +675,6 @@ public class TalkRestController extends Controller {
 
         @CsvColumn(value = "description", order = 7)
         public String description;
-
 
 
         public static TalkCsv fromTalk(Talk talk) {

@@ -282,8 +282,8 @@ function EditTalkController($scope, $log, $location, $routeParams, TalkService, 
 
 
 // Pour que l'injection de dépendances fonctionne en cas de 'minifying'
-ManageTalkController.$inject = ['$scope', '$log', '$location', 'TalkService'];
-function ManageTalkController($scope, $log, $location, TalkService) {
+ManageTalkController.$inject = ['$scope', '$log', '$location', 'TalkService', '$http'];
+function ManageTalkController($scope, $log, $location, TalkService, http) {
 
     $scope.checkloc(false);
 
@@ -299,6 +299,24 @@ function ManageTalkController($scope, $log, $location, TalkService) {
                 $log.info("Delete du talk ko");
                 $log.info(err);
                 $scope.errors = err.data;
+            });
+        }
+    }
+
+    $scope.submitTalk = function(talk) {
+        var confirmation = confirm('\u00cates vous s\u00fbr de vouloir soumettre le talk "' + talk.title + '" a l\'équipe ?');
+        if (confirmation) {
+            http({
+                method: 'POST',
+                url: '/talk/submit/'+talk.id,
+                data: {}
+            }).success(function(data, status, headers, config) {
+                    $scope.talks = TalkService.query();
+                    $scope.errors = undefined;
+                }).error(function(data, status, headers, config) {
+                    $log.info("soumission du talk ko");
+                    $log.info(status);
+                    $scope.errors = status;
             });
         }
     }
