@@ -63,6 +63,12 @@ GET	/creneau                    controllers.CreneauRestController.all()
 POST	/creneau                    controllers.CreneauRestController.save()
 DELETE	/creneau/:idCreneau         controllers.CreneauRestController.delete(idCreneau:Long)
 
+GET	/event/:idEvent         controllers.EventRestController.get(idEvent:Long)
+GET	/event                  controllers.EventRestController.all()
+POST	/event              controllers.EventRestController.save()
+POST	/event/close/:idEvent     controllers.EventRestController.close(idEvent:Long)
+DELETE	/event/:idEvent     controllers.EventRestController.delete(idEvent:Long)
+
 GET	/dynamicfield/:idDynamicField   controllers.DynamicFieldRestController.get(idDynamicField:Long)
 GET	/dynamicfield			controllers.DynamicFieldRestController.all()
 POST	/dynamicfield			controllers.DynamicFieldRestController.save()

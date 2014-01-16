@@ -34,6 +34,9 @@ public class Creneau extends Model {
     @JsonIgnore
     public List<Talk> talksPrefere;
 
+    @ManyToOne
+    public Event event;
+
     @ManyToMany
     @JsonIgnore
     private List<Talk> talks;

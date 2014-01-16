@@ -1101,3 +1101,95 @@ function MailingController($scope, $http, $log, $location) {
     }
 
 }
+
+EventController.$inject = ['$scope', '$log', 'EventService', '$location'];
+function EventController($scope, $log, EventService, $location) {
+    $scope.checkloc(true);
+
+    $scope.events = EventService.query();
+
+    $scope.deleteEvent = function(eventToDelete) {
+        var confirmation = confirm('\u00cates vous s\u00fbr de vouloir supprimer l\'événement ' + eventToDelete.name + '?');
+        if (confirmation) {
+            EventService.delete({id: eventToDelete.id}, function(data) {
+                $scope.events = EventService.query();
+                $scope.errors = undefined;
+            }, function(err) {
+                $log.info("Delete de l'événenemt ko");
+                $log.info(err);
+                $scope.errors = err.data;
+            });
+        }
+    }
+
+    $scope.closeEvent = function(eventToClose) {
+
+        eventToClose.clos = !eventToClose.clos;
+        EventService.save(eventToClose, function(data) {
+            $log.info("(Dés)Activation de l'événement ok");
+            $location.url('/admin/events');
+        }, function(err) {
+            $log.info("(Dés)Activation de l'événement ko");
+            $log.info(err.data);
+            $scope.errors = err.data;
+        });
+    }
+}
+
+
+NewEventController.$inject = ['$scope', '$log', 'EventService', '$location'];
+function NewEventController($scope, $log, EventService, $location) {
+    $scope.checkloc(true);
+
+    $scope.isNew = true;
+
+    $scope.converter = new Markdown.Converter();
+    $scope.editor = new Markdown.Editor($scope.converter);
+    $scope.editor.run();
+
+    $scope.saveEvent = function() {
+        $log.info("Evénement \u00e0 sauvegarder");
+        $log.info($scope.event);
+
+        EventService.save($scope.event, function(data) {
+            $log.info("Soummission de l'événement ok");
+            $location.url('/admin/events');
+        }, function(err) {
+            $log.info("Soummission de l'événement ko");
+            $log.info(err.data);
+            $scope.errors = err.data;
+        });
+    }
+}
+
+
+EditEventController.$inject = ['$scope', '$log', 'EventService', '$location', '$routeParams'];
+function EditEventController($scope, $log, EventService, $location, $routeParams) {
+    $scope.checkloc(true);
+
+    var idEvent = $routeParams.eventId;
+
+    $scope.event = EventService.get({id: idEvent});
+
+    $scope.isNew = false;
+
+    $scope.converter = new Markdown.getSanitizingConverter();
+    $scope.editor = new Markdown.Editor($scope.converter);
+    $scope.editor.run();
+
+    $scope.saveEvent = function() {
+        $log.info("Evénement \u00e0 sauvegarder");
+        $log.info($scope.event);
+
+        EventService.save($scope.event, function(data) {
+            $log.info("Soummission de l'événement ok");
+            $location.url('/admin/events');
+        }, function(err) {
+            $log.info("Soummission de l'événement ko");
+            $log.info(err.data);
+            $scope.errors = err.data;
+        });
+    }
+}
+
+

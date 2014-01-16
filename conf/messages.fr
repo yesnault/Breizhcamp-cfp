@@ -153,3 +153,6 @@ talks.status.mail.message.waiting=Bonjour,<br/><br/>Votre talk <i><a href="{0}">
 error.creneau.already.exist=Ce créneau existe déjà.
 error.dynamicField.already.exist=Ce champ dynamique existe déjà.
 
+
+error.event.already.exist=Cet Evénement existe déjà.
+error.event.hasElement=Cet Evénement est actif ou associé à d\'autres éléments

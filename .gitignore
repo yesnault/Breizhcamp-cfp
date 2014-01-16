@@ -33,6 +33,7 @@ project/project
 project/target
 target
 tmp
+_site
 test-result
 server.pid
 modules

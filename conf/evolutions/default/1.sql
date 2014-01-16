@@ -39,6 +39,7 @@ create table creneau (
   duree_minutes             integer,
   description               varchar(255),
   nb_instance               integer,
+  event_id                  bigint,
   constraint uq_creneau_libelle unique (libelle),
   constraint pk_creneau primary key (id))
 ;
@@ -79,6 +80,7 @@ create table talk (
   description               varchar(2000),
   speaker_id                bigint,
   status_talk               varchar(1),
+  event_id                  bigint,
   duree_preferee_id         bigint,
   duree_approuve_id         bigint,
   constraint ck_talk_status_talk check (status_talk in ('A','W','R')),
@@ -102,6 +104,15 @@ create table user (
   avatar                    varchar(255),
   constraint uq_user_email unique (email),
   constraint pk_user primary key (id))
+;
+
+create table event (
+  id                        bigint not null,
+  name                      varchar(50),
+  description               varchar(1000),
+  clos                      boolean,
+  constraint uq_event_name unique (name),
+  constraint pk_event primary key (id))
 ;
 
 create table vote (
@@ -197,6 +208,8 @@ drop table dynamic_field_value;
 drop table lien;
 
 drop table tag;
+
+drop table if exists event;
 
 drop table tag_talk;
 

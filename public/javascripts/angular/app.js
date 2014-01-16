@@ -20,6 +20,10 @@ App.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/admin/creneau/new', {templateUrl: 'assets/pages/partials/submitcreneau.html', controller: NewCreneauController});
     $routeProvider.when('/admin/creneau/edit/:creneauId', {templateUrl: 'assets/pages/partials/submitcreneau.html', controller: EditCreneauController});
 
+    $routeProvider.when('/admin/events', {templateUrl: 'assets/pages/partials/event/events.html', controller: EventController});
+    $routeProvider.when('/admin/event/new', {templateUrl: 'assets/pages/partials/event/submit.html', controller: NewEventController});
+    $routeProvider.when('/admin/event/edit/:eventId', {templateUrl: 'assets/pages/partials/event/submit.html', controller: EditEventController});
+
     $routeProvider.when('/admin/dynamicfields', {templateUrl: 'assets/pages/partials/dynamicfields.html', controller: DynamicFieldsController});
     $routeProvider.when('/admin/dynamicfield/new', {templateUrl: 'assets/pages/partials/submitdynamicfield.html', controller: NewDynamicFieldController});
     $routeProvider.when('/admin/dynamicfield/edit/:dynamicFieldId', {templateUrl: 'assets/pages/partials/submitdynamicfield.html', controller: EditDynamicFieldController});

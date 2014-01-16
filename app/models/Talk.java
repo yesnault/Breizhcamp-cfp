@@ -34,6 +34,9 @@ public class Talk extends Model {
     @ManyToMany(mappedBy = "coSpeakedTalks")
     public List<User> coSpeakers;
 
+    @ManyToOne
+    public Event event;
+
     public List<User> getCoSpeakers() {
         if (coSpeakers == null) {
             coSpeakers = new ArrayList<User>();
@@ -129,6 +132,10 @@ public class Talk extends Model {
 
     public static List<Talk> findBySpeaker(User speaker) {
         return find.where().eq("speaker", speaker).findList();
+    }
+
+    public static List<Talk> findByEvent(Event event) {
+        return find.where().eq("event", event).findList();
     }
 
     public static List<Talk> findBySpeakerAndStatus(User speaker, StatusTalk status) {
