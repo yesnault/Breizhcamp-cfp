@@ -1,41 +1,65 @@
 <div class="row">
-    <div class="well" >
-        <h2>DASHBOARD</h2><br>
-        <div class="alert alert-error" ng-show="user && !user.email" ng-cloak class="ng-cloak">
-            Merci de renseigner votre email sur votre <a href="/#/settings/email" >profil</a> pour qu'on puisse vous contacter.
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div ng-show="user" class="col-md-2 breadcrumb">
+                <p><h4>{{user.fullname}}</h4></p>
+                <p>{{user.email}}</p>
+                <hr/>
+                <img ng-src="{{user.avatar}}?s=100">
+                <hr/>
+            </div>
+            <div class="col-md-8">
+                <div class="well">
+                    <h2>DASHBOARD</h2><br>
+
+                    <div class="alert alert-error" ng-show="user && !user.email" ng-cloak class="ng-cloak">
+                        Merci de renseigner votre email sur votre <a href="/#/settings/email">profil</a> pour qu'on
+                        puisse vous contacter.
+                    </div>
+                </div>
+                <br/>
+
+                <div class="well">
+                    <div ng-show="userService.isAdmin()">
+                        <h2>Status
+                            <h2>
+                                <h4>- Nb de Talks proposés : {{talkstats.nbTalks}}</h4>
+                                <h4>- Nb de Talks rejetés : {{talkstats.nbRejetes}}</h4>
+                                <h4>- Nb de Talks acceptés : {{talkstats.nbAcceptes}}</h4>
+                                <h4>- Nb de Talks en attente : {{talkstats.nbTalks - talkstats.nbRejetes -
+                                    talkstats.nbAcceptes}}</h4>
+                                <h4>- Nb de votes de {{user.fullname}} : {{talkstats.nbVotesUser}}</h4>
+
+                    </div>
+                    <br/>
+
+                    <h2><a ng-href="/#/managetalk">Talks</a></h2>
+                    <h4 ng-show="!talks.length">
+                        - Aucun talk proposé
+                    </h4>
+                    <h4 ng-show="talks.length == 1">
+                        - 1 talk proposé
+                    </h4>
+                    <h4 ng-show="talks.length > 1">
+                        - {{talks.length}} talks proposés
+                    </h4>
+                    <br/>
+                    <h4 ng-show="talksok.length > 0"> - Talks acceptés</h4>
+
+                    <p ng-repeat="talk in talksok">- <a ng-href="/#/talks/see/{{talk.id}}" title="{{talk.title}}">{{talk.title}}</a>
+                    </p>
+                    <br/>
+                    <h4 ng-show="talks_w.length > 0"> - Talks en attente</h4>
+
+                    <p ng-repeat="talk in talks_w">- <a ng-href="/#/talks/see/{{talk.id}}" title="{{talk.title}}">{{talk.title}}</a>
+                    </p>
+                    <br/>
+                    <h4 ng-show="talksko.length > 0"> - Talks refusés</h4>
+
+                    <p ng-repeat="talk in talksko">- <a ng-href="/#/talks/see/{{talk.id}}" title="{{talk.title}}">{{talk.title}}</a>
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
-    <br/>
-    <div class="well">
-        <div ng-show="userService.isAdmin()">
-            <h2 >Status<h2>
-            <h4>- Nb de Talks proposés : {{talkstats.nbTalks}}</h4>
-            <h4>- Nb de Talks rejetés : {{talkstats.nbRejetes}}</h4>
-            <h4>- Nb de Talks acceptés : {{talkstats.nbAcceptes}}</h4>
-            <h4>- Nb de Talks en attente : {{talkstats.nbTalks - talkstats.nbRejetes - talkstats.nbAcceptes}}</h4>
-            <h4>- Nb de votes de {{user.fullname}} : {{talkstats.nbVotesUser}}</h4>
-
-        </div>
-        <br/>
-        <h2><a ng-href="/#/managetalk">Talks</a></h2>
-        <h4 ng-show="!talks.length">
-            - Aucun talk proposé
-        </h4>
-        <h4 ng-show="talks.length == 1">
-            - 1 talk proposé
-        </h4>
-        <h4 ng-show="talks.length > 1">
-            - {{talks.length}} talks proposés
-        </h4>
-        <br/>
-        <h4 ng-show="talksok.length > 0"> - Talks acceptés</h4>
-        <p ng-repeat="talk in talksok">- <a ng-href="/#/talks/see/{{talk.id}}" title="{{talk.title}}" >{{talk.title}}</a></p>
-        <br/>
-        <h4 ng-show="talks_w.length > 0"> - Talks en attente</h4>
-        <p ng-repeat="talk in talks_w">- <a ng-href="/#/talks/see/{{talk.id}}" title="{{talk.title}}" >{{talk.title}}</a></p>
-        <br/>
-        <h4 ng-show="talksko.length > 0"> - Talks refusés</h4>
-        <p ng-repeat="talk in talksko">- <a ng-href="/#/talks/see/{{talk.id}}" title="{{talk.title}}" >{{talk.title}}</a></p>
-    </div>
-
 </div>
