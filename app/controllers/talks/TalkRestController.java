@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import controllers.BaseController;
 import fr.ybonnel.csvengine.CsvEngine;
 import fr.ybonnel.csvengine.adapter.AdapterDouble;
 import fr.ybonnel.csvengine.annotation.CsvColumn;
@@ -28,13 +29,8 @@ import static play.data.Form.form;
 import static play.libs.Json.toJson;
 
 @SecureSocial.SecuredAction(ajaxCall = true)
-public class TalkRestController extends Controller {
+public class TalkRestController extends BaseController {
 
-    public static User getLoggedUser() {
-        Identity socialUser = (Identity) ctx().args.get(SecureSocial.USER_KEY);
-        User user = User.findByExternalId(socialUser.identityId().userId(), socialUser.identityId().providerId());
-        return user;
-    }
 
     public static Result getById(Long idTalk) {
         Talk talk = Talk.find.byId(idTalk);
