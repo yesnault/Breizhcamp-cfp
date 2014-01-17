@@ -13,39 +13,39 @@ import java.util.Set;
 public enum StatusTalk {
 
     @EnumValue("R")
-    REJETE("R") {
+    REJETE("R", "talks.status.rejected") {
         @Override
         String getSubject(String talkTitle) {
             return Messages.get("talks.status.mail.subject.rejected", talkTitle);
         }
 
         @Override
-        String getMessage(String talkUrl,String talkTitle) {
-            return Messages.get("talks.status.mail.message.rejected",talkUrl, talkTitle);
+        String getMessage(String talkUrl, String talkTitle) {
+            return Messages.get("talks.status.mail.message.rejected", talkUrl, talkTitle);
         }
     },
     @EnumValue("W")
-    ATTENTE("W") {
+    ATTENTE("W", "talks.status.waiting") {
         @Override
         String getSubject(String talkTitle) {
             return Messages.get("talks.status.mail.subject.waiting", talkTitle);
         }
 
         @Override
-        String getMessage(String talkUrl,String talkTitle) {
-            return Messages.get("talks.status.mail.message.waiting",talkUrl, talkTitle);
+        String getMessage(String talkUrl, String talkTitle) {
+            return Messages.get("talks.status.mail.message.waiting", talkUrl, talkTitle);
         }
     },
     @EnumValue("A")
-    ACCEPTE("A") {
+    ACCEPTE("A", "talks.status.accepted") {
         @Override
         String getSubject(String talkTitle) {
             return Messages.get("talks.status.mail.subject.accepted", talkTitle);
         }
 
         @Override
-        String getMessage(String talkUrl,String talkTitle) {
-            return Messages.get("talks.status.mail.message.accepted",talkUrl, talkTitle);
+        String getMessage(String talkUrl, String talkTitle) {
+            return Messages.get("talks.status.mail.message.accepted", talkUrl, talkTitle);
         }
     };
 
@@ -58,14 +58,20 @@ public enum StatusTalk {
         return null;
     }
 
-    private StatusTalk(String interne) {
+    private StatusTalk(String interne, String label) {
         this.interne = interne;
+        this.label = label;
     }
 
     private String interne;
+    private String label;
 
     public String getInterne() {
         return interne;
+    }
+
+    public String getLabel() {
+        return label;
     }
 
     public static StatusTalk fromCode(String code) {
@@ -79,7 +85,7 @@ public enum StatusTalk {
 
     abstract String getSubject(String talkTitle);
 
-    abstract String getMessage(String talkUrl,String talkTitle);
+    abstract String getMessage(String talkUrl, String talkTitle);
 
     public void sendMail(Talk talk, String mail) throws MalformedURLException {
         String urlString = "http://" + Configuration.root().getString("server.hostname");
@@ -92,6 +98,6 @@ public enum StatusTalk {
             emails.add(coSpeaker.email);
         }
 
-        Mail.sendMail(new Mail.Envelop(getSubject(talk.title), getMessage(url.toString(),talk.title), emails));
+        Mail.sendMail(new Mail.Envelop(getSubject(talk.title), getMessage(url.toString(), talk.title), emails));
     }
 }

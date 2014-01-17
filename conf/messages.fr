@@ -149,6 +149,13 @@ talks.status.mail.message.accepted=Bonjour,<br/><br/>Votre talk <i><a href="{0}"
 talks.status.mail.message.rejected=Bonjour,<br/><br/>Votre talk <i><a href="{0}">{1}</a></i> a été rejeté pour le Breizhcamp.
 talks.status.mail.message.waiting=Bonjour,<br/><br/>Votre talk <i><a href="{0}">{1}</a></i> n''a pas été choisi lors de la première sélection, mais a été sélectionné en BACKUP pour le Breizhcamp.<br/>Si l''un d'eux se désiste, alors nous pourrons vous proposer de venir à leur place.
 
+
+talks.status.rejected=Rejeté
+talks.status.accepted=Accepté
+talks.status.waiting=Attente
+talks.status.null=Sans status
+
+
 error.creneau.already.exist=Ce créneau existe déjà.
 error.dynamicField.already.exist=Ce champ dynamique existe déjà.
 

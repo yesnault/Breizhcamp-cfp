@@ -124,6 +124,10 @@ talks.status.mail.message.accepted=Hello,<br/><br/>Your talk <i><a href="{0}">{1
 talks.status.mail.message.rejected=Hello,<br/><br/>Your talk <i><a href="{0}">{1}</a></i> has been rejected for Breizhcamp.
 talks.status.mail.message.waiting=Hello,<br/><br/>Your talk <i><a href="{0}">{1}</a></i> has not been selected in the first selection, but was selected in BACKUP for Breizhcamp. <br/> If one of them withdraws, then we can offer you to come to their place.
 
+talks.status.rejected=Rejected
+talks.status.accepted=Accepted
+talks.status.waiting=Waiting
+talks.status.null=Without status
 
 error.creneau.already.exist=This slot already exists.
 error.dynamicField.already.exist=This dynamic field already exists.

@@ -8,7 +8,7 @@
                 <img ng-src="{{user.avatar}}?s=100">
                 <hr/>
                 <p>
-                    <a href="#/settings/account"><button class="btn">Editer votre profil</button></a>
+                    <a href="#/settings/account" class="btn btn-primary">Editer votre profil</a>
                 </p>
             </div>
             <div class="col-md-8">
@@ -24,25 +24,30 @@
                         <th class="col-md-4">Présentateur(s)</th>
                         <th><a ng-click="predicate = 'draft'; reverse=!reverse">Etat</a></th>
                         <th class="col-md-2">Soumettre</th>
+                        <th class="col-md-2">Status</th>
                         <th class="col-md-3">Action(s)</th>
                     </tr>
                     <tr ng-repeat="talk in talks | orderBy:predicate:reverse ">
                         <td><a href="/#/talks/see/{{talk.id}}">{{talk.title}}</a></td>
-                        <td>{{user.fullname}}
-                        <p ng-repeat="coSpeaker in ta   lk.coSpeakers">
-                                 {{coSpeaker.fullname}}
-                        </p></td>
+                        <td><a href="/#/profil/{{user.id}}">{{user.fullname}}</a>
+
+                            <p ng-repeat="coSpeaker in talk.coSpeakers">
+                                <a href="/#/profil/{{coSpeaker.id}}">{{coSpeaker.fullname}}</a>
+                            </p></td>
                         <td><p ng-show="talk.draft">Draft</p>
 
                             <p ng-show="!talk.draft">Soumis</p></td>
                         <td><p ng-show="talk.draft"><a ng-click="submitTalk(talk)">Soumettre</a></p></td>
+                        <td>{{talk.statusTalk}}</td>
                         <td><a href="#/edittalk/{{talk.id}}"><i class="icon-pencil"></i></a>
-                        <a ng-click="deleteTalk(talk)"><i class="icon-remove"></i></a></td>
+                            <a ng-click="deleteTalk(talk)"><i class="icon-remove"></i></a></td>
                     </tr>
                     </tbody>
                 </table>
                 <p>
-                    <a href="#/submittalk/new"><button class="btn">Nouveau Talk</button></a>
+                    <a href="#/submittalk/new">
+                        <button class="btn btn-primary">Nouveau Talk</button>
+                    </a>
                 </p>
             </div>
         </div>
