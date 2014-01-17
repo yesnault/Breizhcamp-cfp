@@ -5,14 +5,15 @@
         </p>
 		<table class="table table-bordered table-striped">
 			<tbody>
-				<tr>
-					<th class="col-md-8">Titre</th>
-                    <th>Etat</th>
+
+            <tr>
+					<th class="col-md-8"><a ng-click="predicate = 'title'; reverse=!reverse">Titre</a></th>
+                    <th><a ng-click="predicate = 'draft'; reverse=!reverse">Etat</a></th>
 					<th class="col-md-2"></th>
                     <th></th>
 					<th></th>
 				</tr>
-				<tr ng-repeat="talk in talks">
+				<tr ng-repeat="talk in talks | orderBy:predicate:reverse ">
 					<td><a href="/#/talks/see/{{talk.id}}">{{talk.title}}</a></td>
                     <td><p ng-show="talk.draft">Draft</p><p ng-show="!talk.draft">Soumis</p></td>
                     <td><p ng-show="talk.draft"><a ng-click="submitTalk(talk)" >Soumettre</a></p></td>
