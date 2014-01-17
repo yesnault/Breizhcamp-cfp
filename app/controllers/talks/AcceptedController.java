@@ -64,6 +64,7 @@ public class AcceptedController extends Controller {
         talkJson.put("id", talk.id);
         talkJson.put("title", talk.title);
         talkJson.put("description", talk.description);
+        talkJson.put("indicationsOrganisateurs", talk.indicationsOrganisateurs);
         ArrayNode tags = new ArrayNode(JsonNodeFactory.instance);
         for (Tag tag : talk.getTags()) {
             tags.add(tag.nom);
@@ -224,6 +225,7 @@ public class AcceptedController extends Controller {
                 talkJson.put("id", talk.id);
                 talkJson.put("title", talk.title);
                 talkJson.put("description", talk.description);
+                talkJson.put("indicationsOrganisateurs", talk.indicationsOrganisateurs);
                 ArrayNode otherSpeakers = new ArrayNode(JsonNodeFactory.instance);
                 if (talk.speaker != null && !speaker.equals(talk.speaker)) {
                     otherSpeakers.add(getSpeakerInJson(talk.speaker));
@@ -262,6 +264,7 @@ public class AcceptedController extends Controller {
             talkJson.put("id", talk.id);
             talkJson.put("title", talk.title);
             talkJson.put("description", talk.description);
+            talkJson.put("indicationsOrganisateurs", talk.indicationsOrganisateurs);
 
             if (talk.speaker != null) {
                 talkJson.put("speaker", getSpeakerInJson(talk.speaker));
@@ -282,7 +285,6 @@ public class AcceptedController extends Controller {
         speakerJson.put("fullname", speaker.fullname);
         speakerJson.put("avatar", speaker.getAvatar());
         speakerJson.put("description", speaker.description);
-
 
         ArrayNode liens = new ArrayNode(JsonNodeFactory.instance);
         for (Lien lien : speaker.getLiens()) {
