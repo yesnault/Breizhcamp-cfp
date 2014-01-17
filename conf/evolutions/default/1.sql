@@ -4,18 +4,18 @@
 # --- !Ups
 
 create table comment (
-  id                        bigint auto_increment not null,
+  id                        bigint not null,
   author_id                 bigint,
   talk_id                   bigint,
   comment                   varchar(140),
-  clos                      tinyint(1) default 0,
-  private_comment           tinyint(1) default 0,
+  clos                      boolean,
+  private_comment           boolean,
   question_id               bigint,
   constraint pk_comment primary key (id))
 ;
 
 create table credentials (
-  id                        bigint auto_increment not null,
+  id                        bigint not null,
   user_id                   bigint,
   ext_user_id               varchar(255),
   provider_id               varchar(255),
@@ -34,7 +34,7 @@ create table credentials (
 ;
 
 create table creneau (
-  id                        bigint auto_increment not null,
+  id                        bigint not null,
   libelle                   varchar(50),
   duree_minutes             integer,
   description               varchar(255),
@@ -45,22 +45,31 @@ create table creneau (
 ;
 
 create table dynamic_field (
-  id                        bigint auto_increment not null,
+  id                        bigint not null,
   name                      varchar(50),
   constraint uq_dynamic_field_name unique (name),
   constraint pk_dynamic_field primary key (id))
 ;
 
 create table dynamic_field_value (
-  id                        bigint auto_increment not null,
+  id                        bigint not null,
   value                     varchar(255),
   dynamic_field_id          bigint,
   user_id                   bigint,
   constraint pk_dynamic_field_value primary key (id))
 ;
 
+create table event (
+  id                        bigint not null,
+  name                      varchar(50),
+  description               varchar(1000),
+  clos                      boolean,
+  constraint uq_event_name unique (name),
+  constraint pk_event primary key (id))
+;
+
 create table lien (
-  id                        bigint auto_increment not null,
+  id                        bigint not null,
   user_id                   bigint not null,
   label                     varchar(50),
   url                       varchar(200),
@@ -68,20 +77,21 @@ create table lien (
 ;
 
 create table tag (
-  id                        bigint auto_increment not null,
+  id                        bigint not null,
   nom                       varchar(255),
   constraint uq_tag_nom unique (nom),
   constraint pk_tag primary key (id))
 ;
 
 create table talk (
-  id                        bigint auto_increment not null,
+  id                        bigint not null,
   title                     varchar(50),
   description               varchar(2000),
+  indications_organisateurs varchar(1000),
   speaker_id                bigint,
-  status_talk               varchar(1),
-  draft                     tinyint(1) default 0,
+  draft                     boolean,
   event_id                  bigint,
+  status_talk               varchar(1),
   duree_preferee_id         bigint,
   duree_approuve_id         bigint,
   constraint ck_talk_status_talk check (status_talk in ('A','W','R')),
@@ -90,16 +100,16 @@ create table talk (
 ;
 
 create table user (
-  id                        bigint auto_increment not null,
+  id                        bigint not null,
   email                     varchar(255),
   fullname                  varchar(255),
   authentication_method     varchar(255),
   credentials_id            bigint,
-  date_creation             datetime,
-  admin                     tinyint(1) default 0,
-  notif_on_my_talk          tinyint(1) default 0,
-  notif_admin_on_all_talk   tinyint(1) default 0,
-  notif_admin_on_talk_with_comment tinyint(1) default 0,
+  date_creation             timestamp,
+  admin                     boolean,
+  notif_on_my_talk          boolean,
+  notif_admin_on_all_talk   boolean,
+  notif_admin_on_talk_with_comment boolean,
   adresse_mac               varchar(255),
   description               varchar(2000),
   avatar                    varchar(255),
@@ -107,17 +117,8 @@ create table user (
   constraint pk_user primary key (id))
 ;
 
-create table event (
-  id                        bigint not null,
-  name                      varchar(50),
-  description               varchar(1000),
-  clos                      tinyint(1) default 0,
-  constraint uq_event_name unique (name),
-  constraint pk_event primary key (id))
-;
-
 create table vote (
-  id                        bigint auto_increment not null,
+  id                        bigint not null,
   user_id                   bigint,
   talk_id                   bigint,
   note                      integer,
@@ -125,7 +126,7 @@ create table vote (
 ;
 
 create table vote_status (
-  id                        bigint auto_increment not null,
+  id                        bigint not null,
   status                    integer,
   constraint ck_vote_status_status check (status in (0,1,2)),
   constraint pk_vote_status primary key (id))
@@ -149,6 +150,30 @@ create table user_talk (
   talk_id                        bigint not null,
   constraint pk_user_talk primary key (user_id, talk_id))
 ;
+create sequence comment_seq;
+
+create sequence credentials_seq;
+
+create sequence creneau_seq;
+
+create sequence dynamic_field_seq;
+
+create sequence dynamic_field_value_seq;
+
+create sequence event_seq;
+
+create sequence lien_seq;
+
+create sequence tag_seq;
+
+create sequence talk_seq;
+
+create sequence user_seq;
+
+create sequence vote_seq;
+
+create sequence vote_status_seq;
+
 alter table comment add constraint fk_comment_author_1 foreign key (author_id) references user (id) on delete restrict on update restrict;
 create index ix_comment_author_1 on comment (author_id);
 alter table comment add constraint fk_comment_talk_2 foreign key (talk_id) references talk (id) on delete restrict on update restrict;
@@ -157,24 +182,28 @@ alter table comment add constraint fk_comment_question_3 foreign key (question_i
 create index ix_comment_question_3 on comment (question_id);
 alter table credentials add constraint fk_credentials_user_4 foreign key (user_id) references user (id) on delete restrict on update restrict;
 create index ix_credentials_user_4 on credentials (user_id);
-alter table dynamic_field_value add constraint fk_dynamic_field_value_dynamicField_5 foreign key (dynamic_field_id) references dynamic_field (id) on delete restrict on update restrict;
-create index ix_dynamic_field_value_dynamicField_5 on dynamic_field_value (dynamic_field_id);
-alter table dynamic_field_value add constraint fk_dynamic_field_value_user_6 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_dynamic_field_value_user_6 on dynamic_field_value (user_id);
-alter table lien add constraint fk_lien_user_7 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_lien_user_7 on lien (user_id);
-alter table talk add constraint fk_talk_speaker_8 foreign key (speaker_id) references user (id) on delete restrict on update restrict;
-create index ix_talk_speaker_8 on talk (speaker_id);
-alter table talk add constraint fk_talk_dureePreferee_9 foreign key (duree_preferee_id) references creneau (id) on delete restrict on update restrict;
-create index ix_talk_dureePreferee_9 on talk (duree_preferee_id);
-alter table talk add constraint fk_talk_dureeApprouve_10 foreign key (duree_approuve_id) references creneau (id) on delete restrict on update restrict;
-create index ix_talk_dureeApprouve_10 on talk (duree_approuve_id);
-alter table user add constraint fk_user_credentials_11 foreign key (credentials_id) references credentials (id) on delete restrict on update restrict;
-create index ix_user_credentials_11 on user (credentials_id);
-alter table vote add constraint fk_vote_user_12 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_vote_user_12 on vote (user_id);
-alter table vote add constraint fk_vote_talk_13 foreign key (talk_id) references talk (id) on delete restrict on update restrict;
-create index ix_vote_talk_13 on vote (talk_id);
+alter table creneau add constraint fk_creneau_event_5 foreign key (event_id) references event (id) on delete restrict on update restrict;
+create index ix_creneau_event_5 on creneau (event_id);
+alter table dynamic_field_value add constraint fk_dynamic_field_value_dynamic_6 foreign key (dynamic_field_id) references dynamic_field (id) on delete restrict on update restrict;
+create index ix_dynamic_field_value_dynamic_6 on dynamic_field_value (dynamic_field_id);
+alter table dynamic_field_value add constraint fk_dynamic_field_value_user_7 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_dynamic_field_value_user_7 on dynamic_field_value (user_id);
+alter table lien add constraint fk_lien_user_8 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_lien_user_8 on lien (user_id);
+alter table talk add constraint fk_talk_speaker_9 foreign key (speaker_id) references user (id) on delete restrict on update restrict;
+create index ix_talk_speaker_9 on talk (speaker_id);
+alter table talk add constraint fk_talk_event_10 foreign key (event_id) references event (id) on delete restrict on update restrict;
+create index ix_talk_event_10 on talk (event_id);
+alter table talk add constraint fk_talk_dureePreferee_11 foreign key (duree_preferee_id) references creneau (id) on delete restrict on update restrict;
+create index ix_talk_dureePreferee_11 on talk (duree_preferee_id);
+alter table talk add constraint fk_talk_dureeApprouve_12 foreign key (duree_approuve_id) references creneau (id) on delete restrict on update restrict;
+create index ix_talk_dureeApprouve_12 on talk (duree_approuve_id);
+alter table user add constraint fk_user_credentials_13 foreign key (credentials_id) references credentials (id) on delete restrict on update restrict;
+create index ix_user_credentials_13 on user (credentials_id);
+alter table vote add constraint fk_vote_user_14 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_vote_user_14 on vote (user_id);
+alter table vote add constraint fk_vote_talk_15 foreign key (talk_id) references talk (id) on delete restrict on update restrict;
+create index ix_vote_talk_15 on vote (talk_id);
 
 
 
@@ -192,37 +221,61 @@ alter table user_talk add constraint fk_user_talk_talk_02 foreign key (talk_id) 
 
 # --- !Downs
 
-SET FOREIGN_KEY_CHECKS=0;
+SET REFERENTIAL_INTEGRITY FALSE;
 
-drop table comment;
+drop table if exists comment;
 
-drop table credentials;
+drop table if exists credentials;
 
-drop table creneau;
+drop table if exists creneau;
 
-drop table creneau_talk;
+drop table if exists creneau_talk;
 
-drop table dynamic_field;
+drop table if exists dynamic_field;
 
-drop table dynamic_field_value;
-
-drop table lien;
-
-drop table tag;
+drop table if exists dynamic_field_value;
 
 drop table if exists event;
 
-drop table tag_talk;
+drop table if exists lien;
 
-drop table talk;
+drop table if exists tag;
 
-drop table user_talk;
+drop table if exists tag_talk;
 
-drop table user;
+drop table if exists talk;
 
-drop table vote;
+drop table if exists user_talk;
 
-drop table vote_status;
+drop table if exists user;
 
-SET FOREIGN_KEY_CHECKS=1;
+drop table if exists vote;
+
+drop table if exists vote_status;
+
+SET REFERENTIAL_INTEGRITY TRUE;
+
+drop sequence if exists comment_seq;
+
+drop sequence if exists credentials_seq;
+
+drop sequence if exists creneau_seq;
+
+drop sequence if exists dynamic_field_seq;
+
+drop sequence if exists dynamic_field_value_seq;
+
+drop sequence if exists event_seq;
+
+drop sequence if exists lien_seq;
+
+drop sequence if exists tag_seq;
+
+drop sequence if exists talk_seq;
+
+drop sequence if exists user_seq;
+
+drop sequence if exists vote_seq;
+
+drop sequence if exists vote_status_seq;
 

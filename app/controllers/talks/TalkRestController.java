@@ -139,15 +139,7 @@ public class TalkRestController extends Controller {
                 talkJson.put("id", talk.id);
                 talkJson.put("title", talk.title);
 
-                ArrayNode creneaux = new ArrayNode(JsonNodeFactory.instance);
-                for (Creneau creneau : talk.getCreneaux()) {
-                    ObjectNode creneauJson = Json.newObject();
-                    creneauJson.put("id", creneau.getId());
-                    creneauJson.put("libelle", creneau.getLibelle());
-                    creneauJson.put("dureeMinutes", creneau.getDureeMinutes());
-                    creneaux.add(creneauJson);
-                }
-                talkJson.put("creneaux", creneaux);
+
                 if (talk.dureePreferee != null) {
                     talkJson.put("dureePreferee", talk.dureePreferee.getId());
                 } else {
@@ -215,12 +207,9 @@ public class TalkRestController extends Controller {
             if (Talk.findByTitle(formTalk.title) != null) {
                 return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.talk.already.exist"))));
             }
-            if (formTalk.getCreneaux() == null || formTalk.getCreneaux().isEmpty()) {
-                return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.talk.creneaux.empty"))));
-            }
+
             formTalk.draft = true;
             formTalk.save();
-            formTalk.saveManyToManyAssociations("creneaux");
             List<User> coSpeakersInDb = new ArrayList<User>();
             for (User coSpeaker : formTalk.getCoSpeakers()) {
                 coSpeakersInDb.add(User.findById(coSpeaker.id));
@@ -252,7 +241,6 @@ public class TalkRestController extends Controller {
             dbTalk.draft = true;
             dbTalk.save();
             updateCoSpeakers(formTalk, dbTalk);
-            updateCreneaux(formTalk, dbTalk);
             updateTags(talkForm.data().get("tagsname"), dbTalk);
         }
 
@@ -261,35 +249,6 @@ public class TalkRestController extends Controller {
         return noContent();
     }
 
-    private static void updateCreneaux(Talk formTalk, Talk dbTalk) {
-        Set<Long> creneauxInForm = new HashSet<Long>();
-        for (Creneau creneau : formTalk.getCreneaux()) {
-            creneauxInForm.add(creneau.getId());
-        }
-        List<Creneau> creneauxTmp = new ArrayList<Creneau>(dbTalk.getCreneaux());
-        Set<Long> creneauxInDb = new HashSet<Long>();
-        for (Creneau creneau : creneauxTmp) {
-            if (!creneauxInForm.contains(creneau.getId())) {
-                dbTalk.getCreneaux().remove(creneau);
-            } else {
-                creneauxInDb.add(creneau.getId());
-            }
-        }
-
-        // ajout des creneaux ajoutés dans la liste
-        for (Long idCreneau : creneauxInForm) {
-            if (!creneauxInDb.contains(idCreneau)) {
-                dbTalk.getCreneaux().add(Creneau.find.byId(idCreneau));
-            }
-        }
-        dbTalk.saveManyToManyAssociations("creneaux");
-
-        dbTalk.dureePreferee = formTalk.dureePreferee;
-        //formTalk.dureePreferee.talksPrefere.add(dbTalk);
-        //formTalk.dureePreferee.save();
-
-        dbTalk.update();
-    }
 
     private static void updateCoSpeakers(Talk formTalk, Talk dbTalk) {
         Set<Long> coSpeakersInForm = new HashSet<Long>();
@@ -397,11 +356,6 @@ public class TalkRestController extends Controller {
         }
         talk.saveManyToManyAssociations("tags");
 
-        List<Creneau> creneauxTmp = new ArrayList<Creneau>(talk.getCreneaux());
-        for (Creneau creneau : creneauxTmp) {
-            talk.getCreneaux().remove(creneau);
-        }
-        talk.saveManyToManyAssociations("creneaux");
         List<User> coSpeakersTmp = new ArrayList<User>(talk.getCoSpeakers());
         for (User coSpeaker : coSpeakersTmp) {
             talk.getCoSpeakers().remove(coSpeaker);
@@ -704,14 +658,6 @@ public class TalkRestController extends Controller {
                 talkCsv.formatPrefere = talk.dureePreferee.getLibelle();
             }
 
-            StringBuilder builderFormats = new StringBuilder();
-            for (Creneau creneau : talk.getCreneaux()) {
-                if (builderFormats.length() > 0) {
-                    builderFormats.append('\n');
-                }
-                builderFormats.append(creneau.getLibelle());
-            }
-            talkCsv.formats = builderFormats.toString();
 
             talkCsv.description = talk.description;
             talkCsv.indicationsOrganisateurs = talk.indicationsOrganisateurs;

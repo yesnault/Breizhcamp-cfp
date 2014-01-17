@@ -102,24 +102,19 @@ public class Talk extends Model {
     public List<Comment> getCommentsFiltered() {
         return commentsFiltered;
     }
-    @ManyToMany(mappedBy = "talks")
-    private List<Creneau> creneaux;
     @ManyToOne
+    @Constraints.Required
     public Creneau dureePreferee;
+
     @ManyToOne
     public Creneau dureeApprouve;
 
-    public List<Creneau> getCreneaux() {
-        if (creneaux == null) {
-            creneaux = new ArrayList<Creneau>();
-        }
-        return creneaux;
-    }
+
     public static Finder<Long, Talk> find = new Finder<Long, Talk>(Long.class, Talk.class);
 
     public static List<Talk> findAllForDisplay() {
-        return find.select("id, title, creneaux, dureePreferee, dureeApprouve, statusTalk, speaker.id, speaker.fullname, speaker.avatar")
-                .fetch("speaker").fetch("dureePreferee").fetch("dureeApprouve").fetch("creneaux").findList();
+        return find.select("id, title,  dureePreferee, dureeApprouve, statusTalk, speaker.id, speaker.fullname, speaker.avatar")
+                .fetch("speaker").fetch("dureePreferee").fetch("dureeApprouve").findList();
     }
 
     public static int findNbTalks() {

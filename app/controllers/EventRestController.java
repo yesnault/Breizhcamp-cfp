@@ -6,9 +6,7 @@ import models.User;
 import models.utils.TransformValidationErrors;
 import play.data.Form;
 import play.i18n.Messages;
-import play.mvc.Controller;
 import play.mvc.Result;
-import securesocial.core.Identity;
 import securesocial.core.java.SecureSocial;
 
 import java.util.Collections;

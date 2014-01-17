@@ -41,25 +41,16 @@
                     </div>
                     
                     <div class="form-group {{{true:'error', false:''}[errors.tags != undefined]}}">
-                        <label class="control-label" for="creneaux">Tags :</label>
+                        <label class="control-label" for="tags">Tags :</label>
                         <div class="controls">
                             <input type="text" id="tags" name="tags" ng-model="talk.tagsname"  placeholder="Tags séparés par une virgule" class="input-xxlarge" >
                             <p class="help-inline" ng-repeat="error in errors.tags">{{error}}</p>
                         </div>
                     </div>
-                    <div class="form-group {{{true:'error', false:''}[errors.creneaux != undefined]}}">
-                        <label class="control-label" for="creneaux">Creneaux</label>
-                        <div class="controls">
-                            <select id="creneaux" name="creneaux" multiple="true" ng-model="talk.creneaux" ng-options="creneau.libelle + ' (' + creneau.dureeMinutes + 'min)' for creneau in creneaux"></select>
-                            <p class="help-inline" ng-repeat="error in errors.creneaux">{{error}}</p>
-                            <p class="help-inline" ng-repeat="creneau in talk.creneaux">
-                                <span class="label" title="{{creneau.description}}">{{creneau.libelle + ' (' + creneau.dureeMinutes + 'min)'}}</span>
-                            </p>
-                        </div>
-                    </div>
+
 
                     <div class="form-group {{{true:'error', false:''}[errors.dureePreferee != undefined]}}">
-                        <label class="control-label" for="dureePreferee">Creneau Optimal</label>
+                        <label class="control-label" for="dureePreferee">Creneau</label>
                         <div class="controls">
                             <select id="dureePreferee" name="dureePreferee" ng-change="changeDureePreferee(talk.dureePreferee.id, talk, creneaux)" ng-model="talk.dureePreferee.id" ng-options="creneau.id as creneau.libelle + ' (' + creneau.dureeMinutes + 'min)' for creneau in creneaux"></select>
                             <p class="help-inline" ng-repeat="error in errors.dureePreferee">{{error}}</p>

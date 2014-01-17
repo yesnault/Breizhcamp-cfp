@@ -29,10 +29,6 @@ public class Creneau extends Model {
     private String description;
 
     private Integer nbInstance;
-    
-    @OneToMany(mappedBy ="dureePreferee")
-    @JsonIgnore
-    public List<Talk> talksPrefere;
 
     @ManyToOne
     public Event event;

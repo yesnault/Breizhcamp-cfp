@@ -52,7 +52,6 @@ error.sending.confirm.email=Erreur lors de l'envoi du mail de confirmation
 error.email.already.exist=Cette adresse mail est déjà utilisée
 error.email.required=l'adresse mail est obligatoire
 error.talk.already.exist=Ce talk existe déjà
-error.talk.creneaux.empty=Un créneau doit être sélectionné.
 error.account.already.validated=Votre compte est déjà validé
 error.unknown.email=Adresse mail inconnue
 error.confirm=Error lors de la confirmation de votre inscription
