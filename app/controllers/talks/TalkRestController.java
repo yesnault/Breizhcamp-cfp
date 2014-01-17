@@ -248,6 +248,7 @@ public class TalkRestController extends Controller {
             }
             dbTalk.title = formTalk.title;
             dbTalk.description = formTalk.description;
+            dbTalk.indicationsOrganisateurs = formTalk.indicationsOrganisateurs;
             dbTalk.draft = true;
             dbTalk.save();
             updateCoSpeakers(formTalk, dbTalk);
@@ -676,6 +677,9 @@ public class TalkRestController extends Controller {
         @CsvColumn(value = "description", order = 7)
         public String description;
 
+        @CsvColumn(value = "indicationsOrganisateurs", order = 8)
+        public String indicationsOrganisateurs;
+
 
         public static TalkCsv fromTalk(Talk talk) {
             TalkCsv talkCsv = new TalkCsv();
@@ -710,6 +714,7 @@ public class TalkRestController extends Controller {
             talkCsv.formats = builderFormats.toString();
 
             talkCsv.description = talk.description;
+            talkCsv.indicationsOrganisateurs = talk.indicationsOrganisateurs;
             return talkCsv;
         }
     }

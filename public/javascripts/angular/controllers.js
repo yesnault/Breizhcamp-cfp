@@ -160,6 +160,9 @@ function NewTalkController($scope, $log, $location, TalkService, CreneauxService
     $scope.editor = new Markdown.Editor($scope.converter);
     $scope.editor.run();
 
+    $scope.editorIndication = new Markdown.Editor($scope.converter, '-indications');
+    $scope.editorIndication.run();
+
     $scope.saveTalk = function() {
         $log.info("Soummission du nouveau talk");
 
@@ -240,6 +243,9 @@ function EditTalkController($scope, $log, $location, $routeParams, TalkService, 
     $scope.converter = new Markdown.getSanitizingConverter();
     $scope.editor = new Markdown.Editor($scope.converter);
     $scope.editor.run();
+
+    $scope.editorIndication = new Markdown.Editor($scope.converter, '-indications');
+    $scope.editorIndication.run();
 
     $scope.saveTalk = function() {
         $log.info("Sauvegarde du talk : " + $routeParams.talkId);
@@ -422,6 +428,14 @@ function ListTalksController($scope, $log,http, AllTalkService, VoteService,Talk
         });
     };
 
+
+    $scope.converter = new Markdown.getSanitizingConverter();
+    $scope.getSafeHtml = function(value) {
+        if (value) {
+            return $scope.converter.makeHtml(value);
+        }
+    }
+
     $scope.postVote = function(talk) {
         $log.info("postVote");
         $log.info(talk);
@@ -497,6 +511,12 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http, VoteS
     $scope.getSafeDescription = function() {
         if ($scope.talk.description) {
             return $scope.converter.makeHtml($scope.talk.description);
+        }
+    }
+
+    $scope.getSafeIndications = function() {
+        if ($scope.talk.indicationsOrganisateurs) {
+            return $scope.converter.makeHtml($scope.talk.indicationsOrganisateurs);
         }
     }
 

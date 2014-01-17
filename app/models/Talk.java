@@ -29,6 +29,12 @@ public class Talk extends Model {
     @Formats.NonEmpty
     @Column(length = 2000)
     public String description;
+
+    @Constraints.MaxLength(1000)
+    @Formats.NonEmpty
+    @Column(length = 1000)
+    public String indicationsOrganisateurs;
+
     @ManyToOne
     public User speaker;
     @ManyToMany(mappedBy = "coSpeakedTalks")
