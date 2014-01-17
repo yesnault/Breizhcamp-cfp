@@ -5,6 +5,7 @@ import static play.data.Form.form;
 
 import java.util.*;
 
+import controllers.BaseController;
 import models.DynamicField;
 import models.DynamicFieldJson;
 import models.DynamicFieldValue;
@@ -25,13 +26,7 @@ import securesocial.core.Identity;
 import securesocial.core.java.SecureSocial;
 
 @SecureSocial.SecuredAction(ajaxCall=true)
-public class Account extends Controller {
-
-    public static User getLoggedUser() {
-        Identity socialUser = (Identity) ctx().args.get(SecureSocial.USER_KEY);
-        User user = User.findByExternalId(socialUser.identityId().userId(), socialUser.identityId().providerId());
-        return user;
-    }
+public class Account extends BaseController {
 
     // Utilisé par le json.
     public static Result getUser(Long id) {

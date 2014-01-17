@@ -17,13 +17,7 @@ import securesocial.core.Identity;
 import securesocial.core.java.SecureSocial;
 
 @SecureSocial.SecuredAction(ajaxCall = true)
-public class CreneauRestController extends Controller {
-
-    private static User getLoggedUser() {
-        Identity socialUser = (Identity) ctx().args.get(SecureSocial.USER_KEY);
-        User user = User.findByExternalId(socialUser.identityId().userId(), socialUser.identityId().providerId());
-        return user;
-    }
+public class CreneauRestController extends BaseController {
 
     public static Result get(Long idCreneau) {
         Creneau creneau = Creneau.find.byId(idCreneau);

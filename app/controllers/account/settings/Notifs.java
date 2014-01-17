@@ -1,5 +1,6 @@
 package controllers.account.settings;
 
+import controllers.BaseController;
 import models.User;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -10,13 +11,7 @@ import securesocial.core.Identity;
 import securesocial.core.java.SecureSocial;
 
 @SecureSocial.SecuredAction(ajaxCall=true)
-public class Notifs extends Controller {
-
-    public static User getLoggedUser() {
-        Identity socialUser = (Identity) ctx().args.get(SecureSocial.USER_KEY);
-        User user = User.findByExternalId(socialUser.identityId().userId(), socialUser.identityId().providerId());
-        return user;
-    }
+public class Notifs extends BaseController {
 
     public static Result save() {
 

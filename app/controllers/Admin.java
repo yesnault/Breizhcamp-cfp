@@ -19,13 +19,7 @@ import securesocial.core.Identity;
 import securesocial.core.java.SecureSocial;
 
 @SecureSocial.SecuredAction(ajaxCall = true)
-public class Admin extends Controller {
-
-    public static User getLoggedUser() {
-        Identity socialUser = (Identity) ctx().args.get(SecureSocial.USER_KEY);
-        User user = User.findByExternalId(socialUser.identityId().userId(), socialUser.identityId().providerId());
-        return user;
-    }
+public class Admin extends BaseController {
 
     public static Result editProfil(Long id) {
         User userRequest = getLoggedUser();

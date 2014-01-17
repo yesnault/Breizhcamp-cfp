@@ -15,13 +15,7 @@ import securesocial.core.Identity;
 import securesocial.core.java.SecureSocial;
 
 @SecureSocial.SecuredAction(ajaxCall = true)
-public class DynamicFieldRestController extends Controller {
-
-    private static User getLoggedUser() {
-        Identity socialUser = (Identity) ctx().args.get(SecureSocial.USER_KEY);
-        User user = User.findByExternalId(socialUser.identityId().userId(), socialUser.identityId().providerId());
-        return user;
-    }
+public class DynamicFieldRestController extends BaseController {
 
     public static Result get(Long idDynamicField) {
         DynamicField dynamicField = DynamicField.find.byId(idDynamicField);

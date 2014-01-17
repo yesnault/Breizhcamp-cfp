@@ -20,13 +20,7 @@ import static play.data.Form.form;
 import static play.libs.Json.toJson;
 
 @SecureSocial.SecuredAction(ajaxCall = true)
-public class EventRestController extends Controller {
-
-    private static User getLoggedUser() {
-        Identity socialUser = (Identity) ctx().args.get(SecureSocial.USER_KEY);
-        User user = User.findByExternalId(socialUser.identityId().userId(), socialUser.identityId().providerId());
-        return user;
-    }
+public class EventRestController extends BaseController {
 
     public static Result get(Long idEvent) {
         Event event = Event.find.byId(idEvent);
