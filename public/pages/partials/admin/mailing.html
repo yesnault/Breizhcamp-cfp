@@ -1,40 +1,49 @@
 <div class="row">
-	<div class="col-md-8">
-        <form class="form-horizontal" ng-submit="sendMail()">
-            <fieldset>
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <div class="well">
+            <form class="form-horizontal" ng-submit="sendMail()">
+                <fieldset>
 
-                <div class="form-group">
-                    <label class="control-label" for="status">Choix du status auquel envoyé le mail</label>
-                    <div class="controls">
-                        <select id="status" name="status" ng-model="status" required>
-                            <option value="REJETE" >Rejeté</option>
-                            <option value="ACCEPTE" >Accepté</option>
-                            <option value="ATTENTE" >Attente</option>
-                        </select>
+                    <div class="form-group">
+                        <label class="control-label" for="status">Choix du status auquel envoyé le mail</label>
+
+                        <div class="controls">
+                            <select id="status" name="status" ng-model="status" required>
+                                <option value="REJETE">Rejeté</option>
+                                <option value="ACCEPTE">Accepté</option>
+                                <option value="ATTENTE">Attente</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <label class="control-label" for="subject">Sujet du mail</label>
-                    <div class="controls">
-                        <input id="subject" type="text" ng-model="subject" class="input-xxlarge" required></textarea>
+                    <div class="form-group">
+                        <label class="control-label" for="subject">Sujet du mail</label>
+
+                        <div class="controls">
+                            <input id="subject" type="text" ng-model="subject" class="input-xxlarge"
+                                   required></textarea>
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <label class="control-label" for="wmd-input">Contenu du mail</label>
-                    <div class="controls">
-                        <div id="wmd-button-bar"></div>
-                        <textarea id="wmd-input"  name="mail" class="wmd-input" rows="10" ng-model="mail" maxlength="2000" required></textarea>
-                        <div id="wmd-preview" class="wmd-preview" pagedown-init="mail"></div>
+                    <div class="form-group">
+                        <label class="control-label" for="wmd-input">Contenu du mail</label>
+
+                        <div class="controls">
+                            <div id="wmd-button-bar"></div>
+                            <textarea id="wmd-input" name="mail" class="wmd-input" rows="10" ng-model="mail"
+                                      maxlength="2000" required></textarea>
+
+                            <div id="wmd-preview" class="wmd-preview" pagedown-init="mail"></div>
+                        </div>
                     </div>
+                </fieldset>
+
+
+                <div class="form-actions">
+                    <input type="submit" class="btn btn-primary" value="Envoyer"/>
                 </div>
-            </fieldset>
-
-
-            <div class="form-actions">
-                <input type="submit" class="btn btn-primary" value="Envoyer"/>
-            </div>
-        </form>
-	</div>
+            </form>
+        </div>
+    </div>
 </div>

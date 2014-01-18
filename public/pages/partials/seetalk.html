@@ -16,10 +16,13 @@
                     <li ng-repeat="coSpeaker in talk.coSpeakers"><a ng-href="/#/profil/{{coSpeaker.id}}" >{{coSpeaker.fullname}}</a></li>
                 </ul>
             </p>
+            <p>Description :</p>
             <div class="well" ng-bind-html-unsafe="getSafeDescription()"></div>
-            <div class="well" ng-bind-html-unsafe="getSafeIndications()" ng-show="talk.indicationsOrganisateurs"></div>
+            <p ng-show="talk.indicationsOrganisateurs && userService.isAdmin()">Indications organisateurs :</p>
+            <div class="well" ng-bind-html-unsafe="getSafeIndications()" ng-show="talk.indicationsOrganisateurs && userService.isAdmin()"></div>
             <p></p>
             <div class="well" ng-show="userService.isAdmin()">
+                <p>Creneau choisi par le speaker : {{talk.dureePreferee.libelle}}</p>
                 <form ng-submit="postStatus()" method="POST" class="form-inline">
 
                     <div class="form-group {{{true:'error', false:''}[errors.status != undefined]}}">
@@ -33,7 +36,7 @@
                             </select>
 
 
-                            <select id="dureeApprouve" name="dureeApprouve" ng-model="talk.dureeApprouve.id" ng-options="creneau.id as creneau.libelle + ' (' + creneau.dureeMinutes + 'min)' for creneau in talk.creneaux"></select>
+                            <select id="dureeApprouve" name="dureeApprouve" ng-model="talk.dureeApprouve.id" ng-options="creneau.id as creneau.libelle + ' (' + creneau.dureeMinutes + 'min)' for creneau in creneaux"></select>
 
                             <p class="help-inline" ng-repeat="error in errors.status">{{error}}</p>
                         </div>

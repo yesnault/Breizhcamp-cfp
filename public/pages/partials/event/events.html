@@ -3,13 +3,13 @@
 
     <div class="col-md-12">
         <p>
-            <a href="#/admin/event/new"><button class="btn">Créer un événement</button></a>
+            <a href="#/admin/event/new"><button class="btn btn-primary">Créer un événement</button></a>
         </p>
         <table class="table table-bordered table-striped">
             <tbody><tr>
-                <th class="col-md-2"><a ng-click="predicate = 'event.name'; reverse=!reverse">Nom</a></th>
+                <th class="col-md-4"><a ng-click="predicate = 'event.name'; reverse=!reverse">Nom</a></th>
                 <th class="col-md-6">Description</th>
-                <th class="col-md-6">Actif</th>
+                <th class="col-md-3">Actif</th>
                 <th class="col-md-1">Actions</th>
             </tr>
 
@@ -20,7 +20,7 @@
                 </td>
                 <td><a  class="btn" ng-click="closeEvent(event)">{{!event.clos}}</a>
                 </td>
-                <td><a  class="btn" ng-click="deleteEvent(event)" >Supprimer</a></td>
+                <td><a  class="btn" ng-click="deleteEvent(event)" ><i class="icon-remove"></i></a></td>
             </tr>
 
             </tbody>

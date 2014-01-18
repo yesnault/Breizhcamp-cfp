@@ -491,8 +491,8 @@ function VoteController($scope, $log, VoteService, $http) {
 }
 
 
-SeeTalksController.$inject = ['$scope', '$log', '$routeParams', 'TalkService', '$http', 'VoteService', 'UserService'];
-function SeeTalksController($scope, $log, $routeParams, TalkService, http, VoteService, UserService) {
+SeeTalksController.$inject = ['$scope', '$log', '$routeParams', 'TalkService', '$http', 'VoteService', 'UserService','CreneauxService'];
+function SeeTalksController($scope, $log, $routeParams, TalkService, http, VoteService, UserService,CreneauxService ) {
 
     $scope.checkloc(false);
 
@@ -504,6 +504,8 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http, VoteS
     });
 
     $scope.voteStatus = VoteService.getVote();
+
+    $scope.creneaux = CreneauxService.query();
 
     $scope.commentE = Array();
 

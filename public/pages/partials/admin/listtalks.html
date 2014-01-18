@@ -70,13 +70,13 @@
             <tr>
                 <th class="col-md-2"><a ng-click="predicate = 'speaker.fullname'; reverse=!reverse">Speaker</a></th>
                 <th class="col-md-6"><a ng-click="predicate = 'title'; reverse=!reverse">Titre</a></th>
-                <th class="col-md-6">Créneau</th>
-                <th class="col-md-2">Statut</th>
+                <th class="col-md-1">Créneau</th>
+                <th class="col-md-1">Statut</th>
                 <th class="col-md-1">Note</th>
                 <th class="col-md-1" ng-show="vote.status == 'CLOSED'"><a
                         ng-click="predicate = 'moyenne'; reverse=!reverse">Moyenne</a></th>
                 <th class="col-md-1" ng-show="vote.status == 'CLOSED'">Nb Votes</th>
-                <th class="col-md-1">Actions</th>
+                <th class="col-md-2">Actions</th>
             </tr>
 
             <tr ng-repeat="talk in talks | filter:doStatus | orderBy:predicate:reverse ">
@@ -115,7 +115,7 @@
                                     <div ng-show="talkModal.speaker != null"><a
                                             ng-href="/#/profil/{{talkModal.speaker.id}}" data-dismiss="modal"><img
                                             ng-src="{{talkModal.speaker.avatar}}" style="height : 30px"
-                                            class="img-rounded"> {{talk.speaker.fullname}}</a></div>
+                                            class="img-rounded"> {{talkModal.speaker.fullname}}</a></div>
                                     <div ng-show="talkModal.speaker == null">Compte Supprimé</div>
                                     </p>
                                     <ul>

@@ -159,7 +159,11 @@ public class TalkRestController extends BaseController {
 
 
                 if (talk.dureePreferee != null) {
-                    talkJson.put("dureePreferee", talk.dureePreferee.getId());
+                    ObjectNode dureePrefereeJson = Json.newObject();
+                    dureePrefereeJson.put("id", talk.dureePreferee.getId());
+                    dureePrefereeJson.put("dureeMinutes", talk.dureePreferee.getDureeMinutes());
+                    dureePrefereeJson.put("libelle", talk.dureePreferee.getLibelle());
+                    talkJson.put("dureePreferee", dureePrefereeJson);
                 } else {
                     talkJson.putNull("dureePreferee");
                 }
@@ -255,6 +259,7 @@ public class TalkRestController extends BaseController {
             }
             dbTalk.title = formTalk.title;
             dbTalk.description = formTalk.description;
+            dbTalk.dureePreferee = formTalk.dureePreferee;
             dbTalk.indicationsOrganisateurs = formTalk.indicationsOrganisateurs;
             dbTalk.draft = true;
             dbTalk.save();

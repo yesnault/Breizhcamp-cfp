@@ -1,8 +1,9 @@
 <div class="row">
+    <div class="col-md-2"></div>
 	<div class="col-md-6">
 
         <p>
-            <a href="#/admin/dynamicfield/new"><button class="btn">Nouveau champ dynamic</button></a>
+            <a href="#/admin/dynamicfield/new"><button class="btn btn-primary">Nouveau champ dynamic</button></a>
         </p>
         <p>
             <span class="badge badge-important" ng-repeat="error in errors['']">{{error}}</span>
@@ -11,14 +12,13 @@
 		<table class="table table-bordered table-striped">
 			<tbody>
 				<tr>
-					<th class="col-md-3">Nom</th>
-					<th></th>
-					<th></th>
+					<th class="col-md-6">Nom</th>
+					<th class="col-md-2">Actions</th>
 				</tr>
 				<tr ng-repeat="dynamicField in dynamicFields">
 					<td>{{dynamicField.name}}</td>
-					<td><a href="#/admin/dynamicfield/edit/{{dynamicField.id}}" ><i class="icon-pencil"></i></a></td>
-					<td><a ng-click="deleteDynamicField(dynamicField)"><i class="icon-remove"></i></a></td>
+					<td><a href="#/admin/dynamicfield/edit/{{dynamicField.id}}" ><i class="icon-pencil"></i></a>
+                         <a ng-click="deleteDynamicField(dynamicField)"><i class="icon-remove"></i></a></td>
 				</tr>
 			</tbody>
 		</table>
