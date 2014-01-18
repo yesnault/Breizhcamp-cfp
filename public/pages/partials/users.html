@@ -1,40 +1,50 @@
 <div class="row">
     <div ng-repeat="user in users">
-    <div class="modal fade" id="deleteCompte{{user.id}}">
-        <div class="modal-header">
-            <a class="close" data-dismiss="modal">&times;</a>
-            <h3>Suppression du Compte</h3>
+        <div id="deleteCompte{{user.id}}" class="modal fade" tabindex="-1" role="dialog"
+             aria-labelledby="talkLabel{{talk.id}}" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a class="close" data-dismiss="modal">&times;</a>
+
+                        <h3>Suppression du Compte</h3>
+                    </div>
+                    <div class="modal-body">
+                        <p>Attention, le compte va être supprimé.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#" class="btn" data-dismiss="modal">Annuler</a>
+
+                        <form ng-submit="deleteCompte({{user.id}})" name="formdelete{{user.id}}">
+                            <input type="submit" class="btn btn-primary" value="Supprimer"/>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="modal-body">
-            <p>Attention, le compte va être supprimé.</p>
-        </div>
-        <div class="modal-footer">
-            <a href="#" class="btn" data-dismiss="modal">Annuler</a>
-            <form ng-submit="deleteCompte({{user.id}})" name="formdelete{{user.id}}">
-                <input type="submit" class="btn btn-primary" value="Supprimer" />
-            </form>
-        </div>
-    </div>
     </div>
 
     <form ng-submit="submitUsers()">
 
         <table class="table table-bordered table-striped">
-            <tbody><tr>
-                <th>Utilisateur</th>
-                <th>Email</th>
+            <tbody>
+            <tr>
+                <th><a ng-click="predicate = 'fullname'; reverse=!reverse">Utilisateur</a></th>
+                <th><a ng-click="predicate = 'email'; reverse=!reverse">Email</a></th>
                 <th>Provider</th>
                 <th>Admin</th>
                 <th>Actions</th>
             </tr>
 
-            <tr ng-repeat="user in users">
-                <td><a ng-href="/#/profil/{{user.id}}" >{{user.fullname}}</a></td>
+            <tr ng-repeat="user in users  | orderBy:predicate:reverse">
+                <td><a ng-href="/#/profil/{{user.id}}">{{user.fullname}}</a></td>
                 <td>{{user.email}}<input type="hidden" name="email" ng-model="user.email" value="{{user.email}}"></td>
                 <td>{{user.provider}}</td>
-                <td><input type="checkbox" name="{{user.email}}" ng-model="user.admin" checked="{{{true:'checked', false:''}[user.admin]}}"></td>
+                <td><input type="checkbox" name="{{user.email}}" ng-model="user.admin"
+                           checked="{{{true:'checked', false:''}[user.admin]}}"></td>
                 <td>
-                 <a  ng-show="!user.admin" class="btn" href="#deleteCompte{{user.id}}" data-toggle="modal">Supprimer</a></td>
+                    <a ng-show="!user.admin" class="btn" href="#deleteCompte{{user.id}}"
+                       data-toggle="modal"><i class="icon-remove"></i></a></td>
             </tr>
 
             </tbody>
@@ -52,7 +62,6 @@
 
 
     </form>
-
 
 
 </div>
