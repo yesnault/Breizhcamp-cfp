@@ -9,7 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class Event extends Model{
+public class Event extends Model {
 
     @Id
     private Long id;
@@ -33,6 +33,29 @@ public class Event extends Model{
 
     public static Event findByName(String name) {
         return find.query().where().eq("name", name).findUnique();
+    }
+
+    public static Event findActif() {
+        return findActif(false);
+    }
+
+    public static Event findActif(boolean edit) {
+        Event event = find.query().where().eq("clos", false).findUnique();
+
+        if (event == null && !edit) {
+            if (Event.findByName("Evénement par défaut") == null) {
+                event = new Event();
+                event.setClos(false);
+                event.setName("Evénement par défaut");
+                event.save();
+            } else {
+                event = Event.findByName("Evénement par défaut");
+                event.setClos(false);
+                event.update();
+            }
+        }
+
+        return event;
     }
 
 
@@ -67,4 +90,6 @@ public class Event extends Model{
     public void setClos(boolean clos) {
         this.clos = clos;
     }
+
+
 }

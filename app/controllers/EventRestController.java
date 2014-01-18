@@ -71,6 +71,14 @@ public class EventRestController extends BaseController {
             if (Event.findByName(formEvent.getName()) != null) {
                 return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.event.already.exist"))));
             }
+
+            Event eventAvtif = Event.findActif(true);
+            if (eventAvtif != null) {
+                formEvent.setClos(true);
+            } else {
+                formEvent.setClos(false);
+            }
+
             formEvent.save();
         } else {
             // Mise à jour d'un événement
@@ -79,6 +87,12 @@ public class EventRestController extends BaseController {
                     && Event.findByName(formEvent.getName()) != null) {
                 return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.event.already.exist"))));
             }
+
+            Event eventAvtif = Event.findActif(true);
+            if (!formEvent.isClos() && eventAvtif != null && eventAvtif.getId() != dbEvent.getId()) {
+                return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.event.already.actif"))));
+            }
+
             dbEvent.setClos(formEvent.isClos());
             dbEvent.setDescription(formEvent.getDescription());
             dbEvent.update();

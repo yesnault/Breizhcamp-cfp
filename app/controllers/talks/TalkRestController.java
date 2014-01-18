@@ -236,6 +236,7 @@ public class TalkRestController extends BaseController {
             for (User coSpeaker : formTalk.getCoSpeakers()) {
                 coSpeakersInDb.add(User.findById(coSpeaker.id));
             }
+            formTalk.event = Event.findActif();
             formTalk.getCoSpeakers().clear();
             formTalk.getCoSpeakers().addAll(coSpeakersInDb);
             formTalk.saveManyToManyAssociations("coSpeakers");

@@ -5,6 +5,9 @@
         <p>
             <a href="#/admin/event/new"><button class="btn btn-primary">Créer un événement</button></a>
         </p>
+        <p>
+            <span class="badge badge-important" ng-repeat="error in errors['']">{{error}}</span>
+        </p>
         <table class="table table-bordered table-striped">
             <tbody><tr>
                 <th class="col-md-4"><a ng-click="predicate = 'event.name'; reverse=!reverse">Nom</a></th>

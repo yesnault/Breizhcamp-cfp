@@ -1172,6 +1172,7 @@ function EventController($scope, $log, EventService, $location) {
         }, function(err) {
             $log.info("(Dés)Activation de l'événement ko");
             $log.info(err.data);
+            eventToClose.clos = !eventToClose.clos;
             $scope.errors = err.data;
         });
     }
