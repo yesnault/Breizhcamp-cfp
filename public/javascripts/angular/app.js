@@ -13,21 +13,21 @@ App.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/submittalk/new', {templateUrl: '/assets/pages/partials/submittalk.html', controller: NewTalkController});
     $routeProvider.when('/edittalk/:talkId', {templateUrl: '/assets/pages/partials/submittalk.html', controller: EditTalkController});
     $routeProvider.when('/managetalk', {templateUrl: '/assets/pages/partials/managetalks.html', controller: ManageTalkController});
-    $routeProvider.when('/admin/users', {templateUrl: '/assets/pages/partials/users.html', controller: ManageUsersController});
-    $routeProvider.when('/admin/talks/list', {templateUrl: '/assets/pages/partials/listtalks.html', controller: ListTalksController});
-    $routeProvider.when('/admin/vote', {templateUrl: 'assets/pages/partials/vote.html', controller: VoteController});
-    $routeProvider.when('/admin/creneaux', {templateUrl: 'assets/pages/partials/creneaux.html', controller: CreneauxController});
-    $routeProvider.when('/admin/creneau/new', {templateUrl: 'assets/pages/partials/submitcreneau.html', controller: NewCreneauController});
-    $routeProvider.when('/admin/creneau/edit/:creneauId', {templateUrl: 'assets/pages/partials/submitcreneau.html', controller: EditCreneauController});
+    $routeProvider.when('/admin/users', {templateUrl: '/assets/pages/partials/admin/users.html', controller: ManageUsersController});
+    $routeProvider.when('/admin/talks/list', {templateUrl: '/assets/pages/partials/admin/listtalks.html', controller: ListTalksController});
+    $routeProvider.when('/admin/vote', {templateUrl: 'assets/pages/partials/admin/vote.html', controller: VoteController});
+    $routeProvider.when('/admin/creneaux', {templateUrl: 'assets/pages/partials/admin/creneaux.html', controller: CreneauxController});
+    $routeProvider.when('/admin/creneau/new', {templateUrl: 'assets/pages/partials/admin/submitcreneau.html', controller: NewCreneauController});
+    $routeProvider.when('/admin/creneau/edit/:creneauId', {templateUrl: 'assets/pages/partials/admin/submitcreneau.html', controller: EditCreneauController});
 
     $routeProvider.when('/admin/events', {templateUrl: 'assets/pages/partials/event/events.html', controller: EventController});
     $routeProvider.when('/admin/event/new', {templateUrl: 'assets/pages/partials/event/submit.html', controller: NewEventController});
     $routeProvider.when('/admin/event/edit/:eventId', {templateUrl: 'assets/pages/partials/event/submit.html', controller: EditEventController});
 
-    $routeProvider.when('/admin/dynamicfields', {templateUrl: 'assets/pages/partials/dynamicfields.html', controller: DynamicFieldsController});
-    $routeProvider.when('/admin/dynamicfield/new', {templateUrl: 'assets/pages/partials/submitdynamicfield.html', controller: NewDynamicFieldController});
-    $routeProvider.when('/admin/dynamicfield/edit/:dynamicFieldId', {templateUrl: 'assets/pages/partials/submitdynamicfield.html', controller: EditDynamicFieldController});
-    $routeProvider.when('/admin/mailing', {templateUrl: 'assets/pages/partials/mailing.html', controller: MailingController});
+    $routeProvider.when('/admin/dynamicfields', {templateUrl: 'assets/pages/partials/admin/dynamicfields.html', controller: DynamicFieldsController});
+    $routeProvider.when('/admin/dynamicfield/new', {templateUrl: 'assets/pages/partials/admin/submitdynamicfield.html', controller: NewDynamicFieldController});
+    $routeProvider.when('/admin/dynamicfield/edit/:dynamicFieldId', {templateUrl: 'assets/pages/partials/admin/submitdynamicfield.html', controller: EditDynamicFieldController});
+    $routeProvider.when('/admin/mailing', {templateUrl: 'assets/pages/partials/admin/mailing.html', controller: MailingController});
 
     $routeProvider.when('/talks/see/:talkId', {templateUrl: '/assets/pages/partials/seetalk.html', controller: SeeTalksController});
 
