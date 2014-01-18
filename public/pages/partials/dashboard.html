@@ -11,7 +11,7 @@
                     <a href="#/settings/account" class="btn btn-primary">Editer votre profil</a>
                 </p>
             </div>
-            <div class="col-md-8">
+            <div class="col-md-10">
                 <div class="well">
                     <h2>DASHBOARD</h2><br>
 
@@ -24,21 +24,42 @@
 
                 <div class="well">
                     <div ng-show="userService.isAdmin()">
-                        <h2>Status
-                            <h2>
-                                <h4>- Nb de Talks proposés : {{talkstats.nbTalks}}</h4>
-                                <h4>- Nb de Talks rejetés : {{talkstats.nbRejetes}}</h4>
-                                <h4>- Nb de Talks acceptés : {{talkstats.nbAcceptes}}</h4>
-                                <h4>- Nb de Talks en attente : {{talkstats.nbTalks - talkstats.nbRejetes -
-                                    talkstats.nbAcceptes}}</h4>
-                                <h4>- Nb de votes de {{user.fullname}} : {{talkstats.nbVotesUser}}</h4>
+                        <h2>Status</h2>
 
+                        <table class="table table-bordered table-striped">
+                            <tbody>
+                            <tr>
+                                <th class="col-md-2">Propositions (Draft)</th>
+                                <th class="col-md-2">Talks soumis</th>
+                                <th class="col-md-2">Talks rejetés</th>
+                                <th class="col-md-2">Talks acceptés</th>
+                                <th class="col-md-2">Talks en attente</th>
+                                <th class="col-md-2">Vos Votes</th>
+                            </tr>
+                            <tr>
+                                <td>{{talkstats.nbProposalDraft}}</td>
+                                <td>{{talkstats.nbTalks}}</td>
+                                <td>{{talkstats.nbRejetes}} / {{talkstats.nbTalks}}</td>
+                                <td>{{talkstats.nbAcceptes}} / {{talkstats.nbTalks}}</td>
+                                <td>{{talkstats.nbTalks - talkstats.nbRejetes -
+                                    talkstats.nbAcceptes}} / {{talkstats.nbTalks}}
+                                </td>
+                                <td>{{talkstats.nbVotesUser}} / {{talkstats.nbTalks}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                     <br/>
 
                     <h2><a ng-href="/#/managetalk">Talks</a></h2>
                     <h4 ng-show="!talks.length">
                         - Aucun talk proposé
+                    </h4>
+                    <h4 ng-show="talksDraft.length == 1">
+                        - 1 talk en édition
+                    </h4>
+                    <h4 ng-show="talksDraft.length > 1">
+                        - {{talks.length}} talks en édition
                     </h4>
                     <h4 ng-show="talks.length == 1">
                         - 1 talk proposé

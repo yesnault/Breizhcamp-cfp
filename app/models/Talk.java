@@ -117,8 +117,8 @@ public class Talk extends Model {
                 .fetch("speaker").fetch("dureePreferee").fetch("dureeApprouve").findList();
     }
 
-    public static int findNbTalks() {
-        return Ebean.createSqlQuery("select count(*) as c from talk").findUnique().getInteger("c");
+    public static int findNbTalks(boolean draft) {
+        return Ebean.createSqlQuery("select count(*) as c from talk where draft = :draft ").setParameter("draft",draft).findUnique().getInteger("c");
     }
 
     public static int findNbTalksAcceptes() {

@@ -133,6 +133,10 @@ Services.factory('ProfilService', function($resource) {
             return $resource('/user/:userId/talks').query({userId: userId});
         };
 
+        this.getProposals = function(userId) {
+            return $resource('/user/:userId/proposals').query({userId: userId});
+        };
+
         this.getTalksAccepted = function(userId) {
             return $resource('/user/:userId/talks/A').query({userId: userId});
         };

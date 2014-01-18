@@ -16,9 +16,7 @@ import play.Logger;
 import play.data.Form;
 import play.i18n.Messages;
 import play.libs.Json;
-import play.mvc.Controller;
 import play.mvc.Result;
-import securesocial.core.Identity;
 import securesocial.core.java.SecureSocial;
 
 import java.io.StringWriter;
@@ -55,7 +53,7 @@ public class TalkRestController extends BaseController {
 
         User user = getLoggedUser();
 
-        if (!user.id.equals(talk.speaker.id) && !talk.getCoSpeakers().contains(user) ) {
+        if (!user.id.equals(talk.speaker.id) && !talk.getCoSpeakers().contains(user)) {
             // On vérifie que le user est admin où le propriétaire du talk
             return forbidden(toJson(TransformValidationErrors.transform("Action non autorisée")));
         }
@@ -89,11 +87,35 @@ public class TalkRestController extends BaseController {
         User user = User.find.byId(userId);
 
 
-        List<Talk> talks = Talk.findBySpeaker(user);
-        for (Talk talk : talks) {
-            talk.fiteredComments(user);
-            talk.fiteredCoSpeakers();
-            talk.filtereSpeaker();
+        List<Talk> allTalks = Talk.findBySpeaker(user);
+        List<Talk> talks = new ArrayList<Talk>();
+        for (Talk talk : allTalks) {
+            if (!talk.draft) {
+                talk.fiteredComments(user);
+                talk.fiteredCoSpeakers();
+                talk.filtereSpeaker();
+
+                talks.add(talk);
+            }
+        }
+        return ok(toJson(talks));
+    }
+
+
+    public static Result getProposals(Long userId) {
+        User user = User.find.byId(userId);
+
+
+        List<Talk> allTalks = Talk.findBySpeaker(user);
+        List<Talk> talks = new ArrayList<Talk>();
+        for (Talk talk : allTalks) {
+            if (talk.draft) {
+                talk.fiteredComments(user);
+                talk.fiteredCoSpeakers();
+                talk.filtereSpeaker();
+
+                talks.add(talk);
+            }
         }
         return ok(toJson(talks));
     }
@@ -595,7 +617,8 @@ public class TalkRestController extends BaseController {
             return forbidden();
         }
         ObjectNode result = Json.newObject();
-        result.put("nbTalks", Talk.findNbTalks());
+        result.put("nbTalks", Talk.findNbTalks(false));
+        result.put("nbProposalDraft", Talk.findNbTalks(true));
         result.put("nbAcceptes", Talk.findNbTalksAcceptes());
         result.put("nbRejetes", Talk.findNbTalksRejetes());
         result.put("nbVotesUser", Vote.findNbVotesUser(user));

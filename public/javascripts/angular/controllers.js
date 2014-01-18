@@ -54,6 +54,7 @@ function DashboardController($rootScope, $scope, ProfilService, AccountService, 
     $rootScope.user = UserService.getUserData();
     
     $scope.talks = ProfilService.getTalks(idUser);
+    $scope.talksDraft = ProfilService.getProposals(idUser);
     $scope.talksok = ProfilService.getTalksAccepted(idUser);
     $scope.talksko = ProfilService.getTalksRefused(idUser);
     $scope.talks_w = ProfilService.getTalksWait(idUser);
