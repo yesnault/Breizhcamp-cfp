@@ -5,8 +5,17 @@
   templates compile.  The !important is important given that there may be 
   other selectors that are more specific or come later and might alter display.  
  */
-[ng\:cloak], [ng-cloak], .ng-cloak {
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
+}
+
+/* Align logo into brand name */
+a.navbar-brand { padding: 10px 15px; }
+
+/* Align avatar on navbar & set avatar size (10px more than line height) */
+.navbar .avatar {
+    margin: -5px 0;
+    height: 30px;
 }
 
 .menu {

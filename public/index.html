@@ -3,68 +3,78 @@
     <head>
         <meta charset="utf-8">
         <title>BreizhCamp CFP</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" type="image/png" href="/assets/img/favicon.png" />
         <link rel="stylesheet" media="screen" href="/assets/stylesheets/bootstrap.min.css">
         <link rel="stylesheet" media="screen" href="/assets/stylesheets/app.css" />
         <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
     </head>
     <body>
-        <div class="navbar navbar-inverse">
-            <div class="navbar-inner">
-                <div class="container-fluid">
-                    <a class="brand" href="/#/dashboard">
-                        <img src="/assets/img/breizhCampLogoWithText_30px.png">
-                    </a>
-                    <div class="nav-collapse">
-                        <ul class="nav">
-                            <li style="margin-top: 5px;">
-                                <a href="/#/dashboard">Home</a>
-                            </li>
-                            <li class="dropdown" ng-show="userService.isAuthenticated()" style="margin-top: 5px;" ng-cloak class="ng-cloak">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Proposals <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="/#/submitproposal/new">Soumettre un proposal</a></li>
-                                    <li><a href="/#/manageproposal">Gérer vos proposals</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
+        <div class="navbar navbar-inverse" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand"><img src="/assets/img/breizhCampLogoWithText_30px.png"></a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="/#/dashboard">Home</a></li>
+                        
+                        <li class="dropdown" ng-show="userService.isAuthenticated()" ng-cloak>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Proposals <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/#/submitproposal/new">Soumettre un proposal</a></li>
+                                <li><a href="/#/manageproposal">Gérer vos proposals</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    
+                    <!-- Right navbar -->
+                    <ul class="nav navbar-nav navbar-right" ng-show="userService.isAuthenticated()" ng-cloak>
 
-                    <div class="nav-collapse pull-right" ng-show="userService.isAuthenticated()" ng-cloak class="ng-cloak">
-                        <ul class="nav">
-                            <li ng-show="userService.isAdmin()" class="dropdown" style="margin-top: 5px;">
-                                <a href="#" data-toggle="dropdown" class="dropdown-toggle" >
-                                    <i class="icon-wrench icon-white"></i> Admin <b class="caret"></b>
-                                </a>
-                                <ul class="dropdown-menu pull-right" >
-                                    <li><a href="/#/admin/users"><i class="icon-user"></i>Utilisateurs</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="/#/admin/proposals/list"><i class="icon-list"></i>Liste des proposals</a>
-                                    <li><a href="/#/admin/mailing"><i class="icon-envelope"></i>Mailing</a>
-                                    <li><a href="/#/admin/vote"><i class="icon-ok"></i>Gestion des votes</a>
-                                    <li><a href="/#/admin/creneaux"><i class="icon-th-list"></i>Gestion des créneaux</a>
-                                    <li><a href="/#/admin/events"><i class="icon-th-list"></i>Gestion des événements</a>
-                                    <li><a href="/#/admin/dynamicfields"><i class="icon-edit"></i>Gestion des champs dynamiques</a>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <img ng-src="{{{true:userService.getUserData().avatar, false:''}[userService.getUserData()!=null]}}" style="height : 30px" class="img-rounded"/>
-                                    {{userService.getUserData().fullname}}  <b class="caret"></b> 
-                                </a>
-                                <ul class="dropdown-menu pull-right">
-                                    <li><a href="/#/settings/account"><i class="icon-wrench"></i> settings</a></li>
-                                    <li class="divider"></li>
-                                    <li><a ng-click="logout()"><i class="icon-off"></i> D&eacute;connexion</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
+                        <!-- Admin dropdown -->
+                        <li class="dropdown" ng-show="userService.isAdmin()">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <span class="glyphicon glyphicon-wrench"></span> Admin <b class="caret"></b>
+                            </a>
+
+                            <ul class="dropdown-menu" >
+                                <li><a href="/#/admin/users"><span class="glyphicon glyphicon-user"></span> Utilisateurs</a></li>
+                                <li class="divider"></li>
+                                <li><a href="/#/admin/proposals/list"><span class="glyphicon glyphicon-list"></span> Liste des proposals</a>
+                                <li><a href="/#/admin/mailing"><span class="glyphicon glyphicon-envelope"></span> Mailing</a>
+                                <li><a href="/#/admin/vote"><span class="glyphicon glyphicon-ok"></span> Gestion des votes</a>
+                                <li><a href="/#/admin/creneaux"><span class="glyphicon glyphicon-th-list"></span> Gestion des créneaux</a>
+                                <li><a href="/#/admin/events"><span class="glyphicon glyphicon-th-list"></span> Gestion des événements</a>
+                                <li><a href="/#/admin/dynamicfields"><span class="glyphicon glyphicon-edit"></span> Gestion des champs dynamiques</a>
+                            </ul>
+                        </li>
+                        <!-- End Admin dropdown -->
+                        
+                        <!-- User dropdown -->
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <img ng-src="{{{true:userService.getUserData().avatar, false:''}[userService.getUserData()!=null]}}" class="img-rounded avatar"/>
+                                {{userService.getUserData().fullname}} <b class="caret"></b>
+                            </a>
+                            
+                            <ul class="dropdown-menu">
+                                <li><a href="/#/settings/account"><span class="glyphicon glyphicon-wrench"></span> Paramètres</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#" ng-click="logout()"><span class="glyphicon glyphicon-off"></span> D&eacute;connexion</a></li>
+                            </ul>
+                        </li>
+                        <!-- End User dropdown -->
+                    </ul>
                 </div>
             </div>
-
         </div>
-
+    
         <div class="container" ng-view></div>
 
         <script src="/assets/javascripts/lib/jquery-1.9.0.min.js"></script>
