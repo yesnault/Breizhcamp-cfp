@@ -9,6 +9,7 @@ import play.db.ebean.Model;
 
 import javax.persistence.*;
 import java.util.*;
+
 import models.utils.BooleanUtils;
 
 /**
@@ -20,12 +21,12 @@ public class User extends Model {
 
     @Id
     public Long id;
-    
+
     @Constraints.Required
     @Formats.NonEmpty
     @Column(unique = true)
     public String email;
-    
+
     @Constraints.Required
     @Formats.NonEmpty
     public String fullname;
@@ -40,17 +41,17 @@ public class User extends Model {
     @OneToOne(cascade = CascadeType.ALL)
     @JsonIgnore
     public Credentials credentials;
-    
+
     @Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date dateCreation;
 
     @Formats.NonEmpty
     public Boolean admin = false;
-    
+
     private Boolean notifOnMyTalk;
     private Boolean notifAdminOnAllTalk;
     private Boolean notifAdminOnTalkWithComment;
- 
+
     @Constraints.Pattern("^([0-9a-fA-F][0-9a-fA-F]:){5}([0-9a-fA-F][0-9a-fA-F])$")
     public String adresseMac;
 
@@ -71,7 +72,7 @@ public class User extends Model {
     @JsonIgnore
     public String avatar;
     private final static String GRAVATAR_URL = "http://www.gravatar.com/avatar/";
-    
+
 
     public List<DynamicFieldValue> getDynamicFieldValues() {
         if (dynamicFieldValues == null) {
@@ -92,15 +93,31 @@ public class User extends Model {
         }
         return jsonFields;
     }
-    
-    
+
+
     @JsonProperty("provider")
-    public String getProvider(){
+    public String getProvider() {
         String provider = null;
-        if (credentials!=null) {
+        if (credentials != null) {
             provider = this.credentials.providerId;
         }
         return provider;
+    }
+
+    public boolean isInfoValid() {
+        if (email == null || email.isEmpty()) {
+            return false;
+        }
+        if (fullname == null || fullname.isEmpty()) {
+            return false;
+        }
+        if (!admin) {
+            if (description == null || description.isEmpty()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public boolean getNotifOnMyTalk() {
@@ -142,6 +159,7 @@ public class User extends Model {
         }
         return avatar;
     }
+
     // -- Queries (long id, user.class)
     public static Model.Finder<Long, User> find = new Model.Finder<Long, User>(Long.class, User.class);
 
@@ -175,22 +193,22 @@ public class User extends Model {
 
         // Bug de SecureSocial ? socialUser.id().providerId() renvoie parfois userPassword au lieu de userpass
         if (providerId.equals("userPassword")) providerId = "userpass";
-        
+
         return find.fetch("credentials").where()
-                    .eq("credentials.extUserId", userId)
-                    .eq("credentials.providerId", providerId)
-                    .findUnique();
+                .eq("credentials.extUserId", userId)
+                .eq("credentials.providerId", providerId)
+                .findUnique();
     }
 
-    
+
     public static User findByEmailAndProvider(String email, String provider) {
-        
+
         return find.fetch("credentials").where()
-                    .eq("credentials.providerId", provider)
-                    .eq("email", email)
-                    .findUnique();
+                .eq("credentials.providerId", provider)
+                .eq("email", email)
+                .findUnique();
     }
-    
+
     /**
      * Retrieve a user from a fullname.
      *

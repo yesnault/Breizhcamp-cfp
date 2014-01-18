@@ -98,6 +98,8 @@ admin.users.manage.email=Email
 admin.talks.see=Talks' list
 admin.talks.submit.by=Submit by {0}
 
+error.user.informations=The profile information is not complete (Email, Description, Name)
+
 home.message=Welcome on the BreizhCamp's Call For Paper site.
 
 talks=Talks

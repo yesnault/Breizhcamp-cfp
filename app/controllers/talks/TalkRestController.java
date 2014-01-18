@@ -186,6 +186,13 @@ public class TalkRestController extends BaseController {
                     talkJson.put("speaker", speakerJson);
                 }
 
+                if (talk.event != null) {
+                    ObjectNode eventJson = Json.newObject();
+                    eventJson.put("id", talk.event.getId());
+                    eventJson.put("name", talk.event.getName());
+                    talkJson.put("event", eventJson);
+                }
+
                 Vote voteUser = votes.get(talk.id);
                 if (voteUser != null) {
                     talkJson.put("vote", voteUser.getNote());
@@ -217,6 +224,10 @@ public class TalkRestController extends BaseController {
             return badRequest(toJson(TransformValidationErrors.transform(talkForm.errors())));
         }
 
+        if (!user.isInfoValid()) {
+            return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.user.informations"))));
+        }
+
         Talk formTalk = talkForm.get();
 
         if (formTalk.id == null) {
@@ -224,6 +235,7 @@ public class TalkRestController extends BaseController {
             if (VoteStatus.getVoteStatus() != VoteStatusEnum.NOT_BEGIN) {
                 return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.vote.begin"))));
             }
+
             // Nouveau talk
             formTalk.speaker = user;
             if (Talk.findByTitle(formTalk.title) != null) {
@@ -358,6 +370,11 @@ public class TalkRestController extends BaseController {
         if (!user.admin && !(user.id.equals(talk.speaker.id))) {
             // On vérifie que le user est admin où le propriétaire du talk
             Logger.info("Tentative de suppression de talk sans les droits requis : " + talk.id);
+            return unauthorized();
+        }
+
+        if (!talk.event.equals(Event.findActif())) {
+            Logger.info("Tentative de suppression de talk sur un événement clos : " + talk.id);
             return unauthorized();
         }
 
