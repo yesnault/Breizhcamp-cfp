@@ -267,7 +267,7 @@ ul.social-stack {
 }
 
 
-.talk {
+.proposal {
     float: left;
     margin: 0;
     border-top: 1px solid #954d5a;
@@ -276,12 +276,12 @@ ul.social-stack {
     height: 200px;
 }
 
-.talk .avatar {
+.proposal .avatar {
     width: 200px;
     height: 200px;
 }
 
-.talk .caption {
+.proposal .caption {
     background-color: rgba(0, 0, 0, 0.4);
     color: #ffffff;
     position: relative;
@@ -291,7 +291,7 @@ ul.social-stack {
     line-height: 1.2em;
 }
 
-.talk .caption .speaker {
+.proposal .caption .speaker {
     font-size: 20px;
     width:200px;
     text-align:center;

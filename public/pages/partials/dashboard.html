@@ -30,57 +30,57 @@
                             <tbody>
                             <tr>
                                 <th class="col-md-2">Propositions (Draft)</th>
-                                <th class="col-md-2">Talks soumis</th>
-                                <th class="col-md-2">Talks rejetés</th>
-                                <th class="col-md-2">Talks acceptés</th>
-                                <th class="col-md-2">Talks en attente</th>
+                                <th class="col-md-2">Proposals soumis</th>
+                                <th class="col-md-2">Proposals rejetés</th>
+                                <th class="col-md-2">Proposals acceptés</th>
+                                <th class="col-md-2">Proposals en attente</th>
                                 <th class="col-md-2">Vos Votes</th>
                             </tr>
                             <tr>
-                                <td>{{talkstats.nbProposalDraft}}</td>
-                                <td>{{talkstats.nbTalks}}</td>
-                                <td>{{talkstats.nbRejetes}} / {{talkstats.nbTalks}}</td>
-                                <td>{{talkstats.nbAcceptes}} / {{talkstats.nbTalks}}</td>
-                                <td>{{talkstats.nbTalks - talkstats.nbRejetes -
-                                    talkstats.nbAcceptes}} / {{talkstats.nbTalks}}
+                                <td>{{proposalstats.nbProposalDraft}}</td>
+                                <td>{{proposalstats.nbProposals}}</td>
+                                <td>{{proposalstats.nbRejetes}} / {{proposalstats.nbProposals}}</td>
+                                <td>{{proposalstats.nbAcceptes}} / {{proposalstats.nbProposals}}</td>
+                                <td>{{proposalstats.nbProposals - proposalstats.nbRejetes -
+                                    proposalstats.nbAcceptes}} / {{proposalstats.nbProposals}}
                                 </td>
-                                <td>{{talkstats.nbVotesUser}} / {{talkstats.nbTalks}}</td>
+                                <td>{{proposalstats.nbVotesUser}} / {{proposalstats.nbProposals}}</td>
                             </tr>
                             </tbody>
                         </table>
                     </div>
                     <br/>
 
-                    <h2><a ng-href="/#/managetalk">Talks</a></h2>
-                    <h4 ng-show="!talks.length">
-                        - Aucun talk proposé
+                    <h2><a ng-href="/#/manageproposal">Proposals</a></h2>
+                    <h4 ng-show="!proposals.length">
+                        - Aucun proposal proposé
                     </h4>
-                    <h4 ng-show="talksDraft.length == 1">
-                        - 1 talk en édition
+                    <h4 ng-show="proposalsDraft.length == 1">
+                        - 1 proposal en édition
                     </h4>
-                    <h4 ng-show="talksDraft.length > 1">
-                        - {{talks.length}} talks en édition
+                    <h4 ng-show="proposalsDraft.length > 1">
+                        - {{proposals.length}} proposals en édition
                     </h4>
-                    <h4 ng-show="talks.length == 1">
-                        - 1 talk proposé
+                    <h4 ng-show="proposals.length == 1">
+                        - 1 proposal proposé
                     </h4>
-                    <h4 ng-show="talks.length > 1">
-                        - {{talks.length}} talks proposés
+                    <h4 ng-show="proposals.length > 1">
+                        - {{proposals.length}} proposals proposés
                     </h4>
                     <br/>
-                    <h4 ng-show="talksok.length > 0"> - Talks acceptés</h4>
+                    <h4 ng-show="proposalsok.length > 0"> - Proposals acceptés</h4>
 
-                    <p ng-repeat="talk in talksok">- <a ng-href="/#/talks/see/{{talk.id}}" title="{{talk.title}}">{{talk.title}}</a>
+                    <p ng-repeat="proposal in proposalsok">- <a ng-href="/#/proposals/see/{{proposal.id}}" title="{{proposal.title}}">{{proposal.title}}</a>
                     </p>
                     <br/>
-                    <h4 ng-show="talks_w.length > 0"> - Talks en attente</h4>
+                    <h4 ng-show="proposals_w.length > 0"> - Proposals en attente</h4>
 
-                    <p ng-repeat="talk in talks_w">- <a ng-href="/#/talks/see/{{talk.id}}" title="{{talk.title}}">{{talk.title}}</a>
+                    <p ng-repeat="proposal in proposals_w">- <a ng-href="/#/proposals/see/{{proposal.id}}" title="{{proposal.title}}">{{proposal.title}}</a>
                     </p>
                     <br/>
-                    <h4 ng-show="talksko.length > 0"> - Talks refusés</h4>
+                    <h4 ng-show="proposalsko.length > 0"> - Proposals refusés</h4>
 
-                    <p ng-repeat="talk in talksko">- <a ng-href="/#/talks/see/{{talk.id}}" title="{{talk.title}}">{{talk.title}}</a>
+                    <p ng-repeat="proposal in proposalsko">- <a ng-href="/#/proposals/see/{{proposal.id}}" title="{{proposal.title}}">{{proposal.title}}</a>
                     </p>
                 </div>
             </div>

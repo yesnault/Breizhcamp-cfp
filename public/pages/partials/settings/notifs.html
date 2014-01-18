@@ -25,27 +25,27 @@
                             <div class="form-group ">
                                 <div class="controls">
                                     <label class="checkbox">
-                                        <input type="checkbox" id="notifOnMyTalk" name="notifOnMyTalk" ng-model="user.notifOnMyTalk">
+                                        <input type="checkbox" id="notifOnMyProposal" name="notifOnMyProposal" ng-model="user.notifOnMyProposal">
                                         <span></span>
-                                        sur mes talks.
+                                        sur mes proposals.
                                     </label>
                                 </div>
                             </div>
                             <div class="form-group" ng-show="userService.isAdmin()">
                                 <div class="controls">
                                     <label class="checkbox">
-                                        <input type="checkbox" id="notifAdminOnAllTalk" name="notifAdminOnAllTalk" ng-model="user.notifAdminOnAllTalk">
+                                        <input type="checkbox" id="notifAdminOnAllProposal" name="notifAdminOnAllProposal" ng-model="user.notifAdminOnAllProposal">
                                         <span></span>
-                                        sur tous les talks.
+                                        sur tous les proposals.
                                     </label>
                                 </div>
                             </div>
                             <div class="form-group " ng-show="userService.isAdmin()">
                                 <div class="controls">
                                     <label class="checkbox">
-                                        <input type="checkbox" id="notifAdminOnTalkWithComment" name="notifAdminOnTalkWithComment" ng-model="user.notifAdminOnTalkWithComment">
+                                        <input type="checkbox" id="notifAdminOnProposalWithComment" name="notifAdminOnProposalWithComment" ng-model="user.notifAdminOnProposalWithComment">
                                         <span></span>
-                                        sur les talks où jai mis un commentaire.
+                                        sur les proposals où jai mis un commentaire.
                                     </label>
                                 </div>
                             </div>

@@ -24,7 +24,7 @@ error.minLength=Longueur minimum autorisée : {0}
 error.maxLength=Longueur maximum autorisée : {0}
 error.email=Email valide obligatoire
 error.pattern=Doit respecter {0}
-error.vote.begin=Vous ne pouvez plus soumettre/modifier/supprimer des talks une fois que le CFP est fermé.
+error.vote.begin=Vous ne pouvez plus soumettre/modifier/supprimer des proposals une fois que le CFP est fermé.
 error.close.comment.baduser=Vous ne pouvez pas clore le commentaire.
 error.delete.comment.baduser=Vous ne pouvez pas supprimer le commentaire.
 error.delete.comment=Il n'est pas possible de supprimer un commantaire ayant des réponses.
@@ -51,7 +51,7 @@ error.sending.email=Erreur lors de l'envoi du mail
 error.sending.confirm.email=Erreur lors de l'envoi du mail de confirmation
 error.email.already.exist=Cette adresse mail est déjà utilisée
 error.email.required=l'adresse mail est obligatoire
-error.talk.already.exist=Ce talk existe déjà
+error.proposal.already.exist=Ce proposal existe déjà
 error.account.already.validated=Votre compte est déjà validé
 error.unknown.email=Adresse mail inconnue
 error.confirm=Error lors de la confirmation de votre inscription
@@ -62,9 +62,9 @@ account.settings.password=Cliquez sur Valider pour recevoir les instructions par
 account.settings.email=Entrez votre nouvelle adresse mail et Valider pour recevoir les instructions par mail.
 
 notifs.notifOn=Notifications par mail pour les nouveaux commentaires :
-notifs.notifOnMyTalk=sur mes talks.
-notifs.notifAdminOnAllTalk=sur tous les talks.
-notifs.notifAdminOnTalkWithComment=sur les talks où j'ai mis un commentaire.
+notifs.notifOnMyProposal=sur mes proposals.
+notifs.notifAdminOnAllProposal=sur tous les proposals.
+notifs.notifAdminOnProposalWithComment=sur les proposals où j'ai mis un commentaire.
 
 account.update.title=Profile
 account.description=Description/Bio
@@ -120,40 +120,40 @@ admin.users.manage=Utilisateurs
 admin.users.manage.user=Utilisateur
 admin.users.manage.email=Email
 
-admin.talks.see=Liste des talks
-admin.talks.submit.by=Soumis par {0}
+admin.proposals.see=Liste des proposals
+admin.proposals.submit.by=Soumis par {0}
 
 home.message=Bienvenue sur le site du Call For Paper du BreizhCamp.
 
-talks=Talks
-talks.speaker=Speaker
-talks.submit=Soumettre un talk
-talks.manage=Gérer vos talks
-talks.new=Nouveau talk
-talks.title=Titre
-talks.description=Description
-talks.delete.confirm=Êtes vous sûr de vouloir supprimer les talks {0}?
-talks.add.success=Le talk {0} a bien été ajouté.
-talks.edit.success=Le talk {0} a bien été modifié.
-talks.delete.success=Le talk {0} a bien été supprimé.
-talks.questions=Questions/Réponses
-talks.comment.new=Nouveau commentaire
+proposals=Proposals
+proposals.speaker=Speaker
+proposals.submit=Soumettre un proposal
+proposals.manage=Gérer vos proposals
+proposals.new=Nouveau proposal
+proposals.title=Titre
+proposals.description=Description
+proposals.delete.confirm=Êtes vous sûr de vouloir supprimer les proposals {0}?
+proposals.add.success=Le proposal {0} a bien été ajouté.
+proposals.edit.success=Le proposal {0} a bien été modifié.
+proposals.delete.success=Le proposal {0} a bien été supprimé.
+proposals.questions=Questions/Réponses
+proposals.comment.new=Nouveau commentaire
 
-talks.comment.new.mail.subject=Nouveau commentaire sur le talk {0}
-talks.comment.new.mail.message=Bonjour,<br/><br/>Un nouveau commentaire a été posté sur le talk <a href="{3}">{0}</a> par {1} :<br/><i>{2}</i>
+proposals.comment.new.mail.subject=Nouveau commentaire sur le proposal {0}
+proposals.comment.new.mail.message=Bonjour,<br/><br/>Un nouveau commentaire a été posté sur le proposal <a href="{3}">{0}</a> par {1} :<br/><i>{2}</i>
 
-talks.status.mail.subject.accepted=Votre talk "{0}" est accepté
-talks.status.mail.subject.rejected=Votre talk "{0}" est rejeté
-talks.status.mail.subject.waiting=Votre talk "{0}" est gardé en backup
-talks.status.mail.message.accepted=Bonjour,<br/><br/>Votre talk <i><a href="{0}">{1}</a></i> a été accepté pour le Breizhcamp.
-talks.status.mail.message.rejected=Bonjour,<br/><br/>Votre talk <i><a href="{0}">{1}</a></i> a été rejeté pour le Breizhcamp.
-talks.status.mail.message.waiting=Bonjour,<br/><br/>Votre talk <i><a href="{0}">{1}</a></i> n''a pas été choisi lors de la première sélection, mais a été sélectionné en BACKUP pour le Breizhcamp.<br/>Si l''un d'eux se désiste, alors nous pourrons vous proposer de venir à leur place.
+proposals.status.mail.subject.accepted=Votre proposal "{0}" est accepté
+proposals.status.mail.subject.rejected=Votre proposal "{0}" est rejeté
+proposals.status.mail.subject.waiting=Votre proposal "{0}" est gardé en backup
+proposals.status.mail.message.accepted=Bonjour,<br/><br/>Votre proposal <i><a href="{0}">{1}</a></i> a été accepté pour le Breizhcamp.
+proposals.status.mail.message.rejected=Bonjour,<br/><br/>Votre proposal <i><a href="{0}">{1}</a></i> a été rejeté pour le Breizhcamp.
+proposals.status.mail.message.waiting=Bonjour,<br/><br/>Votre proposal <i><a href="{0}">{1}</a></i> n''a pas été choisi lors de la première sélection, mais a été sélectionné en BACKUP pour le Breizhcamp.<br/>Si l''un d'eux se désiste, alors nous pourrons vous proposer de venir à leur place.
 
 
-talks.status.rejected=Rejeté
-talks.status.accepted=Accepté
-talks.status.waiting=Attente
-talks.status.null=Sans status
+proposals.status.rejected=Rejeté
+proposals.status.accepted=Accepté
+proposals.status.waiting=Attente
+proposals.status.null=Sans status
 
 
 error.creneau.already.exist=Ce créneau existe déjà.

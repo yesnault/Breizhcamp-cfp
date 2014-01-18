@@ -6,7 +6,7 @@ import static play.data.Form.form;
 import java.util.ArrayList;
 
 import models.Creneau;
-import models.Talk;
+import models.Proposal;
 import models.User;
 import models.utils.TransformValidationErrors;
 import play.data.Form;
@@ -81,10 +81,10 @@ public class CreneauRestController extends BaseController {
 
         Creneau creneau = Creneau.find.byId(idCreneau);
         if (creneau != null) {
-            for (Talk talk : new ArrayList<Talk>(creneau.getTalks())) {
-                creneau.getTalks().remove(talk);
+            for (Proposal proposal : new ArrayList<Proposal>(creneau.getProposals())) {
+                creneau.getProposals().remove(proposal);
             }
-            creneau.saveManyToManyAssociations("talks");
+            creneau.saveManyToManyAssociations("proposals");
             creneau.delete();
         }
         // HTTP 204 en cas de succès (NO CONTENT)

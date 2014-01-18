@@ -27,7 +27,7 @@ public class Vote extends Model {
 
     @ManyToOne
     @JsonIgnore
-    private Talk talk;
+    private Proposal proposal;
 
     private Integer note;
 
@@ -47,12 +47,12 @@ public class Vote extends Model {
         this.user = user;
     }
 
-    public Talk getTalk() {
-        return talk;
+    public Proposal getProposal() {
+        return proposal;
     }
 
-    public void setTalk(Talk talk) {
-        this.talk = talk;
+    public void setProposal(Proposal proposal) {
+        this.proposal = proposal;
     }
 
     public Integer getNote() {
@@ -66,16 +66,16 @@ public class Vote extends Model {
 
     public static Model.Finder<Long, Vote> find = new Model.Finder<Long, Vote>(Long.class, Vote.class);
 
-    public static Vote findVoteByUserAndTalk(User user, Talk talk) {
-        return find.query().where().eq("user", user).eq("talk", talk).findUnique();
+    public static Vote findVoteByUserAndProposal(User user, Proposal proposal) {
+        return find.query().where().eq("user", user).eq("proposal", proposal).findUnique();
     }
 
-    public static Map<Long, Vote> findVotesUserByTalkId(User user) {
+    public static Map<Long, Vote> findVotesUserByProposalId(User user) {
         
-        List<Vote> listeVotes = find.query().fetch("talk").where().eq("user", user).findList();
+        List<Vote> listeVotes = find.query().fetch("proposal").where().eq("user", user).findList();
         Map<Long, Vote> votes = new HashMap<Long, Vote>();
         for (Vote vote : listeVotes) {
-            votes.put(vote.talk.id, vote);
+            votes.put(vote.proposal.id, vote);
         }
         return votes;
     }
@@ -87,23 +87,23 @@ public class Vote extends Model {
 
     // Retour d'une chaine formatée "moyenne;nbvote"
     public static Map<Long, Pair<Double, Integer>> caculMoyennes() {
-        String sql = "SELECT v.talk_id as talkId, avg(v.note) as moy, count(v.talk_id) as nbVote, t.title as talkTitle FROM vote v, talk t where (v.talk_id=t.id) group by v.talk_id order by moy desc";
+        String sql = "SELECT v.proposal_id as proposalId, avg(v.note) as moy, count(v.proposal_id) as nbVote, t.title as proposalTitle FROM vote v, proposal t where (v.proposal_id=t.id) group by v.proposal_id order by moy desc";
         List<SqlRow> rows = Ebean.createSqlQuery(sql).findList();
         
         Map<Long, Pair<Double, Integer>> moyennes = new HashMap<Long, Pair<Double, Integer>>();
         for (SqlRow row : rows) {
-            Pair<Double, Integer> moyTalk = new ImmutablePair(row.getDouble("moy"), row.getInteger("nbVote"));
-            moyennes.put(row.getLong("talkId"), moyTalk);
+            Pair<Double, Integer> moyProposal = new ImmutablePair(row.getDouble("moy"), row.getInteger("nbVote"));
+            moyennes.put(row.getLong("proposalId"), moyProposal);
         }
         
         return moyennes;
     }
     
-    public static Double calculMoyenne(Talk talk) {
+    public static Double calculMoyenne(Proposal proposal) {
         Double moyenne = null;
         int sum = 0;
         int nbVotes = 0;
-        for (Vote vote : find.query().where().eq("talk", talk).findList()) {
+        for (Vote vote : find.query().where().eq("proposal", proposal).findList()) {
             sum = sum + vote.getNote();
             nbVotes++;
         }

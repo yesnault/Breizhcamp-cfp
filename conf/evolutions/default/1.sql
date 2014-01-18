@@ -6,7 +6,7 @@
 create table comment (
   id                        bigint not null,
   author_id                 bigint,
-  talk_id                   bigint,
+  proposal_id                   bigint,
   comment                   varchar(140),
   clos                      boolean,
   private_comment           boolean,
@@ -83,7 +83,7 @@ create table tag (
   constraint pk_tag primary key (id))
 ;
 
-create table talk (
+create table proposal (
   id                        bigint not null,
   title                     varchar(50),
   description               varchar(2000),
@@ -91,12 +91,12 @@ create table talk (
   speaker_id                bigint,
   draft                     boolean,
   event_id                  bigint,
-  status_talk               varchar(1),
+  status_proposal               varchar(1),
   duree_preferee_id         bigint,
   duree_approuve_id         bigint,
-  constraint ck_talk_status_talk check (status_talk in ('A','W','R')),
-  constraint uq_talk_title unique (title),
-  constraint pk_talk primary key (id))
+  constraint ck_proposal_status_proposal check (status_proposal in ('A','W','R')),
+  constraint uq_proposal_title unique (title),
+  constraint pk_proposal primary key (id))
 ;
 
 create table user (
@@ -107,9 +107,9 @@ create table user (
   credentials_id            bigint,
   date_creation             timestamp,
   admin                     boolean,
-  notif_on_my_talk          boolean,
-  notif_admin_on_all_talk   boolean,
-  notif_admin_on_talk_with_comment boolean,
+  notif_on_my_proposal          boolean,
+  notif_admin_on_all_proposal   boolean,
+  notif_admin_on_proposal_with_comment boolean,
   adresse_mac               varchar(255),
   description               varchar(2000),
   avatar                    varchar(255),
@@ -120,7 +120,7 @@ create table user (
 create table vote (
   id                        bigint not null,
   user_id                   bigint,
-  talk_id                   bigint,
+  proposal_id                   bigint,
   note                      integer,
   constraint pk_vote primary key (id))
 ;
@@ -133,22 +133,22 @@ create table vote_status (
 ;
 
 
-create table creneau_talk (
+create table creneau_proposal (
   creneau_id                     bigint not null,
-  talk_id                        bigint not null,
-  constraint pk_creneau_talk primary key (creneau_id, talk_id))
+  proposal_id                        bigint not null,
+  constraint pk_creneau_proposal primary key (creneau_id, proposal_id))
 ;
 
-create table tag_talk (
+create table tag_proposal (
   tag_id                         bigint not null,
-  talk_id                        bigint not null,
-  constraint pk_tag_talk primary key (tag_id, talk_id))
+  proposal_id                        bigint not null,
+  constraint pk_tag_proposal primary key (tag_id, proposal_id))
 ;
 
-create table user_talk (
+create table user_proposal (
   user_id                        bigint not null,
-  talk_id                        bigint not null,
-  constraint pk_user_talk primary key (user_id, talk_id))
+  proposal_id                        bigint not null,
+  constraint pk_user_proposal primary key (user_id, proposal_id))
 ;
 create sequence comment_seq;
 
@@ -166,7 +166,7 @@ create sequence lien_seq;
 
 create sequence tag_seq;
 
-create sequence talk_seq;
+create sequence proposal_seq;
 
 create sequence user_seq;
 
@@ -176,8 +176,8 @@ create sequence vote_status_seq;
 
 alter table comment add constraint fk_comment_author_1 foreign key (author_id) references user (id) on delete restrict on update restrict;
 create index ix_comment_author_1 on comment (author_id);
-alter table comment add constraint fk_comment_talk_2 foreign key (talk_id) references talk (id) on delete restrict on update restrict;
-create index ix_comment_talk_2 on comment (talk_id);
+alter table comment add constraint fk_comment_proposal_2 foreign key (proposal_id) references proposal (id) on delete restrict on update restrict;
+create index ix_comment_proposal_2 on comment (proposal_id);
 alter table comment add constraint fk_comment_question_3 foreign key (question_id) references comment (id) on delete restrict on update restrict;
 create index ix_comment_question_3 on comment (question_id);
 alter table credentials add constraint fk_credentials_user_4 foreign key (user_id) references user (id) on delete restrict on update restrict;
@@ -190,34 +190,34 @@ alter table dynamic_field_value add constraint fk_dynamic_field_value_user_7 for
 create index ix_dynamic_field_value_user_7 on dynamic_field_value (user_id);
 alter table lien add constraint fk_lien_user_8 foreign key (user_id) references user (id) on delete restrict on update restrict;
 create index ix_lien_user_8 on lien (user_id);
-alter table talk add constraint fk_talk_speaker_9 foreign key (speaker_id) references user (id) on delete restrict on update restrict;
-create index ix_talk_speaker_9 on talk (speaker_id);
-alter table talk add constraint fk_talk_event_10 foreign key (event_id) references event (id) on delete restrict on update restrict;
-create index ix_talk_event_10 on talk (event_id);
-alter table talk add constraint fk_talk_dureePreferee_11 foreign key (duree_preferee_id) references creneau (id) on delete restrict on update restrict;
-create index ix_talk_dureePreferee_11 on talk (duree_preferee_id);
-alter table talk add constraint fk_talk_dureeApprouve_12 foreign key (duree_approuve_id) references creneau (id) on delete restrict on update restrict;
-create index ix_talk_dureeApprouve_12 on talk (duree_approuve_id);
+alter table proposal add constraint fk_proposal_speaker_9 foreign key (speaker_id) references user (id) on delete restrict on update restrict;
+create index ix_proposal_speaker_9 on proposal (speaker_id);
+alter table proposal add constraint fk_proposal_event_10 foreign key (event_id) references event (id) on delete restrict on update restrict;
+create index ix_proposal_event_10 on proposal (event_id);
+alter table proposal add constraint fk_proposal_dureePreferee_11 foreign key (duree_preferee_id) references creneau (id) on delete restrict on update restrict;
+create index ix_proposal_dureePreferee_11 on proposal (duree_preferee_id);
+alter table proposal add constraint fk_proposal_dureeApprouve_12 foreign key (duree_approuve_id) references creneau (id) on delete restrict on update restrict;
+create index ix_proposal_dureeApprouve_12 on proposal (duree_approuve_id);
 alter table user add constraint fk_user_credentials_13 foreign key (credentials_id) references credentials (id) on delete restrict on update restrict;
 create index ix_user_credentials_13 on user (credentials_id);
 alter table vote add constraint fk_vote_user_14 foreign key (user_id) references user (id) on delete restrict on update restrict;
 create index ix_vote_user_14 on vote (user_id);
-alter table vote add constraint fk_vote_talk_15 foreign key (talk_id) references talk (id) on delete restrict on update restrict;
-create index ix_vote_talk_15 on vote (talk_id);
+alter table vote add constraint fk_vote_proposal_15 foreign key (proposal_id) references proposal (id) on delete restrict on update restrict;
+create index ix_vote_proposal_15 on vote (proposal_id);
 
 
 
-alter table creneau_talk add constraint fk_creneau_talk_creneau_01 foreign key (creneau_id) references creneau (id) on delete restrict on update restrict;
+alter table creneau_proposal add constraint fk_creneau_proposal_creneau_01 foreign key (creneau_id) references creneau (id) on delete restrict on update restrict;
 
-alter table creneau_talk add constraint fk_creneau_talk_talk_02 foreign key (talk_id) references talk (id) on delete restrict on update restrict;
+alter table creneau_proposal add constraint fk_creneau_proposal_proposal_02 foreign key (proposal_id) references proposal (id) on delete restrict on update restrict;
 
-alter table tag_talk add constraint fk_tag_talk_tag_01 foreign key (tag_id) references tag (id) on delete restrict on update restrict;
+alter table tag_proposal add constraint fk_tag_proposal_tag_01 foreign key (tag_id) references tag (id) on delete restrict on update restrict;
 
-alter table tag_talk add constraint fk_tag_talk_talk_02 foreign key (talk_id) references talk (id) on delete restrict on update restrict;
+alter table tag_proposal add constraint fk_tag_proposal_proposal_02 foreign key (proposal_id) references proposal (id) on delete restrict on update restrict;
 
-alter table user_talk add constraint fk_user_talk_user_01 foreign key (user_id) references user (id) on delete restrict on update restrict;
+alter table user_proposal add constraint fk_user_proposal_user_01 foreign key (user_id) references user (id) on delete restrict on update restrict;
 
-alter table user_talk add constraint fk_user_talk_talk_02 foreign key (talk_id) references talk (id) on delete restrict on update restrict;
+alter table user_proposal add constraint fk_user_proposal_proposal_02 foreign key (proposal_id) references proposal (id) on delete restrict on update restrict;
 
 # --- !Downs
 
@@ -229,7 +229,7 @@ drop table if exists credentials;
 
 drop table if exists creneau;
 
-drop table if exists creneau_talk;
+drop table if exists creneau_proposal;
 
 drop table if exists dynamic_field;
 
@@ -241,11 +241,11 @@ drop table if exists lien;
 
 drop table if exists tag;
 
-drop table if exists tag_talk;
+drop table if exists tag_proposal;
 
-drop table if exists talk;
+drop table if exists proposal;
 
-drop table if exists user_talk;
+drop table if exists user_proposal;
 
 drop table if exists user;
 
@@ -271,7 +271,7 @@ drop sequence if exists lien_seq;
 
 drop sequence if exists tag_seq;
 
-drop sequence if exists talk_seq;
+drop sequence if exists proposal_seq;
 
 drop sequence if exists user_seq;
 

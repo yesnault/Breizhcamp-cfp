@@ -1,23 +1,23 @@
 <div class="row">
 
 
-    <div ng-repeat="talk in talks | filter:doStatus">
-        <div id="deleteTalk{{talk.id}}" class="modal fade" tabindex="-1" role="dialog"
-             aria-labelledby="talkLabel{{talk.id}}" aria-hidden="true">
+    <div ng-repeat="proposal in proposals | filter:doStatus">
+        <div id="deleteProposal{{proposal.id}}" class="modal fade" tabindex="-1" role="dialog"
+             aria-labelledby="proposalLabel{{proposal.id}}" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <a class="close" data-dismiss="modal">&times;</a>
 
-                        <h3>Suppression du Talk {{talk.title}}</h3>
+                        <h3>Suppression du Proposal {{proposal.title}}</h3>
                     </div>
                     <div class="modal-body">
-                        <p>Attention, le talk va être supprimé.</p>
+                        <p>Attention, le proposal va être supprimé.</p>
                     </div>
                     <div class="modal-footer">
                         <a href="#" class="btn" data-dismiss="modal">Annuler</a>
 
-                        <form ng-submit="deleteTalk({{talk}})" name="formdelete{{talk.id}}">
+                        <form ng-submit="deleteProposal({{proposal}})" name="formdelete{{proposal.id}}">
                             <input type="submit" class="btn btn-primary" value="Supprimer"/>
                         </form>
                     </div>
@@ -45,13 +45,13 @@
             <div class="col-md-6">
                 <div class="row">
                     <div class="col-md-4 well">
-                        <p>{{(talks|filter:talksAcceptes).length}} talks acceptés</p>
+                        <p>{{(proposals|filter:proposalsAcceptes).length}} proposals acceptés</p>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-4 well">
-                        <a href="/talk/all/csv" class="btn btn-info">Export CSV</a>
-                        <a ng-click="rejeterRestant()" class="btn btn-danger">Rejeter les talks restant</a>
+                        <a href="/proposal/all/csv" class="btn btn-info">Export CSV</a>
+                        <a ng-click="rejeterRestant()" class="btn btn-danger">Rejeter les proposals restant</a>
                     </div>
                 </div>
             </div>
@@ -79,28 +79,28 @@
                 <th class="col-md-2">Actions</th>
             </tr>
 
-            <tr ng-repeat="talk in talks | filter:doStatus | orderBy:predicate:reverse ">
+            <tr ng-repeat="proposal in proposals | filter:doStatus | orderBy:predicate:reverse ">
                 <td>
-                    <div ng-show="talk.speaker != null"><a ng-href="/#/profil/{{talk.speaker.id}}"><img
-                            ng-src="{{talk.speaker.avatar}}" style="height : 30px" class="img-rounded">
-                        {{talk.speaker.fullname}}</a></div>
-                    <div ng-show="talk.speaker == null">Compte Supprimé</div>
+                    <div ng-show="proposal.speaker != null"><a ng-href="/#/profil/{{proposal.speaker.id}}"><img
+                            ng-src="{{proposal.speaker.avatar}}" style="height : 30px" class="img-rounded">
+                        {{proposal.speaker.fullname}}</a></div>
+                    <div ng-show="proposal.speaker == null">Compte Supprimé</div>
                 </td>
-                <td><a href="#talk{{talk.id}}" ng-click="getTalkDetails(talk.id)" data-toggle="modal">{{talk.title}}</a>
+                <td><a href="#proposal{{proposal.id}}" ng-click="getProposalDetails(proposal.id)" data-toggle="modal">{{proposal.title}}</a>
 
-                    <div id="talk{{talk.id}}" class="modal fade" tabindex="-1" role="dialog"
-                         aria-labelledby="talkLabel{{talk.id}}" aria-hidden="true">
+                    <div id="proposal{{proposal.id}}" class="modal fade" tabindex="-1" role="dialog"
+                         aria-labelledby="proposalLabel{{proposal.id}}" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
                                     </button>
-                                    <h3 id="talkLabel{{talkModal.id}}"><a href="/#/talks/see/{{talkModal.id}}"
-                                                                          data-dismiss="modal">{{talkModal.title}}</a>
+                                    <h3 id="proposalLabel{{proposalModal.id}}"><a href="/#/proposals/see/{{proposalModal.id}}"
+                                                                          data-dismiss="modal">{{proposalModal.title}}</a>
                                     </h3>
 
-                                    <div ng-show="talkModal.statusTalk != undefined" ng-switch
-                                         on="talkModal.statusTalk">
+                                    <div ng-show="proposalModal.statusProposal != undefined" ng-switch
+                                         on="proposalModal.statusProposal">
                                         <span class="label label-important" ng-switch-when="REJETE">Rejeté</span>
                                         <span class="label label-warning"
                                               ng-switch-when="ATTENTE">Liste d'attente</span>
@@ -112,27 +112,27 @@
 
                                     <p>
 
-                                    <div ng-show="talkModal.speaker != null"><a
-                                            ng-href="/#/profil/{{talkModal.speaker.id}}" data-dismiss="modal"><img
-                                            ng-src="{{talkModal.speaker.avatar}}" style="height : 30px"
-                                            class="img-rounded"> {{talkModal.speaker.fullname}}</a></div>
-                                    <div ng-show="talkModal.speaker == null">Compte Supprimé</div>
+                                    <div ng-show="proposalModal.speaker != null"><a
+                                            ng-href="/#/profil/{{proposalModal.speaker.id}}" data-dismiss="modal"><img
+                                            ng-src="{{proposalModal.speaker.avatar}}" style="height : 30px"
+                                            class="img-rounded"> {{proposalModal.speaker.fullname}}</a></div>
+                                    <div ng-show="proposalModal.speaker == null">Compte Supprimé</div>
                                     </p>
                                     <ul>
-                                        <li ng-repeat="coSpeaker in talkModal.coSpeakers"><a
+                                        <li ng-repeat="coSpeaker in proposalModal.coSpeakers"><a
                                                 ng-href="/#/profil/{{coSpeaker.id}}">{{coSpeaker.fullname}}</a></li>
                                     </ul>
                                     <br/>
 
                                     <p class="help-inline">
-                                        <span class="label">{{talkModal.dureePreferee.libelle + ' (' + talkModal.dureePreferee.dureeMinutes + 'min)'}}</span>
+                                        <span class="label">{{proposalModal.dureePreferee.libelle + ' (' + proposalModal.dureePreferee.dureeMinutes + 'min)'}}</span>
                                     </p>
 
                                     <div ng-show="userService.isAdmin() && (vote.status == 'OPEN' || vote.status == 'NOT_BEGIN')">
-                                        <form ng-submit="postVote(talkModal)" class="form-inline">
+                                        <form ng-submit="postVote(proposalModal)" class="form-inline">
                                             <div class="form-group {{{true:'error', false:''}[errors.vote != undefined]}}">
-                                                <stars ng-model="talkModal" talkid="{{talkModal.id}}"/>
-                                                <select id="note" name="note" ng-model="talkModal.note">
+                                                <stars ng-model="proposalModal" proposalid="{{proposalModal.id}}"/>
+                                                <select id="note" name="note" ng-model="proposalModal.note">
                                                     <option value="null"></option>
                                                     <option value="1">1 - Null</option>
                                                     <option value="2">2 - Mouais</option>
@@ -149,13 +149,13 @@
                                     <hr/>
                                     <h4>Description :</h4>
 
-                                    <p ng-bind-html-unsafe="getSafeHtml(talkModal.description)"></p>
+                                    <p ng-bind-html-unsafe="getSafeHtml(proposalModal.description)"></p>
 
-                                    <div ng-show="talkModal.indicationsOrganisateurs">
+                                    <div ng-show="proposalModal.indicationsOrganisateurs">
                                         <hr/>
                                         <h4>Indications organisateurs :</h4>
 
-                                        <p ng-bind-html-unsafe="getSafeHtml(talkModal.indicationsOrganisateurs)"></p>
+                                        <p ng-bind-html-unsafe="getSafeHtml(proposalModal.indicationsOrganisateurs)"></p>
                                     </div>
 
                                 </div>
@@ -167,23 +167,23 @@
                     </div>
                 </td>
                 <td>
-                    <span class="label label-info" >{{talk.dureePreferee.libelle + ' (' + talk.dureePreferee.dureeMinutes + 'min)'}}</span>
+                    <span class="label label-info" >{{proposal.dureePreferee.libelle + ' (' + proposal.dureePreferee.dureeMinutes + 'min)'}}</span>
                 </td>
                 <td>
-                    <div ng-show="talk.statusTalk != undefined" ng-switch on="talk.statusTalk">
+                    <div ng-show="proposal.statusProposal != undefined" ng-switch on="proposal.statusProposal">
                         <span class="label label-important" ng-switch-when="REJETE">Rejeté</span>
                         <span class="label label-warning" ng-switch-when="ATTENTE">Liste d'attente</span>
                         <span class="label label-success" ng-switch-when="ACCEPTE">Accepté</span>
                     </div>
                 </td>
 
-                <td>{{talk.vote}}
+                <td>{{proposal.vote}}
                 </td>
-                <td ng-show="vote.status == 'CLOSED'">{{talk.moyenne}}</td>
-                <td ng-show="vote.status == 'CLOSED'">{{talk.nbvote}}</td>
+                <td ng-show="vote.status == 'CLOSED'">{{proposal.moyenne}}</td>
+                <td ng-show="vote.status == 'CLOSED'">{{proposal.nbvote}}</td>
                 <td>
-                    <a href="/#/talks/see/{{talk.id}}">Détails</a> <br/>
-                    <a href="#deleteTalk{{talk.id}}" data-toggle="modal"><i class="icon-remove"></i></a></td>
+                    <a href="/#/proposals/see/{{proposal.id}}">Détails</a> <br/>
+                    <a href="#deleteProposal{{proposal.id}}" data-toggle="modal"><i class="icon-remove"></i></a></td>
             </tr>
 
             </tbody>

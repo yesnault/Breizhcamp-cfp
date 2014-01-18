@@ -1,7 +1,7 @@
 package controllers;
 
 import models.Event;
-import models.Talk;
+import models.Proposal;
 import models.User;
 import models.utils.TransformValidationErrors;
 import play.data.Form;
@@ -112,8 +112,8 @@ public class EventRestController extends BaseController {
 
         Event event = Event.find.byId(idEvent);
         if (event != null) {
-            List<Talk> talks = Talk.findByEvent(event);
-            if (talks.isEmpty() && event.isClos()) {
+            List<Proposal> proposals = Proposal.findByEvent(event);
+            if (proposals.isEmpty() && event.isClos()) {
                 event.delete();
             } else {
                 Map<String, List<String>> errors = new HashMap<String, List<String>>();

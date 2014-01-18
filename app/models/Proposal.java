@@ -15,7 +15,7 @@ import java.util.List;
 
 @SuppressWarnings("serial")
 @Entity
-public class Talk extends Model {
+public class Proposal extends Model {
 
     @Id
     public Long id;
@@ -37,7 +37,7 @@ public class Talk extends Model {
 
     @ManyToOne
     public User speaker;
-    @ManyToMany(mappedBy = "coSpeakedTalks")
+    @ManyToMany(mappedBy = "coSpeakedProposals")
     public List<User> coSpeakers;
 
     public boolean draft;
@@ -51,7 +51,7 @@ public class Talk extends Model {
         }
         return coSpeakers;
     }
-    @OneToMany(mappedBy = "talk")
+    @OneToMany(mappedBy = "proposal")
     @JsonIgnore
     public List<Comment> comments;
 
@@ -61,8 +61,8 @@ public class Talk extends Model {
         }
         return comments;
     }
-    public StatusTalk statusTalk;
-    @ManyToMany(mappedBy = "talks")
+    public StatusProposal statusProposal;
+    @ManyToMany(mappedBy = "proposals")
     @JsonIgnore
     public List<Tag> tags = new ArrayList<Tag>();
 
@@ -110,68 +110,68 @@ public class Talk extends Model {
     public Creneau dureeApprouve;
 
 
-    public static Finder<Long, Talk> find = new Finder<Long, Talk>(Long.class, Talk.class);
+    public static Finder<Long, Proposal> find = new Finder<Long, Proposal>(Long.class, Proposal.class);
 
-    public static List<Talk> findAllForDisplay() {
-        return find.select("id, title,  dureePreferee, dureeApprouve, statusTalk, speaker.id, speaker.fullname, speaker.avatar")
+    public static List<Proposal> findAllForDisplay() {
+        return find.select("id, title,  dureePreferee, dureeApprouve, statusProposal, speaker.id, speaker.fullname, speaker.avatar")
                 .fetch("speaker").fetch("dureePreferee").fetch("dureeApprouve").findList();
     }
 
-    public static int findNbTalks(boolean draft) {
-        return Ebean.createSqlQuery("select count(*) as c from talk where draft = :draft ").setParameter("draft",draft).findUnique().getInteger("c");
+    public static int findNbProposals(boolean draft) {
+        return Ebean.createSqlQuery("select count(*) as c from proposal where draft = :draft ").setParameter("draft",draft).findUnique().getInteger("c");
     }
 
-    public static int findNbTalksAcceptes() {
-        return Ebean.createSqlQuery("select count(*) as c from talk t where t.status_talk='A'").findUnique().getInteger("c");
+    public static int findNbProposalsAcceptes() {
+        return Ebean.createSqlQuery("select count(*) as c from proposal t where t.status_proposal='A'").findUnique().getInteger("c");
     }
 
-    public static int findNbTalksRejetes() {
-        return Ebean.createSqlQuery("select count(*) as c from talk t where t.status_talk='R'").findUnique().getInteger("c");
+    public static int findNbProposalsRejetes() {
+        return Ebean.createSqlQuery("select count(*) as c from proposal t where t.status_proposal='R'").findUnique().getInteger("c");
     }
 
-    public static Talk findByTitle(String title) {
+    public static Proposal findByTitle(String title) {
         return find.where().eq("title", title).findUnique();
     }
 
-    public static List<Talk> findBySpeaker(User speaker) {
+    public static List<Proposal> findBySpeaker(User speaker) {
         return find.where().eq("speaker", speaker).findList();
     }
 
-    public static List<Talk> findByEvent(Event event) {
+    public static List<Proposal> findByEvent(Event event) {
         return find.where().eq("event", event).findList();
     }
 
-    public static List<Talk> findBySpeakerAndStatus(User speaker, StatusTalk status) {
-        return find.where().eq("statusTalk", status.getInterne()).eq("speaker", speaker).findList();
+    public static List<Proposal> findBySpeakerAndStatus(User speaker, StatusProposal status) {
+        return find.where().eq("statusProposal", status.getInterne()).eq("speaker", speaker).findList();
     }
 
-    public static List<Talk> findByStatus(StatusTalk status) {
-        return find.where().eq("statusTalk", status.getInterne()).findList();
+    public static List<Proposal> findByStatus(StatusProposal status) {
+        return find.where().eq("statusProposal", status.getInterne()).findList();
     }
 
-    public static List<Talk> findByNoStatus() {
-        return find.where().isNull("statusTalk").findList();
+    public static List<Proposal> findByNoStatus() {
+        return find.where().isNull("statusProposal").findList();
     }
 
-    public static List<Talk> findByStatusForMinimalData(StatusTalk status) {
-        // talk.id
-        // talk.title
-        // talk.description
-        // talk.speaker.fullname
-        // talk.speaker.avatar
-        // talk.speaker.description
-        // talk.speaker.liens.url
-        // talk.speaker.liens.label
-        // talk.coSpeakers
+    public static List<Proposal> findByStatusForMinimalData(StatusProposal status) {
+        // proposal.id
+        // proposal.title
+        // proposal.description
+        // proposal.speaker.fullname
+        // proposal.speaker.avatar
+        // proposal.speaker.description
+        // proposal.speaker.liens.url
+        // proposal.speaker.liens.label
+        // proposal.coSpeakers
         return find.select("id, title, description, speaker.id, speaker.fullname, speaker.avatar, speaker.description, speaker.liens, " +
-                "talk.coSpeakers.id, talk.coSpeakers.fullname, talk.coSpeakers.avatar, talk.coSpeakers.description, talk.coSpeakers.liens")
+                "proposal.coSpeakers.id, proposal.coSpeakers.fullname, proposal.coSpeakers.avatar, proposal.coSpeakers.description, proposal.coSpeakers.liens")
                 .fetch("speaker").fetch("speaker.liens").fetch("coSpeakers").fetch("coSpeakers.liens")
-                .where().eq("statusTalk", status.getInterne()).findList();
+                .where().eq("statusProposal", status.getInterne()).findList();
     }
 
-    public static Talk findByIdWithFetch(Long id) {
+    public static Proposal findByIdWithFetch(Long id) {
         return find.select("id, title, description, speaker.id, speaker.fullname, speaker.avatar, speaker.description, speaker.liens, " +
-                "talk.coSpeakers.id, talk.coSpeakers.fullname, talk.coSpeakers.avatar, talk.coSpeakers.description, talk.coSpeakers.liens, talks.tags.nom")
+                "proposal.coSpeakers.id, proposal.coSpeakers.fullname, proposal.coSpeakers.avatar, proposal.coSpeakers.description, proposal.coSpeakers.liens, proposals.tags.nom")
                 .fetch("speaker").fetch("speaker.liens").fetch("coSpeakers").fetch("coSpeakers.liens").fetch("tags")
                 .where().idEq(id).findUnique();
     }

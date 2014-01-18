@@ -27,7 +27,7 @@ public class Tag extends Model {
 
     @ManyToMany
     @JsonIgnore
-    public List<Talk> talks = new ArrayList<Talk>();
+    public List<Proposal> proposals = new ArrayList<Proposal>();
 
     public static Model.Finder<Long, Tag> find = new Model.Finder<Long, Tag>(Long.class, Tag.class);
 

@@ -47,9 +47,9 @@ public class User extends Model {
     @Formats.NonEmpty
     public Boolean admin = false;
     
-    private Boolean notifOnMyTalk;
-    private Boolean notifAdminOnAllTalk;
-    private Boolean notifAdminOnTalkWithComment;
+    private Boolean notifOnMyProposal;
+    private Boolean notifAdminOnAllProposal;
+    private Boolean notifAdminOnProposalWithComment;
  
     @Constraints.Pattern("^([0-9a-fA-F][0-9a-fA-F]:){5}([0-9a-fA-F][0-9a-fA-F])$")
     public String adresseMac;
@@ -66,7 +66,7 @@ public class User extends Model {
 
     @ManyToMany
     @JsonIgnore
-    private List<Talk> coSpeakedTalks;
+    private List<Proposal> coSpeakedProposals;
 
     @JsonIgnore
     public String avatar;
@@ -103,28 +103,28 @@ public class User extends Model {
         return provider;
     }
 
-    public boolean getNotifOnMyTalk() {
-        return BooleanUtils.isNotFalse(notifOnMyTalk);
+    public boolean getNotifOnMyProposal() {
+        return BooleanUtils.isNotFalse(notifOnMyProposal);
     }
 
-    public boolean getNotifAdminOnAllTalk() {
-        return BooleanUtils.isNotFalse(notifAdminOnAllTalk);
+    public boolean getNotifAdminOnAllProposal() {
+        return BooleanUtils.isNotFalse(notifAdminOnAllProposal);
     }
 
-    public boolean getNotifAdminOnTalkWithComment() {
-        return BooleanUtils.isNotFalse(notifAdminOnTalkWithComment);
+    public boolean getNotifAdminOnProposalWithComment() {
+        return BooleanUtils.isNotFalse(notifAdminOnProposalWithComment);
     }
 
-    public void setNotifOnMyTalk(Boolean notifOnMyTalk) {
-        this.notifOnMyTalk = notifOnMyTalk;
+    public void setNotifOnMyProposal(Boolean notifOnMyProposal) {
+        this.notifOnMyProposal = notifOnMyProposal;
     }
 
-    public void setNotifAdminOnAllTalk(Boolean notifAdminOnAllTalk) {
-        this.notifAdminOnAllTalk = notifAdminOnAllTalk;
+    public void setNotifAdminOnAllProposal(Boolean notifAdminOnAllProposal) {
+        this.notifAdminOnAllProposal = notifAdminOnAllProposal;
     }
 
-    public void setNotifAdminOnTalkWithComment(Boolean notifAdminOnTalkWithComment) {
-        this.notifAdminOnTalkWithComment = notifAdminOnTalkWithComment;
+    public void setNotifAdminOnProposalWithComment(Boolean notifAdminOnProposalWithComment) {
+        this.notifAdminOnProposalWithComment = notifAdminOnProposalWithComment;
     }
 
     public List<Lien> getLiens() {
@@ -216,9 +216,9 @@ public class User extends Model {
         dateCreation = null;
         email = null;
         description = null;
-        setNotifAdminOnAllTalk(null);
-        setNotifAdminOnTalkWithComment(null);
-        setNotifOnMyTalk(null);
+        setNotifAdminOnAllProposal(null);
+        setNotifAdminOnProposalWithComment(null);
+        setNotifOnMyProposal(null);
     }
 
     @Override
@@ -234,7 +234,7 @@ public class User extends Model {
         if (authenticationMethod != null ? !authenticationMethod.equals(user.authenticationMethod) : user.authenticationMethod != null)
             return false;
         if (avatar != null ? !avatar.equals(user.avatar) : user.avatar != null) return false;
-        if (coSpeakedTalks != null ? !coSpeakedTalks.equals(user.coSpeakedTalks) : user.coSpeakedTalks != null)
+        if (coSpeakedProposals != null ? !coSpeakedProposals.equals(user.coSpeakedProposals) : user.coSpeakedProposals != null)
             return false;
         if (credentials != null ? !credentials.equals(user.credentials) : user.credentials != null) return false;
         if (dateCreation != null ? !dateCreation.equals(user.dateCreation) : user.dateCreation != null) return false;
@@ -245,11 +245,11 @@ public class User extends Model {
         if (fullname != null ? !fullname.equals(user.fullname) : user.fullname != null) return false;
         if (id != null ? !id.equals(user.id) : user.id != null) return false;
         if (liens != null ? !liens.equals(user.liens) : user.liens != null) return false;
-        if (notifAdminOnAllTalk != null ? !notifAdminOnAllTalk.equals(user.notifAdminOnAllTalk) : user.notifAdminOnAllTalk != null)
+        if (notifAdminOnAllProposal != null ? !notifAdminOnAllProposal.equals(user.notifAdminOnAllProposal) : user.notifAdminOnAllProposal != null)
             return false;
-        if (notifAdminOnTalkWithComment != null ? !notifAdminOnTalkWithComment.equals(user.notifAdminOnTalkWithComment) : user.notifAdminOnTalkWithComment != null)
+        if (notifAdminOnProposalWithComment != null ? !notifAdminOnProposalWithComment.equals(user.notifAdminOnProposalWithComment) : user.notifAdminOnProposalWithComment != null)
             return false;
-        if (notifOnMyTalk != null ? !notifOnMyTalk.equals(user.notifOnMyTalk) : user.notifOnMyTalk != null)
+        if (notifOnMyProposal != null ? !notifOnMyProposal.equals(user.notifOnMyProposal) : user.notifOnMyProposal != null)
             return false;
 
         return true;

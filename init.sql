@@ -25,18 +25,18 @@ DROP TABLE IF EXISTS `comment`;
 CREATE TABLE `comment` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `author_id` bigint(20) DEFAULT NULL,
-  `talk_id` bigint(20) DEFAULT NULL,
+  `proposal_id` bigint(20) DEFAULT NULL,
   `comment` varchar(140) DEFAULT NULL,
   `clos` tinyint(1) DEFAULT '0',
   `private_comment` tinyint(1) DEFAULT '0',
   `question_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `ix_comment_author_1` (`author_id`),
-  KEY `ix_comment_talk_2` (`talk_id`),
+  KEY `ix_comment_proposal_2` (`proposal_id`),
   KEY `ix_comment_question_3` (`question_id`),
   CONSTRAINT `fk_comment_author_1` FOREIGN KEY (`author_id`) REFERENCES `user` (`id`),
   CONSTRAINT `fk_comment_question_3` FOREIGN KEY (`question_id`) REFERENCES `comment` (`id`),
-  CONSTRAINT `fk_comment_talk_2` FOREIGN KEY (`talk_id`) REFERENCES `talk` (`id`)
+  CONSTRAINT `fk_comment_proposal_2` FOREIGN KEY (`proposal_id`) REFERENCES `proposal` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -86,19 +86,19 @@ CREATE TABLE `creneau` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `creneau_talk`
+-- Table structure for table `creneau_proposal`
 --
 
-DROP TABLE IF EXISTS `creneau_talk`;
+DROP TABLE IF EXISTS `creneau_proposal`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `creneau_talk` (
+CREATE TABLE `creneau_proposal` (
   `creneau_id` bigint(20) NOT NULL,
-  `talk_id` bigint(20) NOT NULL,
-  PRIMARY KEY (`creneau_id`,`talk_id`),
-  KEY `fk_creneau_talk_talk_02` (`talk_id`),
-  CONSTRAINT `fk_creneau_talk_creneau_01` FOREIGN KEY (`creneau_id`) REFERENCES `creneau` (`id`),
-  CONSTRAINT `fk_creneau_talk_talk_02` FOREIGN KEY (`talk_id`) REFERENCES `talk` (`id`)
+  `proposal_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`creneau_id`,`proposal_id`),
+  KEY `fk_creneau_proposal_proposal_02` (`proposal_id`),
+  CONSTRAINT `fk_creneau_proposal_creneau_01` FOREIGN KEY (`creneau_id`) REFERENCES `creneau` (`id`),
+  CONSTRAINT `fk_creneau_proposal_proposal_02` FOREIGN KEY (`proposal_id`) REFERENCES `proposal` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -190,42 +190,42 @@ CREATE TABLE `tag` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `tag_talk`
+-- Table structure for table `tag_proposal`
 --
 
-DROP TABLE IF EXISTS `tag_talk`;
+DROP TABLE IF EXISTS `tag_proposal`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `tag_talk` (
+CREATE TABLE `tag_proposal` (
   `tag_id` bigint(20) NOT NULL,
-  `talk_id` bigint(20) NOT NULL,
-  PRIMARY KEY (`tag_id`,`talk_id`),
-  KEY `fk_tag_talk_talk_02` (`talk_id`),
-  CONSTRAINT `fk_tag_talk_tag_01` FOREIGN KEY (`tag_id`) REFERENCES `tag` (`id`),
-  CONSTRAINT `fk_tag_talk_talk_02` FOREIGN KEY (`talk_id`) REFERENCES `talk` (`id`)
+  `proposal_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`tag_id`,`proposal_id`),
+  KEY `fk_tag_proposal_proposal_02` (`proposal_id`),
+  CONSTRAINT `fk_tag_proposal_tag_01` FOREIGN KEY (`tag_id`) REFERENCES `tag` (`id`),
+  CONSTRAINT `fk_tag_proposal_proposal_02` FOREIGN KEY (`proposal_id`) REFERENCES `proposal` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `talk`
+-- Table structure for table `proposal`
 --
 
-DROP TABLE IF EXISTS `talk`;
+DROP TABLE IF EXISTS `proposal`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `talk` (
+CREATE TABLE `proposal` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `title` varchar(50) DEFAULT NULL,
   `description` varchar(2000) DEFAULT NULL,
   `speaker_id` bigint(20) DEFAULT NULL,
-  `status_talk` varchar(1) DEFAULT NULL,
+  `status_proposal` varchar(1) DEFAULT NULL,
   `duree_preferee_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `uq_talk_title` (`title`),
-  KEY `ix_talk_speaker_8` (`speaker_id`),
-  KEY `ix_talk_dureePreferee_9` (`duree_preferee_id`),
-  CONSTRAINT `fk_talk_dureePreferee_9` FOREIGN KEY (`duree_preferee_id`) REFERENCES `creneau` (`id`),
-  CONSTRAINT `fk_talk_speaker_8` FOREIGN KEY (`speaker_id`) REFERENCES `user` (`id`)
+  UNIQUE KEY `uq_proposal_title` (`title`),
+  KEY `ix_proposal_speaker_8` (`speaker_id`),
+  KEY `ix_proposal_dureePreferee_9` (`duree_preferee_id`),
+  CONSTRAINT `fk_proposal_dureePreferee_9` FOREIGN KEY (`duree_preferee_id`) REFERENCES `creneau` (`id`),
+  CONSTRAINT `fk_proposal_speaker_8` FOREIGN KEY (`speaker_id`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -244,9 +244,9 @@ CREATE TABLE `user` (
   `credentials_id` bigint(20) DEFAULT NULL,
   `date_creation` datetime DEFAULT NULL,
   `admin` tinyint(1) DEFAULT '0',
-  `notif_on_my_talk` tinyint(1) DEFAULT '0',
-  `notif_admin_on_all_talk` tinyint(1) DEFAULT '0',
-  `notif_admin_on_talk_with_comment` tinyint(1) DEFAULT '0',
+  `notif_on_my_proposal` tinyint(1) DEFAULT '0',
+  `notif_admin_on_all_proposal` tinyint(1) DEFAULT '0',
+  `notif_admin_on_proposal_with_comment` tinyint(1) DEFAULT '0',
   `adresse_mac` varchar(255) DEFAULT NULL,
   `description` varchar(2000) DEFAULT NULL,
   `avatar` varchar(255) DEFAULT NULL,
@@ -267,12 +267,12 @@ DROP TABLE IF EXISTS `vote`;
 CREATE TABLE `vote` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `user_id` bigint(20) DEFAULT NULL,
-  `talk_id` bigint(20) DEFAULT NULL,
+  `proposal_id` bigint(20) DEFAULT NULL,
   `note` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `ix_vote_user_11` (`user_id`),
-  KEY `ix_vote_talk_12` (`talk_id`),
-  CONSTRAINT `fk_vote_talk_12` FOREIGN KEY (`talk_id`) REFERENCES `talk` (`id`),
+  KEY `ix_vote_proposal_12` (`proposal_id`),
+  CONSTRAINT `fk_vote_proposal_12` FOREIGN KEY (`proposal_id`) REFERENCES `proposal` (`id`),
   CONSTRAINT `fk_vote_user_11` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;

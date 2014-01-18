@@ -29,7 +29,7 @@ public class Comment extends Model {
     
     @ManyToOne
     @JsonIgnore
-    public Talk talk;
+    public Proposal proposal;
 
     @Constraints.Required
     @Formats.NonEmpty
@@ -54,8 +54,8 @@ public class Comment extends Model {
     public void sendMail() throws MalformedURLException {
     	Set<String> emails = new HashSet<String>();
         if (BooleanUtils.isNotTrue(privateComment)) {
-    	    addMailIfNotAuthorAndWantReceive(talk.speaker, emails);
-            for (User coSpeaker : talk.getCoSpeakers()) {
+    	    addMailIfNotAuthorAndWantReceive(proposal.speaker, emails);
+            for (User coSpeaker : proposal.getCoSpeakers()) {
                 addMailIfNotAuthorAndWantReceive(coSpeaker, emails);
             }
         }
@@ -65,11 +65,11 @@ public class Comment extends Model {
 
         if (!emails.isEmpty()) {
             String urlString = "http://" + Configuration.root().getString("server.hostname");
-            urlString += "/#/talks/see/" + talk.id;
+            urlString += "/#/proposals/see/" + proposal.id;
             URL url = new URL(urlString);
 
-            String subjet = Messages.get("talks.comment.new.mail.subject", talk.title);
-            String message = Messages.get("talks.comment.new.mail.message", talk.title, author.fullname, comment,url);
+            String subjet = Messages.get("proposals.comment.new.mail.subject", proposal.title);
+            String message = Messages.get("proposals.comment.new.mail.message", proposal.title, author.fullname, comment,url);
 
             Mail.sendMail(new Mail.Envelop(subjet, message, emails));
         }
@@ -83,21 +83,21 @@ public class Comment extends Model {
 	}
 
 	private boolean wantReceive(User contact) {
-		return isSpeakerOfTalkAndWantReceive(contact)
+		return isSpeakerOfProposalAndWantReceive(contact)
 				|| isAdminAndWantReceiveAll(contact) || isAdminAndHasCommentAndWantReceive(contact);
 	}
 
 	private boolean isAdminAndHasCommentAndWantReceive(User contact) {
-		return contact.admin && contact.getNotifAdminOnTalkWithComment()
+		return contact.admin && contact.getNotifAdminOnProposalWithComment()
 				&& getAuthorsOfComments().contains(contact.id);
 	}
 
 	private boolean isAdminAndWantReceiveAll(User contact) {
-		return contact.admin && contact.getNotifAdminOnAllTalk();
+		return contact.admin && contact.getNotifAdminOnAllProposal();
 	}
 
-	private boolean isSpeakerOfTalkAndWantReceive(User contact) {
-		return contact.equals(talk.speaker) && contact.getNotifOnMyTalk();
+	private boolean isSpeakerOfProposalAndWantReceive(User contact) {
+		return contact.equals(proposal.speaker) && contact.getNotifOnMyProposal();
 	}
 
 	private boolean isNotAuthor(User contact) {
@@ -109,7 +109,7 @@ public class Comment extends Model {
     private Set<Long> getAuthorsOfComments() {
     	if (authorsOfComments == null) {
 	    	authorsOfComments = new HashSet<Long>();
-	    	for (Comment otherComment : talk.comments) {
+	    	for (Comment otherComment : proposal.comments) {
 	    		authorsOfComments.add(otherComment.author.id);
 	    	}
 		}

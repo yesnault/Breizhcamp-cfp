@@ -18,9 +18,9 @@ public class Notifs extends BaseController {
         User user = getLoggedUser();
 
         JsonNode userJson = request().body().asJson();
-        user.setNotifOnMyTalk(userJson.get("notifOnMyTalk").asBoolean());
-        user.setNotifAdminOnAllTalk(userJson.get("notifAdminOnAllTalk").asBoolean());
-        user.setNotifAdminOnTalkWithComment(userJson.get("notifAdminOnTalkWithComment").asBoolean());
+        user.setNotifOnMyProposal(userJson.get("notifOnMyProposal").asBoolean());
+        user.setNotifAdminOnAllProposal(userJson.get("notifAdminOnAllProposal").asBoolean());
+        user.setNotifAdminOnProposalWithComment(userJson.get("notifAdminOnProposalWithComment").asBoolean());
         user.save();
         return ok();
     }

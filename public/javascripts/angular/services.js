@@ -129,24 +129,24 @@ Services.factory('AccountService', function($resource) {
 
 Services.factory('ProfilService', function($resource) {
     function ProfilService($resource) {
-        this.getTalks = function(userId) {
-            return $resource('/user/:userId/talks').query({userId: userId});
+        this.getProposals = function(userId) {
+            return $resource('/user/:userId/proposals').query({userId: userId});
         };
 
         this.getProposals = function(userId) {
             return $resource('/user/:userId/proposals').query({userId: userId});
         };
 
-        this.getTalksAccepted = function(userId) {
-            return $resource('/user/:userId/talks/A').query({userId: userId});
+        this.getProposalsAccepted = function(userId) {
+            return $resource('/user/:userId/proposals/A').query({userId: userId});
         };
 
-        this.getTalksRefused = function(userId) {
-            return $resource('/user/:userId/talks/R').query({userId: userId});
+        this.getProposalsRefused = function(userId) {
+            return $resource('/user/:userId/proposals/R').query({userId: userId});
         };
 
-        this.getTalksWait = function(userId) {
-            return $resource('/user/:userId/talks/W').query({userId: userId});
+        this.getProposalsWait = function(userId) {
+            return $resource('/user/:userId/proposals/W').query({userId: userId});
         };
         this.getUser = function(idUser) {
             return $resource('/user/:id').get({id: idUser});
@@ -156,17 +156,17 @@ Services.factory('ProfilService', function($resource) {
     return new ProfilService($resource);
 });
 
-Services.factory('TalkService', function($resource) {
-    return $resource('/talk/:id', {});
+Services.factory('ProposalService', function($resource) {
+    return $resource('/proposal/:id', {});
 });
 
-Services.factory('SubmitTalkService', function($resource) {
-    return $resource('/talk/submit/:id', {});
+Services.factory('SubmitProposalService', function($resource) {
+    return $resource('/proposal/submit/:id', {});
 });
 
 
-Services.factory('AllTalkService', function($resource) {
-    return $resource('/talk/all', {});
+Services.factory('AllProposalService', function($resource) {
+    return $resource('/proposal/all', {});
 });
 
 Services.factory('CreneauxService', function($resource) {
@@ -195,8 +195,8 @@ Services.factory('VoteService', function($resource, $http, $log) {
 
 Services.factory('StatService', function($resource) {
     function StatService($resource) {
-        this.getTalkStat = function() {
-            return $resource('/talkStat').get();
+        this.getProposalStat = function() {
+            return $resource('/proposalStat').get();
         }
     }
     return new StatService($resource);
