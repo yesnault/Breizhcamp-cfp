@@ -174,6 +174,11 @@ Services.factory('DynamicFieldsService', function($resource) {
 });
 
 
+Services.factory('EventService', function($resource) {
+      return $resource('/event/:id', {});
+});
+
+
 Services.factory('VoteService', function($resource, $http, $log) {
     function VoteService($resource, $http, $log) {
 
