@@ -20,9 +20,9 @@
             <div class="col-md-10">
                 <div class="well">
                     <h2>{{pUser.fullname}}</h2>
-                    <p ng-show="pUser.admin && talks.length==0">(Organisateur)</p>
-                    <p ng-show="pUser.admin && talks.length!=0 ">(Speaker/Organisateur)</p>
-                    <p ng-show="!pUser.admin && talks.length!=0 ">(Speaker)</p><br />
+                    <p ng-show="pUser.admin && proposals.length==0">(Organisateur)</p>
+                    <p ng-show="pUser.admin && proposals.length!=0 ">(Speaker/Organisateur)</p>
+                    <p ng-show="!pUser.admin && proposals.length!=0 ">(Speaker)</p><br />
                     <div id="showDescription">
                     <div class="well" ng-bind-html-unsafe="getSafeDescription()"></div>
                     <input type="button" class="btn btn-primary" value="Modifier" ng-show="userService.isAdmin()"
@@ -55,16 +55,16 @@
                         </ul>
                     </div>
 
-                    <h3 ng-show="talks.length > 0">Talks proposés</h3>
+                    <h3 ng-show="proposals.length > 0">Proposals proposés</h3>
                     <table class="table table-bordered table-striped">
                         <tbody><tr>
                             <th class="col-md-6">Titre</th>
                             <th class="col-md-2">Statut</th>
                         </tr>
 
-                        <tr ng-repeat="talk in talks | orderBy:predicate:reverse">
-                            <td><a href="/#/talks/see/{{talk.id}}">{{talk.title}}</a></td>
-                            <td><div ng-show="talk.statusTalk != undefined" ng-switch on="talk.statusTalk">
+                        <tr ng-repeat="proposal in proposals | orderBy:predicate:reverse">
+                            <td><a href="/#/proposals/see/{{proposal.id}}">{{proposal.title}}</a></td>
+                            <td><div ng-show="proposal.statusProposal != undefined" ng-switch on="proposal.statusProposal">
                                 <span class="label label-important" ng-switch-when="REJETE">Rejeté</span>
                                 <span class="label label-warning" ng-switch-when="ATTENTE">Liste d'attente</span>
                                 <span class="label label-success" ng-switch-when="ACCEPTE">Accepté</span>
@@ -73,8 +73,8 @@
 
                         </tbody></table>
 
-                    <h3 ng-show="talksok.length > 0">Talks acceptés</h3>
-                    <p ng-repeat="talk in talksok">- <a ng-href="/#/talks/see/{{talk.id}}" title="{{talk.title}}" >{{talk.title}}</a></p>
+                    <h3 ng-show="proposalsok.length > 0">Proposals acceptés</h3>
+                    <p ng-repeat="proposal in proposalsok">- <a ng-href="/#/proposals/see/{{proposal.id}}" title="{{proposal.title}}" >{{proposal.title}}</a></p>
                 </div>
             </div>
         </div>

@@ -53,14 +53,14 @@ function DashboardController($rootScope, $scope, ProfilService, AccountService, 
     var idUser = UserService.getUserData().id;
     $rootScope.user = UserService.getUserData();
     
-    $scope.talks = ProfilService.getTalks(idUser);
-    $scope.talksDraft = ProfilService.getProposals(idUser);
-    $scope.talksok = ProfilService.getTalksAccepted(idUser);
-    $scope.talksko = ProfilService.getTalksRefused(idUser);
-    $scope.talks_w = ProfilService.getTalksWait(idUser);
+    $scope.proposals = ProfilService.getProposals(idUser);
+    $scope.proposalsDraft = ProfilService.getDrafts(idUser);
+    $scope.proposalsok = ProfilService.getProposalsAccepted(idUser);
+    $scope.proposalsko = ProfilService.getProposalsRefused(idUser);
+    $scope.proposals_w = ProfilService.getProposalsWait(idUser);
 
     if (UserService.isAdmin()) {
-        $scope.talkstats = StatService.getTalkStat();
+        $scope.proposalstats = StatService.getProposalStat();
     }
 
 }
@@ -113,8 +113,8 @@ function LoginController($scope, $log, UserService, PasswordService, $http, $loc
 
 
 // Pour que l'injection de dépendances fonctionne en cas de 'minifying'
-NewTalkController.$inject = ['$scope', '$log', '$location', 'TalkService', 'CreneauxService', '$http'];
-function NewTalkController($scope, $log, $location, TalkService, CreneauxService, $http) {
+NewProposalController.$inject = ['$scope', '$log', '$location', 'ProposalService', 'CreneauxService', '$http'];
+function NewProposalController($scope, $log, $location, ProposalService, CreneauxService, $http) {
 
     $scope.checkloc(false);
 
@@ -125,31 +125,31 @@ function NewTalkController($scope, $log, $location, TalkService, CreneauxService
     });
 
     $scope.addSelectedCoSpeaker = function() {
-        if ($scope.talk === undefined) {
-            $scope.talk = {};
+        if ($scope.proposal === undefined) {
+            $scope.proposal = {};
         }
-        if ($scope.talk.coSpeakers === undefined) {
-            $scope.talk.coSpeakers = [];
+        if ($scope.proposal.coSpeakers === undefined) {
+            $scope.proposal.coSpeakers = [];
         }
         if ($scope.coSpeakerSelected !== undefined) {
 
             var found = false;
 
-            angular.forEach($scope.talk.coSpeakers, function(coSpeaker) {
+            angular.forEach($scope.proposal.coSpeakers, function(coSpeaker) {
                 if (coSpeaker.id === $scope.coSpeakerSelected.id) {
                     found = true;
                 }
             });
 
             if (!found) {
-                $scope.talk.coSpeakers.push($scope.coSpeakerSelected);
+                $scope.proposal.coSpeakers.push($scope.coSpeakerSelected);
             }
             $scope.coSpeakerSelected = undefined;
         }
     };
 
     $scope.removeCoSpeaker = function(coSpeaker) {
-        $scope.talk.coSpeakers.splice($scope.talk.coSpeakers.indexOf(coSpeaker), 1);
+        $scope.proposal.coSpeakers.splice($scope.proposal.coSpeakers.indexOf(coSpeaker), 1);
     };
 
 
@@ -164,14 +164,14 @@ function NewTalkController($scope, $log, $location, TalkService, CreneauxService
     $scope.editorIndication = new Markdown.Editor($scope.converter, '-indications');
     $scope.editorIndication.run();
 
-    $scope.saveTalk = function() {
-        $log.info("Soummission du nouveau talk");
+    $scope.saveProposal = function() {
+        $log.info("Soummission du nouveau proposal");
 
-        TalkService.save($scope.talk, function(data) {
-            $log.info("Soummission du talk ok");
-            $location.url('/managetalk');
+        ProposalService.save($scope.proposal, function(data) {
+            $log.info("Soummission du proposal ok");
+            $location.url('/manageproposal');
         }, function(err) {
-            $log.info("Soummission du talk ko");
+            $log.info("Soummission du proposal ko");
             $log.info(err.data);
             $scope.errors = err.data;
         });
@@ -181,58 +181,58 @@ function NewTalkController($scope, $log, $location, TalkService, CreneauxService
 }
 
 
-function changeDureePreferee(newId, talk, creneaux) {
+function changeDureePreferee(newId, proposal, creneaux) {
 
     var found = false;
     angular.forEach(creneaux, function(creneau) {
         if (creneau.id === newId) {
-            talk.dureePreferee  = creneau;
+            proposal.dureePreferee  = creneau;
             found = true;
         }
     });
     if (!found) {
-        talk.dureePreferee = undefined;
+        proposal.dureePreferee = undefined;
     }
 }
 
 // Pour que l'injection de dépendances fonctionne en cas de 'minifying'
-EditTalkController.$inject = ['$scope', '$log', '$location', '$routeParams', 'TalkService', '$http', 'CreneauxService'];
-function EditTalkController($scope, $log, $location, $routeParams, TalkService, http, CreneauxService) {
+EditProposalController.$inject = ['$scope', '$log', '$location', '$routeParams', 'ProposalService', '$http', 'CreneauxService'];
+function EditProposalController($scope, $log, $location, $routeParams, ProposalService, http, CreneauxService) {
 
     $scope.checkloc(false);
 
-    $scope.talk = TalkService.get({id: $routeParams.talkId});
+    $scope.proposal = ProposalService.get({id: $routeParams.proposalId});
 
     http.get("/user/cospeakers").success(function(data) {
         $scope.coSpeakers = data;
     });
 
     $scope.addSelectedCoSpeaker = function() {
-        if ($scope.talk === undefined) {
-            $scope.talk = {};
+        if ($scope.proposal === undefined) {
+            $scope.proposal = {};
         }
-        if ($scope.talk.coSpeakers === undefined) {
-            $scope.talk.coSpeakers = [];
+        if ($scope.proposal.coSpeakers === undefined) {
+            $scope.proposal.coSpeakers = [];
         }
         if ($scope.coSpeakerSelected !== undefined) {
 
             var found = false;
 
-            angular.forEach($scope.talk.coSpeakers, function(coSpeaker) {
+            angular.forEach($scope.proposal.coSpeakers, function(coSpeaker) {
                 if (coSpeaker.id === $scope.coSpeakerSelected.id) {
                     found = true;
                 }
             });
 
             if (!found) {
-                $scope.talk.coSpeakers.push($scope.coSpeakerSelected);
+                $scope.proposal.coSpeakers.push($scope.coSpeakerSelected);
             }
             $scope.coSpeakerSelected = undefined;
         }
     };
 
     $scope.removeCoSpeaker = function(coSpeaker) {
-        $scope.talk.coSpeakers.splice($scope.talk.coSpeakers.indexOf(coSpeaker), 1);
+        $scope.proposal.coSpeakers.splice($scope.proposal.coSpeakers.indexOf(coSpeaker), 1);
     };
 
     $scope.$location = $location;
@@ -248,17 +248,17 @@ function EditTalkController($scope, $log, $location, $routeParams, TalkService, 
     $scope.editorIndication = new Markdown.Editor($scope.converter, '-indications');
     $scope.editorIndication.run();
 
-    $scope.saveTalk = function() {
-        $log.info("Sauvegarde du talk : " + $routeParams.talkId);
+    $scope.saveProposal = function() {
+        $log.info("Sauvegarde du proposal : " + $routeParams.proposalId);
         // Contournement pour ne pas soumettre l'objet speaker dans le POST JSON
-        $scope.talk.speaker = null;
-        $scope.talk.comments = null;
+        $scope.proposal.speaker = null;
+        $scope.proposal.comments = null;
 
-        TalkService.save($scope.talk, function(data) {
-            $log.info("Soummission du talk ok");
-            $location.url('/managetalk');
+        ProposalService.save($scope.proposal, function(data) {
+            $log.info("Soummission du proposal ok");
+            $location.url('/manageproposal');
         }, function(err) {
-            $log.info("Soummission du talk ko");
+            $log.info("Soummission du proposal ko");
             $log.info(err.data);
             $scope.errors = err.data;
         });
@@ -268,16 +268,16 @@ function EditTalkController($scope, $log, $location, $routeParams, TalkService, 
     $scope.addTag = function() {
         $log.info("Ajout de tags " + $scope.tags);
 
-        var data = {'tags': $scope.talk.tagsname, 'idTalk': $scope.talk.id};
+        var data = {'tags': $scope.proposal.tagsname, 'idProposal': $scope.proposal.id};
 
         http({
             method: 'POST',
-            url: '/talk/' + $scope.talk.id + '/tags/' + $scope.talk.tagsname,
+            url: '/proposal/' + $scope.proposal.id + '/tags/' + $scope.proposal.tagsname,
             data: data
         }).success(function(data, status, headers, config) {
             $log.info(status);
             $scope.errors = undefined;
-            $scope.talk = TalkService.get({id: $routeParams.talkId});
+            $scope.proposal = ProposalService.get({id: $routeParams.proposalId});
         }).error(function(data, status, headers, config) {
             $log.info(status);
             $scope.errors = data;
@@ -289,39 +289,39 @@ function EditTalkController($scope, $log, $location, $routeParams, TalkService, 
 
 
 // Pour que l'injection de dépendances fonctionne en cas de 'minifying'
-ManageTalkController.$inject = ['$scope', '$log', '$location', 'TalkService', '$http'];
-function ManageTalkController($scope, $log, $location, TalkService, http) {
+ManageProposalController.$inject = ['$scope', '$log', '$location', 'ProposalService', '$http'];
+function ManageProposalController($scope, $log, $location, ProposalService, http) {
 
     $scope.checkloc(false);
 
-    $scope.talks = TalkService.query();
+    $scope.proposals = ProposalService.query();
 
-    $scope.deleteTalk = function(talk) {
-        var confirmation = confirm('\u00cates vous s\u00fbr de vouloir supprimer le talk "' + talk.title + '" ?');
+    $scope.deleteProposal = function(proposal) {
+        var confirmation = confirm('\u00cates vous s\u00fbr de vouloir supprimer le proposal "' + proposal.title + '" ?');
         if (confirmation) {
-            TalkService.delete({'id': talk.id}, function(data) {
-                $scope.talks = TalkService.query();
+            ProposalService.delete({'id': proposal.id}, function(data) {
+                $scope.proposals = ProposalService.query();
                 $scope.errors = undefined;
             }, function(err) {
-                $log.info("Delete du talk ko");
+                $log.info("Delete du proposal ko");
                 $log.info(err);
                 $scope.errors = err.data;
             });
         }
     }
 
-    $scope.submitTalk = function(talk) {
-        var confirmation = confirm('\u00cates vous s\u00fbr de vouloir soumettre le talk "' + talk.title + '" a l\'équipe ?');
+    $scope.submitProposal = function(proposal) {
+        var confirmation = confirm('\u00cates vous s\u00fbr de vouloir soumettre le proposal "' + proposal.title + '" a l\'équipe ?');
         if (confirmation) {
             http({
                 method: 'POST',
-                url: '/talk/submit/'+talk.id,
+                url: '/proposal/submit/'+proposal.id,
                 data: {}
             }).success(function(data, status, headers, config) {
-                    $scope.talks = TalkService.query();
+                    $scope.proposals = ProposalService.query();
                     $scope.errors = undefined;
                 }).error(function(data, status, headers, config) {
-                    $log.info("soumission du talk ko");
+                    $log.info("soumission du proposal ko");
                     $log.info(status);
                     $scope.errors = status;
             });
@@ -382,49 +382,55 @@ function ManageUsersController($scope, $log, $location, ManageUsersService, http
     }
  }
 
-ListTalksController.$inject = ['$scope', '$log','$http', 'AllTalkService', 'VoteService','TalkService', 'UserService'];
-function ListTalksController($scope, $log,http, AllTalkService, VoteService,TalkService,UserService) {
+ListProposalsController.$inject = ['$scope', '$log','$http', 'AllProposalService', 'VoteService','ProposalService', 'UserService','EventService'];
+function ListProposalsController($scope, $log,http, AllProposalService, VoteService,ProposalService,UserService,EventService) {
 
     $scope.checkloc(true);
 
     $scope.status = ['ACCEPTE','ATTENTE','REJETE', 'NULL'];
 
-    $scope.talks = AllTalkService.query();
+    $scope.proposals = AllProposalService.query();
 
     $scope.vote = VoteService.getVote();
+
+    $scope.events = EventService.query();
 
     $scope.predicate = 'moyenne';
 
     $scope.reverse = true;
 
-    $scope.talksAcceptes = function(talk){
-        return talk.statusTalk =='ACCEPTE';
+    $scope.proposalsAcceptes = function(proposal){
+        return proposal.statusProposal =='ACCEPTE';
     };
 
-    $scope.doStatus = function(talk){
+    $scope.doStatus = function(proposal){
         $log.info('call doStatus');
-        return (talk.statusTalk == undefined && $scope.status.contains("NULL")) || $scope.status.contains(talk.statusTalk);
+        return (proposal.statusProposal == undefined && $scope.status.contains("NULL")) || $scope.status.contains(proposal.statusProposal);
+    };
+    $scope.doEvent = function(proposal){
+        $log.info('call doEvent '+$scope.event+' '+proposal.event);
+        return (proposal.event == undefined ) || $scope.event == proposal.event.id;
     };
 
-    $scope.deleteTalk = function(talk) {
-            $log.info('deleteTalk '+talk.title);
-            TalkService.delete({'id': talk.id}, function(data) {
-                $scope.talks = TalkService.query();
+    $scope.deleteProposal = function(proposal) {
+            $log.info('deleteProposal '+proposal.title);
+            ProposalService.delete({'id': proposal.id}, function(data) {
+                $scope.proposals = ProposalService.query();
                 $scope.errors = undefined;
-                $('#messageSuccess').text('Talk supprim\u00e9');
+                $('#messageSuccess').text('Proposal supprim\u00e9');
                 $('#messageSuccess').removeClass('hide');
                 $('#messageError').addClass('hide');
-                $('#deleteTalk'+talk.id).modal('hide');
+                $('#deleteProposal'+proposal.id).modal('hide');
             }, function(err) {
-                $log.info("Delete du talk ko");
+                $log.info("Delete du proposal ko");
                 $log.info(err);
                 $scope.errors = err.data;
             });
     };
 
-    $scope.getTalkDetails = function(idTalk) {
-        $scope.talkModal = TalkService.get({id:idTalk}, function success(data) {
-            $scope.talkModal = data;
+    $scope.getProposalDetails = function(idProposal) {
+        $scope.proposalModal = ProposalService.get({id:idProposal}, function success(data) {
+            $scope.proposalModal = data;
 
         });
     };
@@ -437,13 +443,13 @@ function ListTalksController($scope, $log,http, AllTalkService, VoteService,Talk
         }
     }
 
-    $scope.postVote = function(talk) {
+    $scope.postVote = function(proposal) {
         $log.info("postVote");
-        $log.info(talk);
+        $log.info(proposal);
 
         http({
             method: 'POST',
-            url: '/talks/' + talk.id + '/vote/' + talk.note
+            url: '/proposals/' + proposal.id + '/vote/' + proposal.note
         }).success(function(data, status, headers, config) {
                 $log.info(status);
                 $scope.errors = undefined;
@@ -457,9 +463,9 @@ function ListTalksController($scope, $log,http, AllTalkService, VoteService,Talk
 
         http({
             method: 'POST',
-            url: '/talks/rejectall'
+            url: '/proposals/rejectall'
         }).success(function(data, status, headers, config){
-                $scope.talks = TalkService.query();
+                $scope.proposals = ProposalService.query();
             });
 
     }
@@ -491,15 +497,15 @@ function VoteController($scope, $log, VoteService, $http) {
 }
 
 
-SeeTalksController.$inject = ['$scope', '$log', '$routeParams', 'TalkService', '$http', 'VoteService', 'UserService','CreneauxService'];
-function SeeTalksController($scope, $log, $routeParams, TalkService, http, VoteService, UserService,CreneauxService ) {
+SeeProposalsController.$inject = ['$scope', '$log', '$routeParams', 'ProposalService', '$http', 'VoteService', 'UserService','CreneauxService'];
+function SeeProposalsController($scope, $log, $routeParams, ProposalService, http, VoteService, UserService,CreneauxService ) {
 
     $scope.checkloc(false);
 
-    $scope.talk = TalkService.get({id: $routeParams.talkId}, function success(data) {
-        $scope.talk = data;
-        if (!$scope.talk.dureeApprouve) {
-            $scope.talk.dureeApprouve = $scope.talk.dureePreferee;
+    $scope.proposal = ProposalService.get({id: $routeParams.proposalId}, function success(data) {
+        $scope.proposal = data;
+        if (!$scope.proposal.dureeApprouve) {
+            $scope.proposal.dureeApprouve = $scope.proposal.dureePreferee;
         }
     });
 
@@ -512,14 +518,14 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http, VoteS
     $scope.converter = new Markdown.getSanitizingConverter();
 
     $scope.getSafeDescription = function() {
-        if ($scope.talk.description) {
-            return $scope.converter.makeHtml($scope.talk.description);
+        if ($scope.proposal.description) {
+            return $scope.converter.makeHtml($scope.proposal.description);
         }
     }
 
     $scope.getSafeIndications = function() {
-        if ($scope.talk.indicationsOrganisateurs) {
-            return $scope.converter.makeHtml($scope.talk.indicationsOrganisateurs);
+        if ($scope.proposal.indicationsOrganisateurs) {
+            return $scope.converter.makeHtml($scope.proposal.indicationsOrganisateurs);
         }
     }
 
@@ -530,13 +536,13 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http, VoteS
 
         http({
             method: 'POST',
-            url: '/talks/' + $scope.talk.id + '/comment',
+            url: '/proposals/' + $scope.proposal.id + '/comment',
             data: data
         }).success(function(data, status, headers, config) {
             $log.info(status);
             $scope.errors = null;
             $scope.comment = null;
-            $scope.talk = TalkService.get({id: $routeParams.talkId});
+            $scope.proposal = ProposalService.get({id: $routeParams.proposalId});
         }).error(function(data, status, headers, config) {
             $log.info(status);
             $scope.errors = data;
@@ -551,13 +557,13 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http, VoteS
 
         http({
             method: 'POST',
-            url: '/talks/' + $scope.talk.id + '/comment/' + commentId + '/response',
+            url: '/proposals/' + $scope.proposal.id + '/comment/' + commentId + '/response',
             data: dataR
         }).success(function(data, status, headers, config) {
             $log.info(status);
             $scope.errors = undefined;
             $scope.commentR = undefined;
-            $scope.talk = TalkService.get({id: $routeParams.talkId});
+            $scope.proposal = ProposalService.get({id: $routeParams.proposalId});
         }).error(function(data, status, headers, config) {
             $log.info(status);
             $scope.errors = data;
@@ -572,13 +578,13 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http, VoteS
 
         http({
             method: 'POST',
-            url: '/talks/' + $scope.talk.id + '/comment/' + commentId + '/edit',
+            url: '/proposals/' + $scope.proposal.id + '/comment/' + commentId + '/edit',
             data: dataR
         }).success(function(data, status, headers, config) {
             $log.info(status);
             $scope.errors = undefined;
             $scope.commentE = Array();
-            $scope.talk = TalkService.get({id: $routeParams.talkId});
+            $scope.proposal = ProposalService.get({id: $routeParams.proposalId});
         }).error(function(data, status, headers, config) {
             $log.info(status);
             $scope.errors = data;
@@ -592,12 +598,12 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http, VoteS
 
         http({
             method: 'POST',
-            url: '/talks/' + $scope.talk.id + '/comment/' + id + '/close',
+            url: '/proposals/' + $scope.proposal.id + '/comment/' + id + '/close',
             data: data
         }).success(function(data, status, headers, config) {
             $log.info(status);
             $scope.errors = undefined;
-            $scope.talk = TalkService.get({id: $routeParams.talkId});
+            $scope.proposal = ProposalService.get({id: $routeParams.proposalId});
         }).error(function(data, status, headers, config) {
             $log.info(status);
             $scope.errors = data;
@@ -611,12 +617,12 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http, VoteS
 
         http({
             method: 'POST',
-            url: '/talks/' + $scope.talk.id + '/comment/' + id + '/delete',
+            url: '/proposals/' + $scope.proposal.id + '/comment/' + id + '/delete',
             data: data
         }).success(function(data, status, headers, config) {
             $log.info(status);
             $scope.errors = undefined;
-            $scope.talk = TalkService.get({id: $routeParams.talkId});
+            $scope.proposal = ProposalService.get({id: $routeParams.proposalId});
         }).error(function(data, status, headers, config) {
             $log.info(status);
             $scope.errors = data;
@@ -626,16 +632,16 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http, VoteS
     $scope.postStatus = function() {
         $log.info("postStatus");
 
-        var data = {'status': $scope.talk.statusTalk,'dureeApprouve': $scope.talk.dureeApprouve.id};
+        var data = {'status': $scope.proposal.statusProposal,'dureeApprouve': $scope.proposal.dureeApprouve.id};
 
         http({
             method: 'POST',
-            url: '/talks/' + $scope.talk.id + '/status',
+            url: '/proposals/' + $scope.proposal.id + '/status',
             data: data
         }).success(function(data, status, headers, config) {
             $log.info(status);
             $scope.errors = undefined;
-            $scope.talk = TalkService.get({id: $routeParams.talkId});
+            $scope.proposal = ProposalService.get({id: $routeParams.proposalId});
         }).error(function(data, status, headers, config) {
             $log.info(status);
             $scope.errors = data;
@@ -644,15 +650,15 @@ function SeeTalksController($scope, $log, $routeParams, TalkService, http, VoteS
 
     $scope.postVote = function() {
         $log.info("postVote");
-        $log.info($scope.talk);
+        $log.info($scope.proposal);
 
         http({
             method: 'POST',
-            url: '/talks/' + $scope.talk.id + '/vote/' + $scope.talk.note
+            url: '/proposals/' + $scope.proposal.id + '/vote/' + $scope.proposal.note
         }).success(function(data, status, headers, config) {
             $log.info(status);
             $scope.errors = undefined;
-            $scope.talk = TalkService.get({id: $routeParams.talkId});
+            $scope.proposal = ProposalService.get({id: $routeParams.proposalId});
         }).error(function(data, status, headers, config) {
             $log.info(status);
             $scope.errors = data;
@@ -671,8 +677,8 @@ function ProfilController($scope, $log, $routeParams, AccountService, ProfilServ
 
     var idUSer = $routeParams.userId;
     $scope.pUser = ProfilService.getUser(idUSer);
-    $scope.talks = ProfilService.getTalks(idUSer);
-    $scope.talksok = ProfilService.getTalksAccepted(idUSer);
+    $scope.proposals = ProfilService.getProposals(idUSer);
+    $scope.proposalsok = ProfilService.getProposalsAccepted(idUSer);
 
     $scope.getSafeDescription = function() {
         if ($scope.pUser.description) {
@@ -1132,7 +1138,7 @@ function MailingController($scope, $http, $log, $location) {
                 }
             }).
                 success(function(data, status){
-                    $location.url('/admin/talks/list');
+                    $location.url('/admin/proposals/list');
                 }).
                 error(function(data, status){
                     $log.error(data);

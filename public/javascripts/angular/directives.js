@@ -36,8 +36,8 @@ directives.directive('star', function factory() {
             $.fn.raty.defaults.path = '/assets/img/';
             $('#star').raty({
                 click: function(score, evt) {
-                    scope.$parent.talk = ngModel.$modelValue;
-                    scope.$parent.talk.note = score;
+                    scope.$parent.proposal = ngModel.$modelValue;
+                    scope.$parent.proposal.note = score;
                     scope.$digest();
                 }
             });
@@ -60,16 +60,16 @@ directives.directive('star', function factory() {
 //        replace: true,
 //        require: 'ngModel',
 //        scope: {
-//            talkid: '@'
+//            proposalid: '@'
 //        },
 //        transclude: true,
-//        template: '<div id="star{{talkid}}" > </div>',
+//        template: '<div id="star{{proposalid}}" > </div>',
 //        link: function postLink(scope, iElement, iAttr,ngModel) {
 //            $.fn.raty.defaults.path = '/assets/img/';
- //          $('#star'+scope.talkid).raty({
+ //          $('#star'+scope.proposalid).raty({
 //                click: function(score, evt) {
-//                    scope.$parent.talkModal = ngModel.$modelValue;
-//                    scope.$parent.talkModal.note = score;
+//                    scope.$parent.proposalModal = ngModel.$modelValue;
+//                    scope.$parent.proposalModal.note = score;
 //                    scope.$digest();
   //              }
 //            });
@@ -77,8 +77,8 @@ directives.directive('star', function factory() {
 //            scope.$watch(function () {
 //                return ngModel.$modelValue!= undefined ?  ngModel.$modelValue.note:1;
 //            }, function(value) {
-//                console.debug('#star'+scope.talkid+'= '+value);
-//                $('#star'+scope.talkid).raty('score',  value);
+//                console.debug('#star'+scope.proposalid+'= '+value);
+//                $('#star'+scope.proposalid).raty('score',  value);
 //            });
 
 //        }

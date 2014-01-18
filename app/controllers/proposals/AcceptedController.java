@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package controllers.talks;
+package controllers.proposals;
 
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
@@ -37,63 +37,63 @@ import static play.libs.Jsonp.jsonp;
 
 public class AcceptedController extends Controller {
 
-    public static Result acceptedTalkByIdJsonp(Long id, String callback) {
-        Talk talk = Talk.findByIdWithFetch(id);
+    public static Result acceptedProposalByIdJsonp(Long id, String callback) {
+        Proposal proposal = Proposal.findByIdWithFetch(id);
 
-        if (talk == null) {
+        if (proposal == null) {
             return notFound();
         }
 
-        ObjectNode talkJson = talkToJson(talk);
-        return ok(jsonp(callback, talkJson));
+        ObjectNode proposalJson = proposalToJson(proposal);
+        return ok(jsonp(callback, proposalJson));
     }
 
-    public static Result acceptedTalkById(Long id) {
-        Talk talk = Talk.findByIdWithFetch(id);
+    public static Result acceptedProposalById(Long id) {
+        Proposal proposal = Proposal.findByIdWithFetch(id);
 
-        if (talk == null) {
+        if (proposal == null) {
             return notFound();
         }
 
-        ObjectNode talkJson = talkToJson(talk);
-        return ok(talkJson);
+        ObjectNode proposalJson = proposalToJson(proposal);
+        return ok(proposalJson);
     }
 
-    private static ObjectNode talkToJson(Talk talk) {
-        ObjectNode talkJson = Json.newObject();
-        talkJson.put("id", talk.id);
-        talkJson.put("title", talk.title);
-        talkJson.put("description", talk.description);
-        talkJson.put("indicationsOrganisateurs", talk.indicationsOrganisateurs);
+    private static ObjectNode proposalToJson(Proposal proposal) {
+        ObjectNode proposalJson = Json.newObject();
+        proposalJson.put("id", proposal.id);
+        proposalJson.put("title", proposal.title);
+        proposalJson.put("description", proposal.description);
+        proposalJson.put("indicationsOrganisateurs", proposal.indicationsOrganisateurs);
         ArrayNode tags = new ArrayNode(JsonNodeFactory.instance);
-        for (Tag tag : talk.getTags()) {
+        for (Tag tag : proposal.getTags()) {
             tags.add(tag.nom);
         }
-        talkJson.put("tags", tags);
+        proposalJson.put("tags", tags);
 
         ArrayNode speakers = new ArrayNode(JsonNodeFactory.instance);
-        if (talk.speaker != null) {
-            speakers.add(getSpeakerInJson(talk.speaker));
+        if (proposal.speaker != null) {
+            speakers.add(getSpeakerInJson(proposal.speaker));
         }
-        for (User otherSpeaker : talk.getCoSpeakers()) {
+        for (User otherSpeaker : proposal.getCoSpeakers()) {
             speakers.add(getSpeakerInJson(otherSpeaker));
         }
-        talkJson.put("speakers", speakers);
-        return talkJson;
+        proposalJson.put("speakers", speakers);
+        return proposalJson;
     }
 
     public static Result acceptedSpeakers() {
-        return ok(getAcceptedTalksToJson());
+        return ok(getAcceptedProposalsToJson());
     }
 
     @CsvFile(separator = ";")
     private static class AdressMacForSpeakers {
 
-        public AdressMacForSpeakers(String speaker, String mac, String mail, String talks) {
+        public AdressMacForSpeakers(String speaker, String mac, String mail, String proposals) {
             this.speaker = speaker;
             this.mac = mac;
             this.mail = mail;
-            this.talks = talks;
+            this.proposals = proposals;
         }
 
         public AdressMacForSpeakers() {
@@ -105,8 +105,8 @@ public class AcceptedController extends Controller {
         @CsvColumn("speaker_mail")
         public String mail;
 
-        @CsvColumn("talks")
-        public String talks;
+        @CsvColumn("proposals")
+        public String proposals;
 
         @CsvColumn("@MAC")
         public String mac;
@@ -114,22 +114,22 @@ public class AcceptedController extends Controller {
 
     public static Result adressMacOfAcceptedSpeakers() {
 
-        List<Talk> talksAccepted = Talk.findByStatusForMinimalData(StatusTalk.ACCEPTE);
+        List<Proposal> proposalsAccepted = Proposal.findByStatusForMinimalData(StatusProposal.ACCEPTE);
 
-        Map<User, List<Talk>> speakers = new HashMap<User, List<Talk>>();
+        Map<User, List<Proposal>> speakers = new HashMap<User, List<Proposal>>();
 
-        for (Talk talk : talksAccepted) {
-            if (talk.speaker != null) {
-                if (!speakers.containsKey(talk.speaker)) {
-                    speakers.put(talk.speaker, new ArrayList<Talk>());
+        for (Proposal proposal : proposalsAccepted) {
+            if (proposal.speaker != null) {
+                if (!speakers.containsKey(proposal.speaker)) {
+                    speakers.put(proposal.speaker, new ArrayList<Proposal>());
                 }
-                speakers.get(talk.speaker).add(talk);
+                speakers.get(proposal.speaker).add(proposal);
             }
-            for (User speaker : talk.getCoSpeakers()) {
+            for (User speaker : proposal.getCoSpeakers()) {
                 if (!speakers.containsKey(speaker)) {
-                    speakers.put(speaker, new ArrayList<Talk>());
+                    speakers.put(speaker, new ArrayList<Proposal>());
                 }
-                speakers.get(speaker).add(talk);
+                speakers.get(speaker).add(proposal);
             }
         }
 
@@ -145,10 +145,10 @@ public class AcceptedController extends Controller {
 
         for (User speaker : speakersSorted) {
             macAddressOfSpeakers.add(new AdressMacForSpeakers(speaker.fullname, speaker.adresseMac, speaker.email, Joiner.on('\n').join(
-                    Iterables.transform(speakers.get(speaker), new Function<Talk, String>() {
+                    Iterables.transform(speakers.get(speaker), new Function<Proposal, String>() {
                         @Override
-                        public String apply(Talk talk) {
-                            return talk.title;
+                        public String apply(Proposal proposal) {
+                            return proposal.title;
                         }
                     }))));
         }
@@ -172,27 +172,27 @@ public class AcceptedController extends Controller {
 
     public static Result acceptedSpeakersToJson(String callback) {
 
-        ArrayNode result = getAcceptedTalksToJson();
+        ArrayNode result = getAcceptedProposalsToJson();
         return ok(jsonp(callback, result));
     }
 
-    private static ArrayNode getAcceptedTalksToJson() {
-        List<Talk> talksAccepted = Talk.findByStatusForMinimalData(StatusTalk.ACCEPTE);
+    private static ArrayNode getAcceptedProposalsToJson() {
+        List<Proposal> proposalsAccepted = Proposal.findByStatusForMinimalData(StatusProposal.ACCEPTE);
 
-        Map<User, List<Talk>> speakers = new HashMap<User, List<Talk>>();
+        Map<User, List<Proposal>> speakers = new HashMap<User, List<Proposal>>();
 
-        for (Talk talk : talksAccepted) {
-            if (talk.speaker != null) {
-                if (!speakers.containsKey(talk.speaker)) {
-                    speakers.put(talk.speaker, new ArrayList<Talk>());
+        for (Proposal proposal : proposalsAccepted) {
+            if (proposal.speaker != null) {
+                if (!speakers.containsKey(proposal.speaker)) {
+                    speakers.put(proposal.speaker, new ArrayList<Proposal>());
                 }
-                speakers.get(talk.speaker).add(talk);
+                speakers.get(proposal.speaker).add(proposal);
             }
-            for (User speaker : talk.getCoSpeakers()) {
+            for (User speaker : proposal.getCoSpeakers()) {
                 if (!speakers.containsKey(speaker)) {
-                    speakers.put(speaker, new ArrayList<Talk>());
+                    speakers.put(speaker, new ArrayList<Proposal>());
                 }
-                speakers.get(speaker).add(talk);
+                speakers.get(speaker).add(proposal);
             }
         }
 
@@ -211,70 +211,70 @@ public class AcceptedController extends Controller {
         // speaker.description
         // speaker.liens.url
         // speaker.liens.label
-        // speaker.talks.id
-        // speaker.talks.title
-        // speaker.talks.description
-        // speaker.talks.otherspeakers
+        // speaker.proposals.id
+        // speaker.proposals.title
+        // speaker.proposals.description
+        // speaker.proposals.otherspeakers
 
         ArrayNode result = new ArrayNode(JsonNodeFactory.instance);
         for (User speaker : speakersSorted) {
             ObjectNode speakerJson = getSpeakerInJson(speaker);
-            ArrayNode talksJson = new ArrayNode(JsonNodeFactory.instance);
-            for (Talk talk : speakers.get(speaker)) {
-                ObjectNode talkJson = Json.newObject();
-                talkJson.put("id", talk.id);
-                talkJson.put("title", talk.title);
-                talkJson.put("description", talk.description);
-                talkJson.put("indicationsOrganisateurs", talk.indicationsOrganisateurs);
+            ArrayNode proposalsJson = new ArrayNode(JsonNodeFactory.instance);
+            for (Proposal proposal : speakers.get(speaker)) {
+                ObjectNode proposalJson = Json.newObject();
+                proposalJson.put("id", proposal.id);
+                proposalJson.put("title", proposal.title);
+                proposalJson.put("description", proposal.description);
+                proposalJson.put("indicationsOrganisateurs", proposal.indicationsOrganisateurs);
                 ArrayNode otherSpeakers = new ArrayNode(JsonNodeFactory.instance);
-                if (talk.speaker != null && !speaker.equals(talk.speaker)) {
-                    otherSpeakers.add(getSpeakerInJson(talk.speaker));
+                if (proposal.speaker != null && !speaker.equals(proposal.speaker)) {
+                    otherSpeakers.add(getSpeakerInJson(proposal.speaker));
                 }
-                for (User otherSpeaker : talk.getCoSpeakers()) {
+                for (User otherSpeaker : proposal.getCoSpeakers()) {
                     if (!otherSpeaker.equals(speaker)) {
                         otherSpeakers.add(getSpeakerInJson(otherSpeaker));
                     }
                 }
-                talkJson.put("otherspeakers", otherSpeakers);
-                talksJson.add(talkJson);
+                proposalJson.put("otherspeakers", otherSpeakers);
+                proposalsJson.add(proposalJson);
             }
-            speakerJson.put("talks", talksJson);
+            speakerJson.put("proposals", proposalsJson);
             result.add(speakerJson);
         }
         return result;
     }
 
-    public static Result acceptedTalksToJson(String callback) {
+    public static Result acceptedProposalsToJson(String callback) {
 
         // Data used in html :
-        // talk.id
-        // talk.title
-        // talk.description
-        // talk.speaker.fullname
-        // talk.speaker.avatar
-        // talk.speaker.description
-        // talk.speaker.liens.url
-        // talk.speaker.liens.label
-        // talk.coSpeakers
+        // proposal.id
+        // proposal.title
+        // proposal.description
+        // proposal.speaker.fullname
+        // proposal.speaker.avatar
+        // proposal.speaker.description
+        // proposal.speaker.liens.url
+        // proposal.speaker.liens.label
+        // proposal.coSpeakers
 
-        List<Talk> talksAccepted = Talk.findByStatusForMinimalData(StatusTalk.ACCEPTE);
+        List<Proposal> proposalsAccepted = Proposal.findByStatusForMinimalData(StatusProposal.ACCEPTE);
         ArrayNode result = new ArrayNode(JsonNodeFactory.instance);
-        for (Talk talk : talksAccepted) {
-            ObjectNode talkJson = Json.newObject();
-            talkJson.put("id", talk.id);
-            talkJson.put("title", talk.title);
-            talkJson.put("description", talk.description);
-            talkJson.put("indicationsOrganisateurs", talk.indicationsOrganisateurs);
+        for (Proposal proposal : proposalsAccepted) {
+            ObjectNode proposalJson = Json.newObject();
+            proposalJson.put("id", proposal.id);
+            proposalJson.put("title", proposal.title);
+            proposalJson.put("description", proposal.description);
+            proposalJson.put("indicationsOrganisateurs", proposal.indicationsOrganisateurs);
 
-            if (talk.speaker != null) {
-                talkJson.put("speaker", getSpeakerInJson(talk.speaker));
+            if (proposal.speaker != null) {
+                proposalJson.put("speaker", getSpeakerInJson(proposal.speaker));
             }
             ArrayNode coSpeakers = new ArrayNode(JsonNodeFactory.instance);
-            for (User speaker : talk.getCoSpeakers()) {
+            for (User speaker : proposal.getCoSpeakers()) {
                 coSpeakers.add(getSpeakerInJson(speaker));
             }
-            talkJson.put("coSpeakers", coSpeakers);
-            result.add(talkJson);
+            proposalJson.put("coSpeakers", coSpeakers);
+            result.add(proposalJson);
         }
         return ok(jsonp(callback, result));
     }

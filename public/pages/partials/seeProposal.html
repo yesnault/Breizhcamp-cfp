@@ -2,33 +2,33 @@
 
     <div class="col-md-8">
         <div class="well">
-            <h3>{{talk.title}}
-                <p class="help-inline" ng-repeat="creneau in talk.creneaux">
-                    <span class="label" ng-show="talk.dureePreferee == null || creneau.id!=talk.dureePreferee.id">{{creneau.libelle + ' (' + creneau.dureeMinutes + 'min)'}}</span>
-                    <span class="label label-info" ng-show="talk.dureePreferee != null &&  creneau.id==talk.dureePreferee.id">{{creneau.libelle + ' (' + creneau.dureeMinutes + 'min)'}}</span>
+            <h3>{{proposal.title}}
+                <p class="help-inline" ng-repeat="creneau in proposal.creneaux">
+                    <span class="label" ng-show="proposal.dureePreferee == null || creneau.id!=proposal.dureePreferee.id">{{creneau.libelle + ' (' + creneau.dureeMinutes + 'min)'}}</span>
+                    <span class="label label-info" ng-show="proposal.dureePreferee != null &&  creneau.id==proposal.dureePreferee.id">{{creneau.libelle + ' (' + creneau.dureeMinutes + 'min)'}}</span>
                 </p>
             </h3>
-            <p>Soumis par <a ng-href="/#/profil/{{talk.speaker.id}}" >{{talk.speaker.fullname}}</a>
+            <p>Soumis par <a ng-href="/#/profil/{{proposal.speaker.id}}" >{{proposal.speaker.fullname}}</a>
             </p>
-            <p ng-show="talk.coSpeakers && talk.coSpeakers.length > 0">
+            <p ng-show="proposal.coSpeakers && proposal.coSpeakers.length > 0">
                 Co-speakers :
                 <ul>
-                    <li ng-repeat="coSpeaker in talk.coSpeakers"><a ng-href="/#/profil/{{coSpeaker.id}}" >{{coSpeaker.fullname}}</a></li>
+                    <li ng-repeat="coSpeaker in proposal.coSpeakers"><a ng-href="/#/profil/{{coSpeaker.id}}" >{{coSpeaker.fullname}}</a></li>
                 </ul>
             </p>
             <p>Description :</p>
             <div class="well" ng-bind-html-unsafe="getSafeDescription()"></div>
-            <p ng-show="talk.indicationsOrganisateurs && userService.isAdmin()">Indications organisateurs :</p>
-            <div class="well" ng-bind-html-unsafe="getSafeIndications()" ng-show="talk.indicationsOrganisateurs && userService.isAdmin()"></div>
+            <p ng-show="proposal.indicationsOrganisateurs && userService.isAdmin()">Indications organisateurs :</p>
+            <div class="well" ng-bind-html-unsafe="getSafeIndications()" ng-show="proposal.indicationsOrganisateurs && userService.isAdmin()"></div>
             <p></p>
             <div class="well" ng-show="userService.isAdmin()">
-                <p>Creneau choisi par le speaker : {{talk.dureePreferee.libelle}}</p>
+                <p>Creneau choisi par le speaker : {{proposal.dureePreferee.libelle}}</p>
                 <form ng-submit="postStatus()" method="POST" class="form-inline">
 
                     <div class="form-group {{{true:'error', false:''}[errors.status != undefined]}}">
-                        <label for="status">Status du talk</label>
+                        <label for="status">Status du proposal</label>
                         <div class="controls">
-                            <select id="status" name="status" ng-model="talk.statusTalk">
+                            <select id="status" name="status" ng-model="proposal.statusProposal">
                                 <option value="null"></option>
                                 <option value="REJETE">Rejeté</option>
                                 <option value="ATTENTE">Liste d'attente</option>
@@ -36,7 +36,7 @@
                             </select>
 
 
-                            <select id="dureeApprouve" name="dureeApprouve" ng-model="talk.dureeApprouve.id" ng-options="creneau.id as creneau.libelle + ' (' + creneau.dureeMinutes + 'min)' for creneau in creneaux"></select>
+                            <select id="dureeApprouve" name="dureeApprouve" ng-model="proposal.dureeApprouve.id" ng-options="creneau.id as creneau.libelle + ' (' + creneau.dureeMinutes + 'min)' for creneau in creneaux"></select>
 
                             <p class="help-inline" ng-repeat="error in errors.status">{{error}}</p>
                         </div>
@@ -44,8 +44,8 @@
                     <input type="submit" class="btn btn-primary" value="Valider">
                 </form>
             </div>
-            <div class="well" ng-show="!userService.isAdmin() && talk.statusTalk != undefined" ng-switch on="talk.statusTalk">
-                Status du talk :
+            <div class="well" ng-show="!userService.isAdmin() && proposal.statusProposal != undefined" ng-switch on="proposal.statusProposal">
+                Status du proposal :
                 <span class="label label-important" ng-switch-when="REJETE">Rejeté</span>
                 <span class="label label-warning" ng-switch-when="ATTENTE">Liste d'attente</span>
                 <span class="label label-success" ng-switch-when="ACCEPTE">Accepté</span>
@@ -54,9 +54,9 @@
             <div class="well" ng-show="userService.isAdmin() && (voteStatus.status == 'OPEN' || voteStatus.status == 'NOT_BEGIN')">
                 <form ng-submit="postVote()" class="form-inline">
                     <div class="form-group {{{true:'error', false:''}[errors.vote != undefined]}}">
-                        <label>Note du talk</label>
-                        <star ng-model="talk"/>
-                        note : {{talk.note}}
+                        <label>Note du proposal</label>
+                        <star ng-model="proposal"/>
+                        note : {{proposal.note}}
                     </div>
                     <input  type="submit" class="btn btn-primary" value="Valider">
                 </form>
@@ -66,7 +66,7 @@
 
         <div class="well">
             <h4>Tags</h4>
-            <p>{{talk.tagsname}}</p>
+            <p>{{proposal.tagsname}}</p>
             <br/>
         </div>
         <script type="text/javascript">
@@ -84,7 +84,7 @@
 
         <div class="well">
             <h3>Questions/Réponses</h3>
-            <div class="well {{{true:'privateComment',false:''}[comment.privateComment == true]}}" ng-repeat="comment in talk.comments">
+            <div class="well {{{true:'privateComment',false:''}[comment.privateComment == true]}}" ng-repeat="comment in proposal.comments">
                 <div  class="row">
                     <div class="col-md-3" ng-show="comment.author!=null">
                     <img ng-src="{{comment.author.avatar}}?s=20" style="max-width:20px;max-height: 20px"> {{comment.author.fullname}}</div>

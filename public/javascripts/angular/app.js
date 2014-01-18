@@ -10,11 +10,11 @@ App.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/login', {templateUrl: '/assets/pages/partials/login.html', controller: LoginController});
     $routeProvider.when('/signup', {templateUrl: '/assets/pages/partials/signup.html'});
     $routeProvider.when('/dashboard', {templateUrl: '/assets/pages/partials/dashboard.html', controller: DashboardController});
-    $routeProvider.when('/submittalk/new', {templateUrl: '/assets/pages/partials/submittalk.html', controller: NewTalkController});
-    $routeProvider.when('/edittalk/:talkId', {templateUrl: '/assets/pages/partials/submittalk.html', controller: EditTalkController});
-    $routeProvider.when('/managetalk', {templateUrl: '/assets/pages/partials/managetalks.html', controller: ManageTalkController});
+    $routeProvider.when('/submitproposal/new', {templateUrl: '/assets/pages/partials/submitproposal.html', controller: NewProposalController});
+    $routeProvider.when('/editproposal/:proposalId', {templateUrl: '/assets/pages/partials/submitproposal.html', controller: EditProposalController});
+    $routeProvider.when('/manageproposal', {templateUrl: '/assets/pages/partials/manageproposals.html', controller: ManageProposalController});
     $routeProvider.when('/admin/users', {templateUrl: '/assets/pages/partials/admin/users.html', controller: ManageUsersController});
-    $routeProvider.when('/admin/talks/list', {templateUrl: '/assets/pages/partials/admin/listtalks.html', controller: ListTalksController});
+    $routeProvider.when('/admin/proposals/list', {templateUrl: '/assets/pages/partials/admin/listproposals.html', controller: ListProposalsController});
     $routeProvider.when('/admin/vote', {templateUrl: 'assets/pages/partials/admin/vote.html', controller: VoteController});
     $routeProvider.when('/admin/creneaux', {templateUrl: 'assets/pages/partials/admin/creneaux.html', controller: CreneauxController});
     $routeProvider.when('/admin/creneau/new', {templateUrl: 'assets/pages/partials/admin/submitcreneau.html', controller: NewCreneauController});
@@ -29,7 +29,7 @@ App.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/admin/dynamicfield/edit/:dynamicFieldId', {templateUrl: 'assets/pages/partials/admin/submitdynamicfield.html', controller: EditDynamicFieldController});
     $routeProvider.when('/admin/mailing', {templateUrl: 'assets/pages/partials/admin/mailing.html', controller: MailingController});
 
-    $routeProvider.when('/talks/see/:talkId', {templateUrl: '/assets/pages/partials/seetalk.html', controller: SeeTalksController});
+    $routeProvider.when('/proposals/see/:proposalId', {templateUrl: '/assets/pages/partials/seeproposal.html', controller: SeeProposalsController});
 
     $routeProvider.when('/profil/:userId', {templateUrl: '/assets/pages/partials/profil.html', controller: ProfilController});
 

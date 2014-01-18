@@ -1,4 +1,4 @@
-package controllers.talks;
+package controllers.proposals;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -27,108 +27,108 @@ import static play.data.Form.form;
 import static play.libs.Json.toJson;
 
 @SecureSocial.SecuredAction(ajaxCall = true)
-public class TalkRestController extends BaseController {
+public class ProposalRestController extends BaseController {
 
 
-    public static Result getById(Long idTalk) {
-        Talk talk = Talk.find.byId(idTalk);
+    public static Result getById(Long idProposal) {
+        Proposal proposal = Proposal.find.byId(idProposal);
 
         User user = getLoggedUser();
 
-        if (!user.admin && !user.id.equals(talk.speaker.id)) {
-            // On vérifie que le user est admin où le propriétaire du talk
+        if (!user.admin && !user.id.equals(proposal.speaker.id)) {
+            // On vérifie que le user est admin où le propriétaire du proposal
             return forbidden(toJson(TransformValidationErrors.transform("Action non autorisée")));
         }
 
         if (user.admin) {
-            talk.vote = Vote.findVoteByUserAndTalk(user, talk);
+            proposal.vote = Vote.findVoteByUserAndProposal(user, proposal);
         }
-        talk.fiteredComments(user);
-        talk.fiteredCoSpeakers();
-        return ok(toJson(talk));
+        proposal.fiteredComments(user);
+        proposal.fiteredCoSpeakers();
+        return ok(toJson(proposal));
     }
 
-    public static Result submitTalk(Long idTalk) {
-        Talk talk = Talk.find.byId(idTalk);
+    public static Result submitProposal(Long idProposal) {
+        Proposal proposal = Proposal.find.byId(idProposal);
 
         User user = getLoggedUser();
 
-        if (!user.id.equals(talk.speaker.id) && !talk.getCoSpeakers().contains(user)) {
-            // On vérifie que le user est admin où le propriétaire du talk
+        if (!user.id.equals(proposal.speaker.id) && !proposal.getCoSpeakers().contains(user)) {
+            // On vérifie que le user est admin où le propriétaire du proposal
             return forbidden(toJson(TransformValidationErrors.transform("Action non autorisée")));
         }
 
-        talk.draft = false;
-        talk.update();
+        proposal.draft = false;
+        proposal.update();
 
-        return ok(toJson(talk));
+        return ok(toJson(proposal));
     }
 
     public static Result get() {
         User user = getLoggedUser();
 
-        List<Talk> talks = Talk.findBySpeaker(user);
+        List<Proposal> proposals = Proposal.findBySpeaker(user);
 
-        for (Talk talk : talks) {
+        for (Proposal proposal : proposals) {
             if (user.admin) {
-                talk.vote = Vote.findVoteByUserAndTalk(user, talk);
+                proposal.vote = Vote.findVoteByUserAndProposal(user, proposal);
                 if (VoteStatus.getVoteStatus() == VoteStatusEnum.CLOSED) {
-                    talk.moyenne = Vote.calculMoyenne(talk);
+                    proposal.moyenne = Vote.calculMoyenne(proposal);
                 }
             }
 
-            talk.fiteredComments(user);
-            talk.fiteredCoSpeakers();
+            proposal.fiteredComments(user);
+            proposal.fiteredCoSpeakers();
         }
-        return ok(toJson(talks));
+        return ok(toJson(proposals));
     }
-
-    public static Result getTalks(Long userId) {
-        User user = User.find.byId(userId);
-
-
-        List<Talk> allTalks = Talk.findBySpeaker(user);
-        List<Talk> talks = new ArrayList<Talk>();
-        for (Talk talk : allTalks) {
-            if (!talk.draft) {
-                talk.fiteredComments(user);
-                talk.fiteredCoSpeakers();
-                talk.filtereSpeaker();
-
-                talks.add(talk);
-            }
-        }
-        return ok(toJson(talks));
-    }
-
 
     public static Result getProposals(Long userId) {
         User user = User.find.byId(userId);
 
 
-        List<Talk> allTalks = Talk.findBySpeaker(user);
-        List<Talk> talks = new ArrayList<Talk>();
-        for (Talk talk : allTalks) {
-            if (talk.draft) {
-                talk.fiteredComments(user);
-                talk.fiteredCoSpeakers();
-                talk.filtereSpeaker();
+        List<Proposal> allProposals = Proposal.findBySpeaker(user);
+        List<Proposal> proposals = new ArrayList<Proposal>();
+        for (Proposal proposal : allProposals) {
+            if (!proposal.draft) {
+                proposal.fiteredComments(user);
+                proposal.fiteredCoSpeakers();
+                proposal.filtereSpeaker();
 
-                talks.add(talk);
+                proposals.add(proposal);
             }
         }
-        return ok(toJson(talks));
+        return ok(toJson(proposals));
     }
 
-    public static Result getTalksByStatus(Long userId, String status) {
-        StatusTalk statusTalk = StatusTalk.fromCode(status);
+
+    public static Result getProposalsDraft(Long userId) {
         User user = User.find.byId(userId);
-        List<Talk> talks = Talk.findBySpeakerAndStatus(user, statusTalk);
-        for (Talk talk : talks) {
-            talk.fiteredComments(user);
-            talk.fiteredCoSpeakers();
+
+
+        List<Proposal> allProposals = Proposal.findBySpeaker(user);
+        List<Proposal> proposals = new ArrayList<Proposal>();
+        for (Proposal proposal : allProposals) {
+            if (proposal.draft) {
+                proposal.fiteredComments(user);
+                proposal.fiteredCoSpeakers();
+                proposal.filtereSpeaker();
+
+                proposals.add(proposal);
+            }
         }
-        return ok(toJson(talks));
+        return ok(toJson(proposals));
+    }
+
+    public static Result getProposalsByStatus(Long userId, String status) {
+        StatusProposal statusProposal = StatusProposal.fromCode(status);
+        User user = User.find.byId(userId);
+        List<Proposal> proposals = Proposal.findBySpeakerAndStatus(user, statusProposal);
+        for (Proposal proposal : proposals) {
+            proposal.fiteredComments(user);
+            proposal.fiteredCoSpeakers();
+        }
+        return ok(toJson(proposals));
     }
 
 
@@ -141,74 +141,67 @@ public class TalkRestController extends BaseController {
         if (!user.admin) {
             return forbidden();
         }
-        List<Talk> talks = Talk.findAllForDisplay();
+        List<Proposal> proposals = Proposal.findAllForDisplay();
 
-        Map<Long, Vote> votes = Vote.findVotesUserByTalkId(user);
+        Map<Long, Vote> votes = Vote.findVotesUserByProposalId(user);
 
         Map<Long, Pair<Double, Integer>> moyennes = Vote.caculMoyennes();
 
         ArrayNode result = new ArrayNode(JsonNodeFactory.instance);
 
-        for (Talk talk : talks) {
-            if (talk.draft == draft) {
+        for (Proposal proposal : proposals) {
+            if (proposal.draft == draft) {
 
-                ObjectNode talkJson = Json.newObject();
+                ObjectNode proposalJson = Json.newObject();
 
-                talkJson.put("id", talk.id);
-                talkJson.put("title", talk.title);
+                proposalJson.put("id", proposal.id);
+                proposalJson.put("title", proposal.title);
 
 
-                if (talk.dureePreferee != null) {
+                if (proposal.dureePreferee != null) {
                     ObjectNode dureePrefereeJson = Json.newObject();
-                    dureePrefereeJson.put("id", talk.dureePreferee.getId());
-                    dureePrefereeJson.put("dureeMinutes", talk.dureePreferee.getDureeMinutes());
-                    dureePrefereeJson.put("libelle", talk.dureePreferee.getLibelle());
-                    talkJson.put("dureePreferee", dureePrefereeJson);
+                    dureePrefereeJson.put("id", proposal.dureePreferee.getId());
+                    dureePrefereeJson.put("dureeMinutes", proposal.dureePreferee.getDureeMinutes());
+                    dureePrefereeJson.put("libelle", proposal.dureePreferee.getLibelle());
+                    proposalJson.put("dureePreferee", dureePrefereeJson);
                 } else {
-                    talkJson.putNull("dureePreferee");
+                    proposalJson.putNull("dureePreferee");
                 }
-                if (talk.dureeApprouve != null) {
-                    talkJson.put("dureeApprouve", talk.dureeApprouve.getId());
+                if (proposal.dureeApprouve != null) {
+                    proposalJson.put("dureeApprouve", proposal.dureeApprouve.getId());
                 } else {
-                    talkJson.putNull("dureeApprouve");
+                    proposalJson.putNull("dureeApprouve");
                 }
-                if (talk.statusTalk != null) {
-                    talkJson.put("statusTalk", talk.statusTalk.name());
+                if (proposal.statusProposal != null) {
+                    proposalJson.put("statusProposal", proposal.statusProposal.name());
                 } else {
-                    talkJson.putNull("statusTalk");
+                    proposalJson.putNull("statusProposal");
                 }
 
-                if (talk.speaker != null) {
+                if (proposal.speaker != null) {
                     ObjectNode speakerJson = Json.newObject();
-                    speakerJson.put("id", talk.speaker.id);
-                    speakerJson.put("fullname", talk.speaker.fullname);
-                    speakerJson.put("avatar", talk.speaker.getAvatar());
-                    talkJson.put("speaker", speakerJson);
+                    speakerJson.put("id", proposal.speaker.id);
+                    speakerJson.put("fullname", proposal.speaker.fullname);
+                    speakerJson.put("avatar", proposal.speaker.getAvatar());
+                    proposalJson.put("speaker", speakerJson);
                 }
 
-                if (talk.event != null) {
-                    ObjectNode eventJson = Json.newObject();
-                    eventJson.put("id", talk.event.getId());
-                    eventJson.put("name", talk.event.getName());
-                    talkJson.put("event", eventJson);
-                }
-
-                Vote voteUser = votes.get(talk.id);
+                Vote voteUser = votes.get(proposal.id);
                 if (voteUser != null) {
-                    talkJson.put("vote", voteUser.getNote());
+                    proposalJson.put("vote", voteUser.getNote());
                 } else {
-                    talkJson.putNull("vote");
+                    proposalJson.putNull("vote");
                 }
 
-                Pair<Double, Integer> moyenne = moyennes.get(talk.id);
+                Pair<Double, Integer> moyenne = moyennes.get(proposal.id);
                 if (moyenne != null) {
-                    talkJson.put("moyenne", moyenne.getLeft());
-                    talkJson.put("nbvote", moyenne.getRight());
+                    proposalJson.put("moyenne", moyenne.getLeft());
+                    proposalJson.put("nbvote", moyenne.getRight());
                 } else {
-                    talkJson.putNull("moyenne");
+                    proposalJson.putNull("moyenne");
                 }
 
-                result.add(talkJson);
+                result.add(proposalJson);
             }
         }
 
@@ -218,66 +211,61 @@ public class TalkRestController extends BaseController {
 
     public static Result save() {
         User user = getLoggedUser();
-        Form<Talk> talkForm = form(Talk.class).bindFromRequest();
+        Form<Proposal> proposalForm = form(Proposal.class).bindFromRequest();
 
-        if (talkForm.hasErrors()) {
-            return badRequest(toJson(TransformValidationErrors.transform(talkForm.errors())));
+        if (proposalForm.hasErrors()) {
+            return badRequest(toJson(TransformValidationErrors.transform(proposalForm.errors())));
         }
 
-        if (!user.isInfoValid()) {
-            return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.user.informations"))));
-        }
+        Proposal formProposal = proposalForm.get();
 
-        Talk formTalk = talkForm.get();
-
-        if (formTalk.id == null) {
+        if (formProposal.id == null) {
 
             if (VoteStatus.getVoteStatus() != VoteStatusEnum.NOT_BEGIN) {
                 return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.vote.begin"))));
             }
-
-            // Nouveau talk
-            formTalk.speaker = user;
-            if (Talk.findByTitle(formTalk.title) != null) {
-                return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.talk.already.exist"))));
+            // Nouveau proposal
+            formProposal.speaker = user;
+            if (Proposal.findByTitle(formProposal.title) != null) {
+                return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.proposal.already.exist"))));
             }
 
-            formTalk.draft = true;
-            formTalk.save();
+            formProposal.draft = true;
+            formProposal.save();
             List<User> coSpeakersInDb = new ArrayList<User>();
-            for (User coSpeaker : formTalk.getCoSpeakers()) {
+            for (User coSpeaker : formProposal.getCoSpeakers()) {
                 coSpeakersInDb.add(User.findById(coSpeaker.id));
             }
-            formTalk.event = Event.findActif();
-            formTalk.getCoSpeakers().clear();
-            formTalk.getCoSpeakers().addAll(coSpeakersInDb);
-            formTalk.saveManyToManyAssociations("coSpeakers");
-            formTalk.update();
-            updateTags(talkForm.data().get("tagsname"), formTalk);
+            formProposal.event = Event.findActif();
+            formProposal.getCoSpeakers().clear();
+            formProposal.getCoSpeakers().addAll(coSpeakersInDb);
+            formProposal.saveManyToManyAssociations("coSpeakers");
+            formProposal.update();
+            updateTags(proposalForm.data().get("tagsname"), formProposal);
         } else {
-            // Mise à jour d'un talk
-            Talk dbTalk = Talk.find.byId(formTalk.id);
+            // Mise à jour d'un proposal
+            Proposal dbProposal = Proposal.find.byId(formProposal.id);
 
-            if (!(user.id.equals(dbTalk.speaker.id) || user.admin)) {
-                // On vérifie que le user est admin où le propriétaire du talk
-                Logger.info("Tentative de suppression de talk sans les droits requis : " + dbTalk.id);
+            if (!(user.id.equals(dbProposal.speaker.id) || user.admin)) {
+                // On vérifie que le user est admin où le propriétaire du proposal
+                Logger.info("Tentative de suppression de proposal sans les droits requis : " + dbProposal.id);
                 return unauthorized();
             }
 
 
-            if (!formTalk.title.equals(dbTalk.title)
-                    && Talk.findByTitle(formTalk.title) != null) {
-                Logger.error("error.talk.already.exist :" + formTalk.title);
-                return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.talk.already.exist"))));
+            if (!formProposal.title.equals(dbProposal.title)
+                    && Proposal.findByTitle(formProposal.title) != null) {
+                Logger.error("error.proposal.already.exist :" + formProposal.title);
+                return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.proposal.already.exist"))));
             }
-            dbTalk.title = formTalk.title;
-            dbTalk.description = formTalk.description;
-            dbTalk.dureePreferee = formTalk.dureePreferee;
-            dbTalk.indicationsOrganisateurs = formTalk.indicationsOrganisateurs;
-            dbTalk.draft = true;
-            dbTalk.save();
-            updateCoSpeakers(formTalk, dbTalk);
-            updateTags(talkForm.data().get("tagsname"), dbTalk);
+            dbProposal.title = formProposal.title;
+            dbProposal.description = formProposal.description;
+            dbProposal.dureePreferee = formProposal.dureePreferee;
+            dbProposal.indicationsOrganisateurs = formProposal.indicationsOrganisateurs;
+            dbProposal.draft = true;
+            dbProposal.save();
+            updateCoSpeakers(formProposal, dbProposal);
+            updateTags(proposalForm.data().get("tagsname"), dbProposal);
         }
 
 
@@ -286,16 +274,16 @@ public class TalkRestController extends BaseController {
     }
 
 
-    private static void updateCoSpeakers(Talk formTalk, Talk dbTalk) {
+    private static void updateCoSpeakers(Proposal formProposal, Proposal dbProposal) {
         Set<Long> coSpeakersInForm = new HashSet<Long>();
-        for (User coSpeaker : formTalk.getCoSpeakers()) {
+        for (User coSpeaker : formProposal.getCoSpeakers()) {
             coSpeakersInForm.add(coSpeaker.id);
         }
-        List<User> coSpeakersTmp = new ArrayList<User>(dbTalk.getCoSpeakers());
+        List<User> coSpeakersTmp = new ArrayList<User>(dbProposal.getCoSpeakers());
         Set<Long> coSpeakersInDb = new HashSet<Long>();
         for (User coSpeaker : coSpeakersTmp) {
             if (!coSpeakersInForm.contains(coSpeaker.id)) {
-                dbTalk.getCoSpeakers().remove(coSpeaker);
+                dbProposal.getCoSpeakers().remove(coSpeaker);
             } else {
                 coSpeakersInDb.add(coSpeaker.id);
             }
@@ -303,29 +291,29 @@ public class TalkRestController extends BaseController {
 
         for (Long idCoSpeaker : coSpeakersInForm) {
             if (!coSpeakersInDb.contains(idCoSpeaker)) {
-                dbTalk.getCoSpeakers().add(User.findById(idCoSpeaker));
+                dbProposal.getCoSpeakers().add(User.findById(idCoSpeaker));
             }
         }
-        dbTalk.saveManyToManyAssociations("coSpeakers");
+        dbProposal.saveManyToManyAssociations("coSpeakers");
     }
 
-    public static void updateTags(String tags, Talk dbTalk) {
+    public static void updateTags(String tags, Proposal dbProposal) {
         if (tags == null || tags.length() == 0) {
             return;
         }
         List<String> tagsList = Arrays.asList(tags.split(","));
 
         // suppression qui ne sont plus présent dans la nouvelle liste
-        List<Tag> tagtmp = new ArrayList<Tag>(dbTalk.getTags());
+        List<Tag> tagtmp = new ArrayList<Tag>(dbProposal.getTags());
         for (Tag tag : tagtmp) {
             if (!tagsList.contains(tag.nom)) {
-                dbTalk.getTags().remove(tag);
+                dbProposal.getTags().remove(tag);
             }
         }
 
         // ajout des tags ajoutés dans la liste
         for (String tag : tagsList) {
-            if (!dbTalk.getTagsName().contains(tag)) {
+            if (!dbProposal.getTagsName().contains(tag)) {
                 Tag dbTag = Tag.findByTagName(tag.toUpperCase());
                 if (dbTag == null) {
                     dbTag = new Tag();
@@ -333,55 +321,50 @@ public class TalkRestController extends BaseController {
                     dbTag.save();
                 }
                 Logger.debug("tags: = " + dbTag.id);
-                dbTalk.getTags().add(dbTag);
+                dbProposal.getTags().add(dbTag);
             }
         }
-        dbTalk.saveManyToManyAssociations("tags");
-        dbTalk.update();
+        dbProposal.saveManyToManyAssociations("tags");
+        dbProposal.update();
     }
 
-    public static Result addTag(Long idTalk, String tags) {
+    public static Result addTag(Long idProposal, String tags) {
         User user = getLoggedUser();
-        Talk dbTalk = Talk.find.byId(idTalk);
+        Proposal dbProposal = Proposal.find.byId(idProposal);
 
-        if (!user.admin && !user.id.equals(dbTalk.speaker.id)) {
-            // On vérifie que le user est admin où le propriétaire du talk
+        if (!user.admin && !user.id.equals(dbProposal.speaker.id)) {
+            // On vérifie que le user est admin où le propriétaire du proposal
             return forbidden(toJson(TransformValidationErrors.transform("Action non autorisée")));
         }
 
-        if (dbTalk != null) {
-            Logger.debug("addTags: = " + tags + " init tags " + dbTalk.getTagsName());
-            updateTags(tags, dbTalk);
-            Logger.debug("fin addTags: = " + dbTalk.getTagsName() + " size : " + dbTalk.getTags().size());
+        if (dbProposal != null) {
+            Logger.debug("addTags: = " + tags + " init tags " + dbProposal.getTagsName());
+            updateTags(tags, dbProposal);
+            Logger.debug("fin addTags: = " + dbProposal.getTagsName() + " size : " + dbProposal.getTags().size());
             return ok();
         } else {
             return notFound();
         }
     }
 
-    public static Result delete(Long idTalk) {
+    public static Result delete(Long idProposal) {
         if (VoteStatus.getVoteStatus() != VoteStatusEnum.NOT_BEGIN) {
             return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.vote.begin"))));
         }
 
-        Talk talk = Talk.find.byId(idTalk);
+        Proposal proposal = Proposal.find.byId(idProposal);
 
         User user = getLoggedUser();
-        if (!user.admin && !(user.id.equals(talk.speaker.id))) {
-            // On vérifie que le user est admin où le propriétaire du talk
-            Logger.info("Tentative de suppression de talk sans les droits requis : " + talk.id);
-            return unauthorized();
-        }
-
-        if (!talk.event.equals(Event.findActif())) {
-            Logger.info("Tentative de suppression de talk sur un événement clos : " + talk.id);
+        if (!user.admin && !(user.id.equals(proposal.speaker.id))) {
+            // On vérifie que le user est admin où le propriétaire du proposal
+            Logger.info("Tentative de suppression de proposal sans les droits requis : " + proposal.id);
             return unauthorized();
         }
 
 
-        List<Comment> comments = new ArrayList<Comment>(talk.getComments());
+        List<Comment> comments = new ArrayList<Comment>(proposal.getComments());
         for (Comment comment : comments) {
-            talk.getComments().remove(comment);
+            proposal.getComments().remove(comment);
             for (Comment reponse : comment.reponses) {
                 reponse.question = null;
                 reponse.delete();
@@ -391,25 +374,25 @@ public class TalkRestController extends BaseController {
             comment.delete();
         }
 
-        List<Tag> tagtmp = new ArrayList<Tag>(talk.getTags());
+        List<Tag> tagtmp = new ArrayList<Tag>(proposal.getTags());
         for (Tag tag : tagtmp) {
-            talk.getTags().remove(tag);
+            proposal.getTags().remove(tag);
         }
-        talk.saveManyToManyAssociations("tags");
+        proposal.saveManyToManyAssociations("tags");
 
-        List<User> coSpeakersTmp = new ArrayList<User>(talk.getCoSpeakers());
+        List<User> coSpeakersTmp = new ArrayList<User>(proposal.getCoSpeakers());
         for (User coSpeaker : coSpeakersTmp) {
-            talk.getCoSpeakers().remove(coSpeaker);
+            proposal.getCoSpeakers().remove(coSpeaker);
         }
-        talk.saveManyToManyAssociations("coSpeakers");
-        talk.delete();
+        proposal.saveManyToManyAssociations("coSpeakers");
+        proposal.delete();
         // HTTP 204 en cas de succès (NO CONTENT)
         return noContent();
     }
 
-    public static Result saveComment(Long idTalk) throws MalformedURLException {
+    public static Result saveComment(Long idProposal) throws MalformedURLException {
         User user = getLoggedUser();
-        Talk talk = Talk.find.byId(idTalk);
+        Proposal proposal = Proposal.find.byId(idProposal);
 
         JsonNode node = request().body().asJson();
         String commentForm = null;
@@ -425,7 +408,7 @@ public class TalkRestController extends BaseController {
             return badRequest(toJson(errors));
         }
 
-        if (!user.admin && !user.id.equals(talk.speaker.id)) {
+        if (!user.admin && !user.id.equals(proposal.speaker.id)) {
             return forbidden(toJson(TransformValidationErrors.transform("Action non autorisée")));
         }
 
@@ -434,14 +417,14 @@ public class TalkRestController extends BaseController {
             comment.author = user;
             comment.comment = commentForm;
             comment.privateComment = privateComment;
-            comment.talk = talk;
+            comment.proposal = proposal;
             comment.save();
             comment.sendMail();
         }
         return ok();
     }
 
-    public static Result closeComment(Long idTalk, Long idComment) {
+    public static Result closeComment(Long idProposal, Long idComment) {
         User user = getLoggedUser();
         Comment question = Comment.find.byId(idComment);
 
@@ -458,7 +441,7 @@ public class TalkRestController extends BaseController {
 
     }
 
-    public static Result deleteComment(Long idTalk, Long idComment) {
+    public static Result deleteComment(Long idProposal, Long idComment) {
         User user = getLoggedUser();
         Comment question = Comment.find.byId(idComment);
 
@@ -482,9 +465,9 @@ public class TalkRestController extends BaseController {
         return ok();
     }
 
-    public static Result saveReponse(Long idTalk, Long idComment) throws MalformedURLException {
+    public static Result saveReponse(Long idProposal, Long idComment) throws MalformedURLException {
         User user = getLoggedUser();
-        Talk talk = Talk.find.byId(idTalk);
+        Proposal proposal = Proposal.find.byId(idProposal);
         Comment question = Comment.find.byId(idComment);
 
         JsonNode node = request().body().asJson();
@@ -502,7 +485,7 @@ public class TalkRestController extends BaseController {
             return badRequest(toJson(errors));
         }
 
-        if (!user.admin && !user.id.equals(talk.speaker.id)) {
+        if (!user.admin && !user.id.equals(proposal.speaker.id)) {
             return forbidden(toJson(TransformValidationErrors.transform("Action non autorisée")));
         }
 
@@ -511,7 +494,7 @@ public class TalkRestController extends BaseController {
             comment.author = user;
             comment.comment = commentForm;
             comment.privateComment = privateComment;
-            comment.talk = talk;
+            comment.proposal = proposal;
 
 
             if (question.reponses == null) {
@@ -529,9 +512,9 @@ public class TalkRestController extends BaseController {
         return ok();
     }
 
-    public static Result editComment(Long idTalk, Long idComment) throws MalformedURLException {
+    public static Result editComment(Long idProposal, Long idComment) throws MalformedURLException {
         User user = getLoggedUser();
-        Talk talk = Talk.find.byId(idTalk);
+        Proposal proposal = Proposal.find.byId(idProposal);
         Comment question = Comment.find.byId(idComment);
 
         JsonNode node = request().body().asJson();
@@ -545,7 +528,7 @@ public class TalkRestController extends BaseController {
             return badRequest(toJson(errors));
         }
 
-        if (!user.admin && !user.id.equals(talk.speaker.id)) {
+        if (!user.admin && !user.id.equals(proposal.speaker.id)) {
             return forbidden(toJson(TransformValidationErrors.transform("Action non autorisée")));
         }
 
@@ -558,61 +541,61 @@ public class TalkRestController extends BaseController {
         return ok();
     }
 
-    public static Result saveStatus(Long idTalk) throws MalformedURLException {
+    public static Result saveStatus(Long idProposal) throws MalformedURLException {
         User user = getLoggedUser();
         if (!user.admin) {
             return forbidden();
         }
 
-        Talk talk = Talk.find.byId(idTalk);
+        Proposal proposal = Proposal.find.byId(idProposal);
 
         JsonNode node = request().body().asJson();
 
-        StatusTalk newStatus = StatusTalk.fromValue(node.get("status").asText());
+        StatusProposal newStatus = StatusProposal.fromValue(node.get("status").asText());
 
-        if (talk.statusTalk != newStatus) {
-            talk.statusTalk = newStatus;
+        if (proposal.statusProposal != newStatus) {
+            proposal.statusProposal = newStatus;
 
-            if (talk.statusTalk.equals(StatusTalk.ACCEPTE)) {
+            if (proposal.statusProposal.equals(StatusProposal.ACCEPTE)) {
                 Creneau dureeApprouve = Creneau.find.byId(Long.valueOf(node.get("dureeApprouve").asText()));
 
-                talk.dureeApprouve = dureeApprouve;
+                proposal.dureeApprouve = dureeApprouve;
             } else {
-                talk.dureeApprouve = null;
+                proposal.dureeApprouve = null;
             }
 
-            talk.save();
-            if (talk.statusTalk != null) {
-                talk.statusTalk.sendMail(talk, talk.speaker.email);
+            proposal.save();
+            if (proposal.statusProposal != null) {
+                proposal.statusProposal.sendMail(proposal, proposal.speaker.email);
             }
         }
 
         return ok();
     }
 
-    public static Result rejectAllTalkWithoutStatus() throws MalformedURLException {
+    public static Result rejectAllProposalWithoutStatus() throws MalformedURLException {
         User user = getLoggedUser();
         if (!user.admin) {
             return forbidden();
         }
 
-        for (Talk talk : Talk.findByNoStatus()) {
-            talk.statusTalk = StatusTalk.REJETE;
-            talk.save();
-            if (talk.speaker != null) {
-                talk.statusTalk.sendMail(talk, talk.speaker.email);
+        for (Proposal proposal : Proposal.findByNoStatus()) {
+            proposal.statusProposal = StatusProposal.REJETE;
+            proposal.save();
+            if (proposal.speaker != null) {
+                proposal.statusProposal.sendMail(proposal, proposal.speaker.email);
             }
         }
         return ok();
     }
 
-    public static Result saveVote(Long idTalk, Integer note) {
+    public static Result saveVote(Long idProposal, Integer note) {
         User user = getLoggedUser();
         if (!user.admin) {
             return forbidden();
         }
 
-        Talk talk = Talk.find.byId(idTalk);
+        Proposal proposal = Proposal.find.byId(idProposal);
 
         VoteStatusEnum voteStatus = VoteStatus.getVoteStatus();
         if (voteStatus != VoteStatusEnum.OPEN && voteStatus != VoteStatusEnum.NOT_BEGIN) {
@@ -622,35 +605,35 @@ public class TalkRestController extends BaseController {
             return badRequest();
         }
 
-        Vote vote = Vote.findVoteByUserAndTalk(user, talk);
+        Vote vote = Vote.findVoteByUserAndProposal(user, proposal);
         if (vote == null) {
             vote = new Vote();
             vote.setUser(user);
-            vote.setTalk(talk);
+            vote.setProposal(proposal);
         }
         vote.setNote(note);
         vote.save();
         return ok();
     }
 
-    public static Result talkStat() {
+    public static Result proposalStat() {
 
         User user = getLoggedUser();
         if (!user.admin) {
             return forbidden();
         }
         ObjectNode result = Json.newObject();
-        result.put("nbTalks", Talk.findNbTalks(false));
-        result.put("nbProposalDraft", Talk.findNbTalks(true));
-        result.put("nbAcceptes", Talk.findNbTalksAcceptes());
-        result.put("nbRejetes", Talk.findNbTalksRejetes());
+        result.put("nbProposals", Proposal.findNbProposals(false));
+        result.put("nbProposalDraft", Proposal.findNbProposals(true));
+        result.put("nbAcceptes", Proposal.findNbProposalsAcceptes());
+        result.put("nbRejetes", Proposal.findNbProposalsRejetes());
         result.put("nbVotesUser", Vote.findNbVotesUser(user));
         return ok(result);
     }
 
 
     @CsvFile(separator = ";")
-    public static class TalkCsv {
+    public static class ProposalCsv {
 
         @CsvColumn(value = "speakerFullName", order = 1)
         public String speakerFullName;
@@ -677,55 +660,55 @@ public class TalkRestController extends BaseController {
         public String indicationsOrganisateurs;
 
 
-        public static TalkCsv fromTalk(Talk talk) {
-            TalkCsv talkCsv = new TalkCsv();
-            if (talk.speaker != null) {
-                talkCsv.speakerFullName = talk.speaker.fullname;
-                for (User coSpeaker : talk.getCoSpeakers()) {
-                    talkCsv.speakerFullName += "\n" + coSpeaker.fullname;
+        public static ProposalCsv fromProposal(Proposal proposal) {
+            ProposalCsv proposalCsv = new ProposalCsv();
+            if (proposal.speaker != null) {
+                proposalCsv.speakerFullName = proposal.speaker.fullname;
+                for (User coSpeaker : proposal.getCoSpeakers()) {
+                    proposalCsv.speakerFullName += "\n" + coSpeaker.fullname;
                 }
             }
 
 
-            talkCsv.title = talk.title;
-            if (talk.statusTalk != null) {
-                talkCsv.status = talk.statusTalk.name();
+            proposalCsv.title = proposal.title;
+            if (proposal.statusProposal != null) {
+                proposalCsv.status = proposal.statusProposal.name();
             }
 
             if (VoteStatus.getVoteStatus() == VoteStatusEnum.CLOSED) {
-                talkCsv.moyenne = Vote.calculMoyenne(talk);
+                proposalCsv.moyenne = Vote.calculMoyenne(proposal);
             }
 
-            if (talk.dureePreferee != null) {
-                talkCsv.formatPrefere = talk.dureePreferee.getLibelle();
+            if (proposal.dureePreferee != null) {
+                proposalCsv.formatPrefere = proposal.dureePreferee.getLibelle();
             }
 
 
-            talkCsv.description = talk.description;
-            talkCsv.indicationsOrganisateurs = talk.indicationsOrganisateurs;
-            return talkCsv;
+            proposalCsv.description = proposal.description;
+            proposalCsv.indicationsOrganisateurs = proposal.indicationsOrganisateurs;
+            return proposalCsv;
         }
     }
 
-    public static Result getAllTalksInCsv() {
+    public static Result getAllProposalsInCsv() {
         User user = getLoggedUser();
         if (!user.admin) {
             return forbidden();
         }
-        List<TalkCsv> talks = new ArrayList<TalkCsv>();
-        for (Talk talk : Talk.find.all()) {
-            talks.add(TalkCsv.fromTalk(talk));
+        List<ProposalCsv> proposals = new ArrayList<ProposalCsv>();
+        for (Proposal proposal : Proposal.find.all()) {
+            proposals.add(ProposalCsv.fromProposal(proposal));
         }
 
-        CsvEngine engine = new CsvEngine(TalkCsv.class);
+        CsvEngine engine = new CsvEngine(ProposalCsv.class);
 
         StringWriter writer = new StringWriter();
 
-        engine.writeFile(writer, talks, TalkCsv.class);
+        engine.writeFile(writer, proposals, ProposalCsv.class);
 
         response().setContentType("application/octet-stream");
         response().setHeader("Content-Description", "File Transfer");
-        response().setHeader("Content-Disposition", "attachment;filename=talks.csv");
+        response().setHeader("Content-Disposition", "attachment;filename=proposals.csv");
         response().setHeader("Content-Transfer-Encoding", "binary");
         response().setHeader("Expires", "0");
         response().setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");

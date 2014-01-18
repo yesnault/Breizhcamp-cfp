@@ -55,15 +55,15 @@ public class Admin extends BaseController {
         if (userToDelete.admin) {
             return badRequest();
         }
-        // has talks ?
-        List<Talk> talks = Talk.findBySpeaker(userToDelete);
-        for (Talk talk : talks) {
-            talk.statusTalk = StatusTalk.REJETE;
-            talk.speaker = null;
-            talk.save();
+        // has proposals ?
+        List<Proposal> proposals = Proposal.findBySpeaker(userToDelete);
+        for (Proposal proposal : proposals) {
+            proposal.statusProposal = StatusProposal.REJETE;
+            proposal.speaker = null;
+            proposal.save();
         }
 
-        //has commentaires ?
+        //has comments ?
         List<Comment> comments = Comment.findByAuthor(userToDelete);
         for (Comment comment : comments) {
 
@@ -131,7 +131,7 @@ public class Admin extends BaseController {
     }
 
     public static Result mailing(String status) {
-        StatusTalk statusTalk = StatusTalk.fromValue(status);
+        StatusProposal statusProposal = StatusProposal.fromValue(status);
 
         JsonNode body = request().body().asJson();
         String subjet = body.get("subject").asText();
@@ -142,11 +142,11 @@ public class Admin extends BaseController {
 
         Set<String> mailsOfSpeakers = new HashSet<String>();
 
-        for (Talk talk : Talk.findByStatus(statusTalk)) {
-            if (talk.speaker != null && talk.speaker.email != null) {
-                mailsOfSpeakers.add(talk.speaker.email);
+        for (Proposal proposal : Proposal.findByStatus(statusProposal)) {
+            if (proposal.speaker != null && proposal.speaker.email != null) {
+                mailsOfSpeakers.add(proposal.speaker.email);
             }
-            for (User coSpeakers : talk.getCoSpeakers()) {
+            for (User coSpeakers : proposal.getCoSpeakers()) {
                 if (coSpeakers.email != null) {
                     mailsOfSpeakers.add(coSpeakers.email);
                 }

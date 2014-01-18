@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package controllers.talks;
+package controllers.proposals;
 
 import com.google.common.io.CharStreams;
 import com.google.common.io.Closeables;

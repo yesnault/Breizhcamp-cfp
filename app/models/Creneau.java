@@ -35,13 +35,13 @@ public class Creneau extends Model {
 
     @ManyToMany
     @JsonIgnore
-    private List<Talk> talks;
+    private List<Proposal> proposals;
 
-    public List<Talk> getTalks() {
-        if (talks == null) {
-            talks = new ArrayList<Talk>();
+    public List<Proposal> getProposals() {
+        if (proposals == null) {
+            proposals = new ArrayList<Proposal>();
         }
-        return talks;
+        return proposals;
     }
 
     // Give a hashKey unique for angular.
