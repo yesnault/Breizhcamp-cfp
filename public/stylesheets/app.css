@@ -9,6 +9,9 @@
   display: none !important;
 }
 
+/* ------------------------- */
+/* ----- Global navbar ----- */
+/* ------------------------- */
 /* Align logo into brand name */
 a.navbar-brand { padding: 10px 15px; }
 
@@ -18,43 +21,9 @@ a.navbar-brand { padding: 10px 15px; }
     height: 30px;
 }
 
-.menu {
-  list-style: none;
-  border-bottom: 0.1em solid black;
-  margin-bottom: 2em;
-  padding: 0 0 0.5em;
-}
-
-.menu:before {
-  content: "[";
-}
-
-.menu:after {
-  content: "]";
-}
-
-.menu > li {
-  display: inline;
-}
-
-.menu > li:before {
-  content: "|";
-  padding-right: 0.3em;
-}
-
-.menu > li:nth-child(1):before {
-  content: "";
-  padding: 0;
-}
-
-.privateComment {
-    position: relative;
-}
-
-.well .privateComment {
-    padding-top: 40px;
-}
-
+/* ------------------------- */
+/* -------   Login   ------- */
+/* ------------------------- */
 .form-icon {
     position: absolute;
     display: inline-block;
@@ -65,40 +34,33 @@ a.navbar-brand { padding: 10px 15px; }
 
 .form-text {
     padding-left: 40px;
+    width: 100%;
+}
+
+/* login button */
+.form-submit { text-align: right; }
+
+/* Separator between regular login and secure social */
+.form-separator {
+    text-align: center;
+    padding: 50px 0;
+}
+
+.form-separator span {
+    padding: 20px;
+    font-size: 18px;
+    text-align: center;
+    background: #888;
+    border-radius: 50%;
+    color: #ffffff;
 }
 
 input[type="checkbox"] {
     margin: 0 5px;
 }
 
-#remember_me {
-    margin-top: -10px;
-}
-
-#username, #password {
-    padding-left: 40px;
-    width: 100%;
-}
-
 .control-group label {
     display: inline-block;
-}
-
-#remember_me {
-    position: relative;
-}
-
-.form-submit {
-    position: absolute;
-    right: 15px;
-}
-
-.form-separator {
-    padding: 20px;
-    font-size: 18px;
-    background: #888;
-    border-radius: 50%;
-    color: #ffffff;
 }
 
 ul.social-stack {
@@ -132,6 +94,14 @@ ul.social-stack {
     -webkit-border-radius: 4px 0 4px 0;
     -moz-border-radius: 4px 0 4px 0;
     border-radius: 4px 0 4px 0;
+}
+
+.privateComment {
+    position: relative;
+}
+
+.well .privateComment {
+    padding-top: 40px;
 }
 
 .accordion-heading {

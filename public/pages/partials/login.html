@@ -1,61 +1,63 @@
+<div class="page-header">
+    <h1>Bienvenue sur le CFP du BreizhC&#64;mp</h1>
+</div>
+
+<legend>Connexion</legend>
 <div class="row">
 
-    <div class="container" style="padding-top: 30px">
-        <div class="page-header">
-            <h1>Bienvenue sur le CFP du BreizhC&#64;mp</h1>
-        </div>
-
-        <legend>Connexion</legend>
-        <div class="row">
-            <div class="col-md-5">
-            <form action="/authenticate/userpass" class="form-horizontal" autocomplete="off" method="POST">
-                <fieldset>
-                    <div class="form-group">
-                      <div class="col-sm-offset-1 col-sm-10">
+    <div class="col-md-5">
+        <form action="/authenticate/userpass" class="form-horizontal" autocomplete="off" method="POST">
+            <fieldset>
+                <div class="form-group">
+                    <div class="col-sm-offset-1 col-sm-10">
                         <i class="form-icon icon-user"></i>
-                        <input type="text" id="username" name="username" placeholder="Nom d'utilisateur" required>
-                      </div>
+                        <input type="text" id="username" name="username" placeholder="Nom d'utilisateur" required  class="form-text">
                     </div>
-                    <div class="form-group">
-                      <div class="col-sm-offset-1 col-sm-10">
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-1 col-sm-10">
                         <i class="form-icon icon-key"></i>
-                        <input type="password" id="password" name="password" placeholder="Mot de passe" required>
+                        <input type="password" id="password" name="password" placeholder="Mot de passe" required class="form-text">
                         <br>
                         <a href="/reset" class="form-text">Mot de passe oublié ?</a>
-                      </div>
                     </div>
-                    <div class="form-group">
-                      <div class="col-sm-offset-1 col-sm-8">
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-1 col-sm-7">
                         <input type="checkbox" id="rememberMe" name="rememberMe"/><label for="rememberMe">Se souvenir de moi</label>
-                      </div>
-                      <div class="col-sm-2">
-                        <button type="submit" class="btn btn-primary form-submit">Login</button>
-                      </div>
                     </div>
-                    <div class="form-group">
-                      <div class="col-sm-offset-1 col-sm-11">
+                    <div class="col-sm-3 form-submit">
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-1 col-sm-11">
                         Pas encore inscrit ? <br>
                         <a href="/signup">Creer un compte</a>
-                      </div>
                     </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
 
+    <div class="col-md-2 form-separator">
+        <span>ou</span>
+    </div>
 
-                </fieldset>
-            </form>
-          </div>
-          <div class="col-md-2" style="text-align: center; padding-top: 50px">
-              <span class="form-separator">ou</span>
-          </div>
-          <div class="col-md-4" style="text-align: center">
-              <ul class="social-stack">
-                  <li><a href="/authenticate/github" class="btn btn-primary"><span class="icon-github-sign"></span> Connexion via GitHub</a></li>
-                  <li><a href="/authenticate/google" class="btn btn-primary"><span class="icon-google-plus-sign"></span> Connexion via Google</a></li>
-                  <li><a href="/authenticate/twitter" class="btn btn-primary"><span class="icon-twitter-sign"></span> Connexion via Twitter</a></li>
-              </ul>
-          </div>
+    <div class="col-md-5">
+        <div class="col-md-7 col-md-offset-1 col-sm-6 col-sm-offset-3">
+            <p><a class="btn btn-block btn-primary" href="/authenticate/github" role="button">
+                <span class="icon-github-sign"></span> Connexion via GitHub
+            </a></p>
 
+            <p><a class="btn btn-block btn-primary" href="/authenticate/google" role="button">
+                <span class="icon-google-plus-sign"></span> Connexion via Google
+            </a></p>
+
+            <p><a class="btn btn-block btn-primary" href="/authenticate/twitter" role="button">
+                <span class="icon-twitter-sign"></span> Connexion via Twitter
+            </a></p>
         </div>
-
-    </div>	
+    </div>
 
 </div>
