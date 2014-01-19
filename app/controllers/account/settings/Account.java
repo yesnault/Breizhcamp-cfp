@@ -6,11 +6,8 @@ import static play.data.Form.form;
 import java.util.*;
 
 import controllers.BaseController;
-import models.DynamicField;
-import models.DynamicFieldJson;
-import models.DynamicFieldValue;
-import models.Lien;
-import models.User;
+import models.*;
+import models.Link;
 import models.utils.TransformValidationErrors;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -19,10 +16,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import play.Logger;
 import play.data.Form;
 import play.i18n.Messages;
-import play.mvc.Controller;
-import static play.mvc.Controller.request;
 import play.mvc.Result;
-import securesocial.core.Identity;
 import securesocial.core.java.SecureSocial;
 
 @SecureSocial.SecuredAction(ajaxCall=true)
@@ -39,8 +33,8 @@ public class Account extends BaseController {
     
     public static Result deleteLink(Long idLink) {
     	
-    	Lien lien = Lien.find.byId(idLink);
-    	lien.delete();
+    	Link link = Link.find.byId(idLink);
+    	link.delete();
     	
     	return ok();
     }
@@ -48,18 +42,18 @@ public class Account extends BaseController {
     public static Result save() {
         User user = getLoggedUser();
         Form<AccountForm> accountForm;
-        List<Form<Lien>> liensForms = new ArrayList<Form<Lien>>();
-        Form<Lien> newLink = null;
+        List<Form<Link>> liensForms = new ArrayList<Form<Link>>();
+        Form<Link> newLink = null;
         String newLabel = null;
         String newUrl = null;
         JsonNode userJson = request().body().asJson();
         accountForm = form(AccountForm.class).bind(userJson);
 
-        // Parcour des liens du user;
-        ArrayNode liens = (ArrayNode) userJson.get("liens");
+        // Parcour des links du user;
+        ArrayNode liens = (ArrayNode) userJson.get("links");
         for (JsonNode lien : liens ) {
             if (lien.get("id") != null) {
-                Form<Lien> oneLienForm = form(Lien.class).bind(lien);
+                Form<Link> oneLienForm = form(Link.class).bind(lien);
                 if (oneLienForm.hasErrors()) {
                     Map<String, Map<String, List<String>>> errors = new HashMap<String, Map<String, List<String>>>();
                     errors.put(lien.get("id").asText(), TransformValidationErrors.transform(oneLienForm.errors()));
@@ -67,7 +61,7 @@ public class Account extends BaseController {
                 }
                 liensForms.add(oneLienForm);
             } else {
-                newLink = form(Lien.class).bind(lien);
+                newLink = form(Link.class).bind(lien);
                 if (lien.get("label") != null) {
                     newLabel = lien.get("label").asText();
                 }
@@ -89,18 +83,18 @@ public class Account extends BaseController {
             return badRequest(toJson(TransformValidationErrors.transform(accountForm.errors())));
         }
         
-        for (Lien oneLien : user.getLiens()) {
-        	Form<Lien> lienForm = liensForms.remove(0);
-        	oneLien.label = lienForm.get().label;
-        	oneLien.url = lienForm.get().url;
+        for (Link oneLink : user.getLinks()) {
+        	Form<Link> lienForm = liensForms.remove(0);
+        	oneLink.label = lienForm.get().label;
+        	oneLink.url = lienForm.get().url;
         }
         
         user.description = accountForm.get().description;
         user.avatar = accountForm.get().avatar;
         
         if (newLinkExists(newLink, newLabel, newUrl)) {
-        	Lien lien = newLink.get();
-        	user.getLiens().add(lien);
+        	Link link = newLink.get();
+        	user.getLinks().add(link);
         }
 
         user.save();
@@ -148,7 +142,7 @@ public class Account extends BaseController {
         return ok();
     }
 
-    public static boolean newLinkExists(Form<Lien> newLink, String newLabel, String newUrl) {
+    public static boolean newLinkExists(Form<Link> newLink, String newLabel, String newUrl) {
         return newLink != null
                 && ((newLabel != null && newLabel.length() > 0)
                 || (newUrl != null && newUrl.length() > 0));

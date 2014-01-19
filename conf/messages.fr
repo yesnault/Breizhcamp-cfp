@@ -69,11 +69,11 @@ notifs.notifAdminOnProposalWithComment=sur les proposals où j'ai mis un comment
 account.update.title=Profile
 account.description=Description/Bio
 account.avatar=Avatar
-account.lien.list=Liste de vos liens
-account.lien.label=Libellé
-account.lien.url=URL
-account.lien.delete=Supprimer ce lien
-account.lien.delete.confirm=Êtes vous sûr de vouloir supprimer le lien {0}?
+account.link.list=Liste de vos liens
+account.link.label=Libellé
+account.link.url=URL
+account.link.delete=Supprimer ce link
+account.link.delete.confirm=Êtes vous sûr de vouloir supprimer le link {0}?
 
 signin.signin=Se Connecter
 signin.your.email=Votre adresse mail
@@ -97,7 +97,7 @@ resetpassword.new.password=Nouveau mot de passe :
 changemail.mailsent=Un mail a été envoyé. Merci de vérifier vos mails.
 
 mail.confirm.subject=Bienvenue sur BreizhCamp CFP - Demande de confirmation
-mail.confirm.message=Bienvenue to BreizhCamp CFP. <br><br> Cliquez sur ce lien : {0} pour confirmer votre email.
+mail.confirm.message=Bienvenue to BreizhCamp CFP. <br><br> Cliquez sur ce link : {0} pour confirmer votre email.
 
 mail.welcome.subject=Bienvenue sur BreizhCamp CFP - Validation de votre compte
 mail.welcome.message=Bienvenue sur BreizhCamp CFP. <br><br> Votre compte est valid&eacute;. Enjoy !

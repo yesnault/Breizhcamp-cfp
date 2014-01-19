@@ -44,9 +44,9 @@
                     </div>
                     <h3>Liens</h3>
                     <p ng-show="pUser.liens.length == 0">
-                        - aucun lien
+                        - aucun link
                     </p>
-                    <p ng-repeat="lien in pUser.liens">- <a ng-href="{{lien.url}}" target="_blank">{{lien.label}}</a></p>
+                    <p ng-repeat="link in pUser.liens">- <a ng-href="{{link.url}}" target="_blank">{{link.label}}</a></p>
 
                     <div>
                         <h3 >Autres informations</h3>

@@ -74,49 +74,49 @@
                                     <th class="col-md-2">Actions</th>
                                 </tr>
 
-                                <tr ng-repeat="lien in user.liens">
+                                <tr ng-repeat="link in user.liens">
                                     <td>
 
-                                        <div class="form-group {{{true:'error', false:''}[errors[lien.id].label != undefined]}}">
+                                        <div class="form-group {{{true:'error', false:''}[errors[link.id].label != undefined]}}">
                                             <div class="controls">
-                                                <input type="text" id="label{{lien.id}}" name="label"
-                                                       value="{{lien.label}}"
-                                                       placeholder="Libellé" class="input-small" ng-model="lien.label">
+                                                <input type="text" id="label{{link.id}}" name="label"
+                                                       value="{{link.label}}"
+                                                       placeholder="Libellé" class="input-small" ng-model="link.label">
 
                                                 <p class="help-inline">Longueur maximum: 50, Obligatoire</p>
 
-                                                <p class="help-inline" ng-repeat="error in errors[lien.id].label">
+                                                <p class="help-inline" ng-repeat="error in errors[link.id].label">
                                                     {{error}}</p>
                                             </div>
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="form-group {{{true:'error', false:''}[errors[lien.id].url != undefined]}}">
+                                        <div class="form-group {{{true:'error', false:''}[errors[link.id].url != undefined]}}">
                                             <div class="controls">
-                                                <input type="text" id="url{{lien.id}}" name="url" value="{{lien.url}}"
-                                                       placeholder="URL" class="input-large" ng-model="lien.url">
+                                                <input type="text" id="url{{link.id}}" name="url" value="{{link.url}}"
+                                                       placeholder="URL" class="input-large" ng-model="link.url">
 
                                                 <p class="help-inline">Longueur maximum: 200, Obligatoire</p>
 
-                                                <p class="help-inline" ng-repeat="error in errors[lien.id].url">
+                                                <p class="help-inline" ng-repeat="error in errors[link.id].url">
                                                     {{error}}</p>
                                             </div>
                                         </div>
                                     </td>
                                     <td>
-                                        <a ng-click="removeLink(lien)">
+                                        <a ng-click="removeLink(link)">
                                             <i class="icon-remove"></i>
                                         </a></td>
                                 </tr>
                                 <tr>
-                                    <th colspan="3">Nouveau lien</th>
+                                    <th colspan="3">Nouveau link</th>
                                 </tr>
                                 <tr>
                                     <td>
                                         <div class="form-group {{{true:'error', false:''}[errors.label != undefined]}}">
                                             <div class="controls">
                                                 <input type="text" name="label" value="" placeholder="Libellé"
-                                                       class="input-small" ng-model="lien.label">
+                                                       class="input-small" ng-model="link.label">
 
                                                 <p class="help-inline">Longueur maximum: 50, Obligatoire</p>
 
@@ -132,7 +132,7 @@
                                             <div class="controls">
                                                 <input type="text" name="url" value="" placeholder="URL"
                                                        class="input-large"
-                                                       ng-model="lien.url">
+                                                       ng-model="link.url">
 
                                                 <p class="help-inline">Longueur maximum: 200, Obligatoire</p>
 

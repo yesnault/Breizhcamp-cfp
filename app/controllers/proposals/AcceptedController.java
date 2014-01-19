@@ -209,8 +209,8 @@ public class AcceptedController extends Controller {
         // speaker.fullname
         // speaker.avatar
         // speaker.description
-        // speaker.liens.url
-        // speaker.liens.label
+        // speaker.links.url
+        // speaker.links.label
         // speaker.proposals.id
         // speaker.proposals.title
         // speaker.proposals.description
@@ -253,8 +253,8 @@ public class AcceptedController extends Controller {
         // proposal.speaker.fullname
         // proposal.speaker.avatar
         // proposal.speaker.description
-        // proposal.speaker.liens.url
-        // proposal.speaker.liens.label
+        // proposal.speaker.links.url
+        // proposal.speaker.links.label
         // proposal.coSpeakers
 
         List<Proposal> proposalsAccepted = Proposal.findByStatusForMinimalData(StatusProposal.ACCEPTE);
@@ -287,13 +287,13 @@ public class AcceptedController extends Controller {
         speakerJson.put("description", speaker.description);
 
         ArrayNode liens = new ArrayNode(JsonNodeFactory.instance);
-        for (Lien lien : speaker.getLiens()) {
+        for (Link link : speaker.getLinks()) {
             ObjectNode lienJson = Json.newObject();
-            lienJson.put("url", lien.url);
-            lienJson.put("label", lien.label);
+            lienJson.put("url", link.url);
+            lienJson.put("label", link.label);
             liens.add(lienJson);
         }
-        speakerJson.put("liens", liens);
+        speakerJson.put("links", liens);
         return speakerJson;
     }
 }

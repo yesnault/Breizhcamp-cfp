@@ -160,19 +160,19 @@ public class Proposal extends Model {
         // proposal.speaker.fullname
         // proposal.speaker.avatar
         // proposal.speaker.description
-        // proposal.speaker.liens.url
-        // proposal.speaker.liens.label
+        // proposal.speaker.links.url
+        // proposal.speaker.links.label
         // proposal.coSpeakers
-        return find.select("id, title, description, speaker.id, speaker.fullname, speaker.avatar, speaker.description, speaker.liens, " +
-                "proposal.coSpeakers.id, proposal.coSpeakers.fullname, proposal.coSpeakers.avatar, proposal.coSpeakers.description, proposal.coSpeakers.liens")
-                .fetch("speaker").fetch("speaker.liens").fetch("coSpeakers").fetch("coSpeakers.liens")
+        return find.select("id, title, description, speaker.id, speaker.fullname, speaker.avatar, speaker.description, speaker.links, " +
+                "proposal.coSpeakers.id, proposal.coSpeakers.fullname, proposal.coSpeakers.avatar, proposal.coSpeakers.description, proposal.coSpeakers.links")
+                .fetch("speaker").fetch("speaker.links").fetch("coSpeakers").fetch("coSpeakers.links")
                 .where().eq("statusProposal", status.getInterne()).findList();
     }
 
     public static Proposal findByIdWithFetch(Long id) {
-        return find.select("id, title, description, speaker.id, speaker.fullname, speaker.avatar, speaker.description, speaker.liens, " +
-                "proposal.coSpeakers.id, proposal.coSpeakers.fullname, proposal.coSpeakers.avatar, proposal.coSpeakers.description, proposal.coSpeakers.liens, proposals.tags.nom")
-                .fetch("speaker").fetch("speaker.liens").fetch("coSpeakers").fetch("coSpeakers.liens").fetch("tags")
+        return find.select("id, title, description, speaker.id, speaker.fullname, speaker.avatar, speaker.description, speaker.links, " +
+                "proposal.coSpeakers.id, proposal.coSpeakers.fullname, proposal.coSpeakers.avatar, proposal.coSpeakers.description, proposal.coSpeakers.links, proposals.tags.nom")
+                .fetch("speaker").fetch("speaker.links").fetch("coSpeakers").fetch("coSpeakers.links").fetch("tags")
                 .where().idEq(id).findUnique();
     }
 

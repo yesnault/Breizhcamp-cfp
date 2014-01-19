@@ -58,7 +58,7 @@ public class User extends Model {
     public String description;
 
     @OneToMany(cascade = CascadeType.ALL)
-    public List<Lien> liens;
+    public List<Link> links;
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore
@@ -144,11 +144,11 @@ public class User extends Model {
         this.notifAdminOnProposalWithComment = notifAdminOnProposalWithComment;
     }
 
-    public List<Lien> getLiens() {
-        if (liens == null) {
-            liens = new ArrayList<Lien>();
+    public List<Link> getLinks() {
+        if (links == null) {
+            links = new ArrayList<Link>();
         }
-        return liens;
+        return links;
     }
 
     @JsonProperty("avatar")
@@ -261,7 +261,7 @@ public class User extends Model {
         if (email != null ? !email.equals(user.email) : user.email != null) return false;
         if (fullname != null ? !fullname.equals(user.fullname) : user.fullname != null) return false;
         if (id != null ? !id.equals(user.id) : user.id != null) return false;
-        if (liens != null ? !liens.equals(user.liens) : user.liens != null) return false;
+        if (links != null ? !links.equals(user.links) : user.links != null) return false;
         if (notifAdminOnAllProposal != null ? !notifAdminOnAllProposal.equals(user.notifAdminOnAllProposal) : user.notifAdminOnAllProposal != null)
             return false;
         if (notifAdminOnProposalWithComment != null ? !notifAdminOnProposalWithComment.equals(user.notifAdminOnProposalWithComment) : user.notifAdminOnProposalWithComment != null)
