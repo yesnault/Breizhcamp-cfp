@@ -43,4 +43,9 @@ modules
 /nbproject
 build.xml
 *.*~
+
+#local startup script
 start
+
+#local conf file
+conf/local.conf
