@@ -504,9 +504,6 @@ function SeeProposalsController($scope, $log, $routeParams, ProposalService, htt
 
     $scope.proposal = ProposalService.get({id: $routeParams.proposalId}, function success(data) {
         $scope.proposal = data;
-        if (!$scope.proposal.dureeApprouve) {
-            $scope.proposal.dureeApprouve = $scope.proposal.dureePreferee;
-        }
     });
 
     $scope.voteStatus = VoteService.getVote();
@@ -632,7 +629,7 @@ function SeeProposalsController($scope, $log, $routeParams, ProposalService, htt
     $scope.postStatus = function() {
         $log.info("postStatus");
 
-        var data = {'status': $scope.proposal.statusProposal,'dureeApprouve': $scope.proposal.dureeApprouve.id};
+        var data = {'status': $scope.proposal.statusProposal};
 
         http({
             method: 'POST',

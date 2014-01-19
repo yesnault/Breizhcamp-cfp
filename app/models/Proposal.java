@@ -106,10 +106,6 @@ public class Proposal extends Model {
     @Constraints.Required
     public Format dureePreferee;
 
-    @ManyToOne
-    public Format dureeApprouve;
-
-
     public static Finder<Long, Proposal> find = new Finder<Long, Proposal>(Long.class, Proposal.class);
 
     public static List<Proposal> findAllForDisplay() {

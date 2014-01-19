@@ -36,8 +36,6 @@
                             </select>
 
 
-                            <select id="dureeApprouve" name="dureeApprouve" ng-model="proposal.dureeApprouve.id" ng-options="format.id as format.libelle + ' (' + format.dureeMinutes + 'min)' for format in creneaux"></select>
-
                             <p class="help-inline" ng-repeat="error in errors.status">{{error}}</p>
                         </div>
                     </div>

@@ -196,8 +196,6 @@ alter table proposal add constraint fk_proposal_event_10 foreign key (event_id) 
 create index ix_proposal_event_10 on proposal (event_id);
 alter table proposal add constraint fk_proposal_dureePreferee_11 foreign key (duree_preferee_id) references creneau (id) on delete restrict on update restrict;
 create index ix_proposal_dureePreferee_11 on proposal (duree_preferee_id);
-alter table proposal add constraint fk_proposal_dureeApprouve_12 foreign key (duree_approuve_id) references creneau (id) on delete restrict on update restrict;
-create index ix_proposal_dureeApprouve_12 on proposal (duree_approuve_id);
 alter table user add constraint fk_user_credentials_13 foreign key (credentials_id) references credentials (id) on delete restrict on update restrict;
 create index ix_user_credentials_13 on user (credentials_id);
 alter table vote add constraint fk_vote_user_14 foreign key (user_id) references user (id) on delete restrict on update restrict;

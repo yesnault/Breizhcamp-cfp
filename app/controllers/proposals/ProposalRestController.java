@@ -167,11 +167,7 @@ public class ProposalRestController extends BaseController {
                 } else {
                     proposalJson.putNull("dureePreferee");
                 }
-                if (proposal.dureeApprouve != null) {
-                    proposalJson.put("dureeApprouve", proposal.dureeApprouve.getId());
-                } else {
-                    proposalJson.putNull("dureeApprouve");
-                }
+
                 if (proposal.statusProposal != null) {
                     proposalJson.put("statusProposal", proposal.statusProposal.name());
                 } else {
@@ -555,14 +551,6 @@ public class ProposalRestController extends BaseController {
 
         if (proposal.statusProposal != newStatus) {
             proposal.statusProposal = newStatus;
-
-            if (proposal.statusProposal.equals(StatusProposal.ACCEPTE)) {
-                Format dureeApprouve = Format.find.byId(Long.valueOf(node.get("dureeApprouve").asText()));
-
-                proposal.dureeApprouve = dureeApprouve;
-            } else {
-                proposal.dureeApprouve = null;
-            }
 
             proposal.save();
             if (proposal.statusProposal != null) {
