@@ -157,7 +157,7 @@ function NewProposalController($scope, $log, $location, ProposalService, Creneau
 
     $scope.isNew = true;
 
-    $scope.creneaux = CreneauxService.query();
+    $scope.formats = CreneauxService.query();
 
     $scope.converter = new Markdown.getSanitizingConverter();
     $scope.editor = new Markdown.Editor($scope.converter);
@@ -183,12 +183,12 @@ function NewProposalController($scope, $log, $location, ProposalService, Creneau
 }
 
 
-function changeFormat(newId, proposal, creneaux) {
+function changeFormat(newId, proposal, formats) {
 
     var found = false;
-    angular.forEach(creneaux, function (creneau) {
-        if (creneau.id === newId) {
-            proposal.format = creneau;
+    angular.forEach(formats, function (format) {
+        if (format.id === newId) {
+            proposal.format = format;
             found = true;
         }
     });
@@ -241,7 +241,7 @@ function EditProposalController($scope, $log, $location, $routeParams, ProposalS
 
     $scope.isNew = false;
 
-    $scope.creneaux = CreneauxService.query();
+    $scope.formats = CreneauxService.query();
 
     $scope.converter = new Markdown.getSanitizingConverter();
     $scope.editor = new Markdown.Editor($scope.converter);
@@ -510,7 +510,7 @@ function SeeProposalsController($scope, $log, $routeParams, ProposalService, htt
 
     $scope.voteStatus = VoteService.getVote();
 
-    $scope.creneaux = CreneauxService.query();
+    $scope.formats = CreneauxService.query();
 
     $scope.commentE = Array();
 
@@ -1036,13 +1036,13 @@ CreneauxController.$inject = ['$scope', '$log', 'CreneauxService'];
 function CreneauxController($scope, $log, CreneauxService) {
     $scope.checkloc(true);
 
-    $scope.creneaux = CreneauxService.query();
+    $scope.formats = CreneauxService.query();
 
     $scope.deleteCreneau = function (creneauToDelete) {
         var confirmation = confirm('\u00cates vous s\u00fbr de vouloir supprimer le creneau ' + creneauToDelete.libelle + '?');
         if (confirmation) {
             CreneauxService.delete({id:creneauToDelete.id}, function (data) {
-                $scope.creneaux = CreneauxService.query();
+                $scope.formats = CreneauxService.query();
                 $scope.errors = undefined;
             }, function (err) {
                 $log.info("Delete du creneau ko");
@@ -1066,13 +1066,13 @@ function NewCreneauController($scope, $log, CreneauxService, $location) {
 
     $scope.saveCreneau = function () {
         $log.info("Format \u00e0 sauvegarder");
-        $log.info($scope.creneau);
+        $log.info($scope.format);
 
-        CreneauxService.save($scope.creneau, function (data) {
-            $log.info("Soummission du creneau ok");
-            $location.url('/admin/creneaux');
+        CreneauxService.save($scope.format, function (data) {
+            $log.info("Soummission du format ok");
+            $location.url('/admin/formats');
         }, function (err) {
-            $log.info("Soummission du creneau ko");
+            $log.info("Soummission du format ko");
             $log.info(err.data);
             $scope.errors = err.data;
         });
@@ -1086,7 +1086,7 @@ function EditCreneauController($scope, $log, CreneauxService, $location, $routeP
 
     var idCreneau = $routeParams.creneauId;
 
-    $scope.creneau = CreneauxService.get({id:idCreneau});
+    $scope.format = CreneauxService.get({id:idCreneau});
 
     $scope.isNew = false;
 
@@ -1096,13 +1096,13 @@ function EditCreneauController($scope, $log, CreneauxService, $location, $routeP
 
     $scope.saveCreneau = function () {
         $log.info("Format \u00e0 sauvegarder");
-        $log.info($scope.creneau);
+        $log.info($scope.format);
 
-        CreneauxService.save($scope.creneau, function (data) {
-            $log.info("Soummission du creneau ok");
-            $location.url('/admin/creneaux');
+        CreneauxService.save($scope.format, function (data) {
+            $log.info("Soummission du format ok");
+            $location.url('/admin/formats');
         }, function (err) {
-            $log.info("Soummission du creneau ko");
+            $log.info("Soummission du format ko");
             $log.info(err.data);
             $scope.errors = err.data;
         });

@@ -174,7 +174,7 @@ Services.factory('AllProposalService', function($resource) {
 });
 
 Services.factory('CreneauxService', function($resource) {
-    return $resource('/creneau/:id', {});
+    return $resource('/format/:id', {});
 });
 
 Services.factory('DynamicFieldsService', function($resource) {

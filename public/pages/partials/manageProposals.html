@@ -17,7 +17,7 @@
                 <p>
                     <span class="badge badge-important" ng-repeat="error in errors['']">{{error}}</span>
                 </p>
-                <table class="table table-bordered table-striped">
+                <table class="table table-bordered table-striped" ng-show="proposals.length >0">
                     <tbody>
 
                     <tr>
@@ -45,6 +45,7 @@
                     </tr>
                     </tbody>
                 </table>
+                <p  ng-show="proposals.length == 0">Aucun Proposal</p>
                 <p ng-show="user.isInfoValid">
                     <a href="#/submitproposal/new">
                         <button class="btn btn-primary">Nouveau Proposal</button>

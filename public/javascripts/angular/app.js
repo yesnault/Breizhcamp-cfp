@@ -16,9 +16,9 @@ App.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/admin/users', {templateUrl: '/assets/pages/partials/admin/users.html', controller: ManageUsersController});
     $routeProvider.when('/admin/proposals/list', {templateUrl: '/assets/pages/partials/admin/listproposals.html', controller: ListProposalsController});
     $routeProvider.when('/admin/vote', {templateUrl: 'assets/pages/partials/admin/vote.html', controller: VoteController});
-    $routeProvider.when('/admin/creneaux', {templateUrl: 'assets/pages/partials/admin/creneaux.html', controller: CreneauxController});
-    $routeProvider.when('/admin/creneau/new', {templateUrl: 'assets/pages/partials/admin/submitcreneau.html', controller: NewCreneauController});
-    $routeProvider.when('/admin/creneau/edit/:creneauId', {templateUrl: 'assets/pages/partials/admin/submitcreneau.html', controller: EditCreneauController});
+    $routeProvider.when('/admin/formats', {templateUrl: 'assets/pages/partials/admin/creneaux.html', controller: CreneauxController});
+    $routeProvider.when('/admin/format/new', {templateUrl: 'assets/pages/partials/admin/submitcreneau.html', controller: NewCreneauController});
+    $routeProvider.when('/admin/format/edit/:creneauId', {templateUrl: 'assets/pages/partials/admin/submitcreneau.html', controller: EditCreneauController});
 
     $routeProvider.when('/admin/events', {templateUrl: 'assets/pages/partials/event/events.html', controller: EventController});
     $routeProvider.when('/admin/event/new', {templateUrl: 'assets/pages/partials/event/submit.html', controller: NewEventController});
