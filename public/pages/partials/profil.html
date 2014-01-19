@@ -1,9 +1,9 @@
 <div class="row">
 
     <script type="text/javascript">
-        function displayHide(id){
+        function displayHide(id) {
             var respStyle = document.getElementById(id).style;
-            if(respStyle.display == 'none'){
+            if (respStyle.display == 'none') {
                 document.getElementById(id).style.display = 'block';
             } else {
                 document.getElementById(id).style.display = 'none';
@@ -16,65 +16,86 @@
         <div class="row-fluid">
             <div class="col-md-2 breadcrumb">
                 <img ng-src="{{pUser.avatar}}?s=100" style="max-width:100px;max-height: 100px"><br/>
+                <hr/>
+                <p ng-repeat="link in pUser.links"><i class="{{link.icon}}"></i> <a ng-href="{{link.url}}"
+                                                                                    target="_blank">{{link.label}}</a>
+                </p>
             </div>
             <div class="col-md-10">
                 <div class="well">
                     <h2>{{pUser.fullname}}</h2>
+
                     <p ng-show="pUser.admin && proposals.length==0">(Organisateur)</p>
+
                     <p ng-show="pUser.admin && proposals.length!=0 ">(Speaker/Organisateur)</p>
-                    <p ng-show="!pUser.admin && proposals.length!=0 ">(Speaker)</p><br />
+
+                    <p ng-show="!pUser.admin && proposals.length!=0 ">(Speaker)</p><br/>
+
                     <div id="showDescription">
-                    <div class="well" ng-bind-html-unsafe="getSafeDescription()"></div>
-                    <input type="button" class="btn btn-primary" value="Modifier" ng-show="userService.isAdmin()"
-                           onclick="displayHide('editDescription');displayHide('showDescription');">   </div>
+                        <div class="well" ng-bind-html-unsafe="getSafeDescription()"></div>
+                        <input type="button" class="btn btn-primary" value="Modifier" ng-show="userService.isAdmin()"
+                               onclick="displayHide('editDescription');displayHide('showDescription');"></div>
                     <div class="well" id="editDescription" style="display: none;">
                         <form ng-submit="editProfil({{pUser.id}})" method="POST" class="form-inline">
                             <div class="form-group {{{true:'error', false:''}[errors.descriptionE != undefined]}}">
                                 <div class="controls">
                                     <div id="wmd-button-bar"></div>
-                                    <textarea id="wmd-input" name="descriptionE" placeholder="Description/Bio" class="wmd-input" ng-model="descriptionE" rows="10"></textarea>
-                                    <p class="help-inline">Longueur maximum: {{descriptionE.length}}/2000, Obligatoire</p>
+                                    <textarea id="wmd-input" name="descriptionE" placeholder="Description/Bio"
+                                              class="wmd-input" ng-model="descriptionE" rows="10"></textarea>
+
+                                    <p class="help-inline">Longueur maximum: {{descriptionE.length}}/2000,
+                                        Obligatoire</p>
+
                                     <p class="help-inline" ng-repeat="error in errors.descriptionE">{{error}}</p>
+
                                     <div id="wmd-preview" class="wmd-preview" pagedown-init="descriptionE"></div>
                                 </div>
                             </div>
-                            <input type="submit" class="btn btn-primary" value="Valider" onclick="displayHide('editDescription');displayHide('showDescription');">
-                            <input type="button" class="btn btn-primary" value="Annuler" onclick="displayHide('editDescription');displayHide('showDescription');">
+                            <br/>
+                            <p>
+                                <input type="submit" class="btn btn-primary" value="Valider"
+                                       onclick="displayHide('editDescription');displayHide('showDescription');">
+                                <input type="button" class="btn btn-primary" value="Annuler"
+                                       onclick="displayHide('editDescription');displayHide('showDescription');">
+                            </p>
                         </form>
                     </div>
-                    <h3>Liens</h3>
-                    <p ng-show="pUser.liens.length == 0">
-                        - aucun link
-                    </p>
-                    <p ng-repeat="link in pUser.links"><i class="{{link.icon}}"></i> <a ng-href="{{link.url}}" target="_blank">{{link.label}}</a></p>
 
-                    <div>
-                        <h3 >Autres informations</h3>
+                    <div ng-show="user.dynamicFields.length > 0">
+                        <h3>Autres informations</h3>
                         <ul>
-                            <li ng-repeat="dynamicField in user.dynamicFields"><strong>{{dynamicField.name}} : </strong>{{dynamicField.value}}</li>
+                            <li ng-repeat="dynamicField in user.dynamicFields"><strong>{{dynamicField.name}} : </strong>{{dynamicField.value}}
+                            </li>
                         </ul>
                     </div>
 
                     <h3 ng-show="proposals.length > 0">Proposals proposés</h3>
                     <table class="table table-bordered table-striped">
-                        <tbody><tr>
+                        <tbody>
+                        <tr>
                             <th class="col-md-6">Titre</th>
                             <th class="col-md-2">Statut</th>
                         </tr>
 
                         <tr ng-repeat="proposal in proposals | orderBy:predicate:reverse">
                             <td><a href="/#/proposals/see/{{proposal.id}}">{{proposal.title}}</a></td>
-                            <td><div ng-show="proposal.statusProposal != undefined" ng-switch on="proposal.statusProposal">
-                                <span class="label label-important" ng-switch-when="REJETE">Rejeté</span>
-                                <span class="label label-warning" ng-switch-when="ATTENTE">Liste d'attente</span>
-                                <span class="label label-success" ng-switch-when="ACCEPTE">Accepté</span>
-                            </div></td>
+                            <td>
+                                <div ng-show="proposal.statusProposal != undefined" ng-switch
+                                     on="proposal.statusProposal">
+                                    <span class="label label-important" ng-switch-when="REJETE">Rejeté</span>
+                                    <span class="label label-warning" ng-switch-when="ATTENTE">Liste d'attente</span>
+                                    <span class="label label-success" ng-switch-when="ACCEPTE">Accepté</span>
+                                </div>
+                            </td>
                         </tr>
 
-                        </tbody></table>
+                        </tbody>
+                    </table>
 
                     <h3 ng-show="proposalsok.length > 0">Proposals acceptés</h3>
-                    <p ng-repeat="proposal in proposalsok">- <a ng-href="/#/proposals/see/{{proposal.id}}" title="{{proposal.title}}" >{{proposal.title}}</a></p>
+
+                    <p ng-repeat="proposal in proposalsok">- <a ng-href="/#/proposals/see/{{proposal.id}}"
+                                                                title="{{proposal.title}}">{{proposal.title}}</a></p>
                 </div>
             </div>
         </div>
