@@ -104,10 +104,10 @@ public class Proposal extends Model {
     }
     @ManyToOne
     @Constraints.Required
-    public Creneau dureePreferee;
+    public Format dureePreferee;
 
     @ManyToOne
-    public Creneau dureeApprouve;
+    public Format dureeApprouve;
 
 
     public static Finder<Long, Proposal> find = new Finder<Long, Proposal>(Long.class, Proposal.class);

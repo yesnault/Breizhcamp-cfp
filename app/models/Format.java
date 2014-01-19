@@ -12,7 +12,7 @@ import java.util.List;
 
 @SuppressWarnings("serial")
 @Entity
-public class Creneau extends Model {
+public class Format extends Model {
 
     @Id
     private Long id;
@@ -84,9 +84,9 @@ public class Creneau extends Model {
     }
     
     
-    public static Finder<Long, Creneau> find = new Finder<Long, Creneau>(Long.class, Creneau.class);
+    public static Finder<Long, Format> find = new Finder<Long, Format>(Long.class, Format.class);
 
-    public static Creneau findByLibelle(String libelle) {
+    public static Format findByLibelle(String libelle) {
         return find.query().where().eq("libelle", libelle).findUnique();
     }
 

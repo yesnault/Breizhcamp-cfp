@@ -1004,7 +1004,7 @@ function NewCreneauController($scope, $log, CreneauxService, $location) {
     $scope.editor.run();
 
     $scope.saveCreneau = function() {
-        $log.info("Creneau \u00e0 sauvegarder");
+        $log.info("Format \u00e0 sauvegarder");
         $log.info($scope.creneau);
 
         CreneauxService.save($scope.creneau, function(data) {
@@ -1034,7 +1034,7 @@ function EditCreneauController($scope, $log, CreneauxService, $location, $routeP
     $scope.editor.run();
 
     $scope.saveCreneau = function() {
-        $log.info("Creneau \u00e0 sauvegarder");
+        $log.info("Format \u00e0 sauvegarder");
         $log.info($scope.creneau);
 
         CreneauxService.save($scope.creneau, function(data) {

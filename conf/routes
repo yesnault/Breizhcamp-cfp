@@ -59,10 +59,10 @@ GET	/proposal/:idProposal/tags/:tags    controllers.proposals.ProposalRestContro
 POST	/proposal/:idProposal/tags/:tags    controllers.proposals.ProposalRestController.addTag(idProposal:Long,tags:String)
 GET     /proposalStat                   controllers.proposals.ProposalRestController.proposalStat()
 
-GET	/creneau/:idCreneau         controllers.CreneauRestController.get(idCreneau:Long)
-GET	/creneau                    controllers.CreneauRestController.all()
-POST	/creneau                    controllers.CreneauRestController.save()
-DELETE	/creneau/:idCreneau         controllers.CreneauRestController.delete(idCreneau:Long)
+GET	/format/:idCreneau         controllers.CreneauRestController.get(idCreneau:Long)
+GET	/format                    controllers.CreneauRestController.all()
+POST	/format                    controllers.CreneauRestController.save()
+DELETE	/format/:idCreneau         controllers.CreneauRestController.delete(idCreneau:Long)
 
 GET	/event/:idEvent         controllers.EventRestController.get(idEvent:Long)
 GET	/event                  controllers.EventRestController.all()

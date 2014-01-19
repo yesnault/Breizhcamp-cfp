@@ -2,31 +2,31 @@
     <div class="col-md-12">
         <div class="well">
             <div ng-switch on="isNew" >
-                <h3 ng-switch-when="true">Nouveau creneau</h3>
-                <h3 ng-switch-when="false">Edition du creneau '{{creneau.libelle}}'</h3>
+                <h3 ng-switch-when="true">Nouveau format</h3>
+                <h3 ng-switch-when="false">Edition du format '{{format.libelle}}'</h3>
             </div>
-            <form ng-submit="saveCreneau()" name="formCreneau">
+            <form ng-submit="saveCreneau()" name="formFormat">
                 <fieldset>
-                    <div class="form-group {{{true:'error', false:''}[errors.libelle != undefined || formCreneau.libelle.$error['required']]}}">
+                    <div class="form-group {{{true:'error', false:''}[errors.libelle != undefined || formFormat.libelle.$error['required']]}}">
                         <label class="control-label" for="libelle">Libellé </label>
                         <div class="controls">
-                            <input type="text" id="libelle" name="libelle" value="" class="input-large" ng-model="creneau.libelle" required>
+                            <input type="text" id="libelle" name="libelle" value="" class="input-large" ng-model="format.libelle" required>
                             <p class="help-inline">Longueur maximum: 50, Obligatoire</p>
                             <p class="help-inline" ng-repeat="error in errors.libelle">{{error}}</p>
                         </div>
                     </div>
-                    <div class="form-group {{{true:'error', false:''}[errors.dureeMinutes != undefined || formCreneau.dureeMinutes.$error['required'] || formCreneau.dureeMinutes.$error['number']]}}">
+                    <div class="form-group {{{true:'error', false:''}[errors.dureeMinutes != undefined || formFormat.dureeMinutes.$error['required'] || formFormat.dureeMinutes.$error['number']]}}">
                         <label class="control-label" for="dureeMinutes">Durée (en mn) </label>
                         <div class="controls">
-                            <input type="number" id="dureeMinutes" name="dureeMinutes" class="input-large" ng-model="creneau.dureeMinutes" required>
+                            <input type="number" id="dureeMinutes" name="dureeMinutes" class="input-large" ng-model="format.dureeMinutes" required>
                             <p class="help-inline">Obligatoire</p>
                             <p class="help-inline" ng-repeat="error in errors.dureeMinutes">{{error}}</p>
                         </div>
                     </div>
-                    <div class="form-group {{{true:'error', false:''}[errors.nbInstance != undefined || formCreneau.nbInstance.$error['number']]}}">
+                    <div class="form-group {{{true:'error', false:''}[errors.nbInstance != undefined || formFormat.nbInstance.$error['number']]}}">
                         <label class="control-label" for="nbInstance">Nombre de slot </label>
                         <div class="controls">
-                            <input type="number" id="nbInstance" name="nbInstance" class="input-large" ng-model="creneau.nbInstance">
+                            <input type="number" id="nbInstance" name="nbInstance" class="input-large" ng-model="format.nbInstance">
                             <p class="help-inline" ng-repeat="error in errors.nbInstance">{{error}}</p>
                         </div>
                     </div>
@@ -34,10 +34,10 @@
                         <label class="control-label" for="wmd-input">Description</label>
                         <div class="controls">
                             <div id="wmd-button-bar"></div>
-                            <textarea id="wmd-input"  name="description" class="wmd-input" rows="5" ng-model="creneau.description"></textarea>
-                            <p class="help-inline">Longueur {{creneau.description.length}}/255</p>
+                            <textarea id="wmd-input"  name="description" class="wmd-input" rows="5" ng-model="format.description"></textarea>
+                            <p class="help-inline">Longueur {{format.description.length}}/255</p>
                             <p class="help-inline" ng-repeat="error in errors.description">{{error}}</p>
-                            <div id="wmd-preview" class="wmd-preview" pagedown-init="creneau.description"></div>
+                            <div id="wmd-preview" class="wmd-preview" pagedown-init="format.description"></div>
                         </div>
                     </div>                    
                     <span class="badge badge-important" ng-repeat="error in errors['']">{{error}}</span>

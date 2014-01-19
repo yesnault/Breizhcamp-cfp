@@ -557,7 +557,7 @@ public class ProposalRestController extends BaseController {
             proposal.statusProposal = newStatus;
 
             if (proposal.statusProposal.equals(StatusProposal.ACCEPTE)) {
-                Creneau dureeApprouve = Creneau.find.byId(Long.valueOf(node.get("dureeApprouve").asText()));
+                Format dureeApprouve = Format.find.byId(Long.valueOf(node.get("dureeApprouve").asText()));
 
                 proposal.dureeApprouve = dureeApprouve;
             } else {

@@ -3,9 +3,9 @@
     <div class="col-md-8">
         <div class="well">
             <h3>{{proposal.title}}
-                <p class="help-inline" ng-repeat="creneau in proposal.creneaux">
-                    <span class="label" ng-show="proposal.dureePreferee == null || creneau.id!=proposal.dureePreferee.id">{{creneau.libelle + ' (' + creneau.dureeMinutes + 'min)'}}</span>
-                    <span class="label label-info" ng-show="proposal.dureePreferee != null &&  creneau.id==proposal.dureePreferee.id">{{creneau.libelle + ' (' + creneau.dureeMinutes + 'min)'}}</span>
+                <p class="help-inline" ng-repeat="format in proposal.creneaux">
+                    <span class="label" ng-show="proposal.dureePreferee == null || format.id!=proposal.dureePreferee.id">{{format.libelle + ' (' + format.dureeMinutes + 'min)'}}</span>
+                    <span class="label label-info" ng-show="proposal.dureePreferee != null &&  format.id==proposal.dureePreferee.id">{{format.libelle + ' (' + format.dureeMinutes + 'min)'}}</span>
                 </p>
             </h3>
             <p>Soumis par <a ng-href="/#/profil/{{proposal.speaker.id}}" >{{proposal.speaker.fullname}}</a>
@@ -36,7 +36,7 @@
                             </select>
 
 
-                            <select id="dureeApprouve" name="dureeApprouve" ng-model="proposal.dureeApprouve.id" ng-options="creneau.id as creneau.libelle + ' (' + creneau.dureeMinutes + 'min)' for creneau in creneaux"></select>
+                            <select id="dureeApprouve" name="dureeApprouve" ng-model="proposal.dureeApprouve.id" ng-options="format.id as format.libelle + ' (' + format.dureeMinutes + 'min)' for format in creneaux"></select>
 
                             <p class="help-inline" ng-repeat="error in errors.status">{{error}}</p>
                         </div>

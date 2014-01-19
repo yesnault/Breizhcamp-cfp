@@ -5,30 +5,28 @@ import static play.data.Form.form;
 
 import java.util.ArrayList;
 
-import models.Creneau;
+import models.Format;
 import models.Proposal;
 import models.User;
 import models.utils.TransformValidationErrors;
 import play.data.Form;
 import play.i18n.Messages;
-import play.mvc.Controller;
 import play.mvc.Result;
-import securesocial.core.Identity;
 import securesocial.core.java.SecureSocial;
 
 @SecureSocial.SecuredAction(ajaxCall = true)
 public class CreneauRestController extends BaseController {
 
     public static Result get(Long idCreneau) {
-        Creneau creneau = Creneau.find.byId(idCreneau);
-        if (creneau == null) {
+        Format format = Format.find.byId(idCreneau);
+        if (format == null) {
             return noContent();
         }
-        return ok(toJson(creneau));
+        return ok(toJson(format));
     }
 
     public static Result all() {
-        return ok(toJson(Creneau.find.all()));
+        return ok(toJson(Format.find.all()));
     }
 
     public static Result save() {
@@ -39,32 +37,32 @@ public class CreneauRestController extends BaseController {
             return forbidden();
         }
 
-        Form<Creneau> creneauForm = form(Creneau.class).bindFromRequest();
+        Form<Format> creneauForm = form(Format.class).bindFromRequest();
 
         if (creneauForm.hasErrors()) {
             return badRequest(toJson(TransformValidationErrors.transform(creneauForm.errors())));
         }
 
-        Creneau formCreneau = creneauForm.get();
+        Format formFormat = creneauForm.get();
 
-        if (formCreneau.getId() == null) {
+        if (formFormat.getId() == null) {
             // Nouveau créneau
-            if (Creneau.findByLibelle(formCreneau.getLibelle()) != null) {
+            if (Format.findByLibelle(formFormat.getLibelle()) != null) {
                 return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.creneau.already.exist"))));
             }
-            formCreneau.save();
+            formFormat.save();
         } else {
             // Mise à jour d'un créneau
-            Creneau dbCreneau = Creneau.find.byId(formCreneau.getId());
-            if (!formCreneau.getLibelle().equals(dbCreneau.getLibelle())
-                    && Creneau.findByLibelle(formCreneau.getLibelle()) != null) {
+            Format dbFormat = Format.find.byId(formFormat.getId());
+            if (!formFormat.getLibelle().equals(dbFormat.getLibelle())
+                    && Format.findByLibelle(formFormat.getLibelle()) != null) {
                 return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.creneau.already.exist"))));
             }
-            dbCreneau.setLibelle(formCreneau.getLibelle());
-            dbCreneau.setDureeMinutes(formCreneau.getDureeMinutes());
-            dbCreneau.setDescription(formCreneau.getDescription());
-            dbCreneau.setNbInstance(formCreneau.getNbInstance());
-            dbCreneau.update();
+            dbFormat.setLibelle(formFormat.getLibelle());
+            dbFormat.setDureeMinutes(formFormat.getDureeMinutes());
+            dbFormat.setDescription(formFormat.getDescription());
+            dbFormat.setNbInstance(formFormat.getNbInstance());
+            dbFormat.update();
         }
         // HTTP 204 en cas de succès (NO CONTENT)
         return noContent();
@@ -79,13 +77,13 @@ public class CreneauRestController extends BaseController {
             return forbidden();
         }
 
-        Creneau creneau = Creneau.find.byId(idCreneau);
-        if (creneau != null) {
-            for (Proposal proposal : new ArrayList<Proposal>(creneau.getProposals())) {
-                creneau.getProposals().remove(proposal);
+        Format format = Format.find.byId(idCreneau);
+        if (format != null) {
+            for (Proposal proposal : new ArrayList<Proposal>(format.getProposals())) {
+                format.getProposals().remove(proposal);
             }
-            creneau.saveManyToManyAssociations("proposals");
-            creneau.delete();
+            format.saveManyToManyAssociations("proposals");
+            format.delete();
         }
         // HTTP 204 en cas de succès (NO CONTENT)
         return noContent();

@@ -158,7 +158,7 @@ proposals.status.waiting=Attente
 proposals.status.null=Sans status
 
 
-error.creneau.already.exist=Ce créneau existe déjà.
+error.format.already.exist=Ce créneau existe déjà.
 error.dynamicField.already.exist=Ce champ dynamique existe déjà.
 
 

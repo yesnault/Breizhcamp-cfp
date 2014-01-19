@@ -3,7 +3,7 @@
     <div class="col-md-6">
 
         <p>
-            <a href="#/admin/creneau/new">
+            <a href="#/admin/format/new">
                 <button class="btn btn-primary">Nouveau créneau</button>
             </a>
         </p>
@@ -19,12 +19,12 @@
                 <th class="col-md-4">Evénements</th>
                 <th class="col-md-3">Actions</th>
             </tr>
-            <tr ng-repeat="creneau in creneaux">
-                <td>{{creneau.libelle}}</td>
-                <td>{{creneau.dureeMinutes}}</td>
-                <td>{{creneau.event.name}}</td>
-                <td><a href="#/admin/creneau/edit/{{creneau.id}}"><i class="icon-pencil"></i></a>
-                    <a ng-click="deleteCreneau(creneau)"><i class="icon-remove"></i></a></td>
+            <tr ng-repeat="format in creneaux">
+                <td>{{format.libelle}}</td>
+                <td>{{format.dureeMinutes}}</td>
+                <td>{{format.event.name}}</td>
+                <td><a href="#/admin/format/edit/{{format.id}}"><i class="icon-pencil"></i></a>
+                    <a ng-click="deleteCreneau(format)"><i class="icon-remove"></i></a></td>
             </tr>
             </tbody>
         </table>
