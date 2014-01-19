@@ -12,7 +12,7 @@ import java.util.List;
 
 @SuppressWarnings("serial")
 @Entity
-public class Format extends Model {
+public class TalkFormat extends Model {
 
     @Id
     private Long id;
@@ -84,9 +84,9 @@ public class Format extends Model {
     }
     
     
-    public static Finder<Long, Format> find = new Finder<Long, Format>(Long.class, Format.class);
+    public static Finder<Long, TalkFormat> find = new Finder<Long, TalkFormat>(Long.class, TalkFormat.class);
 
-    public static Format findByLibelle(String libelle) {
+    public static TalkFormat findByLibelle(String libelle) {
         return find.query().where().eq("libelle", libelle).findUnique();
     }
 

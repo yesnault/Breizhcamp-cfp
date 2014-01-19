@@ -5,7 +5,7 @@ import static play.data.Form.form;
 
 import java.util.ArrayList;
 
-import models.Format;
+import models.TalkFormat;
 import models.Proposal;
 import models.User;
 import models.utils.TransformValidationErrors;
@@ -18,7 +18,7 @@ import securesocial.core.java.SecureSocial;
 public class CreneauRestController extends BaseController {
 
     public static Result get(Long idCreneau) {
-        Format format = Format.find.byId(idCreneau);
+        TalkFormat format = TalkFormat.find.byId(idCreneau);
         if (format == null) {
             return noContent();
         }
@@ -26,7 +26,7 @@ public class CreneauRestController extends BaseController {
     }
 
     public static Result all() {
-        return ok(toJson(Format.find.all()));
+        return ok(toJson(TalkFormat.find.all()));
     }
 
     public static Result save() {
@@ -37,25 +37,25 @@ public class CreneauRestController extends BaseController {
             return forbidden();
         }
 
-        Form<Format> creneauForm = form(Format.class).bindFromRequest();
+        Form<TalkFormat> creneauForm = form(TalkFormat.class).bindFromRequest();
 
         if (creneauForm.hasErrors()) {
             return badRequest(toJson(TransformValidationErrors.transform(creneauForm.errors())));
         }
 
-        Format formFormat = creneauForm.get();
+        TalkFormat formFormat = creneauForm.get();
 
         if (formFormat.getId() == null) {
             // Nouveau créneau
-            if (Format.findByLibelle(formFormat.getLibelle()) != null) {
+            if (TalkFormat.findByLibelle(formFormat.getLibelle()) != null) {
                 return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.creneau.already.exist"))));
             }
             formFormat.save();
         } else {
             // Mise à jour d'un créneau
-            Format dbFormat = Format.find.byId(formFormat.getId());
+            TalkFormat dbFormat = TalkFormat.find.byId(formFormat.getId());
             if (!formFormat.getLibelle().equals(dbFormat.getLibelle())
-                    && Format.findByLibelle(formFormat.getLibelle()) != null) {
+                    && TalkFormat.findByLibelle(formFormat.getLibelle()) != null) {
                 return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.creneau.already.exist"))));
             }
             dbFormat.setLibelle(formFormat.getLibelle());
@@ -77,7 +77,7 @@ public class CreneauRestController extends BaseController {
             return forbidden();
         }
 
-        Format format = Format.find.byId(idCreneau);
+        TalkFormat format = TalkFormat.find.byId(idCreneau);
         if (format != null) {
             for (Proposal proposal : new ArrayList<Proposal>(format.getProposals())) {
                 format.getProposals().remove(proposal);

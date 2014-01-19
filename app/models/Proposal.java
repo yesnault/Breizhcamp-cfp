@@ -104,7 +104,7 @@ public class Proposal extends Model {
     }
     @ManyToOne
     @Constraints.Required
-    public Format format;
+    public TalkFormat format;
 
     public static Finder<Long, Proposal> find = new Finder<Long, Proposal>(Long.class, Proposal.class);
 
