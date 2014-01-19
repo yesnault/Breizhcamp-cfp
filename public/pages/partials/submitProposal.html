@@ -55,9 +55,9 @@
 
 
                     <div class="form-group {{{true:'error', false:''}[errors.format != undefined]}}">
-                        <label class="control-label" for="format">Creneau</label>
+                        <label class="control-label" for="format">Format</label>
                         <div class="controls">
-                            <select id="format" name="format" ng-change="changeFormat(proposal.format.id, proposal, creneaux)" ng-model="proposal.format.id" ng-options="format.id as format.libelle + ' (' + format.dureeMinutes + 'min)' for format in creneaux"></select>
+                            <select id="format" name="format" ng-change="changeFormat(proposal.format.id, proposal, formats)" ng-model="proposal.format.id" ng-options="format.id as format.libelle + ' (' + format.dureeMinutes + 'min)' for format in formats"></select>
                             <p class="help-inline" ng-repeat="error in errors.format">{{error}}</p>
                             <p class="help-inline">
                                 <span class="label" title="{{proposal.format.description}}">{{proposal.format.libelle + ' (' + proposal.format.dureeMinutes + 'min)'}}</span>
