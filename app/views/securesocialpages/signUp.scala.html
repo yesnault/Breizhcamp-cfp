@@ -1,59 +1,73 @@
-@(token: String)(implicit request: play.api.mvc.RequestHeader)
+@(startForm:play.api.data.Form[securesocial.controllers.Registration.RegistrationInfo], token: String)(implicit request: play.api.mvc.RequestHeader)
 
 @import helper._
 
-@views.html.securesocialpages.main( "Enregistrement - CFP BreizhC@mp" ) {
+@views.html.securesocialpages.main( "Enregistrement" ) {
 <div class="row">
-
     <div class="page-header">
-        <h1>Création d'un compte local</h1>
+        <h1>Création d'un compte local (2/2)</h1>
     </div>
+</div>
 
-    <div class="well">
-
+<div class="row">
+    <div class="col-md-5 col-md-offset-1">
         @request.flash.get("error").map { msg =>
             <div class="alert alert-error">
                 @Messages(msg)
             </div>
         }
 
-        <form action="/signup/@token" 
-              class="form-horizontal" autocomplete="off" method="POST">
+        <form action="/signup/@token" class="form-horizontal" autocomplete="off" method="post">
             <fieldset>
-                <div class="control-group  " id="firstName_field">
-                    <label class="control-label" for="firstName">Prénom</label>
-                    <div class="controls">
-                        <input type="text" id="firstName" name="firstName" value="" class="input-xlarge" required>
-                        <span class="help-block">Champ obligatoire</span>
+                <!-- First name -->
+                <div class="form-group">
+                    <label for="firstName" class="col-sm-4 control-label">Prénom</label>
+                    <div class="col-sm-8">
+                        <input type="text" id="firstName" name="firstName" placeholder="prénom" value='@startForm("firstName").value' class="form-control" required>
+                        <p class="help-block">Champ obligatoire</p>
+                        @if(startForm.error("firstName")){<p class="help-block form-error">@Messages(startForm.error("firstName").get.message)</p>}
                     </div>
                 </div>
-                <div class="control-group  " id="lastName_field">
-                    <label class="control-label" for="lastName">Nom</label>
-                    <div class="controls">
-                        <input type="text" id="lastName" name="lastName" value="" class="input-xlarge" required>
-                        <span class="help-block">Champ obligatoire</span>
+
+                <!-- Last name -->
+                <div class="form-group">
+                    <label for="lastName" class="col-sm-4 control-label">Nom</label>
+                    <div class="col-sm-8">
+                        <input type="text" id="lastName" name="lastName" placeholder="nom" value='@startForm("lastName").value' class="form-control" required>
+                        <p class="help-block">Champ obligatoire</p>
+                        @if(startForm.error("lastName")){<p class="help-block form-error">@Messages(startForm.error("lastName").get.message)</p>}
                     </div>
                 </div>
-                <div class="control-group  " id="password_password1_field">
-                    <label class="control-label" for="password_password1">Mot de passe</label>
-                    <div class="controls">
-                        <input type="password" id="password_password1" name="password.password1" value="" class="input-xlarge" required pattern=".{8,30}">
-                        <span class="help-block">Champ obligatoire - 8+ caractères</span>
+
+                <!-- Password -->
+                <div class="form-group">
+                    <label for="password.password1" class="col-sm-4 control-label">Mot de passe</label>
+                    <div class="col-sm-8">
+                        <input type="password" id="password.password1" name="password.password1" class="form-control" required pattern=".{8,}">
+                        <p class="help-block">Champ obligatoire - 8 caractères minimum</p>
+                        @if(startForm.error("password_password1_field")){<p class="help-block form-error">@Messages(startForm.error("password_password1_field").get.message)</p>}
                     </div>
                 </div>
-                <div class="control-group  " id="password_password2_field">
-                    <label class="control-label" for="password_password2">Confirmation du mot de passe</label>
-                    <div class="controls">
-                        <input type="password" id="password_password2" name="password.password2" value="" class="input-xlarge" required pattern=".{8,30}">
-                        <span class="help-block">Champ obligatoire - 8+ caractères</span>
+
+                <!-- Password (confirmation) -->
+                <div class="form-group">
+                    <label for="password.password2" class="col-sm-4 control-label">Mot de passe</label>
+                    <div class="col-sm-8">
+                        <input type="password" id="password.password2" name="password.password2" class="form-control" required pattern=".{8,}">
+                        <p class="help-block">Champ obligatoire - 8 caractères minimum</p>
+                        @if(startForm.error("password_password2_field")){<p class="help-block form-error">@Messages(startForm.error("password_password2_field").get.message)</p>}
                     </div>
                 </div>
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">Créer le compte</button>
-                    <a class="btn" href="/#/login">Annuler</a>
+
+                <!-- Action buttons -->
+                <div class="form-group">
+                    <div class="col-sm-12 col-sm-offset-1">
+                        <button type="submit" class="btn btn-primary">Créer le compte</button>
+                        <a class="btn" href="/#/login">Annuler</a>
+                    </div>
                 </div>
             </fieldset>
-        </form>    
+        </form>
     </div>
 </div>
 }

@@ -1,14 +1,14 @@
-package controllers.securesocial;
+package controllers
 
+import securesocial.controllers.PasswordChange.ChangeInfo
+import securesocial.controllers.Registration.RegistrationInfo
+import securesocial.controllers.TemplatesPlugin
+import securesocial.core.{Identity, IdentityProvider, SecuredRequest}
 import play.api.mvc.{RequestHeader, Request}
 import play.api.templates.Html
 import play.api.templates.Txt
 import play.api.{Logger, Application}
-import securesocial.core.{Identity, SecuredRequest, IdentityProvider}
 import play.api.data.Form
-import securesocial.controllers.Registration.RegistrationInfo
-import securesocial.controllers.PasswordChange.ChangeInfo
-import securesocial.controllers.TemplatesPlugin
 
 class CfpTemplatesPlugin(application: Application) extends TemplatesPlugin
 {
@@ -40,7 +40,7 @@ class CfpTemplatesPlugin(application: Application) extends TemplatesPlugin
    */
   override def getSignUpPage[A](implicit request: Request[A], form: Form[RegistrationInfo], token: String): Html = {
     Logger.info("[securesocial - cfp] getSignUpPage")
-    views.html.securesocialpages.signUp(token)
+    views.html.securesocialpages.signUp(form, token)
   }
 
   /**
