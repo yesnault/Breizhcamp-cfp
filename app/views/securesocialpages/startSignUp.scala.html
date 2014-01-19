@@ -23,7 +23,7 @@
                 <div class="form-group">
                     <div class="col-sm-offset-1 col-sm-10">
                         <i class="form-icon icon-envelope"></i>
-                        <input type="text" id="email" name="email" value='@startForm("email").value' placeholder="Adresse e-mail" required class="form-text">
+                        <input type="email" id="email" name="email" value='@startForm("email").value' placeholder="Adresse e-mail" required class="form-text">
                         @if(startForm.error("email")){<p class="help-block form-error">@Messages(startForm.error("email").get.message)</p>}
                     </div>
                 </div>
