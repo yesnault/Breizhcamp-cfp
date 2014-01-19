@@ -128,7 +128,7 @@
                                     <br/>
 
                                     <p class="help-inline">
-                                        <span class="label">{{proposalModal.dureePreferee.libelle + ' (' + proposalModal.dureePreferee.dureeMinutes + 'min)'}}</span>
+                                        <span class="label">{{proposalModal.format.libelle + ' (' + proposalModal.format.dureeMinutes + 'min)'}}</span>
                                     </p>
 
                                     <div ng-show="userService.isAdmin() && (vote.status == 'OPEN' || vote.status == 'NOT_BEGIN')">
@@ -170,7 +170,7 @@
                     </div>
                 </td>
                 <td>
-                    <span class="label label-info" >{{proposal.dureePreferee.libelle + ' (' + proposal.dureePreferee.dureeMinutes + 'min)'}}</span>
+                    <span class="label label-info" >{{proposal.format.libelle + ' (' + proposal.format.dureeMinutes + 'min)'}}</span>
                 </td>
                 <td>
                     <div ng-show="proposal.statusProposal != undefined" ng-switch on="proposal.statusProposal">

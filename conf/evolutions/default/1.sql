@@ -92,7 +92,7 @@ create table proposal (
   draft                     boolean,
   event_id                  bigint,
   status_proposal               varchar(1),
-  duree_preferee_id         bigint,
+  format_id         bigint,
   duree_approuve_id         bigint,
   constraint ck_proposal_status_proposal check (status_proposal in ('A','W','R')),
   constraint uq_proposal_title unique (title),
@@ -194,8 +194,8 @@ alter table proposal add constraint fk_proposal_speaker_9 foreign key (speaker_i
 create index ix_proposal_speaker_9 on proposal (speaker_id);
 alter table proposal add constraint fk_proposal_event_10 foreign key (event_id) references event (id) on delete restrict on update restrict;
 create index ix_proposal_event_10 on proposal (event_id);
-alter table proposal add constraint fk_proposal_dureePreferee_11 foreign key (duree_preferee_id) references creneau (id) on delete restrict on update restrict;
-create index ix_proposal_dureePreferee_11 on proposal (duree_preferee_id);
+alter table proposal add constraint fk_proposal_format_11 foreign key (format_id) references creneau (id) on delete restrict on update restrict;
+create index ix_proposal_format_11 on proposal (format_id);
 alter table user add constraint fk_user_credentials_13 foreign key (credentials_id) references credentials (id) on delete restrict on update restrict;
 create index ix_user_credentials_13 on user (credentials_id);
 alter table vote add constraint fk_vote_user_14 foreign key (user_id) references user (id) on delete restrict on update restrict;

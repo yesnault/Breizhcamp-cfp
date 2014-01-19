@@ -219,12 +219,12 @@ CREATE TABLE `proposal` (
   `description` varchar(2000) DEFAULT NULL,
   `speaker_id` bigint(20) DEFAULT NULL,
   `status_proposal` varchar(1) DEFAULT NULL,
-  `duree_preferee_id` bigint(20) DEFAULT NULL,
+  `format_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uq_proposal_title` (`title`),
   KEY `ix_proposal_speaker_8` (`speaker_id`),
-  KEY `ix_proposal_dureePreferee_9` (`duree_preferee_id`),
-  CONSTRAINT `fk_proposal_dureePreferee_9` FOREIGN KEY (`duree_preferee_id`) REFERENCES `creneau` (`id`),
+  KEY `ix_proposal_format_9` (`format_id`),
+  CONSTRAINT `fk_proposal_format_9` FOREIGN KEY (`format_id`) REFERENCES `creneau` (`id`),
   CONSTRAINT `fk_proposal_speaker_8` FOREIGN KEY (`speaker_id`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;

@@ -104,13 +104,13 @@ public class Proposal extends Model {
     }
     @ManyToOne
     @Constraints.Required
-    public Format dureePreferee;
+    public Format format;
 
     public static Finder<Long, Proposal> find = new Finder<Long, Proposal>(Long.class, Proposal.class);
 
     public static List<Proposal> findAllForDisplay() {
-        return find.select("id, title,  dureePreferee, dureeApprouve, statusProposal, speaker.id, speaker.fullname, speaker.avatar")
-                .fetch("speaker").fetch("dureePreferee").fetch("dureeApprouve").findList();
+        return find.select("id, title,  format, dureeApprouve, statusProposal, speaker.id, speaker.fullname, speaker.avatar")
+                .fetch("speaker").fetch("format").fetch("dureeApprouve").findList();
     }
 
     public static int findNbProposals(boolean draft) {

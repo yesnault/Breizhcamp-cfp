@@ -158,14 +158,14 @@ public class ProposalRestController extends BaseController {
                 proposalJson.put("title", proposal.title);
 
 
-                if (proposal.dureePreferee != null) {
-                    ObjectNode dureePrefereeJson = Json.newObject();
-                    dureePrefereeJson.put("id", proposal.dureePreferee.getId());
-                    dureePrefereeJson.put("dureeMinutes", proposal.dureePreferee.getDureeMinutes());
-                    dureePrefereeJson.put("libelle", proposal.dureePreferee.getLibelle());
-                    proposalJson.put("dureePreferee", dureePrefereeJson);
+                if (proposal.format != null) {
+                    ObjectNode formatJson = Json.newObject();
+                    formatJson.put("id", proposal.format.getId());
+                    formatJson.put("dureeMinutes", proposal.format.getDureeMinutes());
+                    formatJson.put("libelle", proposal.format.getLibelle());
+                    proposalJson.put("format", formatJson);
                 } else {
-                    proposalJson.putNull("dureePreferee");
+                    proposalJson.putNull("format");
                 }
 
                 if (proposal.statusProposal != null) {
@@ -256,7 +256,7 @@ public class ProposalRestController extends BaseController {
             }
             dbProposal.title = formProposal.title;
             dbProposal.description = formProposal.description;
-            dbProposal.dureePreferee = formProposal.dureePreferee;
+            dbProposal.format = formProposal.format;
             dbProposal.indicationsOrganisateurs = formProposal.indicationsOrganisateurs;
             dbProposal.draft = true;
             dbProposal.save();
@@ -667,8 +667,8 @@ public class ProposalRestController extends BaseController {
                 proposalCsv.moyenne = Vote.calculMoyenne(proposal);
             }
 
-            if (proposal.dureePreferee != null) {
-                proposalCsv.formatPrefere = proposal.dureePreferee.getLibelle();
+            if (proposal.format != null) {
+                proposalCsv.formatPrefere = proposal.format.getLibelle();
             }
 
 

@@ -177,21 +177,21 @@ function NewProposalController($scope, $log, $location, ProposalService, Creneau
         });
     };
 
-    $scope.changeDureePreferee = changeDureePreferee;
+    $scope.changeFormat = changeFormat;
 }
 
 
-function changeDureePreferee(newId, proposal, creneaux) {
+function changeFormat(newId, proposal, creneaux) {
 
     var found = false;
     angular.forEach(creneaux, function(creneau) {
         if (creneau.id === newId) {
-            proposal.dureePreferee  = creneau;
+            proposal.format  = creneau;
             found = true;
         }
     });
     if (!found) {
-        proposal.dureePreferee = undefined;
+        proposal.format = undefined;
     }
 }
 
@@ -284,7 +284,7 @@ function EditProposalController($scope, $log, $location, $routeParams, ProposalS
         });
     };
 
-    $scope.changeDureePreferee = changeDureePreferee;
+    $scope.changeFormat = changeFormat;
 }
 
 
