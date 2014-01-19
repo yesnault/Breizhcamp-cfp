@@ -1,89 +1,140 @@
 <div class="row">
-    <div class="col-md-3">&nbsp;</div>
     <div class="col-md-12">
-        <div class="well">
-            <div ng-switch on="isNew" >
+            <div ng-switch on="isNew">
                 <h3 ng-switch-when="true">Nouveau proposal</h3>
+
                 <h3 ng-switch-when="false">Edition du proposal '{{proposal.title}}'</h3>
             </div>
             <p ng-show="!user.isInfoValid">
-                Les informations (Email,Description,Nom) de votre profil ne sont pas complètes.Veuillez les renseigner avant de pouvoir proposer un talk.<br/>
+                Les informations (Email,Description,Nom) de votre profil ne sont pas complètes.Veuillez les renseigner
+                avant de pouvoir proposer un talk.<br/>
                 <a href="#/settings/account" class="btn btn-primary">Editer votre profil</a>
             </p>
+    </div>
+    <div class="col-md-8">
+        <div class="well">
+
             <div ng-show="user.isInfoValid">
-            <form ng-submit="saveProposal()">
-                <fieldset>
-                    <div class="form-group {{{true:'error', false:''}[errors.title != undefined]}}">
-                        <label class="control-label" for="title"></label>
-                        <div class="controls">
-                            <input type="text" id="title" name="title" value="" placeholder="Titre" class="input-xxlarge" ng-model="proposal.title" maxlength="50">
-                            <p class="help-inline">Longueur maximum: 50, Obligatoire</p>
-                            <p class="help-inline" ng-repeat="error in errors.title">{{error}}</p>
-                            <p class="help-inline">{{proposal.title.length}}/50</p>
+                <form ng-submit="saveProposal()">
+                    <fieldset>
+                        <div class="form-group {{{true:'error', false:''}[errors.title != undefined]}}">
+                            <label class="control-label" for="title"></label>
+
+                            <div class="controls">
+                                <input type="text" id="title" name="title" value="" placeholder="Titre"
+                                       class="input-xxlarge" ng-model="proposal.title" maxlength="50">
+
+                                <p class="help-inline">Longueur maximum: 50, Obligatoire</p>
+
+                                <p class="help-inline" ng-repeat="error in errors.title">{{error}}</p>
+
+                                <p class="help-inline">{{proposal.title.length}}/50</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group {{{true:'error', false:''}[errors.description != undefined]}}">
-                        <label class="control-label" for="wmd-input"></label>
-                        <div class="controls">
-                            <div id="wmd-button-bar"></div>
-                            <textarea id="wmd-input"  name="description" placeholder="Description" class="wmd-input" rows="10" ng-model="proposal.description" maxlength="2000" required></textarea>
-                            <p class="help-inline">Longueur maximum: 2000, Obligatoire</p>
-                            <p class="help-inline" ng-repeat="error in errors.description">{{error}}</p>
-                            <p class="help-inline">{{proposal.description.length}}/2000</p>
-                            <div id="wmd-preview" class="wmd-preview" pagedown-init="proposal.description"></div>
+                        <div class="form-group {{{true:'error', false:''}[errors.description != undefined]}}">
+                            <label class="control-label" for="wmd-input"></label>
+
+                            <div class="controls">
+                                <div id="wmd-button-bar"></div>
+                                <textarea id="wmd-input" name="description" placeholder="Description" class="wmd-input"
+                                          rows="10" ng-model="proposal.description" maxlength="2000"
+                                          required></textarea>
+
+                                <p class="help-inline">Longueur maximum: 2000, Obligatoire</p>
+
+                                <p class="help-inline" ng-repeat="error in errors.description">{{error}}</p>
+
+                                <p class="help-inline">{{proposal.description.length}}/2000</p>
+
+                                <div id="wmd-preview" class="wmd-preview" pagedown-init="proposal.description"></div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group {{{true:'error', false:''}[errors.indicationsOrganisateurs != undefined]}}">
-                        <label class="control-label" for="wmd-input-indications"></label>
-                        <div class="controls">
-                            <div id="wmd-button-bar-indications"></div>
-                            <textarea id="wmd-input-indications"  name="indications" placeholder="Indications pour les organisateurs" class="wmd-input" rows="10" ng-model="proposal.indicationsOrganisateurs" maxlength="1000"></textarea>
-                            <p class="help-inline">Longueur maximum: 1000</p>
-                            <p class="help-inline" ng-repeat="error in errors.indications">{{error}}</p>
-                            <p class="help-inline">{{proposal.indicationsOrganisateurs.length}}/1000</p>
-                            <div id="wmd-preview-indications" class="wmd-preview" pagedown-init="proposal.indicationsOrganisateurs"></div>
+                        <div class="form-group {{{true:'error', false:''}[errors.indicationsOrganisateurs != undefined]}}">
+                            <label class="control-label" for="wmd-input-indications"></label>
+
+                            <div class="controls">
+                                <div id="wmd-button-bar-indications"></div>
+                                <textarea id="wmd-input-indications" name="indications"
+                                          placeholder="Indications pour les organisateurs" class="wmd-input" rows="10"
+                                          ng-model="proposal.indicationsOrganisateurs" maxlength="1000"></textarea>
+
+                                <p class="help-inline">Longueur maximum: 1000</p>
+
+                                <p class="help-inline" ng-repeat="error in errors.indications">{{error}}</p>
+
+                                <p class="help-inline">{{proposal.indicationsOrganisateurs.length}}/1000</p>
+
+                                <div id="wmd-preview-indications" class="wmd-preview"
+                                     pagedown-init="proposal.indicationsOrganisateurs"></div>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <div class="form-group {{{true:'error', false:''}[errors.tags != undefined]}}">
-                        <label class="control-label" for="tags">Tags :</label>
-                        <div class="controls">
-                            <input type="text" id="tags" name="tags" ng-model="proposal.tagsname"  placeholder="Tags séparés par une virgule" class="input-xxlarge" >
-                            <p class="help-inline" ng-repeat="error in errors.tags">{{error}}</p>
+
+                        <div class="form-group {{{true:'error', false:''}[errors.tags != undefined]}}">
+                            <label class="control-label" for="tags">Tags :</label>
+
+                            <div class="controls">
+                                <input type="text" id="tags" name="tags" ng-model="proposal.tagsname"
+                                       placeholder="Tags séparés par une virgule" class="input-xxlarge">
+
+                                <p class="help-inline" ng-repeat="error in errors.tags">{{error}}</p>
+                            </div>
                         </div>
-                    </div>
 
 
-                    <div class="form-group {{{true:'error', false:''}[errors.format != undefined]}}">
-                        <label class="control-label" for="format">Format</label>
-                        <div class="controls">
-                            <select id="format" name="format" ng-change="changeFormat(proposal.format.id, proposal, formats)" ng-model="proposal.format.id" ng-options="format.id as format.libelle + ' (' + format.dureeMinutes + 'min)' for format in formats"></select>
-                            <p class="help-inline" ng-repeat="error in errors.format">{{error}}</p>
-                            <p class="help-inline">
-                                <span class="label" title="{{proposal.format.description}}">{{proposal.format.libelle + ' (' + proposal.format.dureeMinutes + 'min)'}}</span>
-                            </p>
+                        <div class="form-group {{{true:'error', false:''}[errors.format != undefined]}}">
+                            <label class="control-label" for="format">Format</label>
+
+                            <div class="controls">
+                                <select id="format" name="format"
+                                        ng-change="changeFormat(proposal.format.id, proposal, formats)"
+                                        ng-model="proposal.format.id"
+                                        ng-options="format.id as format.libelle + ' (' + format.dureeMinutes + 'min)' for format in formats"></select>
+
+                                <p class="help-inline" ng-repeat="error in errors.format">{{error}}</p>
+
+                                <p class="help-inline">
+                                    <span class="label" title="{{proposal.format.description}}">{{proposal.format.libelle + ' (' + proposal.format.dureeMinutes + 'min)'}}</span>
+                                </p>
+                            </div>
                         </div>
-                    </div>
 
 
-                    <div class="form-group">
-                        <label class="control-label" for="coSpeakerSelected">Co-speakers</label>
-                        <div class="controls">
-                            <input type="text" id="coSpeakerSelected" ng-model="coSpeakerSelected" ng-change="addSelectedCoSpeaker()" typeahead="coSpeaker as coSpeaker.fullname for coSpeaker in coSpeakers | filter:$viewValue">
-                            <p class="help-inline" ng-repeat="coSpeaker in proposal.coSpeakers">
-                                <span class="label label-info">{{coSpeaker.fullname}} <a class="badge badge-important" ng-click="removeCoSpeaker(coSpeaker)">x</a></span>
-                            </p>
+                        <div class="form-group">
+                            <label class="control-label" for="coSpeakerSelected">Co-speakers</label>
+
+                            <div class="controls">
+                                <input type="text" id="coSpeakerSelected" ng-model="coSpeakerSelected"
+                                       ng-change="addSelectedCoSpeaker()"
+                                       typeahead="coSpeaker as coSpeaker.fullname for coSpeaker in coSpeakers | filter:$viewValue">
+
+                                <p class="help-inline" ng-repeat="coSpeaker in proposal.coSpeakers">
+                                    <span class="label label-info">{{coSpeaker.fullname}} <a
+                                            class="badge badge-important"
+                                            ng-click="removeCoSpeaker(coSpeaker)">x</a></span>
+                                </p>
+                            </div>
                         </div>
-                    </div>
 
-                    <span class="badge badge-important" ng-repeat="error in errors['']">{{error}}</span>
-                </fieldset>
-                <div class="form-actions">
-                    <input type="submit" class="btn btn-primary" value="Valider"/>
-                    <input type="button" onClick="document.location.href = '#/manageproposal'" class="btn" value="Annuler">
-                </div>
-            </form>
+                        <span class="badge badge-important" ng-repeat="error in errors['']">{{error}}</span>
+                    </fieldset>
+                    <div class="form-actions">
+                        <input type="submit" class="btn btn-primary" value="Valider"/>
+                        <input type="button" onClick="document.location.href = '#/manageproposal'" class="btn"
+                               value="Annuler">
+                    </div>
+                </form>
             </div>
+
         </div>
+
+    </div>
+    <div class="col-md-4">
+        <h3>Aide et conseils</h3>
+        <p><label>Description de la présentation :</label><br/> résumer de la présentation</p>
+        <p><label>Indication pour les organisateurs :</label><br/> indications supplémentaires pour les organisateurs</p>
+        <p><label>Format : </label> <br/>
+
+            <span ng-repeat="format in formats">{{format.libelle}} : {{format.description}}<br/></span>
+        </p>
     </div>
 </div>
