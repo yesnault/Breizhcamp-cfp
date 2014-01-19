@@ -2,24 +2,33 @@ package models;
 
 
 public enum LinkType {
-    TWITTER("icon-twitter", "https://twitter.com/{userId}"), LINKEDIN("icon-linkedin", "http://fr.linkedin.com/in/{userId}"), GITHUB("icon-github"), GOOGLE_PLUS("icon-google-plus"),
-    SLIDESHARE("icon-slideshare"), BLOG("icon-rss"), COMPAGNY("icon-suitcase"), OTHER("icon-bookmark");
+    TWITTER("Twitter","icon-twitter", "https://twitter.com/"),
+    LINKEDIN("Linked-in","icon-linkedin", "http://fr.linkedin.com/in/"),
+    GITHUB("Github","icon-github"), GOOGLE_PLUS("Google Plus","icon-google-plus"),
+    SLIDESHARE("SlideShare","icon-slideshare"), BLOG("Blog","icon-rss"),
+    COMPAGNY("Société","icon-suitcase"), OTHER("Autre","icon-bookmark");
 
+    private String label;
     private String icon;
-
     private String url;
 
-    LinkType(String icon) {
+    LinkType(String label,String icon) {
         this.icon = icon;
+        this.label = label;
     }
 
-    LinkType(String icon, String url) {
+    LinkType(String label,String icon, String url) {
         this.icon = icon;
         this.url = url;
+        this.label = label;
     }
 
     public String getIcon() {
         return icon;
+    }
+
+    public String getLabel() {
+        return label;
     }
 
     public String getUrl() {

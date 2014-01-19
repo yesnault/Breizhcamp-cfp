@@ -30,7 +30,9 @@ GET     /settings/user/:id          controllers.account.settings.Account.getUser
 POST    /settings/account           controllers.account.settings.Account.save()
 POST    /settings/mac               controllers.account.settings.Account.changeMac()
 POST    /settings/notifs            controllers.account.settings.Notifs.save()
-GET     /settings/link/remove/:id   controllers.account.settings.Account.deleteLink(id:Long)
+GET     /settings/link/remove/:id   controllers.account.settings.LinkController.deleteLink(id:Long)
+POST    /settings/links             controllers.account.settings.LinkController.save()
+GET     /settings/link/types        controllers.account.settings.LinkController.getTypes()
 POST    /settings/email             controllers.account.settings.Account.saveEmail()
 
 POST    /admin/submitusers          controllers.Admin.submitUsers()

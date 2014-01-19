@@ -1,25 +1,22 @@
 package controllers.account.settings;
 
-import static play.libs.Json.toJson;
-import static play.data.Form.form;
-
-import java.util.*;
-
-import controllers.BaseController;
-import models.*;
-import models.Link;
-import models.utils.TransformValidationErrors;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-
+import controllers.BaseController;
+import models.*;
+import models.utils.TransformValidationErrors;
 import play.Logger;
 import play.data.Form;
 import play.i18n.Messages;
 import play.mvc.Result;
 import securesocial.core.java.SecureSocial;
 
-@SecureSocial.SecuredAction(ajaxCall=true)
+import java.util.*;
+
+import static play.data.Form.form;
+import static play.libs.Json.toJson;
+
+@SecureSocial.SecuredAction(ajaxCall = true)
 public class Account extends BaseController {
 
     // Utilisé par le json.
@@ -30,15 +27,8 @@ public class Account extends BaseController {
         }
         return ok(toJson(user));
     }
-    
-    public static Result deleteLink(Long idLink) {
-    	
-    	Link link = Link.find.byId(idLink);
-    	link.delete();
-    	
-    	return ok();
-    }
-    
+
+
     public static Result save() {
         User user = getLoggedUser();
         Form<AccountForm> accountForm;
@@ -51,7 +41,7 @@ public class Account extends BaseController {
 
         // Parcour des links du user;
         ArrayNode liens = (ArrayNode) userJson.get("links");
-        for (JsonNode lien : liens ) {
+        for (JsonNode lien : liens) {
             if (lien.get("id") != null) {
                 Form<Link> oneLienForm = form(Link.class).bind(lien);
                 if (oneLienForm.hasErrors()) {
@@ -76,25 +66,25 @@ public class Account extends BaseController {
             return badRequest(toJson(TransformValidationErrors.transform(newLink.errors())));
         }
         if (newLink != null && newLink.hasErrors()) {
-        	newLink.errors().clear();
+            newLink.errors().clear();
         }
-        
+
         if (accountForm.hasErrors()) {
             return badRequest(toJson(TransformValidationErrors.transform(accountForm.errors())));
         }
-        
+
         for (Link oneLink : user.getLinks()) {
-        	Form<Link> lienForm = liensForms.remove(0);
-        	oneLink.label = lienForm.get().label;
-        	oneLink.url = lienForm.get().url;
+            Form<Link> lienForm = liensForms.remove(0);
+            oneLink.label = lienForm.get().label;
+            oneLink.url = lienForm.get().url;
         }
-        
+
         user.description = accountForm.get().description;
         user.avatar = accountForm.get().avatar;
-        
+
         if (newLinkExists(newLink, newLabel, newUrl)) {
-        	Link link = newLink.get();
-        	user.getLinks().add(link);
+            Link link = newLink.get();
+            user.getLinks().add(link);
         }
 
         user.save();
@@ -147,12 +137,12 @@ public class Account extends BaseController {
                 && ((newLabel != null && newLabel.length() > 0)
                 || (newUrl != null && newUrl.length() > 0));
     }
-    
+
     public static Result saveEmail() {
         JsonNode node = request().body().asJson();
         String email = node.get("email").asText();
 
-        if(email == null || email.equals("") ){
+        if (email == null || email.equals("")) {
             Logger.debug("error.email.required");
             Map<String, List<String>> errors = new HashMap<String, List<String>>();
             errors.put("email", Collections.singletonList(Messages.get("error.email.already.exist")));
@@ -161,7 +151,7 @@ public class Account extends BaseController {
 
         User user = getLoggedUser();
         User existUser = User.findByEmail(email);
-        if(existUser != null && !existUser.equals(user)){
+        if (existUser != null && !existUser.equals(user)) {
             Logger.debug("error.email.already.exist");
             Map<String, List<String>> errors = new HashMap<String, List<String>>();
             errors.put("email", Collections.singletonList(Messages.get("error.email.already.exist")));
@@ -169,10 +159,9 @@ public class Account extends BaseController {
         }
 
 
-
         user.email = email;
         user.save();
         return noContent();
     }
-    
+
 }

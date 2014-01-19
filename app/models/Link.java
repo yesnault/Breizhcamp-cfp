@@ -33,8 +33,13 @@ public class Link extends Model {
     @JsonIgnore
     public LinkType linkType = LinkType.OTHER;
 
-    @JsonProperty("icon")
+    @JsonProperty("type")
     public String getType() {
+        return linkType.name();
+    }
+
+    @JsonProperty("icon")
+    public String getIcon() {
         return linkType.getIcon();
     }
 

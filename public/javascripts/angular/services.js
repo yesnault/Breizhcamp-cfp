@@ -122,6 +122,10 @@ Services.factory('AccountService', function($resource) {
             //return $resource('/settings/user/:id').get({id:idUser});
             return $resource('/userLogged').get();
         }
+
+        this.getLinkType = function() {
+            return $resource('/settings/link/types').query();
+        }
     }
 
     return new AccountService($resource);
