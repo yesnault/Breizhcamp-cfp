@@ -109,8 +109,8 @@ public class Proposal extends Model {
     public static Finder<Long, Proposal> find = new Finder<Long, Proposal>(Long.class, Proposal.class);
 
     public static List<Proposal> findAllForDisplay() {
-        return find.select("id, title,  format, dureeApprouve, statusProposal, speaker.id, speaker.fullname, speaker.avatar")
-                .fetch("speaker").fetch("format").fetch("dureeApprouve").findList();
+        return find.select("id, title,  format, statusProposal, speaker.id, speaker.fullname, speaker.avatar")
+                .fetch("speaker").fetch("format").findList();
     }
 
     public static int findNbProposals(boolean draft) {
