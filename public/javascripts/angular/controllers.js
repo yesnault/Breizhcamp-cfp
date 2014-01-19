@@ -25,6 +25,8 @@ function RootController($scope, UserService, $log, $location) {
         } else {
             if (mustBeAdmin && !user.admin) {
                 $location.url("/");
+            } else if (!user.isInfoValid){
+                $location.url("/settings/account");
             }
         }
     };
@@ -715,12 +717,12 @@ function SettingsAccountController($scope, $log, AccountService, UserService, ht
     $scope.editor = new Markdown.Editor($scope.converter);
     $scope.editor.run();
     
-    $scope.removeLink = function(lien) {
-        if (confirm('\u00cates vous s\u00fbr de vouloir supprimer le lien ' + lien.label + '?')) {
-            $log.info("Suppression du lien " + lien.label + '(' + lien.id + ')');
+    $scope.removeLink = function(link) {
+        if (confirm('\u00cates vous s\u00fbr de vouloir supprimer le lien ' + link.label + '?')) {
+            $log.info("Suppression du link " + link.label + '(' + link.id + ')');
             http({
                 method: 'GET',
-                url: '/settings/lien/remove/' + lien.id
+                url: '/settings/link/remove/' + link.id
             }).success(function(data, status, headers, config) {
                 $scope.errors = undefined;
                 var idUser = UserService.getUserData().id;
@@ -732,11 +734,31 @@ function SettingsAccountController($scope, $log, AccountService, UserService, ht
         }
     };
 
+    $scope.saveLinks = function() {
+        var user = jQuery.extend(true, {}, $scope.user);
+        if ($scope.link !== undefined) {
+            user.links.push($scope.link);
+        }
+
+        http({
+            method: 'POST',
+            url: '/settings/account',
+            data: user
+        }).success(function(data, status, headers, config) {
+                $scope.errors = undefined;
+                var idUser = UserService.getUserData().id;
+                $scope.link = undefined;
+                $scope.user = AccountService.getUser(idUser);
+            }).error(function(data, status, headers, config) {
+                $scope.errors = data;
+                $log.info(status);
+            });
+
+    }
+
     $scope.saveSettings = function() {
         var user = jQuery.extend(true, {}, $scope.user);
-        if ($scope.lien !== undefined) {
-            user.liens.push($scope.lien);
-        }
+
         http({
             method: 'POST',
             url: '/settings/account',
@@ -744,7 +766,6 @@ function SettingsAccountController($scope, $log, AccountService, UserService, ht
         }).success(function(data, status, headers, config) {
             $scope.errors = undefined;
             var idUser = UserService.getUserData().id;
-            $scope.lien = undefined;
             $scope.user = AccountService.getUser(idUser);
         }).error(function(data, status, headers, config) {
             $scope.errors = data;
@@ -755,8 +776,8 @@ function SettingsAccountController($scope, $log, AccountService, UserService, ht
 
     $scope.appercu = function() {
         var user = jQuery.extend(true, {}, $scope.user);
-        if ($scope.lien !== undefined) {
-            user.liens.push($scope.lien);
+        if ($scope.link !== undefined) {
+            user.links.push($scope.link);
         }
         http({
             method: 'POST',
