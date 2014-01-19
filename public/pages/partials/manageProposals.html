@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="row-fluid">
             <div ng-show="user" class="col-md-2 breadcrumb">
-                <p><h4>{{user.fullname}}</h4></p>
+                <p><h4> <a href="/#/profil/{{user.id}}">{{user.fullname}}</a></h4></p>
                 <p>{{user.email}}</p>
                 <hr/>
                 <img ng-src="{{user.avatar}}?s=100">
