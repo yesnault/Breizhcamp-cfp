@@ -68,6 +68,15 @@ public class User extends Model {
     @JsonIgnore
     private List<Proposal> coSpeakedProposals;
 
+    @ManyToMany
+    @JsonIgnore
+    private List<Track> tracksReview;
+
+    @ManyToMany
+    @JsonIgnore
+    private List<Track> tracksAdvice;
+
+
     @JsonIgnore
     public String avatar;
     private final static String GRAVATAR_URL = "http://www.gravatar.com/avatar/";
