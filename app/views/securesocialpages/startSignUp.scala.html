@@ -1,44 +1,62 @@
 @(startForm:play.api.data.Form[String])(implicit request: play.api.mvc.RequestHeader)
 @import helper._
 
-@views.html.securesocialpages.main( "Enregistrement - CFP BreizhC@mp" ) {
+@views.html.securesocialpages.main( "Enregistrement" ) {
 <div class="row">
-
     <div class="page-header">
-        <h1>Création d'un compte local</h1>
+        <h1>Création d'un compte</h1>
     </div>
+</div>
 
-    <div class="well">
-
+<div class="row">
+    <div class="col-md-5">
         @request.flash.get("error").map { msg =>
-            <div class="alert alert-error">
-                @Messages(msg)
-            </div>
+        <div class="alert alert-error">
+            @Messages(msg)
+        </div>
         }
 
-        <form action="/signup" class="form-horizontal" autocomplete="off" method="post">
+        <p>Créer un compte local</p>
+
+        <form action="/signup" class="form-horizontal" autocomplete="off" method="POST">
             <fieldset>
-                <div class="control-group  " id="email_field">
-                    <label class="control-label" for="email">Email</label>
-                    <div class="controls">
-                        <input type="text" id="email" name="email" value="" class="input-xlarge" requires>
-                        <span class="help-block">Champ obligatoire</span>
+                <div class="form-group">
+                    <div class="col-sm-offset-1 col-sm-10">
+                        <i class="form-icon icon-envelope"></i>
+                        <input type="text" id="email" name="email" value='@startForm("email").value' placeholder="Adresse e-mail" required class="form-text">
+                        @if(startForm.error("email")){<p class="help-block form-error">@Messages(startForm.error("email").get.message)</p>}
                     </div>
                 </div>
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">Créer le compte</button>
-                    <a class="btn" href="/login">Annuler</a>
+                <div class="form-group">
+                    <div class="col-sm-offset-1 col-sm-10 form-submit">
+                        <a class="btn" href="/#/login">Annuler</a>
+                        <button type="submit" class="btn btn-primary">Créer le compte</button>
+                    </div>
                 </div>
             </fieldset>
         </form>
-
-        Vous pouvez également créer un compte en un clic avec
-        <ul class="social-stack pg-top-openid">
-            <li><a href="/authenticate/github" class="btn btn-inverse"><span class="icon-github-sign"></span> GitHub</a></li>
-            <li><a href="/authenticate/google" class="btn btn-inverse"><span class="icon-google-plus-sign"></span> Google</a></li>
-            <li><a href="/authenticate/twitter" class="btn btn-inverse"><span class="icon-twitter-sign"></span> Twitter</a></li>
-        </ul>
-
     </div>
+
+    <div class="col-md-2 form-separator">
+        <span>ou</span>
+    </div>
+
+    <div class="col-md-5">
+        <p>Vous pouvez également créer un compte en un clic</p>
+        <div class="col-md-7 col-md-offset-1 col-sm-6 col-sm-offset-3">
+            <p><a class="btn btn-block btn-primary" href="/authenticate/github" role="button">
+                <span class="icon-github-sign"></span> Inscription via GitHub
+            </a></p>
+
+            <p><a class="btn btn-block btn-primary" href="/authenticate/google" role="button">
+                <span class="icon-google-plus-sign"></span> Inscription via Google
+            </a></p>
+
+            <p><a class="btn btn-block btn-primary" href="/authenticate/twitter" role="button">
+                <span class="icon-twitter-sign"></span> Inscription via Twitter
+            </a></p>
+        </div>
+    </div>
+
 </div>
 }

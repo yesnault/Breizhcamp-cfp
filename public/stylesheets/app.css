@@ -55,6 +55,12 @@ a.navbar-brand { padding: 10px 15px; }
     color: #ffffff;
 }
 
+/* Error message on form field */
+.form-error {
+    color: #A94442;
+    font-weight: bold;
+}
+
 input[type="checkbox"] {
     margin: 0 5px;
 }

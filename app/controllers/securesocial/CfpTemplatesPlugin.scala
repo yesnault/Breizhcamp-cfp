@@ -10,7 +10,7 @@ import securesocial.controllers.Registration.RegistrationInfo
 import securesocial.controllers.PasswordChange.ChangeInfo
 import securesocial.controllers.TemplatesPlugin
 
-class CfpTeamplatesPlugin(application: Application) extends TemplatesPlugin 
+class CfpTemplatesPlugin(application: Application) extends TemplatesPlugin
 {
 
 
