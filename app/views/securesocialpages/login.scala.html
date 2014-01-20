@@ -33,16 +33,14 @@
             <fieldset>
                 <div class="form-group">
                     <div class="col-sm-offset-1 col-sm-10">
-                        <i class="form-icon icon-user"></i>
-                        <input type="text" id="username" name="username" placeholder="Nom d'utilisateur" required  class="form-text">
+                        <i class="form-icon fa fa-envelope"></i>
+                        <input type="email" id="username" name="username" placeholder="Adresse e-mail" required  class="form-text">
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-1 col-sm-10">
-                        <i class="form-icon icon-key"></i>
+                        <i class="form-icon fa fa-key"></i>
                         <input type="password" id="password" name="password" placeholder="Mot de passe" required class="form-text">
-                        <br>
-                        <a href="/reset" class="form-text">Mot de passe oublié ?</a>
                     </div>
                 </div>
                 <div class="form-group">
@@ -53,12 +51,15 @@
                         <button type="submit" class="btn btn-primary">Login</button>
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-1 col-sm-11">
-                        Pas encore inscrit ? <br>
-                        <a href="/signup">Creer un compte</a>
-                    </div>
-                </div>
+                <div class="form-group form-submit">
+                    <div class="col-sm-11">
+                        <p>
+                            <a href="/reset">Mot de passe oublié ?</a>
+                        </p>
+                        <p>
+                            <a href="/signup">Pas encore inscrit ?</a>
+                        </p>
+                        </d
             </fieldset>
         </form>
     </div>
