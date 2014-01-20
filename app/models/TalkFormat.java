@@ -33,7 +33,7 @@ public class TalkFormat extends Model {
     @ManyToOne
     public Event event;
 
-    @ManyToMany
+    @OneToMany
     @JsonIgnore
     private List<Proposal> proposals;
 

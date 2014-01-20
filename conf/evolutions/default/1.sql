@@ -150,12 +150,6 @@ create table tag_proposal (
   constraint pk_tag_proposal primary key (tag_id, proposal_id))
 ;
 
-create table talk_format_proposal (
-  talk_format_id                 bigint not null,
-  proposal_id                    bigint not null,
-  constraint pk_talk_format_proposal primary key (talk_format_id, proposal_id))
-;
-
 create table user_proposal (
   user_id                        bigint not null,
   proposal_id                    bigint not null,
@@ -202,10 +196,6 @@ alter table tag_proposal add constraint fk_tag_proposal_tag_01 foreign key (tag_
 
 alter table tag_proposal add constraint fk_tag_proposal_proposal_02 foreign key (proposal_id) references proposal (id) on delete restrict on update restrict;
 
-alter table talk_format_proposal add constraint fk_talk_format_proposal_talk_format_01 foreign key (talk_format_id) references talk_format (id) on delete restrict on update restrict;
-
-alter table talk_format_proposal add constraint fk_talk_format_proposal_proposal_02 foreign key (proposal_id) references proposal (id) on delete restrict on update restrict;
-
 alter table user_proposal add constraint fk_user_proposal_user_01 foreign key (user_id) references user (id) on delete restrict on update restrict;
 
 alter table user_proposal add constraint fk_user_proposal_proposal_02 foreign key (proposal_id) references proposal (id) on delete restrict on update restrict;
@@ -239,8 +229,6 @@ drop table tag_proposal;
 drop table tag;
 
 drop table talk_format;
-
-drop table talk_format_proposal;
 
 drop table track;
 
