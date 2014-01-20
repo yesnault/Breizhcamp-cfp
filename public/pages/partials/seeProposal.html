@@ -7,8 +7,8 @@
                     <span class="label" ng-show="proposal.format == null || format.id!=proposal.format.id">{{format.libelle + ' (' + format.dureeMinutes + 'min)'}}</span>
                     <span class="label label-info" ng-show="proposal.format != null &&  format.id==proposal.format.id">{{format.libelle + ' (' + format.dureeMinutes + 'min)'}}</span>
                 </p>
-                <a  ng-show="proposal.speaker.id == user.id" href="#/editproposal/{{proposal.id}}"><i class="icon-pencil"></i></a>
-                <a  ng-repeat="coSpeaker in proposal.coSpeakers" ng-show="coSpeaker.id == user.id " href="#/editproposal/{{proposal.id}}"><i class="icon-pencil"></i></a>
+                <a  ng-show="proposal.speaker.id == user.id" href="#/editproposal/{{proposal.id}}"><i class="fa fa-pencil"></i></a>
+                <a  ng-repeat="coSpeaker in proposal.coSpeakers" ng-show="coSpeaker.id == user.id " href="#/editproposal/{{proposal.id}}"><i class="fa fa-pencil"></i></a>
             </h3>
             <p>Soumis par <a ng-href="/#/profil/{{proposal.speaker.id}}" >{{proposal.speaker.fullname}}</a>
             </p>

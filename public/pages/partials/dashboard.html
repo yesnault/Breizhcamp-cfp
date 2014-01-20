@@ -81,8 +81,8 @@
                                     <p ng-show="!proposal.draft">Soumis</p></td>
                                 <td><p ng-show="proposal.draft"><a ng-click="submitProposal(proposal)">Soumettre</a></p></td>
                                 <td>{{proposal.statusProposal}}</td>
-                                <td><a href="#/editproposal/{{proposal.id}}"><i class="icon-pencil"></i></a>
-                                    <a ng-click="deleteProposal(proposal)"><i class="icon-remove"></i></a></td>
+                                <td><a href="#/editproposal/{{proposal.id}}"><i class="fa fa-pencil"></i></a>
+                                    <a ng-click="deleteProposal(proposal)"><i class="fa fa-times-circle-o"></i></a></td>
                             </tr>
                             </tbody>
                         </table>
