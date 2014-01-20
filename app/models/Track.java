@@ -43,5 +43,41 @@ public class Track extends Model {
 
     public static Model.Finder<Long, Track> find = new Model.Finder<Long, Track>(Long.class, Track.class);
 
+    public static Track findByTitle(String title) {
+        return find.query().where().eq("title", title).findUnique();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getShortTitle() {
+        return shortTitle;
+    }
+
+    public void setShortTitle(String shortTitle) {
+        this.shortTitle = shortTitle;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
 
 }

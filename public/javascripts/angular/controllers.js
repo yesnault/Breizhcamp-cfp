@@ -1302,3 +1302,81 @@ function EditEventController($scope, $log, EventService, $location, $routeParams
 }
 
 
+TrackController.$inject = ['$scope', '$log', 'TrackService', '$location'];
+function TrackController($scope, $log, TrackService, $location) {
+    $scope.checkloc(true);
+
+    $scope.tracks = TrackService.query();
+
+    $scope.deleteTrack = function (trackToDelete) {
+        var confirmation = confirm('\u00cates vous s\u00fbr de vouloir supprimer le track ' + trackToDelete.name + '?');
+        if (confirmation) {
+            TrackService.delete({id:trackToDelete.id}, function (data) {
+                $scope.tracks = TrackService.query();
+                $scope.errors = undefined;
+            }, function (err) {
+                $log.info("Delete track ko");
+                $log.info(err);
+                $scope.errors = err.data;
+            });
+        }
+    }
+
+
+}
+
+
+NewTrackController.$inject = ['$scope', '$log', 'TrackService', '$location'];
+function NewTrackController($scope, $log, TrackService, $location) {
+    $scope.checkloc(true);
+
+    $scope.isNew = true;
+
+    $scope.converter = new Markdown.Converter();
+    $scope.editor = new Markdown.Editor($scope.converter);
+    $scope.editor.run();
+
+    $scope.saveTrack = function () {
+        $log.info("Track \u00e0 sauvegarder");
+        $log.info($scope.track);
+
+        TrackService.save($scope.track, function (data) {
+            $log.info("Soummission du track ok");
+            $location.url('/admin/tracks');
+        }, function (err) {
+            $log.info("Soummission du Track ko");
+            $log.info(err.data);
+            $scope.errors = err.data;
+        });
+    }
+}
+
+
+EditTrackController.$inject = ['$scope', '$log', 'TrackService', '$location', '$routeParams'];
+function EditTrackController($scope, $log, TrackService, $location, $routeParams) {
+    $scope.checkloc(true);
+
+    var idTrack = $routeParams.id;
+
+    $scope.track = TrackService.get({id:idTrack});
+
+    $scope.isNew = false;
+
+    $scope.converter = new Markdown.getSanitizingConverter();
+    $scope.editor = new Markdown.Editor($scope.converter);
+    $scope.editor.run();
+
+    $scope.saveTrack = function () {
+        $log.info("Track \u00e0 sauvegarder");
+        $log.info($scope.track);
+
+        TrackService.save($scope.track, function (data) {
+            $log.info("Soummission du Track ok");
+            $location.url('/admin/tracks');
+        }, function (err) {
+            $log.info("Soummission du Track ko");
+            $log.info(err.data);
+            $scope.errors = err.data;
+        });
+    }
+}

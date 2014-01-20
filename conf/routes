@@ -72,6 +72,11 @@ POST	/event              controllers.EventRestController.save()
 POST	/event/close/:id    controllers.EventRestController.close(id:Long)
 DELETE	/event/:id          controllers.EventRestController.delete(id:Long)
 
+GET	    /track/:id          controllers.TrackRestController.get(id:Long)
+GET	    /track              controllers.TrackRestController.all()
+POST	/track              controllers.TrackRestController.save()
+DELETE	/track/:id          controllers.TrackRestController.delete(id:Long)
+
 GET	    /dynamicfield/:id   controllers.DynamicFieldRestController.get(id:Long)
 GET	    /dynamicfield	    controllers.DynamicFieldRestController.all()
 POST	/dynamicfield	    controllers.DynamicFieldRestController.save()

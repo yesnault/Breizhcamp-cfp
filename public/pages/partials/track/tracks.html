@@ -1,0 +1,40 @@
+<div class="row">
+
+
+    <div class="col-md-12">
+        <p>
+            <a href="#/admin/track/new">
+                <button class="btn btn-primary">Créer un Track</button>
+            </a>
+        </p>
+        <p>
+            <span class="badge badge-important" ng-repeat="error in errors['']">{{error}}</span>
+        </p>
+        <table class="table table-bordered table-striped">
+            <tbody>
+            <tr>
+                <th class="col-md-4"><a ng-click="predicate = 'track.title'; reverse=!reverse">Titre</a></th>
+                <th class="col-md-1">Titre court</th>
+                <th class="col-md-6">Description</th>
+                <th class="col-md-3"></th>
+                <th class="col-md-1">Actions</th>
+            </tr>
+
+            <tr ng-repeat="track in tracks | orderBy:predicate:reverse ">
+                <td>
+                    <div ng-show="track.title != null"><a ng-href="/#/admin/track/edit/{{track.id}}">{{track.title}}</a>
+                    </div>
+                </td>
+                <td>{{track.shortTitle}}</td>
+                <td><p>{{track.description}}</p>
+                    <p ng-bind-html-unsafe="getSafeDescription()"></p>
+                </td>
+                <td></td>
+                <td><a class="btn" ng-click="deleteTrack(track)"  ><i class="icon-remove"></i></a></td>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+</div>

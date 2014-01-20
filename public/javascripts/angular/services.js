@@ -186,6 +186,9 @@ Services.factory('EventService', function($resource) {
       return $resource('/event/:id', {});
 });
 
+Services.factory('TrackService', function($resource) {
+    return $resource('/track/:id', {});
+});
 
 Services.factory('VoteService', function($resource, $http, $log) {
     function VoteService($resource, $http, $log) {
