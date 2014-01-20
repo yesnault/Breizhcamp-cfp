@@ -46,13 +46,13 @@ public class CreneauRestController extends BaseController {
         TalkFormat formFormat = creneauForm.get();
 
         if (formFormat.getId() == null) {
-            // Nouveau créneau
+            // Nouveau format
             if (TalkFormat.findByLibelle(formFormat.getLibelle()) != null) {
                 return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.creneau.already.exist"))));
             }
             formFormat.save();
         } else {
-            // Mise à jour d'un créneau
+            // Mise à jour d'un format
             TalkFormat dbFormat = TalkFormat.find.byId(formFormat.getId());
             if (!formFormat.getLibelle().equals(dbFormat.getLibelle())
                     && TalkFormat.findByLibelle(formFormat.getLibelle()) != null) {
