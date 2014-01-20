@@ -2,7 +2,7 @@
 
 
 // Declare app level module which depends on filters, and services
-var App = angular.module('breizhCampCFP', ['breizhCampCFP.services', 'breizhCampCFP.directives', 'ui.bootstrap']);
+var App = angular.module('breizhCampCFP', ['breizhCampCFP.services', 'breizhCampCFP.directives', 'ui.bootstrap','angular-table']);
 
 
 // Configuration des routes

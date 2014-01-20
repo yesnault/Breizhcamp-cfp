@@ -69,7 +69,7 @@ DELETE	/format/:id         controllers.CreneauRestController.delete(id:Long)
 GET	    /event/:id          controllers.EventRestController.get(id:Long)
 GET	    /event              controllers.EventRestController.all()
 POST	/event              controllers.EventRestController.save()
-POST	/event/close/:id    controllers.EventRestController.close(idt:Long)
+POST	/event/close/:id    controllers.EventRestController.close(id:Long)
 DELETE	/event/:id          controllers.EventRestController.delete(id:Long)
 
 GET	    /dynamicfield/:id   controllers.DynamicFieldRestController.get(id:Long)
