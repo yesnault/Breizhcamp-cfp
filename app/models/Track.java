@@ -1,13 +1,12 @@
 package models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -34,6 +33,9 @@ public class Track extends Model {
     @Column(length = 1000)
     private String description;
 
+    @OneToMany(mappedBy = "track",cascade = CascadeType.ALL)
+    @JsonIgnore
+    public List<Proposal> proposals;
 
     @ManyToMany(mappedBy = "tracksReview")
     public List<User> reviewers;
@@ -45,6 +47,13 @@ public class Track extends Model {
 
     public static Track findByTitle(String title) {
         return find.query().where().eq("title", title).findUnique();
+    }
+
+    public List<Proposal> getProposals() {
+        if (proposals == null) {
+            proposals = new ArrayList<Proposal>();
+        }
+        return proposals;
     }
 
     public Long getId() {

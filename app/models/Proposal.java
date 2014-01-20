@@ -111,6 +111,10 @@ public class Proposal extends Model {
     @Constraints.Required
     public TalkFormat format;
 
+    @ManyToOne
+    @Constraints.Required
+    public Track track;
+
     public static Finder<Long, Proposal> find = new Finder<Long, Proposal>(Long.class, Proposal.class);
 
     public static List<Proposal> findAllForDisplay() {
@@ -144,6 +148,10 @@ public class Proposal extends Model {
 
     public static List<Proposal> findBySpeakerAndStatus(User speaker, StatusProposal status) {
         return find.where().eq("statusProposal", status.getInterne()).eq("speaker", speaker).findList();
+    }
+
+    public static List<Proposal> findByTrackAndStatus(Track track, StatusProposal statusProposal) {
+        return find.where().eq("statusProposal", statusProposal.getInterne()).eq("track", track).findList();
     }
 
     public static List<Proposal> findByStatus(StatusProposal status) {
@@ -197,4 +205,6 @@ public class Proposal extends Model {
             speaker.filterInfos();
         }
     }
+
+
 }

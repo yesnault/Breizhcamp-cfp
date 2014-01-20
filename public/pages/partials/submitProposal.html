@@ -98,6 +98,22 @@
                             </div>
                         </div>
 
+                        <div class="form-group {{{true:'error', false:''}[errors.track != undefined]}}">
+                            <label class="control-label" for="track">Track</label>
+
+                            <div class="controls">
+                                <select id="track" name="track"
+                                        ng-model="proposal.track.id"
+                                        ng-options="track.id as track.title for track in tracks"></select>
+
+                                <p class="help-inline" ng-repeat="error in errors.track">{{error}}</p>
+
+                                <p class="help-inline">
+                                    <span class="label" title="{{proposal.track.description}}">{{proposal.track.title}}</span>
+                                </p>
+                            </div>
+                        </div>
+
 
                         <div class="form-group">
                             <label class="control-label" for="coSpeakerSelected">Co-speakers</label>

@@ -164,6 +164,10 @@ Services.factory('ProposalService', function($resource) {
     return $resource('/proposal/:id', {});
 });
 
+Services.factory('TrackProposalService', function($resource) {
+    return $resource('/track/proposals/:id', {});
+});
+
 Services.factory('SubmitProposalService', function($resource) {
     return $resource('/proposal/submit/:id', {});
 });

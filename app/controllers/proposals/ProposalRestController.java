@@ -257,9 +257,17 @@ public class ProposalRestController extends BaseController {
             dbProposal.title = formProposal.title;
             dbProposal.description = formProposal.description;
             dbProposal.format = formProposal.format;
+            dbProposal.track = formProposal.track;
+
             dbProposal.indicationsOrganisateurs = formProposal.indicationsOrganisateurs;
             dbProposal.draft = true;
             dbProposal.save();
+
+            dbProposal.track.getProposals().clear();
+            dbProposal.track.getProposals().add(dbProposal);
+            dbProposal.track.saveManyToManyAssociations("proposals");
+            dbProposal.track.save();
+
             updateCoSpeakers(formProposal, dbProposal);
             updateTags(proposalForm.data().get("tagsname"), dbProposal);
         }

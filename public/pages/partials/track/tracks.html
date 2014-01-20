@@ -22,7 +22,7 @@
 
             <tr ng-repeat="track in tracks | orderBy:predicate:reverse ">
                 <td>
-                    <div ng-show="track.title != null"><a ng-href="/#/admin/track/edit/{{track.id}}">{{track.title}}</a>
+                    <div ng-show="track.title != null"><a ng-href="/#/track/{{track.id}}">{{track.title}}</a>
                     </div>
                 </td>
                 <td>{{track.shortTitle}}</td>

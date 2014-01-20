@@ -1,5 +1,7 @@
 package controllers;
 
+import models.Proposal;
+import models.StatusProposal;
 import models.Track;
 import models.User;
 import models.utils.TransformValidationErrors;
@@ -7,6 +9,8 @@ import play.data.Form;
 import play.i18n.Messages;
 import play.mvc.Result;
 import securesocial.core.java.SecureSocial;
+
+import java.util.List;
 
 import static play.data.Form.form;
 import static play.libs.Json.toJson;
@@ -21,6 +25,23 @@ public class TrackRestController extends BaseController {
             return noContent();
         }
         return ok(toJson(track));
+    }
+
+
+
+    public static Result getProposals(Long id) {
+        Track track = Track.find.byId(id);
+        if (track == null) {
+            return noContent();
+        }
+
+        StatusProposal statusProposal = StatusProposal.ACCEPTE;
+
+        List<Proposal> proposals = Proposal.findByTrackAndStatus(track, statusProposal);
+        for (Proposal proposal : proposals) {
+            proposal.fiteredCoSpeakers();
+        }
+        return ok(toJson(proposals));
     }
 
     public static Result all() {

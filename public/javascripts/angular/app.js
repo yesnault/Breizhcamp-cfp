@@ -25,6 +25,7 @@ App.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/admin/event/edit/:eventId', {templateUrl: 'assets/pages/partials/event/submit.html', controller: EditEventController});
 
     $routeProvider.when('/admin/tracks', {templateUrl: 'assets/pages/partials/track/tracks.html', controller: TrackController});
+    $routeProvider.when('/track/:id', {templateUrl: 'assets/pages/partials/track/track.html', controller: SeeTrackController});
     $routeProvider.when('/admin/track/new', {templateUrl: 'assets/pages/partials/track/submit.html', controller: NewTrackController});
     $routeProvider.when('/admin/track/edit/:id', {templateUrl: 'assets/pages/partials/track/submit.html', controller: EditTrackController});
 

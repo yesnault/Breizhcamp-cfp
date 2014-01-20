@@ -115,8 +115,8 @@ function LoginController($scope, $log, UserService, PasswordService, $http, $loc
 
 
 // Pour que l'injection de dépendances fonctionne en cas de 'minifying'
-NewProposalController.$inject = ['$scope', '$log', '$location', 'ProposalService', 'CreneauxService', '$http'];
-function NewProposalController($scope, $log, $location, ProposalService, CreneauxService, $http) {
+NewProposalController.$inject = ['$scope', '$log', '$location', 'ProposalService', 'CreneauxService', 'TrackService', '$http'];
+function NewProposalController($scope, $log, $location, ProposalService, CreneauxService, TrackService, $http) {
 
     $scope.checkloc(false);
 
@@ -159,6 +159,8 @@ function NewProposalController($scope, $log, $location, ProposalService, Creneau
 
     $scope.formats = CreneauxService.query();
 
+    $scope.tracks = TrackService.query();
+
     $scope.converter = new Markdown.getSanitizingConverter();
     $scope.editor = new Markdown.Editor($scope.converter);
     $scope.editor.run();
@@ -198,8 +200,8 @@ function changeFormat(newId, proposal, formats) {
 }
 
 // Pour que l'injection de dépendances fonctionne en cas de 'minifying'
-EditProposalController.$inject = ['$scope', '$log', '$location', '$routeParams', 'ProposalService', '$http', 'CreneauxService'];
-function EditProposalController($scope, $log, $location, $routeParams, ProposalService, http, CreneauxService) {
+EditProposalController.$inject = ['$scope', '$log', '$location', '$routeParams', 'ProposalService', '$http', 'CreneauxService', 'TrackService'];
+function EditProposalController($scope, $log, $location, $routeParams, ProposalService, http, CreneauxService, TrackService) {
 
     $scope.checkloc(false);
 
@@ -242,6 +244,7 @@ function EditProposalController($scope, $log, $location, $routeParams, ProposalS
     $scope.isNew = false;
 
     $scope.formats = CreneauxService.query();
+    $scope.tracks = TrackService.query();
 
     $scope.converter = new Markdown.getSanitizingConverter();
     $scope.editor = new Markdown.Editor($scope.converter);
@@ -1379,4 +1382,24 @@ function EditTrackController($scope, $log, TrackService, $location, $routeParams
             $scope.errors = err.data;
         });
     }
+}
+
+SeeTrackController.$inject = ['$scope', '$log', 'TrackService', 'TrackProposalService', '$location', '$routeParams'];
+function SeeTrackController($scope, $log, TrackService, TrackProposalService, $location, $routeParams) {
+    $scope.checkloc(true);
+
+    var idTrack = $routeParams.id;
+
+    $scope.track = TrackService.get({id:idTrack});
+
+    $scope.proposals = TrackProposalService.query({id:idTrack});
+
+    $scope.converter = new Markdown.getSanitizingConverter();
+
+    $scope.getSafeDescription = function () {
+        if ($scope.track.description) {
+            return $scope.converter.makeHtml($scope.track.description);
+        }
+    }
+
 }
