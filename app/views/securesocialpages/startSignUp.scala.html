@@ -22,7 +22,7 @@
             <fieldset>
                 <div class="form-group">
                     <div class="col-sm-offset-1 col-sm-10">
-                        <i class="form-icon icon-envelope"></i>
+                        <i class="form-icon fa fa-envelope"></i>
                         <input type="email" id="email" name="email" value='@startForm("email").value' placeholder="Adresse e-mail" required class="form-text">
                         @if(startForm.error("email")){<p class="help-block form-error">@Messages(startForm.error("email").get.message)</p>}
                     </div>
@@ -44,17 +44,26 @@
     <div class="col-md-5">
         <p>Vous pouvez également créer un compte en un clic</p>
         <div class="col-md-7 col-md-offset-1 col-sm-6 col-sm-offset-3">
-            <p><a class="btn btn-block btn-primary" href="/authenticate/github" role="button">
-                <span class="icon-github-sign"></span> Inscription via GitHub
-            </a></p>
+            <!--
+            Maybe later if someone want to create a securesocial Bitbucket provider ...
+            <p>
+                <a class="btn btn-block btn-social btn-bitbucket" href="/authenticate/bitbucket" role="button">
+                    <i class="fa fa-bitbucket"></i>Connexion via  Bitbucket</a>
+            </p>
+            -->
 
-            <p><a class="btn btn-block btn-primary" href="/authenticate/google" role="button">
-                <span class="icon-google-plus-sign"></span> Inscription via Google
-            </a></p>
+            <p>
+                <a class="btn btn-block btn-social btn-github" href="/authenticate/github" role="button">
+                    <i class="fa fa-github"></i>Inscription via GitHub</a>
+            </p>
 
-            <p><a class="btn btn-block btn-primary" href="/authenticate/twitter" role="button">
-                <span class="icon-twitter-sign"></span> Inscription via Twitter
-            </a></p>
+            <p><a class="btn btn-block btn-social btn-google-plus" href="/authenticate/google" role="button">
+                <i class="fa fa-google-plus"></i>Inscription via Google</a>
+            </p>
+
+            <p><a class="btn btn-block btn-social btn-linkedin" href="/authenticate/linkedin" role="button">
+                <i class="fa fa-linkedin"></i>Inscription via LinkedIn</a>
+            </p>
         </div>
     </div>
 

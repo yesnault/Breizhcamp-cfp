@@ -32,6 +32,15 @@ a.navbar-brand { padding: 10px 15px; }
     line-height:10px;
 }
 
+.large-icon {
+    font-size: 2em;
+    margin-right:5px;
+}
+
+.btn-block {
+    vertical-align: ;
+}
+
 .form-text {
     padding-left: 40px;
     width: 100%;
