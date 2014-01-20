@@ -16,15 +16,18 @@
             <tr>
                 <th class="col-md-3">Libelle</th>
                 <th class="col-md-4">Durée en minutes</th>
-                <th class="col-md-4">Evénements</th>
+                <th class="col-md-4">Nombre de slots</th>
                 <th class="col-md-3">Actions</th>
             </tr>
             <tr ng-repeat="format in formats">
                 <td>{{format.libelle}}</td>
                 <td>{{format.dureeMinutes}}</td>
-                <td>{{format.event.name}}</td>
-                <td><a href="#/admin/format/edit/{{format.id}}"><i class="icon-pencil"></i></a>
-                    <a ng-click="deleteCreneau(format)"><i class="icon-remove"></i></a></td>
+                <td>{{format.nbInstance}}</td>
+                <td style="text-align: center">
+                    <a href="#/admin/format/edit/{{format.id}}" title="Editer"><i class="icon-pencil"></i></a>
+                    &nbsp;
+                    <a ng-click="deleteCreneau(format)" title="Supprimer"><i class="icon-trash"></i></a>
+                </td>
             </tr>
             </tbody>
         </table>

@@ -19,11 +19,13 @@ public class Proposal extends Model {
 
     @Id
     public Long id;
+
     @Constraints.Required
     @Constraints.MaxLength(50)
     @Formats.NonEmpty
     @Column(unique = true, length = 50)
     public String title;
+
     @Constraints.Required
     @Constraints.MaxLength(2000)
     @Formats.NonEmpty
@@ -37,6 +39,7 @@ public class Proposal extends Model {
 
     @ManyToOne
     public User speaker;
+
     @ManyToMany(mappedBy = "coSpeakedProposals")
     public List<User> coSpeakers;
 
@@ -62,6 +65,7 @@ public class Proposal extends Model {
         return comments;
     }
     public StatusProposal statusProposal;
+
     @ManyToMany(mappedBy = "proposals")
     @JsonIgnore
     public List<Tag> tags = new ArrayList<Tag>();
@@ -102,6 +106,7 @@ public class Proposal extends Model {
     public List<Comment> getCommentsFiltered() {
         return commentsFiltered;
     }
+
     @ManyToOne
     @Constraints.Required
     public TalkFormat format;
