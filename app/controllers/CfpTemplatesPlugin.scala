@@ -10,7 +10,7 @@ import play.api.templates.Txt
 import play.api.Logger
 import play.api.data.Form
 
-class CfpTemplatesPlugin(application: Application) extends TemplatesPlugin
+class CfpTemplatesPlugin(application: play.Application) extends TemplatesPlugin
 {
 
 
