@@ -57,7 +57,6 @@ POST    /proposal/submit/:idProposal               controllers.proposals.Proposa
 GET     /proposal                       controllers.proposals.ProposalRestController.get()
 POST	/proposal                       controllers.proposals.ProposalRestController.save()
 DELETE	/proposal/:idProposal               controllers.proposals.ProposalRestController.delete(idProposal:Long)
-GET	    /proposal/:idProposal/tags/:tags    controllers.proposals.ProposalRestController.addTag(idProposal:Long,tags:String)
 POST	/proposal/:idProposal/tags/:tags    controllers.proposals.ProposalRestController.addTag(idProposal:Long,tags:String)
 GET     /proposalStat                   controllers.proposals.ProposalRestController.proposalStat()
 
