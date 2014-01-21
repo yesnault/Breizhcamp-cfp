@@ -15,10 +15,10 @@ import play.mvc.Result;
 import securesocial.core.java.SecureSocial;
 
 @SecureSocial.SecuredAction(ajaxCall = true)
-public class CreneauRestController extends BaseController {
+public class FormatRestController extends BaseController {
 
-    public static Result get(Long idCreneau) {
-        TalkFormat format = TalkFormat.find.byId(idCreneau);
+    public static Result get(Long id) {
+        TalkFormat format = TalkFormat.find.byId(id);
         if (format == null) {
             return noContent();
         }
@@ -37,13 +37,13 @@ public class CreneauRestController extends BaseController {
             return forbidden();
         }
 
-        Form<TalkFormat> creneauForm = form(TalkFormat.class).bindFromRequest();
+        Form<TalkFormat> form = form(TalkFormat.class).bindFromRequest();
 
-        if (creneauForm.hasErrors()) {
-            return badRequest(toJson(TransformValidationErrors.transform(creneauForm.errors())));
+        if (form.hasErrors()) {
+            return badRequest(toJson(TransformValidationErrors.transform(form.errors())));
         }
 
-        TalkFormat formFormat = creneauForm.get();
+        TalkFormat formFormat = form.get();
 
         if (formFormat.getId() == null) {
             // Nouveau format
@@ -69,7 +69,7 @@ public class CreneauRestController extends BaseController {
     }
 
     
-    public static Result delete(Long idCreneau) {
+    public static Result delete(Long id) {
         
         // Vérification du rôle d'admin
         User user = getLoggedUser();
@@ -77,7 +77,7 @@ public class CreneauRestController extends BaseController {
             return forbidden();
         }
 
-        TalkFormat format = TalkFormat.find.byId(idCreneau);
+        TalkFormat format = TalkFormat.find.byId(id);
         if (format != null) {
             for (Proposal proposal : new ArrayList<Proposal>(format.getProposals())) {
                 format.getProposals().remove(proposal);
