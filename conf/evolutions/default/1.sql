@@ -77,6 +77,7 @@ create table proposal (
   event_id                  bigint,
   status_proposal           varchar(1),
   format_id                 bigint,
+  track_id                  bigint,
   constraint ck_proposal_status_proposal check (status_proposal in ('A','W','R')),
   constraint uq_proposal_title unique (title),
   constraint pk_proposal primary key (id))
@@ -181,14 +182,16 @@ alter table proposal add constraint fk_proposal_event_9 foreign key (event_id) r
 create index ix_proposal_event_9 on proposal (event_id);
 alter table proposal add constraint fk_proposal_format_10 foreign key (format_id) references talk_format (id) on delete restrict on update restrict;
 create index ix_proposal_format_10 on proposal (format_id);
-alter table talk_format add constraint fk_talk_format_event_11 foreign key (event_id) references event (id) on delete restrict on update restrict;
-create index ix_talk_format_event_11 on talk_format (event_id);
-alter table user add constraint fk_user_credentials_12 foreign key (credentials_id) references credentials (id) on delete restrict on update restrict;
-create index ix_user_credentials_12 on user (credentials_id);
-alter table vote add constraint fk_vote_user_13 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_vote_user_13 on vote (user_id);
-alter table vote add constraint fk_vote_proposal_14 foreign key (proposal_id) references proposal (id) on delete restrict on update restrict;
-create index ix_vote_proposal_14 on vote (proposal_id);
+alter table proposal add constraint fk_proposal_track_11 foreign key (track_id) references track (id) on delete restrict on update restrict;
+create index ix_proposal_track_11 on proposal (track_id);
+alter table talk_format add constraint fk_talk_format_event_12 foreign key (event_id) references event (id) on delete restrict on update restrict;
+create index ix_talk_format_event_12 on talk_format (event_id);
+alter table user add constraint fk_user_credentials_13 foreign key (credentials_id) references credentials (id) on delete restrict on update restrict;
+create index ix_user_credentials_13 on user (credentials_id);
+alter table vote add constraint fk_vote_user_14 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_vote_user_14 on vote (user_id);
+alter table vote add constraint fk_vote_proposal_15 foreign key (proposal_id) references proposal (id) on delete restrict on update restrict;
+create index ix_vote_proposal_15 on vote (proposal_id);
 
 
 
