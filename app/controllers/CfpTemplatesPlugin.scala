@@ -7,7 +7,7 @@ import securesocial.core.{Identity, IdentityProvider, SecuredRequest}
 import play.api.mvc.{RequestHeader, Request}
 import play.api.templates.Html
 import play.api.templates.Txt
-import play.api.{Logger, Application}
+import play.api.Logger
 import play.api.data.Form
 
 class CfpTemplatesPlugin(application: Application) extends TemplatesPlugin
