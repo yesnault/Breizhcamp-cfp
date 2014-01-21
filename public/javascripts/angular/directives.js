@@ -9,7 +9,7 @@ directives.directive('sessionhandler', function($location, $log) {
     // Evenement envoyé par un intercepteur HTTP
     return function(scope, element, attrs) {
         scope.$on('event:unauthorized', function() {
-            $location.path('/login');
+            location.reload(true);
         });
     };
 });
