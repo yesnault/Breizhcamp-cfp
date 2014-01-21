@@ -58,33 +58,16 @@ public class CfpUserService extends BaseUserService {
         User userCfp = User.findByEmail(socialUser.email().get());
         if (userCfp == null) {
             Logger.info("Création du user : " + socialUser.fullName());
-            userCfp = IdentityToUser(socialUser);
-
-            if(userCfp.fullname == null || userCfp.fullname.equals("") ){
-               // TODO renvoyer une erreur
-            }
-
+            userCfp = new User();
 
             userCfp.admin = false;
             userCfp.dateCreation = new Date();
         } else {
             Logger.info("Mise à jour du user : " + socialUser.fullName());
-            userCfp.fullname = socialUser.fullName();
-            if (socialUser.avatarUrl().isDefined()) {
-                userCfp.avatar = socialUser.avatarUrl().get();
-            }
-
-            if (socialUser.passwordInfo().isDefined()) {
-                PasswordInfo pInfo = socialUser.passwordInfo().get();
-                userCfp.credentials.passwordHasher = pInfo.hasher();
-                userCfp.credentials.password = pInfo.password();
-                if (pInfo.salt().isDefined()) {
-                     userCfp.credentials.passwordSalt = pInfo.salt().get();
-                }
-            }
         }
+        populateUser(userCfp, socialUser);
 
-        if(User.findAll().isEmpty()){
+        if (User.findAll().isEmpty()){
             userCfp.admin = true;
         }
 
@@ -173,9 +156,7 @@ public class CfpUserService extends BaseUserService {
      * @param socialUser
      * @return
      */
-    private User IdentityToUser(Identity socialUser) {
-
-        User user = new User();
+    private User populateUser(User user, Identity socialUser) {
 
         user.fullname = socialUser.fullName();
         if (socialUser.avatarUrl().isDefined()) {
