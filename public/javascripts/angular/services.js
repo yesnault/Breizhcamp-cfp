@@ -51,7 +51,8 @@ Services.factory('UserService', ['$http', '$log', '$location', '$cookieStore', f
                             userdata = null;
                             authenticated = false;
                             admin = null;
-                            location.url("/login");
+                            // Force page reload - this will redirect to login page
+                            location.reload(true);
                         })
 
             };
