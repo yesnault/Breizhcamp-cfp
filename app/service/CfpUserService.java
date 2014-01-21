@@ -37,7 +37,7 @@ public class CfpUserService extends BaseUserService {
 
     @Override
     public Identity doFind(IdentityId identityId) {
-        Logger.debug("doFind SecureSocial Find User by Id : " + identityId.userId() + " / " + identityId.providerId());
+        Logger.info("doFind SecureSocial Find User by Id : " + identityId.userId() + " / " + identityId.providerId());
         // Recherche d'un user existant et création ou mise à jour des données en SGBD
         User userCfp = User.findByExternalId(identityId.userId(), identityId.providerId());
         Identity identity = null;
@@ -50,14 +50,14 @@ public class CfpUserService extends BaseUserService {
     @Override
     public Identity doSave(Identity socialUser) {
 
+        Logger.info("doSave " + socialUser.fullName() + " / socialIdentityId : " + socialUser.identityId().userId() + " - " + socialUser.identityId().providerId());
         // Recherche d'un user existant et création ou mise à jour des données en SGBD
         if (socialUser.email().isEmpty()) {
             throw new IllegalArgumentException("OAuth authentication need to be configured with user's email scope");
         }
         User userCfp = User.findByEmail(socialUser.email().get());
-        Logger.debug("doSave " + socialUser.fullName() + " / socialIdentityId : " + socialUser.identityId().userId() + " - " + socialUser.identityId().providerId());
         if (userCfp == null) {
-            Logger.debug("Création du user : " + socialUser.fullName());
+            Logger.info("Création du user : " + socialUser.fullName());
             userCfp = IdentityToUser(socialUser);
 
             if(userCfp.fullname == null || userCfp.fullname.equals("") ){
@@ -68,7 +68,7 @@ public class CfpUserService extends BaseUserService {
             userCfp.admin = false;
             userCfp.dateCreation = new Date();
         } else {
-            Logger.debug("Mise à jour du user : " + socialUser.fullName());
+            Logger.info("Mise à jour du user : " + socialUser.fullName());
             userCfp.fullname = socialUser.fullName();
             if (socialUser.avatarUrl().isDefined()) {
                 userCfp.avatar = socialUser.avatarUrl().get();
@@ -101,7 +101,7 @@ public class CfpUserService extends BaseUserService {
      */
     @Override
     public void doDeleteExpiredTokens() {
-        Logger.debug("doDeleteExpiredTokens SecureSocial");
+        Logger.info("doDeleteExpiredTokens SecureSocial");
     }
 
     /**
@@ -114,7 +114,7 @@ public class CfpUserService extends BaseUserService {
      */
     @Override
     public void doDeleteToken(String uuid) {
-        Logger.debug("doDeleteToken SecureSocial : " + uuid);
+        Logger.info("doDeleteToken SecureSocial : " + uuid);
     }
 
     /**
@@ -129,7 +129,7 @@ public class CfpUserService extends BaseUserService {
      */
     @Override
     public Identity doFindByEmailAndProvider(String email, String providerId) {
-        Logger.debug("doFindByEmailAndProvider SecureSocial : " + email + " / " + providerId);
+        Logger.info("doFindByEmailAndProvider SecureSocial : " + email + " / " + providerId);
         Identity result = null;
         User user = User.findByEmail(email);
         if (user != null) {
@@ -149,7 +149,7 @@ public class CfpUserService extends BaseUserService {
      */
     @Override
     public Token doFindToken(String tokenId) {
-        Logger.debug("doFindToken SecureSocial : " + tokenId);
+        Logger.info("doFindToken SecureSocial : " + tokenId);
         return tokens.get(tokenId);
     }
 
@@ -164,7 +164,7 @@ public class CfpUserService extends BaseUserService {
     @Override
     public void doSave(Token token) {
         tokens.put(token.uuid, token);
-        Logger.debug("doSave SecureSocial Token : " + token.getEmail() + " / " + token.getUuid());
+        Logger.info("doSave SecureSocial Token : " + token.getEmail() + " / " + token.getUuid());
     }
 
     /**
