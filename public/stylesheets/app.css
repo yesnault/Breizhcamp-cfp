@@ -291,8 +291,13 @@ ul.social-stack {
     text-align:center;
 }
 
+.container {
+    padding-bottom:100px;
+}
+
 footer {
-    color: #aaa;
+    background: #eee;
+    color: #444;
     text-align: center;
     width:100%;
     position:fixed;
