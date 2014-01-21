@@ -67,53 +67,6 @@ function DashboardController($rootScope, $scope, ProfilService, AccountService, 
 
 }
 
-
-// Pour que l'injection de dépendances fonctionne en cas de 'minifying'
-LoginController.$inject = ['$scope', '$log', 'UserService', 'PasswordService', '$http', '$location', '$cookies', '$cookieStore'];
-function LoginController($scope, $log, UserService, PasswordService, $http, $location, $cookies) {
-
-    // Si l'utilisateur est déjà loggué, on le redirige vers /
-//    var user = UserService.getUserData();
-//    if (user != null) {
-//        $location.url("/");
-//    }
-
-    $log.info("appel a isLogged");
-    $scope.userlogged = UserService.isLogged(function () {
-        $location.url("/dashboard")
-    }, function () {
-        $location.url("/login");
-    });
-
-    $scope.debug = function () {
-        //playCookie = $cookieStore.get('PLAY_SESSION');
-        $log.info('cookie play : ' + $scope.cookieValue);
-    };
-
-    // Fonction de login appelée sur le bouton de formulaire
-    $scope.login = function () {
-        $log.info($scope.user);
-        $log.info($scope);
-        // TODO Trouver un moyen pour que le routage ne soit pas fait dans le callback du XHR ?
-        UserService.login($scope.user, '/dashboard', function (data) {
-            $scope.errors = data;
-        });
-    };
-
-    $scope.createAccount = function () {
-        $log.info($scope.email);
-        $http({method:'POST', url:'/signup', data:'{email: "' + $scope.email + '"}'}).
-            success(function (data, status) {
-                $log.info('createAccount XHR status : ' + status);
-            }).
-            error(function (data, status) {
-                $log.error('createAccount XHR error - status : ' + status);
-            });
-    };
-
-}
-
-
 // Pour que l'injection de dépendances fonctionne en cas de 'minifying'
 NewProposalController.$inject = ['$scope', '$log', '$location', 'ProposalService', 'CreneauxService', 'TrackService', '$http'];
 function NewProposalController($scope, $log, $location, ProposalService, CreneauxService, TrackService, $http) {

@@ -3,6 +3,7 @@
 @import helper._
 
 @main("Connexion") {
+
 <div class="page-header">
     <h1>Bienvenue sur le CFP du BreizhC&#64;mp</h1>
 </div>
@@ -10,7 +11,8 @@
 <legend>Connexion</legend>
 <div class="row">
 
-    <div class="col-md-5">
+    <div class="row">
+
         @errorMsg.map { msg =>
         <div class="alert alert-error">
             @Messages(msg)
@@ -29,69 +31,74 @@
         </div>
         }
 
-        <form action="/authenticate/userpass" class="form-horizontal" autocomplete="off" method="POST">
-            <fieldset>
-                <div class="form-group">
-                    <div class="col-sm-offset-1 col-sm-10">
-                        <i class="form-icon fa fa-envelope"></i>
-                        <input type="email" id="username" name="username" placeholder="Adresse e-mail" required  class="form-text">
+        <div class="col-md-5">
+            <form action="/authenticate/userpass" class="form-horizontal" autocomplete="off" method="POST">
+                <fieldset>
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-10">
+                            <i class="form-icon fa fa-envelope"></i>
+                            <input type="email" id="username" name="username" placeholder="Adresse e-mail" required  class="form-text">
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-1 col-sm-10">
-                        <i class="form-icon fa fa-key"></i>
-                        <input type="password" id="password" name="password" placeholder="Mot de passe" required class="form-text">
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-10">
+                            <i class="form-icon fa fa-key"></i>
+                            <input type="password" id="password" name="password" placeholder="Mot de passe" required class="form-text">
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-1 col-sm-7">
-                        <input type="checkbox" id="rememberMe" name="rememberMe"/><label for="rememberMe">Se souvenir de moi</label>
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-7">
+                            <input type="checkbox" id="rememberMe" name="rememberMe"/><label for="rememberMe">Se souvenir de moi</label>
+                        </div>
+                        <div class="col-sm-3 form-submit">
+                            <button type="submit" class="btn btn-primary">Login</button>
+                        </div>
                     </div>
-                    <div class="col-sm-3 form-submit">
-                        <button type="submit" class="btn btn-primary">Login</button>
+                    <div class="form-group form-submit">
+                        <div class="col-sm-11">
+                            <p>
+                                <a href="/reset">Mot de passe oublié ?</a>
+                            </p>
+                            <p>
+                                <a href="/signup">Pas encore inscrit ?</a>
+                            </p>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group form-submit">
-                    <div class="col-sm-11">
-                        <p>
-                            <a href="/reset">Mot de passe oublié ?</a>
-                        </p>
-                        <p>
-                            <a href="/signup">Pas encore inscrit ?</a>
-                        </p>
-                        </d
-            </fieldset>
-        </form>
-    </div>
-
-    <div class="col-md-2 form-separator">
-        <span>ou</span>
-    </div>
-
-    <div class="col-md-5">
-        <div class="col-md-7 col-md-offset-1 col-sm-6 col-sm-offset-3">
-            <!--
-            Maybe later if someone want to create a securesocial Bitbucket provider ...
-            <p>
-                <a class="btn btn-block btn-social btn-bitbucket" href="/authenticate/bitbucket" role="button">
-                    <i class="fa fa-bitbucket"></i>Connexion via  Bitbucket</a>
-            </p>
-            -->
-
-            <p>
-                <a class="btn btn-block btn-social btn-github" href="/authenticate/github" role="button">
-                    <i class="fa fa-github"></i>Connexion via GitHub</a>
-            </p>
-
-            <p><a class="btn btn-block btn-social btn-google-plus" href="/authenticate/google" role="button">
-                <i class="fa fa-google-plus"></i>Connexion via Google</a>
-            </p>
-
-            <p><a class="btn btn-block btn-social btn-linkedin" href="/authenticate/linkedin" role="button">
-                <i class="fa fa-linkedin"></i>Connexion via LinkedIn</a>
-            </p>
+                </fieldset>
+            </form>
         </div>
+
+        <div class="col-md-2 form-separator">
+            <span>ou</span>
+        </div>
+
+        <div class="col-md-5">
+            <div class="col-md-7 col-md-offset-1 col-sm-6 col-sm-offset-3">
+                <!--
+                Maybe later if someone want to create a securesocial Bitbucket provider ...
+                <p>
+                    <a class="btn btn-block btn-social btn-bitbucket" href="/authenticate/bitbucket" role="button">
+                        <i class="fa fa-bitbucket"></i>Connexion via  Bitbucket</a>
+                </p>
+                -->
+
+                <p>
+                    <a class="btn btn-block btn-social btn-github" href="/authenticate/github" role="button">
+                        <i class="fa fa-github"></i>Connexion via GitHub</a>
+                </p>
+
+                <p><a class="btn btn-block btn-social btn-google-plus" href="/authenticate/google" role="button">
+                    <i class="fa fa-google-plus"></i>Connexion via Google</a>
+                </p>
+
+                <p><a class="btn btn-block btn-social btn-linkedin" href="/authenticate/linkedin" role="button">
+                    <i class="fa fa-linkedin"></i>Connexion via LinkedIn</a>
+                </p>
+            </div>
+        </div>
+
     </div>
+
 
 </div>
 }
