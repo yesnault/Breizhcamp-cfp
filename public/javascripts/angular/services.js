@@ -25,9 +25,7 @@ Services.factory('UserService', ['$http', '$log', '$location', '$cookieStore', f
                     $cookieStore.put('userData', data);
                     userdata = data;
                     authenticated = true;
-                    if (userdata.admin)
-                        admin = true;
-                    logger.info('routage vers le dashboard');
+                    userdata.admin = admin;
                     success();
                 }).error(function(data, status, headers, config) {
                     logger.info('code http de la réponse : ' + status);
@@ -57,43 +55,8 @@ Services.factory('UserService', ['$http', '$log', '$location', '$cookieStore', f
 
             };
 
-            // Fonction de login
-            this.login = function(user, route, failledCallBack) {
-
-                logger.info("Tentative d'authentification de " + user);
-
-                http({
-                    method: 'POST',
-                    url: '/login',
-                    data: user
-                }).success(function(data, status, headers, config) {
-                    logger.info(status);
-                    logger.info(data);
-                    $cookieStore.put('userData', data);
-
-                    userdata = data;
-                    authenticated = true;
-                    if (userdata.admin)
-                        admin = true;
-                    logger.info('routage vers le dashboard');
-                    location.url(route);
-
-                }).error(function(data, status, headers, config) {
-                    logger.info('code http de la réponse : ' + status);
-                    logger.info(data);
-                    failledCallBack(data);
-                });
-            };
-
             // Getters
             this.getUserData = function() {
-
-                if (!userdata) {
-                    // la méthode get renvoie un Object ou undefined
-                    if (!$cookieStore.get('userData')) {
-                        userdata = $cookieStore.get('userData');
-                    }
-                }
                 return userdata;
             };
 

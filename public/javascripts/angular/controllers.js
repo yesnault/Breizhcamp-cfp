@@ -20,14 +20,10 @@ function RootController($scope, UserService, $log, $location) {
     };
 
     $scope.verifyUser = function (user, mustBeAdmin) {
-        if (!user) {
-            $location.url("/login");
-        } else {
-            if (mustBeAdmin && !user.admin) {
-                $location.url("/");
-            } else if (!user.isInfoValid) {
-                $location.url("/settings/account");
-            }
+        if (mustBeAdmin && !user.admin) {
+            $location.url("/");
+        } else if (!user.isInfoValid) {
+            $location.url("/settings/account");
         }
     };
 
