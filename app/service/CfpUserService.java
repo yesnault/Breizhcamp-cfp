@@ -51,7 +51,10 @@ public class CfpUserService extends BaseUserService {
     public Identity doSave(Identity socialUser) {
 
         // Recherche d'un user existant et création ou mise à jour des données en SGBD
-        User userCfp = User.findByExternalId(socialUser.identityId().userId(), socialUser.identityId().providerId());
+        if (socialUser.email().isEmpty()) {
+            throw new IllegalArgumentException("OAuth authentication need to be configured with user's email scope");
+        }
+        User userCfp = User.findByEmail(socialUser.email().get());
         Logger.debug("doSave " + socialUser.fullName() + " / socialIdentityId : " + socialUser.identityId().userId() + " - " + socialUser.identityId().providerId());
         if (userCfp == null) {
             Logger.debug("Création du user : " + socialUser.fullName());
