@@ -291,3 +291,11 @@ ul.social-stack {
     text-align:center;
 }
 
+footer {
+    color: #aaa;
+    text-align: center;
+    width:100%;
+    position:fixed;
+    bottom:0;
+    border-top: solid 1px #888;
+}
