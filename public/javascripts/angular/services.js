@@ -8,32 +8,8 @@ Services.factory('UserService', ['$http', '$log', '$location', '$cookieStore', f
 
         // Service pour gérer les utilisateurs
         function UserService(http, logger) {
-            var userdata;
             var authenticated;
             var admin;
-
-            // Fonction de login
-            this.isLogged = function(success, error) {
-
-                logger.info("Appel isLogged (/userLogged)");
-
-                http({
-                    method: 'GET',
-                    url: '/userLogged'
-                }).success(function(data, status, headers, config) {
-
-                    $cookieStore.put('userData', data);
-                    userdata = data;
-                    authenticated = true;
-                    userdata.admin = admin;
-                    success();
-                }).error(function(data, status, headers, config) {
-                    logger.info('code http de la réponse : ' + status);
-                    logger.info('routage vers la page de login');
-                    authenticated = false;
-                    error();
-                });
-            };
 
             this.logout = function() {
                 var user = this.getUserData();
@@ -45,8 +21,6 @@ Services.factory('UserService', ['$http', '$log', '$location', '$cookieStore', f
                 }).success(
                         function(data, status, headers, config) {
                             // Suppression du cookie.
-                            $cookieStore.remove('userData');
-                            userdata = null;
                             authenticated = false;
                             admin = null;
                             // Force page reload - this will redirect to login page
@@ -57,7 +31,7 @@ Services.factory('UserService', ['$http', '$log', '$location', '$cookieStore', f
 
             // Getters
             this.getUserData = function() {
-                return userdata;
+                return window.userData;
             };
 
 

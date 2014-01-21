@@ -28,17 +28,9 @@ function RootController($scope, UserService, $log, $location) {
     };
 
     $scope.checkloc = function (mustBeAdmin) {
+        $log.info("check user is logged");
         var user = UserService.getUserData();
-        if (!user) {
-            UserService.isLogged(function () {
-                    $scope.verifyUser(UserService.getUserData(), mustBeAdmin);
-                },
-                function () {
-                    $scope.verifyUser(UserService.getUserData(), mustBeAdmin);
-                })
-        } else {
-            $scope.verifyUser(user, mustBeAdmin);
-        }
+        $scope.verifyUser(UserService.getUserData(), mustBeAdmin);
     };
 }
 

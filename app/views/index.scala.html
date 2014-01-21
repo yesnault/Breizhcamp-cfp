@@ -1,10 +1,10 @@
-@(title: String)
+@(user: User)
 
 <!DOCTYPE html>
 <html ng-app="breizhCampCFP" ng-controller="RootController" sessionhandler>
     <head>
         <meta charset="utf-8">
-        <title>BreizhCamp @title</title>
+        <title>Call for Papers</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" type="image/png" href="/assets/img/favicon.png" />
         <link rel="stylesheet" media="screen" href="/assets/stylesheets/bootstrap.min.css">
@@ -82,6 +82,10 @@
         </div>
     
         <div class="container" ng-view></div>
+
+        <script>
+            window.userData = @Html(play.libs.Json.toJson(user).toString())
+        </script>
 
         <script src="/assets/javascripts/lib/jquery-1.9.0.min.js"></script>
         <script src="/assets/javascripts/lib/jquery.raty.min.js"></script>

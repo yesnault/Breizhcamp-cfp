@@ -12,15 +12,8 @@ public class BaseController extends Controller {
 
     protected static User getLoggedUser() {
         Identity socialUser = (Identity) ctx().args.get(SecureSocial.USER_KEY);
-        checkProfileCompletion(socialUser);
         User user = User.findByEmail(socialUser.email().get());
         return user;
     }
 
-    private static void checkProfileCompletion(Identity socialUser) {
-        if (!socialUser.email().isDefined()) {
-            forbidden();
-        }
-        // TODO
-    }
 }
