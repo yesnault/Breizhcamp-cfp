@@ -4,6 +4,9 @@ import java.util.*;
 
 import models.Credentials;
 import models.User;
+import org.apache.commons.codec.EncoderException;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.codec.net.URLCodec;
 import play.Application;
 import play.Logger;
 import scala.Option;
@@ -148,7 +151,7 @@ public class CfpUserService extends BaseUserService {
      * @param socialUser
      * @return
      */
-    private User populateUser(User user, Identity socialUser) {
+    private User populateUser(User user, Identity socialUser)  {
 
         if (user.email == null && socialUser.email().isDefined())
             user.email = socialUser.email().get();
@@ -156,8 +159,15 @@ public class CfpUserService extends BaseUserService {
             user.firstName = socialUser.firstName();
         if (user.lastName == null)
             user.lastName = socialUser.lastName();
-        if (user.avatar == null && socialUser.avatarUrl().isDefined()) {
-            user.avatar = socialUser.avatarUrl().get();
+        if (user.avatar == null && user.email != null) {
+            user.avatar = "https://www.gravatar.com/avatar/" + DigestUtils.md5Hex(user.email.getBytes());;
+            if (socialUser.avatarUrl().isDefined()) {
+                try {
+                    user.avatar += "?d=" + new URLCodec().encode(socialUser.avatarUrl().get());
+                } catch (EncoderException e) {
+                    // ??
+                }
+            }
         }
 
         // First user to login on a fresh new instance (so, DEV instance) is automatically set as admin
