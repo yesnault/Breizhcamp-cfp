@@ -40,6 +40,7 @@ public class CfpUserService extends BaseUserService {
         if (userCfp!=null) {
             identity = userToIdentity(userCfp, identityId);
         }
+        Logger.info("doFind result : " + identityId.userId() + " / " + identityId.providerId() + " :: " + identity);
         return identity;
     }
 
