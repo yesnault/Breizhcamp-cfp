@@ -61,6 +61,8 @@ object ApplicationBuild extends Build {
         }
     }
 
+    doc in Compile <<= target.map(_ / "none")
+
 }
 
 
