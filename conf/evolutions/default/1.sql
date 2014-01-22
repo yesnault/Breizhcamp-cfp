@@ -112,8 +112,7 @@ create table track (
 create table user (
   id                        bigint auto_increment not null,
   email                     varchar(255),
-  first_name                varchar(255),
-  last_name                 varchar(255),
+  full_name                 varchar(255),
   date_creation             datetime,
   admin                     tinyint(1) default 0,
   notif_on_my_proposal      tinyint(1) default 0,

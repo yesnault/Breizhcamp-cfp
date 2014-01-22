@@ -30,11 +30,7 @@ public class User extends Model {
     
     @Constraints.Required
     @Formats.NonEmpty
-    public String firstName;
-
-    @Constraints.Required
-    @Formats.NonEmpty
-    public String lastName;
+    public String fullName;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JsonIgnore
@@ -103,7 +99,7 @@ public class User extends Model {
     
     @JsonProperty("isInfoValid")
     public boolean isInfoValid() {
-        if (isEmpty(email) || isEmpty(firstName) || isEmpty(lastName)) {
+        if (isEmpty(email) || isEmpty(fullName)) {
             return false;
         }
         if (!admin && isEmpty(description)) {
@@ -232,6 +228,6 @@ public class User extends Model {
     }
 
     public String getFullname() {
-        return firstName + " " + lastName;
+        return fullName;
     }
 }

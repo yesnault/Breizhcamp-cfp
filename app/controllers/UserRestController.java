@@ -36,8 +36,7 @@ public class UserRestController extends BaseController {
         for (User userJson : User.findAll()) {
             User userOut = new User();
             userOut.id = userJson.id;
-            userOut.firstName = userJson.firstName;
-            userOut.lastName = userJson.lastName;
+            userOut.fullName = userJson.fullName;
             userOut.email =  userJson.email;
             userOut.admin  =  userJson.admin;
             userOut.credentials =  userJson.credentials;
@@ -55,8 +54,7 @@ public class UserRestController extends BaseController {
             if (!coSpeaker.id.equals(user.id)) {
                 User coSpeakerOut = new User();
                 coSpeakerOut.id = coSpeaker.id;
-                coSpeakerOut.firstName = coSpeaker.firstName;
-                coSpeakerOut.lastName = coSpeaker.lastName;
+                coSpeakerOut.fullName = coSpeaker.fullName;
                 coSpeakers.add(coSpeakerOut);
             }
         }

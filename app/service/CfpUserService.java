@@ -155,10 +155,8 @@ public class CfpUserService extends BaseUserService {
 
         if (user.email == null && socialUser.email().isDefined())
             user.email = socialUser.email().get();
-        if (user.firstName == null)
-            user.firstName = socialUser.firstName();
-        if (user.lastName == null)
-            user.lastName = socialUser.lastName();
+        if (user.fullName == null)
+            user.fullName = socialUser.fullName();
         if (user.avatar == null && user.email != null) {
             user.avatar = "https://www.gravatar.com/avatar/" + DigestUtils.md5Hex(user.email.getBytes());;
             if (socialUser.avatarUrl().isDefined()) {
@@ -239,9 +237,9 @@ public class CfpUserService extends BaseUserService {
             if (credential.providerId.equals(providerId)) {
                 SocialUser socialUser = new SocialUser(
                         new IdentityId(credential.extUserId, credential.providerId),
-                        user.firstName,
-                        user.lastName,
-                        user.firstName + " " + user.lastName,
+                        null,
+                        null,
+                        user.fullName,
                         Option.apply(user.email),
                         Option.apply(user.avatar),
                         null,
