@@ -4,8 +4,7 @@ import securesocial.core._
 import play.api.libs.oauth.{RequestToken, OAuthCalculator}
 import play.api.libs.ws.WS
 import play.api.{Application, Logger}
-import securesocial.core.providers.LinkedInOAuth2Provider
-import LinkedInOAuth2Provider._
+import CustomLinkedInOAuth2Provider._
 
 
 /**
@@ -13,11 +12,11 @@ import LinkedInOAuth2Provider._
  */
 class CustomLinkedInOAuth2Provider(application: Application) extends OAuth2Provider(application) {
 
-  override def id = LinkedInOAuth2Provider.LinkedIn
+  override def id = CustomLinkedInOAuth2Provider.LinkedIn
 
   override def fillProfile(user: SocialUser): SocialUser = {
     val accessToken = user.oAuth2Info.get.accessToken
-    val promise = WS.url(LinkedInOAuth2Provider.Api + accessToken).get()
+    val promise = WS.url(CustomLinkedInOAuth2Provider.Api + accessToken).get()
 
     try {
       val response = awaitResult(promise)
@@ -35,6 +34,7 @@ class CustomLinkedInOAuth2Provider(application: Application) extends OAuth2Provi
         }
         case _ => {
           val userId = (me \ Id).as[String]
+          var email = (me \ Email).asOpt[String]
           val firstName = (me \ FirstName).asOpt[String].getOrElse("")
           val lastName = (me \ LastName).asOpt[String].getOrElse("")
           val fullName = (me \ FormattedName).asOpt[String].getOrElse("")
@@ -42,6 +42,7 @@ class CustomLinkedInOAuth2Provider(application: Application) extends OAuth2Provi
 
           SocialUser(user).copy(
             identityId = IdentityId(userId, id),
+            email = email,
             firstName = firstName,
             lastName = lastName,
             fullName= fullName,
@@ -68,6 +69,7 @@ object CustomLinkedInOAuth2Provider {
   val Id = "id"
   val FirstName = "firstName"
   val LastName = "lastName"
+  val Email = "email-address"
   val FormattedName = "formattedName"
   val PictureUrl = "pictureUrl"
 }
