@@ -63,11 +63,6 @@ public class CfpUserService extends BaseUserService {
         }
         populateUser(userCfp, socialUser);
 
-        if (User.findAll().isEmpty()){
-            userCfp.admin = true;
-        }
-
-        userCfp.save();
         return socialUser;
     }
 
@@ -161,6 +156,14 @@ public class CfpUserService extends BaseUserService {
         if (user.avatar == null && socialUser.avatarUrl().isDefined()) {
             user.avatar = socialUser.avatarUrl().get();
         }
+
+        // First user to login on a fresh new instance (so, DEV instance) is automatically set as admin
+        if (User.findAll().isEmpty()){
+            user.admin = true;
+        }
+
+        user.save();
+
         String provider = socialUser.identityId().providerId();
         boolean known = false;
         for (Credentials credential : user.credentials) {
@@ -168,6 +171,7 @@ public class CfpUserService extends BaseUserService {
                 known = false;
             }
         }
+
         if (!known) {
             Credentials credentials = new Credentials();
             credentials.extUserId = socialUser.identityId().userId();
@@ -204,7 +208,6 @@ public class CfpUserService extends BaseUserService {
             credentials.user = user;
             credentials.save();
         }
-
         return user;
     }
 
