@@ -66,7 +66,7 @@ public class Proposal extends Model {
     }
     public StatusProposal statusProposal;
 
-    public TalkLevel level;
+    public TalkAudience audience;
 
     @ManyToMany(mappedBy = "proposals")
     @JsonIgnore

@@ -171,10 +171,10 @@ public class ProposalRestController extends BaseController {
                     proposalJson.putNull("statusProposal");
                 }
 
-                if (proposal.level != null) {
-                    proposalJson.put("level", proposal.level.name());
+                if (proposal.audience != null) {
+                    proposalJson.put("audience", proposal.audience.name());
                 } else {
-                    proposalJson.putNull("level");
+                    proposalJson.putNull("audience");
                 }
 
                 if (proposal.speaker != null) {
@@ -260,7 +260,7 @@ public class ProposalRestController extends BaseController {
             dbProposal.title = formProposal.title;
             dbProposal.description = formProposal.description;
             dbProposal.format = formProposal.format;
-            dbProposal.level = formProposal.level;
+            dbProposal.audience = formProposal.audience;
             dbProposal.track = formProposal.track;
 
             dbProposal.indicationsOrganisateurs = formProposal.indicationsOrganisateurs;
@@ -659,8 +659,8 @@ public class ProposalRestController extends BaseController {
         @CsvColumn(value = "indicationsOrganisateurs", order = 8)
         public String indicationsOrganisateurs;
 
-        @CsvColumn(value = "level", order = 8)
-        public String level;
+        @CsvColumn(value = "audience", order = 8)
+        public String audience;
 
 
         public static ProposalCsv fromProposal(Proposal proposal) {
@@ -678,8 +678,8 @@ public class ProposalRestController extends BaseController {
                 proposalCsv.status = proposal.statusProposal.name();
             }
 
-            if (proposal.level != null) {
-                proposalCsv.level = proposal.level.name();
+            if (proposal.audience != null) {
+                proposalCsv.audience = proposal.audience.name();
             }
 
             if (VoteStatus.getVoteStatus() == VoteStatusEnum.CLOSED) {

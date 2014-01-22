@@ -1,6 +1,6 @@
 package models;
 
 
-public enum TalkLevel {
+public enum TalkAudience {
     BEGINNER, INTERMEDIATE, ADVANCED;
 }
