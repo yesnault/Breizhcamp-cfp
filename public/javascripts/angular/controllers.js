@@ -35,8 +35,8 @@ function RootController($scope, UserService, $log, $location) {
 }
 
 
-DashboardController.$inject = ['$rootScope', '$scope', 'ProfilService', 'AccountService', 'UserService', 'StatService', '$log'];
-function DashboardController($rootScope, $scope, ProfilService, AccountService, UserService, StatService, $log) {
+DashboardController.$inject = ['$rootScope', '$scope', '$http', 'ProfilService', 'AccountService', 'UserService', 'StatService', '$log'];
+function DashboardController($rootScope, $scope, $http, ProfilService, AccountService, UserService, StatService, $log) {
 
     $scope.checkloc(false);
 
@@ -44,15 +44,42 @@ function DashboardController($rootScope, $scope, ProfilService, AccountService, 
     $rootScope.user = UserService.getUserData();
 
     $scope.proposals = ProfilService.getProposals(idUser);
-    $scope.proposalsDraft = ProfilService.getDrafts(idUser);
-    $scope.proposalsok = ProfilService.getProposalsAccepted(idUser);
-    $scope.proposalsko = ProfilService.getProposalsRefused(idUser);
-    $scope.proposals_w = ProfilService.getProposalsWait(idUser);
 
     if (UserService.isAdmin()) {
         $scope.proposalstats = StatService.getProposalStat();
     }
 
+    $scope.deleteProposal = function (proposal) {
+        var confirmation = confirm('\u00cates vous s\u00fbr de vouloir supprimer le proposal "' + proposal.title + '" ?');
+        if (confirmation) {
+            ProposalService.delete({'id':proposal.id}, function (data) {
+                $scope.proposals = ProposalService.query();
+                $scope.errors = undefined;
+            }, function (err) {
+                $log.info("Delete du proposal ko");
+                $log.info(err);
+                $scope.errors = err.data;
+            });
+        }
+    }
+
+    $scope.submitProposal = function (proposal) {
+        var confirmation = confirm('\u00cates vous s\u00fbr de vouloir soumettre le proposal "' + proposal.title + '" a l\'équipe ?');
+        if (confirmation) {
+            $http({
+                method:'POST',
+                url:'/proposal/submit/' + proposal.id,
+                data:{}
+            }).success(function (data, status, headers, config) {
+                    $scope.proposals = ProfilService.getProposals(idUser);
+                    $scope.errors = undefined;
+                }).error(function (data, status, headers, config) {
+                    $log.info("soumission du proposal ko");
+                    $log.info(status);
+                    $scope.errors = status;
+                });
+        }
+    }
 }
 
 // Pour que l'injection de dépendances fonctionne en cas de 'minifying'
@@ -114,7 +141,7 @@ function NewProposalController($scope, $log, $location, ProposalService, Creneau
 
         ProposalService.save($scope.proposal, function (data) {
             $log.info("Soummission du proposal ok");
-            $location.url('/manageproposal');
+            $location.url('/dashboard');
         }, function (err) {
             $log.info("Soummission du proposal ko");
             $log.info(err.data);
@@ -195,16 +222,16 @@ function EditProposalController($scope, $log, $location, $routeParams, ProposalS
     $scope.editorIndication.run();
 
     $scope.saveProposal = function () {
-        $log.info("Sauvegarde du proposal : " + $routeParams.proposalId);
+        $log.info("Sauvegarde du sujet : " + $routeParams.proposalId);
         // Contournement pour ne pas soumettre l'objet speaker dans le POST JSON
         $scope.proposal.speaker = null;
         $scope.proposal.comments = null;
 
         ProposalService.save($scope.proposal, function (data) {
-            $log.info("Soummission du proposal ok");
-            $location.url('/manageproposal');
+            $log.info("Soummission du sujet ok");
+            $location.url('/dashboard');
         }, function (err) {
-            $log.info("Soummission du proposal ko");
+            $log.info("Soummission du sujet ko");
             $log.info(err.data);
             $scope.errors = err.data;
         });
@@ -231,49 +258,6 @@ function EditProposalController($scope, $log, $location, $routeParams, ProposalS
     };
 
     $scope.changeFormat = changeFormat;
-}
-
-
-// Pour que l'injection de dépendances fonctionne en cas de 'minifying'
-ManageProposalController.$inject = ['$scope', '$log', '$location', 'ProposalService', '$http'];
-function ManageProposalController($scope, $log, $location, ProposalService, http) {
-
-    $scope.checkloc(false);
-
-    $scope.proposals = ProposalService.query();
-
-    $scope.deleteProposal = function (proposal) {
-        var confirmation = confirm('\u00cates vous s\u00fbr de vouloir supprimer le proposal "' + proposal.title + '" ?');
-        if (confirmation) {
-            ProposalService.delete({'id':proposal.id}, function (data) {
-                $scope.proposals = ProposalService.query();
-                $scope.errors = undefined;
-            }, function (err) {
-                $log.info("Delete du proposal ko");
-                $log.info(err);
-                $scope.errors = err.data;
-            });
-        }
-    }
-
-    $scope.submitProposal = function (proposal) {
-        var confirmation = confirm('\u00cates vous s\u00fbr de vouloir soumettre le proposal "' + proposal.title + '" a l\'équipe ?');
-        if (confirmation) {
-            http({
-                method:'POST',
-                url:'/proposal/submit/' + proposal.id,
-                data:{}
-            }).success(function (data, status, headers, config) {
-                    $scope.proposals = ProposalService.query();
-                    $scope.errors = undefined;
-                }).error(function (data, status, headers, config) {
-                    $log.info("soumission du proposal ko");
-                    $log.info(status);
-                    $scope.errors = status;
-                });
-        }
-    }
-
 }
 
 

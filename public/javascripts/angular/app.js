@@ -19,7 +19,6 @@ App.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/admin/proposals/list', {templateUrl: '/assets/pages/partials/admin/proposals.html', controller: ListProposalsController});
     $routeProvider.when('/submitproposal/new', {templateUrl: '/assets/pages/partials/proposal/submit.html', controller: NewProposalController});
     $routeProvider.when('/editproposal/:proposalId', {templateUrl: '/assets/pages/partials/proposal/submit.html', controller: EditProposalController});
-    $routeProvider.when('/manageproposal', {templateUrl: '/assets/pages/partials/proposal/manage.html', controller: ManageProposalController});
     $routeProvider.when('/proposals/see/:proposalId', {templateUrl: '/assets/pages/partials/proposal/proposal.html', controller: SeeProposalsController});
 
     $routeProvider.when('/admin/events', {templateUrl: 'assets/pages/partials/event/events.html', controller: EventController});
