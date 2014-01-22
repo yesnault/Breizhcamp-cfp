@@ -150,6 +150,8 @@ public class CfpUserService extends BaseUserService {
      */
     private User populateUser(User user, Identity socialUser) {
 
+        if (user.email == null && socialUser.email().isDefined())
+            user.email = socialUser.email().get();
         if (user.firstName == null)
             user.firstName = socialUser.firstName();
         if (user.lastName == null)
