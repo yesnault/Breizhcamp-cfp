@@ -86,17 +86,14 @@ public class ProposalRestController extends BaseController {
     public static Result getProposals(Long userId) {
         User user = User.find.byId(userId);
 
-
         List<Proposal> allProposals = Proposal.findBySpeaker(user);
         List<Proposal> proposals = new ArrayList<Proposal>();
         for (Proposal proposal : allProposals) {
-            if (!proposal.draft) {
-                proposal.fiteredComments(user);
-                proposal.fiteredCoSpeakers();
-                proposal.filtereSpeaker();
+            proposal.fiteredComments(user);
+            proposal.fiteredCoSpeakers();
+            proposal.filtereSpeaker();
 
-                proposals.add(proposal);
-            }
+            proposals.add(proposal);
         }
         return ok(toJson(proposals));
     }
