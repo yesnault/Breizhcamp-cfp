@@ -40,6 +40,7 @@ App.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/profil/:userId', {templateUrl: '/assets/pages/partials/profil.html', controller: ProfilController});
 
     $routeProvider.when('/settings/account', {templateUrl: '/assets/pages/partials/settings/account.html', controller: SettingsAccountController});
+    $routeProvider.when('/settings/links', {templateUrl: '/assets/pages/partials/settings/links.html', controller: LinksAccountController});
     $routeProvider.when('/settings/notifs', {templateUrl: '/assets/pages/partials/settings/notifs.html', controller: NotifsAccountController});
     $routeProvider.when('/settings/email', {templateUrl: '/assets/pages/partials/settings/email.html', controller: EmailAccountController});
     $routeProvider.when('/settings/mac', {templateUrl: '/assets/pages/partials/settings/mac.html', controller: MacAccountController});

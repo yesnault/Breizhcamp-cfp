@@ -2,11 +2,11 @@ package models;
 
 
 public enum LinkType {
-    TWITTER("Twitter","icon-twitter", "https://twitter.com/"),
-    LINKEDIN("Linked-in","icon-linkedin", "http://fr.linkedin.com/in/"),
-    GITHUB("Github","icon-github"), GOOGLE_PLUS("Google Plus","icon-google-plus"),
-    SLIDESHARE("SlideShare","icon-slideshare"), BLOG("Blog","icon-rss"),
-    COMPAGNY("Société","icon-suitcase"), OTHER("Autre","icon-bookmark");
+    TWITTER("Twitter","fa-twitter", "https://twitter.com/"),
+    LINKEDIN("Linked-in","fa-linkedin", "http://fr.linkedin.com/in/"),
+    GITHUB("Github","fa-github","https://github.com/"), GOOGLE_PLUS("Google Plus","fa-google-plus","https://plus.google.com/+"),
+    SLIDESHARE("SlideShare","fa-slideshare","http://fr.slideshare.net/"), BLOG("Blog","fa-rss"),
+    COMPAGNY("Société","fa-suitcase"), OTHER("Autre","fa-bookmark");
 
     private String label;
     private String icon;

@@ -2,11 +2,31 @@
     <div class="container-fluid">
         <div class="row-fluid">
             <div ng-show="user" class="col-md-2 breadcrumb">
-                <p><h4> <a href="/#/profil/{{user.id}}">{{user.fullname}}</a></h4></p>
+                <h2><li class="fa fa-user"></li> Profil</h2>
+
+                <h4> <a href="/#/profil/{{user.id}}">{{user.fullname}}</a></h4>
                 <p>{{user.email}}</p>
+
+                <p>
+                    <img ng-src="{{user.avatar}}?s=100">
+                </p>
                 <hr/>
-                <img ng-src="{{user.avatar}}?s=100">
-                <hr/>
+                <p>
+                    <i ng-show="user.avatar != null" class="fa fa-check-square" style="color:green"></i>
+                    <i ng-show="user.avatar == null" class="fa fa-square-o" style="color:red"></i> Photo
+                </p>
+                <p>
+                    <i ng-show="user.description != null" class="fa fa-check-square" style="color:green"></i>
+                    <i ng-show="user.description == null" class="fa fa-square-o" style="color:red"></i> Biographie
+                </p>
+                <p>
+                    <i ng-show="user.links.length > 0" class="fa fa-check-square" style="color:green"></i>
+                    <i ng-show="user.links.length == 0" class="fa fa-square-o" style="color:red"></i> Liens
+                </p>
+                <p>
+                    <i ng-show="user.adresseMac != null" class="fa fa-check-square" style="color:green"></i>
+                    <i ng-show="user.adresseMac == null" class="fa fa-square-o" style="color:red"></i> Accès réseau
+                </p>
                 <p>
                     <a href="#/settings/account" class="btn btn-primary">Editer votre profil</a>
                 </p>

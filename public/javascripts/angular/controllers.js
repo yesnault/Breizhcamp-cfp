@@ -649,8 +649,8 @@ function ProfilController($scope, $log, $routeParams, AccountService, ProfilServ
 }
 
 
-SettingsAccountController.$inject = ['$scope', '$log', 'AccountService', 'UserService', '$http', '$location'];
-function SettingsAccountController($scope, $log, AccountService, UserService, http, $location) {
+LinksAccountController.$inject = ['$scope', '$log', 'AccountService', 'UserService', '$http', '$location'];
+function LinksAccountController($scope, $log, AccountService, UserService, http, $location) {
 
     $scope.checkloc(false);
 
@@ -661,11 +661,7 @@ function SettingsAccountController($scope, $log, AccountService, UserService, ht
     $scope.addLink = false;
     $scope.addOther = false;
 
-    $scope.converter = new Markdown.getSanitizingConverter();
-    $scope.editor = new Markdown.Editor($scope.converter);
-    $scope.editor.run();
 
-    //$('.selectpicker').selectpicker();
     $scope.linkUsername = function (link) {
         $scope.link.url = $scope.linkType.url + link.username;
     };
@@ -741,7 +737,23 @@ function SettingsAccountController($scope, $log, AccountService, UserService, ht
                 $log.info(status);
             });
 
-    }
+    };
+}
+
+SettingsAccountController.$inject = ['$scope', '$log', 'AccountService', 'UserService', '$http', '$location'];
+function SettingsAccountController($scope, $log, AccountService, UserService, http, $location) {
+
+    $scope.checkloc(false);
+
+    var idUser = UserService.getUserData().id;
+    $scope.user = AccountService.getUser(idUser);
+
+    $scope.converter = new Markdown.getSanitizingConverter();
+    $scope.editor = new Markdown.Editor($scope.converter);
+    $scope.editor.run();
+
+    //$('.selectpicker').selectpicker();
+
 
     $scope.saveSettings = function () {
         var user = jQuery.extend(true, {}, $scope.user);

@@ -1,0 +1,172 @@
+<div class="row">
+
+
+<div class="container-fluid">
+<div class="row-fluid">
+<div class="col-md-2 breadcrumb">
+    <h2><li class="fa fa-user"></li> Profil</h2>
+
+    <h4> <a href="/#/profil/{{user.id}}">{{user.fullname}}</a></h4>
+    <p>{{user.email}}</p>
+
+    <p>
+        <img ng-src="{{user.avatar}}?s=100">
+    </p>
+    <hr/>
+    <a href="/#/settings/account">Profil</a>
+    <br/>
+    Liens
+    <br/>
+    <a href="/#/settings/notifs">Notifications</a>
+    <br/>
+    <a href="/#/settings/mac">Adresse mac</a>
+    <hr/>
+    <p>
+        <i ng-show="user.avatar != null" class="fa fa-check-square" style="color:green"></i>
+        <i ng-show="user.avatar == null" class="fa fa-square-o" style="color:red"></i> Photo
+    </p>
+    <p>
+        <i ng-show="user.description != null" class="fa fa-check-square" style="color:green"></i>
+        <i ng-show="user.description == null" class="fa fa-square-o" style="color:red"></i> Biographie
+    </p>
+    <p>
+        <i ng-show="user.links.length > 0" class="fa fa-check-square" style="color:green"></i>
+        <i ng-show="user.links.length == 0" class="fa fa-square-o" style="color:red"></i> Liens
+    </p>
+    <p>
+        <i ng-show="user.adresseMac != null" class="fa fa-check-square" style="color:green"></i>
+        <i ng-show="user.adresseMac == null" class="fa fa-square-o" style="color:red"></i> Accès réseau
+    </p>
+</div>
+<div class="col-md-10">
+
+    <div class="well">
+
+        <h2>Liste de vos liens</h2>
+
+        <form ng-submit="saveLinks()">
+            <fieldset>
+                <table class="table table-bordered table-striped">
+                    <tbody>
+                    <tr>
+                        <th class="col-md-4">Libellé</th>
+                        <th class="col-md-4">URL</th>
+                        <th class="col-md-2">Actions</th>
+                    </tr>
+
+                    <tr ng-repeat="link in user.links">
+                        <td>
+
+                            <div class="form-group {{{true:'error', false:''}[errors[link.id].label != undefined]}}">
+                                <div class="controls">
+                                    <input type="text" id="label{{link.id}}" name="label"
+                                           value="{{link.label}}"
+                                           placeholder="Libellé" class="input-sm" ng-model="link.label">
+
+
+                                    <p class="help-inline" ng-repeat="error in errors[link.id].label">
+                                        {{error}}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group {{{true:'error', false:''}[errors[link.id].url != undefined]}}">
+                                <div class="controls">
+                                    <div class="input-group input-group-sm">
+                                        <i class="form-icon {{link.icon}}"></i>
+                                        <input type="url" id="url{{link.id}}" name="url"
+                                               value="{{link.url}}" class="form-text" size="80"
+                                               placeholder="URL" ng-model="link.url">
+                                    </div>
+                                    <p class="help-inline" ng-repeat="error in errors[link.id].url">
+                                        {{error}}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <a ng-click="removeLink(link)">
+                                <i class="icon-remove"></i>
+                            </a></td>
+                    </tr>
+                    <tr>
+                        <th colspan="3">
+                            <select class="selectpicker" id="typeLink" ng-model="typeLink">
+                                <option data-icon="{{linkType.icon}}" ng-repeat="linkType in linkTypes"
+                                        value="{{linkType.id}}">{{linkType.label}}
+                                </option>
+                            </select>
+                            <a ng-click="addTypeLink()" ng-hide="adding" class="btn btn-success btn-xs">Nouveau
+                                lien</a></th>
+                    </tr>
+                    <tr id="addLink" ng-show="addLink">
+                        <td colspan="3">
+                            <div class="form-group {{{true:'error', false:''}[errors.url != undefined]}}">
+                                <div class="controls">
+                                    <div class="input-group input-group-sm">
+                                        <i class="form-icon {{linkType.icon}}"></i>
+
+                                        <input type="text" name="username" ng-change="linkUsername(link)"
+                                               ng-model="link.username"
+                                               class="form-text" placeholder="Username"/>
+
+                                    </div>
+                                    <input type="text" name="url"
+                                           placeholder="{{link.url}}"
+                                           class="form-control" ng-model="link.url"/>
+
+                                    <p class="help-inline" ng-repeat="error in errors.url">{{error}}</p>
+                                </div>
+                            </div>
+
+                        </td>
+                    </tr>
+                    <tr id="addOther" ng-show="addOther">
+                        <td>
+                            <div class="form-group {{{true:'error', false:''}[errors.label != undefined]}}">
+                                <div class="controls">
+                                    <input type="text" name="label" value="" placeholder="Libellé"
+                                           class="input-small" ng-model="link.label">
+
+                                    <p class="help-inline">Longueur maximum: 50, Obligatoire</p>
+
+                                    <p class="help-inline" ng-repeat="error in errors.label">
+                                        {{error}}</p>
+                                </div>
+                            </div>
+
+                        </td>
+                        <td>
+
+                            <div class="form-group {{{true:'error', false:''}[errors.url != undefined]}}">
+                                <div class="controls">
+
+                                    <div class="input-group input-group-sm">
+                                        <input type="url" name="url" value="" class="form-text"
+                                               placeholder="Url" ng-model="link.url">
+                                    </div>
+                                    <p class="help-inline">Longueur maximum: 200, Obligatoire</p>
+
+                                    <p class="help-inline" ng-repeat="error in errors.url">{{error}}</p>
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td></td>
+                    </tr>
+                </table>
+
+
+            </fieldset>
+            <span class="badge badge-important" ng-repeat="error in errors['']">{{error}}</span>
+
+            <div class="form-actions">
+                <input type="submit" class="btn btn-primary" value="Valider">
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+</div>
+</div>
