@@ -69,7 +69,7 @@ public class Comment extends Model {
             URL url = new URL(urlString);
 
             String subjet = Messages.get("proposals.comment.new.mail.subject", proposal.title);
-            String message = Messages.get("proposals.comment.new.mail.message", proposal.title, author.fullname, comment,url);
+            String message = Messages.get("proposals.comment.new.mail.message", proposal.title, author.getFullname(), comment,url);
 
             Mail.sendMail(new Mail.Envelop(subjet, message, emails));
         }

@@ -1,4 +1,5 @@
 # --- Created by Ebean DDL
+# To stop Ebean DDL generation, remove this comment and start using Evolutions
 
 # --- !Ups
 
@@ -18,8 +19,6 @@ create table credentials (
   user_id                   bigint,
   ext_user_id               varchar(255),
   provider_id               varchar(255),
-  first_name                varchar(255),
-  last_name                 varchar(255),
   o_auth1token              varchar(255),
   o_auth1secret             varchar(255),
   o_auth2access_token       varchar(255),
@@ -113,9 +112,8 @@ create table track (
 create table user (
   id                        bigint auto_increment not null,
   email                     varchar(255),
-  fullname                  varchar(255),
-  authentication_method     varchar(255),
-  credentials_id            bigint,
+  first_name                varchar(255),
+  last_name                 varchar(255),
   date_creation             datetime,
   admin                     tinyint(1) default 0,
   notif_on_my_proposal      tinyint(1) default 0,
@@ -185,12 +183,10 @@ alter table proposal add constraint fk_proposal_track_11 foreign key (track_id) 
 create index ix_proposal_track_11 on proposal (track_id);
 alter table talk_format add constraint fk_talk_format_event_12 foreign key (event_id) references event (id) on delete restrict on update restrict;
 create index ix_talk_format_event_12 on talk_format (event_id);
-alter table user add constraint fk_user_credentials_13 foreign key (credentials_id) references credentials (id) on delete restrict on update restrict;
-create index ix_user_credentials_13 on user (credentials_id);
-alter table vote add constraint fk_vote_user_14 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_vote_user_14 on vote (user_id);
-alter table vote add constraint fk_vote_proposal_15 foreign key (proposal_id) references proposal (id) on delete restrict on update restrict;
-create index ix_vote_proposal_15 on vote (proposal_id);
+alter table vote add constraint fk_vote_user_13 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_vote_user_13 on vote (user_id);
+alter table vote add constraint fk_vote_proposal_14 foreign key (proposal_id) references proposal (id) on delete restrict on update restrict;
+create index ix_vote_proposal_14 on vote (proposal_id);
 
 
 

@@ -144,7 +144,7 @@ public class AcceptedController extends Controller {
         List<AdressMacForSpeakers> macAddressOfSpeakers = new ArrayList<AdressMacForSpeakers>();
 
         for (User speaker : speakersSorted) {
-            macAddressOfSpeakers.add(new AdressMacForSpeakers(speaker.fullname, speaker.adresseMac, speaker.email, Joiner.on('\n').join(
+            macAddressOfSpeakers.add(new AdressMacForSpeakers(speaker.getFullname(), speaker.adresseMac, speaker.email, Joiner.on('\n').join(
                     Iterables.transform(speakers.get(speaker), new Function<Proposal, String>() {
                         @Override
                         public String apply(Proposal proposal) {
@@ -282,7 +282,7 @@ public class AcceptedController extends Controller {
     private static ObjectNode getSpeakerInJson(User speaker) {
         ObjectNode speakerJson = Json.newObject();
         speakerJson.put("id", speaker.id);
-        speakerJson.put("fullname", speaker.fullname);
+        speakerJson.put("fullname", speaker.getFullname());
         speakerJson.put("avatar", speaker.getAvatar());
         speakerJson.put("description", speaker.description);
 

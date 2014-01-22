@@ -11,6 +11,8 @@ import javax.persistence.*;
 import java.util.*;
 import models.utils.BooleanUtils;
 
+import static org.apache.commons.lang3.StringUtils.isEmpty;
+
 /**
  *
  */
@@ -28,18 +30,15 @@ public class User extends Model {
     
     @Constraints.Required
     @Formats.NonEmpty
-    public String fullname;
+    public String firstName;
 
-    /**
-     * Valeur de l'objet secureSocial
-     * oauth1 / oauth2 / userPassword / openId
-     */
-    @JsonIgnore
-    public String authenticationMethod;
+    @Constraints.Required
+    @Formats.NonEmpty
+    public String lastName;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     @JsonIgnore
-    public Credentials credentials;
+    public List<Credentials> credentials;
     
     @Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date dateCreation;
@@ -102,28 +101,13 @@ public class User extends Model {
         return jsonFields;
     }
     
-    
-    @JsonProperty("provider")
-    public String getProvider(){
-        String provider = null;
-        if (credentials!=null) {
-            provider = this.credentials.providerId;
-        }
-        return provider;
-    }
-
     @JsonProperty("isInfoValid")
     public boolean isInfoValid() {
-        if (email == null || email.isEmpty()) {
+        if (isEmpty(email) || isEmpty(firstName) || isEmpty(lastName)) {
             return false;
         }
-        if (fullname == null || fullname.isEmpty()) {
+        if (!admin && isEmpty(description)) {
             return false;
-        }
-        if (!admin) {
-            if (description == null || description.isEmpty()) {
-                return false;
-            }
         }
 
         return true;
@@ -194,7 +178,6 @@ public class User extends Model {
     /**
      * Retrieve a user from an external Id (SocialUser id/providerId).
      *
-     * @param uuid uuid to search
      * @return a user
      */
     public static User findByExternalId(String userId, String providerId) {
@@ -207,26 +190,7 @@ public class User extends Model {
                     .eq("credentials.providerId", providerId)
                     .findUnique();
     }
-
     
-    public static User findByEmailAndProvider(String email, String provider) {
-        
-        return find.fetch("credentials").where()
-                    .eq("credentials.providerId", provider)
-                    .eq("email", email)
-                    .findUnique();
-    }
-    
-    /**
-     * Retrieve a user from a fullname.
-     *
-     * @param fullname Full name
-     * @return a user
-     */
-    public static User findByFullname(String fullname) {
-        return find.where().eq("fullname", fullname).findUnique();
-    }
-
     public static List<User> findAll() {
         return find.all();
     }
@@ -237,7 +201,6 @@ public class User extends Model {
 
     public void filterInfos() {
         adresseMac = null;
-        authenticationMethod = null;
         admin = null;
         dateCreation = null;
         email = null;
@@ -247,6 +210,7 @@ public class User extends Model {
         setNotifOnMyProposal(null);
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -255,28 +219,7 @@ public class User extends Model {
 
         User user = (User) o;
 
-        if (admin != null ? !admin.equals(user.admin) : user.admin != null) return false;
-        if (adresseMac != null ? !adresseMac.equals(user.adresseMac) : user.adresseMac != null) return false;
-        if (authenticationMethod != null ? !authenticationMethod.equals(user.authenticationMethod) : user.authenticationMethod != null)
-            return false;
-        if (avatar != null ? !avatar.equals(user.avatar) : user.avatar != null) return false;
-        if (coSpeakedProposals != null ? !coSpeakedProposals.equals(user.coSpeakedProposals) : user.coSpeakedProposals != null)
-            return false;
-        if (credentials != null ? !credentials.equals(user.credentials) : user.credentials != null) return false;
-        if (dateCreation != null ? !dateCreation.equals(user.dateCreation) : user.dateCreation != null) return false;
-        if (description != null ? !description.equals(user.description) : user.description != null) return false;
-        if (dynamicFieldValues != null ? !dynamicFieldValues.equals(user.dynamicFieldValues) : user.dynamicFieldValues != null)
-            return false;
-        if (email != null ? !email.equals(user.email) : user.email != null) return false;
-        if (fullname != null ? !fullname.equals(user.fullname) : user.fullname != null) return false;
-        if (id != null ? !id.equals(user.id) : user.id != null) return false;
-        if (links != null ? !links.equals(user.links) : user.links != null) return false;
-        if (notifAdminOnAllProposal != null ? !notifAdminOnAllProposal.equals(user.notifAdminOnAllProposal) : user.notifAdminOnAllProposal != null)
-            return false;
-        if (notifAdminOnProposalWithComment != null ? !notifAdminOnProposalWithComment.equals(user.notifAdminOnProposalWithComment) : user.notifAdminOnProposalWithComment != null)
-            return false;
-        if (notifOnMyProposal != null ? !notifOnMyProposal.equals(user.notifOnMyProposal) : user.notifOnMyProposal != null)
-            return false;
+        if (!email.equals(user.email)) return false;
 
         return true;
     }
@@ -284,8 +227,11 @@ public class User extends Model {
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (id != null ? id.hashCode() : 0);
-        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + email.hashCode();
         return result;
+    }
+
+    public String getFullname() {
+        return firstName + " " + lastName;
     }
 }

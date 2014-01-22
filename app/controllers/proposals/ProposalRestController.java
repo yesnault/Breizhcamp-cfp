@@ -177,7 +177,7 @@ public class ProposalRestController extends BaseController {
                 if (proposal.speaker != null) {
                     ObjectNode speakerJson = Json.newObject();
                     speakerJson.put("id", proposal.speaker.id);
-                    speakerJson.put("fullname", proposal.speaker.fullname);
+                    speakerJson.put("fullname", proposal.speaker.getFullname());
                     speakerJson.put("avatar", proposal.speaker.getAvatar());
                     proposalJson.put("speaker", speakerJson);
                 }
@@ -659,9 +659,9 @@ public class ProposalRestController extends BaseController {
         public static ProposalCsv fromProposal(Proposal proposal) {
             ProposalCsv proposalCsv = new ProposalCsv();
             if (proposal.speaker != null) {
-                proposalCsv.speakerFullName = proposal.speaker.fullname;
+                proposalCsv.speakerFullName = proposal.speaker.getFullname();
                 for (User coSpeaker : proposal.getCoSpeakers()) {
-                    proposalCsv.speakerFullName += "\n" + coSpeaker.fullname;
+                    proposalCsv.speakerFullName += "\n" + coSpeaker.getFullname();
                 }
             }
 

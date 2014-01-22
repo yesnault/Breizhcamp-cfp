@@ -6,9 +6,7 @@ import models.Credentials;
 import models.User;
 import play.Application;
 import play.Logger;
-import play.i18n.Messages;
 import scala.Option;
-import securesocial.core.AuthenticationMethod;
 import securesocial.core.Identity;
 import securesocial.core.OAuth1Info;
 import securesocial.core.OAuth2Info;
@@ -17,8 +15,6 @@ import securesocial.core.SocialUser;
 import securesocial.core.IdentityId;
 import securesocial.core.java.BaseUserService;
 import securesocial.core.java.Token;
-
-import static play.libs.Json.toJson;
 
 /**
  * Classe utilisée par SecureSocial pour la gestion des Identity
@@ -42,7 +38,7 @@ public class CfpUserService extends BaseUserService {
         User userCfp = User.findByExternalId(identityId.userId(), identityId.providerId());
         Identity identity = null;
         if (userCfp!=null) {
-            identity = userToIdentity(userCfp);
+            identity = userToIdentity(userCfp, identityId);
         }
         return identity;
     }
@@ -116,7 +112,7 @@ public class CfpUserService extends BaseUserService {
         Identity result = null;
         User user = User.findByEmail(email);
         if (user != null) {
-            result = userToIdentity(user);
+            result = userToIdentity(user, providerId);
         }
         return result;
     }
@@ -158,51 +154,62 @@ public class CfpUserService extends BaseUserService {
      */
     private User populateUser(User user, Identity socialUser) {
 
-        user.fullname = socialUser.fullName();
-        if (socialUser.avatarUrl().isDefined()) {
+        if (user.firstName == null)
+            user.firstName = socialUser.firstName();
+        if (user.lastName == null)
+            user.lastName = socialUser.lastName();
+        if (user.avatar == null && socialUser.avatarUrl().isDefined()) {
             user.avatar = socialUser.avatarUrl().get();
         }
-        if (socialUser.email().isDefined()) {
-            user.email = socialUser.email().get();
-        }
-        user.authenticationMethod = socialUser.authMethod().method();
-
-        user.credentials = new Credentials();
-        user.credentials.extUserId = socialUser.identityId().userId();
-        user.credentials.providerId = socialUser.identityId().providerId();
-        user.credentials.firstName = socialUser.firstName();
-        user.credentials.lastName = socialUser.lastName();
-
-        if (socialUser.passwordInfo().isDefined()) {
-            PasswordInfo pInfo = socialUser.passwordInfo().get();
-            user.credentials.passwordHasher = pInfo.hasher();
-            user.credentials.password = pInfo.password();
-            if (pInfo.salt().isDefined()) {
-                user.credentials.passwordSalt = pInfo.salt().get();
+        String provider = socialUser.identityId().providerId();
+        boolean known = false;
+        for (Credentials credential : user.credentials) {
+            if (credential.providerId.equals(provider)) {
+                known = false;
             }
         }
+        if (!known) {
+            Credentials credentials = new Credentials();
+            credentials.extUserId = socialUser.identityId().userId();
+            credentials.providerId = socialUser.identityId().providerId();
 
-        if (socialUser.oAuth1Info().isDefined()) {
-            OAuth1Info oAuth1 = socialUser.oAuth1Info().get();
-            user.credentials.oAuth1Secret = oAuth1.secret();
-            user.credentials.oAuth1Token = oAuth1.token();
-        }
+            if (socialUser.passwordInfo().isDefined()) {
+                PasswordInfo pInfo = socialUser.passwordInfo().get();
+                credentials.passwordHasher = pInfo.hasher();
+                credentials.password = pInfo.password();
+                if (pInfo.salt().isDefined()) {
+                    credentials.passwordSalt = pInfo.salt().get();
+                }
+            }
 
-        if (socialUser.oAuth2Info().isDefined()) {
-            OAuth2Info oAuth2 = socialUser.oAuth2Info().get();
-            user.credentials.oAuth2AccessToken = oAuth2.accessToken();
-            if (oAuth2.expiresIn().isDefined()) {
-                user.credentials.oAuth2ExpiresIn = (Integer) oAuth2.expiresIn().get();
+            if (socialUser.oAuth1Info().isDefined()) {
+                OAuth1Info oAuth1 = socialUser.oAuth1Info().get();
+                credentials.oAuth1Secret = oAuth1.secret();
+                credentials.oAuth1Token = oAuth1.token();
             }
-            if (oAuth2.tokenType().isDefined()) {
-                user.credentials.oAuth2TokenType = oAuth2.tokenType().get();
+
+            if (socialUser.oAuth2Info().isDefined()) {
+                OAuth2Info oAuth2 = socialUser.oAuth2Info().get();
+                credentials.oAuth2AccessToken = oAuth2.accessToken();
+                if (oAuth2.expiresIn().isDefined()) {
+                    credentials.oAuth2ExpiresIn = (Integer) oAuth2.expiresIn().get();
+                }
+                if (oAuth2.tokenType().isDefined()) {
+                    credentials.oAuth2TokenType = oAuth2.tokenType().get();
+                }
+                if (oAuth2.refreshToken().isDefined()) {
+                    credentials.oAuth2RefreshToken = oAuth2.refreshToken().get();
+                }
             }
-            if (oAuth2.refreshToken().isDefined()) {
-                user.credentials.oAuth2RefreshToken = oAuth2.refreshToken().get();
-            }
+            credentials.user = user;
+            credentials.save();
         }
 
         return user;
+    }
+
+    private Identity userToIdentity(User user, IdentityId id) {
+        return userToIdentity(user, id.providerId());
     }
 
     /**
@@ -211,46 +218,34 @@ public class CfpUserService extends BaseUserService {
      * @param user
      * @return
      */
-    private Identity userToIdentity(User user) {
-
-        IdentityId identityId;
-        String firstName = null;
-        String lastName = null;
-        if (user.authenticationMethod.equals("userPassword")) {
-            identityId = new IdentityId(user.email, "userPassword");
-        } else {
-            identityId = new IdentityId(user.credentials.extUserId, user.credentials.providerId);
-            firstName = user.credentials.firstName;
-            lastName = user.credentials.lastName;
+    private Identity userToIdentity(User user, String providerId) {
+        for (Credentials credential : user.credentials) {
+            if (credential.providerId.equals(providerId)) {
+                SocialUser socialUser = new SocialUser(
+                        new IdentityId(credential.extUserId, credential.providerId),
+                        user.firstName,
+                        user.lastName,
+                        user.firstName + " " + user.lastName,
+                        Option.apply(user.email),
+                        Option.apply(user.avatar),
+                        null,
+                        Option.apply(new OAuth1Info(
+                                credential.oAuth1Token,
+                                credential.oAuth1Secret)),
+                        Option.apply(new OAuth2Info(
+                                credential.oAuth2AccessToken,
+                                Option.apply(credential.oAuth2TokenType),
+                                Option.<Object>apply(credential.oAuth2ExpiresIn),
+                                Option.apply(credential.oAuth2RefreshToken))),
+                        Option.apply(new PasswordInfo(
+                                credential.passwordHasher,
+                                credential.password,
+                                Option.apply(credential.passwordSalt))));
+                return socialUser;
+            }
         }
 
-        OAuth1Info oAuth1 = null;
-        OAuth2Info oAuth2 = null;
-        PasswordInfo passwordInfo = null;
-        if (user.authenticationMethod.equals("oauth1")) {
-            oAuth1 = new OAuth1Info(user.credentials.oAuth1Token,
-                    user.credentials.oAuth1Secret);
-        } else if (user.authenticationMethod.equals("oauth2")) {
-            oAuth2 = new OAuth2Info(user.credentials.oAuth2AccessToken,
-                    Option.apply(user.credentials.oAuth2TokenType),
-                    Option.apply((Object) user.credentials.oAuth2ExpiresIn),
-                    Option.apply(user.credentials.oAuth2RefreshToken));
-        } else if (user.authenticationMethod.equals("userPassword")) {
-            passwordInfo = new PasswordInfo(user.credentials.passwordHasher,
-                    user.credentials.password,
-                    Option.apply(user.credentials.passwordSalt));
-        }
-
-        SocialUser socialUser = new SocialUser(identityId,
-                firstName,
-                lastName,
-                user.fullname,
-                Option.apply(user.email),
-                Option.apply(user.avatar),
-                new AuthenticationMethod(user.authenticationMethod),
-                Option.apply(oAuth1),
-                Option.apply(oAuth2),
-                Option.apply(passwordInfo));
-        return (Identity) socialUser;
+        return null;
     }
+
 }
