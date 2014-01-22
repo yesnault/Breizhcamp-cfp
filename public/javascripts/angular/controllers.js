@@ -333,7 +333,7 @@ function ListProposalsController($scope, $log, http, AllProposalService, VoteSer
 
     $scope.checkloc(true);
 
-    $scope.status = ['ACCEPTE', 'ATTENTE', 'REJETE', 'NULL'];
+    $scope.status = ['ACCEPTED', 'WAITING', 'REJECTED', 'NULL'];
 
     $scope.proposals = AllProposalService.query();
 
@@ -346,7 +346,7 @@ function ListProposalsController($scope, $log, http, AllProposalService, VoteSer
     $scope.reverse = true;
 
     $scope.proposalsAcceptes = function (proposal) {
-        return proposal.statusProposal == 'ACCEPTE';
+        return proposal.statusProposal == 'ACCEPTED';
     };
 
     $scope.doStatus = function (proposal) {

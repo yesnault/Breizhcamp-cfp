@@ -13,7 +13,7 @@ import java.util.Set;
 public enum StatusProposal {
 
     @EnumValue("R")
-    REJETE("R", "proposals.status.rejected") {
+    REJECTED("R", "proposals.status.rejected") {
         @Override
         String getSubject(String proposalTitle) {
             return Messages.get("proposals.status.mail.subject.rejected", proposalTitle);
@@ -25,7 +25,7 @@ public enum StatusProposal {
         }
     },
     @EnumValue("W")
-    ATTENTE("W", "proposals.status.waiting") {
+    WAITING("W", "proposals.status.waiting") {
         @Override
         String getSubject(String proposalTitle) {
             return Messages.get("proposals.status.mail.subject.waiting", proposalTitle);
@@ -37,7 +37,7 @@ public enum StatusProposal {
         }
     },
     @EnumValue("A")
-    ACCEPTE("A", "proposals.status.accepted") {
+    ACCEPTED("A", "proposals.status.accepted") {
         @Override
         String getSubject(String proposalTitle) {
             return Messages.get("proposals.status.mail.subject.accepted", proposalTitle);

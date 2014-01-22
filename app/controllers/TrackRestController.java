@@ -35,7 +35,7 @@ public class TrackRestController extends BaseController {
             return noContent();
         }
 
-        StatusProposal statusProposal = StatusProposal.ACCEPTE;
+        StatusProposal statusProposal = StatusProposal.ACCEPTED;
 
         List<Proposal> proposals = Proposal.findByTrackAndStatus(track, statusProposal);
         for (Proposal proposal : proposals) {

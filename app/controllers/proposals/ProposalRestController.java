@@ -580,7 +580,7 @@ public class ProposalRestController extends BaseController {
         }
 
         for (Proposal proposal : Proposal.findByNoStatus()) {
-            proposal.statusProposal = StatusProposal.REJETE;
+            proposal.statusProposal = StatusProposal.REJECTED;
             proposal.save();
             if (proposal.speaker != null) {
                 proposal.statusProposal.sendMail(proposal, proposal.speaker.email);
