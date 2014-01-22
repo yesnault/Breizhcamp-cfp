@@ -33,7 +33,6 @@ class CustomLinkedInOAuth2Provider(application: Application) extends OAuth2Provi
           throw new AuthenticationException()
         }
         case _ => {
-          Console.println(me)
           val userId = (me \ Id).as[String]
           var email = (me \ Email).asOpt[String]
           val firstName = (me \ FirstName).asOpt[String].getOrElse("")
