@@ -70,7 +70,7 @@ object CustomLinkedInOAuth2Provider {
   val Id = "id"
   val FirstName = "firstName"
   val LastName = "lastName"
-  val Email = "email-address"
+  val Email = "emailAddress"
   val FormattedName = "formattedName"
   val PictureUrl = "pictureUrl"
 }
