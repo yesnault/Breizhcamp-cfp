@@ -2,6 +2,8 @@
     <div class="container-fluid">
         <div class="row-fluid">
             <div ng-show="user" class="col-md-2 breadcrumb">
+                <h2><li class="fa fa-user"></li> Profil</h2><br>
+
                 <h4> <a href="/#/profil/{{user.id}}">{{user.fullname}}</a></h4>
                 <p>{{user.email}}</p>
 
@@ -24,10 +26,7 @@
             </div>
             <div ng-include src="views/header.html"></div>
             <div class="col-md-10">
-                <div class="well">
-                    <h2>Dashboard</h2><br>
-                </div>
-                <br/>
+                <h2><li class="fa fa-dashboard"></li> Dashboard</h2><br>
 
                 <div class="well">
                     <div ng-show="userService.isAdmin()">
