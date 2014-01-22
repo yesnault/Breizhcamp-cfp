@@ -19,6 +19,8 @@ import securesocial.core.IdentityId;
 import securesocial.core.java.BaseUserService;
 import securesocial.core.java.Token;
 
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+
 /**
  * Classe utilisée par SecureSocial pour la gestion des Identity
  *
@@ -50,7 +52,7 @@ public class CfpUserService extends BaseUserService {
     @Override
     public Identity doSave(Identity socialUser) {
 
-        Logger.info("doSave " + socialUser.fullName() + " / socialIdentityId : " + socialUser.identityId().userId() + " - " + socialUser.identityId().providerId());
+        Logger.info("doSave " + socialUser.fullName() + " / socialIdentityId : " + socialUser.identityId().userId() + " - " + socialUser.identityId().providerId() + "=" + socialUser.email());
         // Recherche d'un user existant et création ou mise à jour des données en SGBD
         if (socialUser.email().isEmpty()) {
             throw new IllegalArgumentException("OAuth authentication need to be configured with user's email scope");
@@ -155,8 +157,12 @@ public class CfpUserService extends BaseUserService {
 
         if (user.email == null && socialUser.email().isDefined())
             user.email = socialUser.email().get();
-        if (user.fullName == null)
-            user.fullName = socialUser.fullName();
+        if (user.fullName == null) {
+            if (isNotEmpty(socialUser.fullName()))
+                user.fullName = socialUser.fullName();
+            else
+                user.fullName = socialUser.firstName() + " " + socialUser.lastName();
+        }
         if (user.avatar == null && user.email != null) {
             user.avatar = "https://www.gravatar.com/avatar/" + DigestUtils.md5Hex(user.email.getBytes());;
             if (socialUser.avatarUrl().isDefined()) {
