@@ -171,6 +171,12 @@ public class ProposalRestController extends BaseController {
                     proposalJson.putNull("statusProposal");
                 }
 
+                if (proposal.level != null) {
+                    proposalJson.put("level", proposal.level.name());
+                } else {
+                    proposalJson.putNull("level");
+                }
+
                 if (proposal.speaker != null) {
                     ObjectNode speakerJson = Json.newObject();
                     speakerJson.put("id", proposal.speaker.id);
@@ -254,6 +260,7 @@ public class ProposalRestController extends BaseController {
             dbProposal.title = formProposal.title;
             dbProposal.description = formProposal.description;
             dbProposal.format = formProposal.format;
+            dbProposal.level = formProposal.level;
             dbProposal.track = formProposal.track;
 
             dbProposal.indicationsOrganisateurs = formProposal.indicationsOrganisateurs;
@@ -652,6 +659,9 @@ public class ProposalRestController extends BaseController {
         @CsvColumn(value = "indicationsOrganisateurs", order = 8)
         public String indicationsOrganisateurs;
 
+        @CsvColumn(value = "level", order = 8)
+        public String level;
+
 
         public static ProposalCsv fromProposal(Proposal proposal) {
             ProposalCsv proposalCsv = new ProposalCsv();
@@ -666,6 +676,10 @@ public class ProposalRestController extends BaseController {
             proposalCsv.title = proposal.title;
             if (proposal.statusProposal != null) {
                 proposalCsv.status = proposal.statusProposal.name();
+            }
+
+            if (proposal.level != null) {
+                proposalCsv.level = proposal.level.name();
             }
 
             if (VoteStatus.getVoteStatus() == VoteStatusEnum.CLOSED) {

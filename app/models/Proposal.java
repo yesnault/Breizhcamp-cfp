@@ -66,6 +66,8 @@ public class Proposal extends Model {
     }
     public StatusProposal statusProposal;
 
+    public TalkLevel level;
+
     @ManyToMany(mappedBy = "proposals")
     @JsonIgnore
     public List<Tag> tags = new ArrayList<Tag>();

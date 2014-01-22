@@ -98,6 +98,21 @@
                             </div>
                         </div>
 
+                        <div class="form-group {{{true:'error', false:''}[errors.level != undefined]}}">
+                            <label class="control-label" for="level">Niveau</label>
+
+                            <div class="controls">
+                                <select id="level" name="level"
+                                        ng-model="proposal.level" >
+                                            <option value="BEGINNER">Débutant</option>
+                                            <option value="INTERMEDIATE">Intermediaire</option>
+                                            <option value="ADVANCED">Avancé</option>
+                                        </select>
+
+                                <p class="help-inline" ng-repeat="error in errors.level">{{error}}</p>
+                            </div>
+                        </div>
+
                         <div class="form-group {{{true:'error', false:''}[errors.track != undefined]}}">
                             <label class="control-label" for="track">Track</label>
 
