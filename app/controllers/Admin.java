@@ -54,7 +54,7 @@ public class Admin extends BaseController {
         // has proposals ?
         List<Proposal> proposals = Proposal.findBySpeaker(userToDelete);
         for (Proposal proposal : proposals) {
-            proposal.statusProposal = StatusProposal.REJECTED;
+            proposal.status = Proposal.Status.REJECTED;
             proposal.speaker = null;
             proposal.save();
         }
@@ -127,8 +127,10 @@ public class Admin extends BaseController {
     }
 
     public static Result mailing(String status) {
-        StatusProposal statusProposal = StatusProposal.fromValue(status);
+        return mailing(Proposal.Status.fromValue(status));
+    }
 
+    public static Result mailing(Proposal.Status status) {
         JsonNode body = request().body().asJson();
         String subjet = body.get("subject").asText();
         String mailMarkdown = body.get("mail").asText();
@@ -138,7 +140,7 @@ public class Admin extends BaseController {
 
         Set<String> mailsOfSpeakers = new HashSet<String>();
 
-        for (Proposal proposal : Proposal.findByStatus(statusProposal)) {
+        for (Proposal proposal : Proposal.findByStatus(status)) {
             if (proposal.speaker != null && proposal.speaker.email != null) {
                 mailsOfSpeakers.add(proposal.speaker.email);
             }

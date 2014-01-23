@@ -71,12 +71,13 @@ create table proposal (
   description               varchar(2000),
   indications_organisateurs varchar(1000),
   speaker_id                bigint,
-  draft                     tinyint(1) default 0,
   event_id                  bigint,
-  status_proposal           varchar(1),
+  status                    varchar(1),
+  audience                  integer,
   format_id                 bigint,
   track_id                  bigint,
-  constraint ck_proposal_status_proposal check (status_proposal in ('A','W','R')),
+  constraint ck_proposal_status check (status in ('R','W','D','A','S')),
+  constraint ck_proposal_audience check (audience in (0,1,2)),
   constraint uq_proposal_title unique (title),
   constraint pk_proposal primary key (id))
 ;

@@ -114,7 +114,7 @@ public class AcceptedController extends Controller {
 
     public static Result adressMacOfAcceptedSpeakers() {
 
-        List<Proposal> proposalsAccepted = Proposal.findByStatusForMinimalData(StatusProposal.ACCEPTED);
+        List<Proposal> proposalsAccepted = Proposal.findByStatusForMinimalData(Proposal.Status.ACCEPTED);
 
         Map<User, List<Proposal>> speakers = new HashMap<User, List<Proposal>>();
 
@@ -177,7 +177,7 @@ public class AcceptedController extends Controller {
     }
 
     private static ArrayNode getAcceptedProposalsToJson() {
-        List<Proposal> proposalsAccepted = Proposal.findByStatusForMinimalData(StatusProposal.ACCEPTED);
+        List<Proposal> proposalsAccepted = Proposal.findByStatusForMinimalData(Proposal.Status.ACCEPTED);
 
         Map<User, List<Proposal>> speakers = new HashMap<User, List<Proposal>>();
 
@@ -257,7 +257,7 @@ public class AcceptedController extends Controller {
         // proposal.speaker.links.label
         // proposal.coSpeakers
 
-        List<Proposal> proposalsAccepted = Proposal.findByStatusForMinimalData(StatusProposal.ACCEPTED);
+        List<Proposal> proposalsAccepted = Proposal.findByStatusForMinimalData(Proposal.Status.ACCEPTED);
         ArrayNode result = new ArrayNode(JsonNodeFactory.instance);
         for (Proposal proposal : proposalsAccepted) {
             ObjectNode proposalJson = Json.newObject();

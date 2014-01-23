@@ -605,7 +605,7 @@ function ProfilController($scope, $log, $routeParams, AccountService, ProfilServ
     var idUSer = $routeParams.userId;
     $scope.pUser = ProfilService.getUser(idUSer);
     $scope.proposals = ProfilService.getProposals(idUSer);
-    $scope.proposalsok = ProfilService.getProposalsAccepted(idUSer);
+    $scope.proposalsok = ProfilService.getAcceptedProposals(idUSer);
 
     $scope.getSafeDescription = function () {
         if ($scope.pUser.description) {

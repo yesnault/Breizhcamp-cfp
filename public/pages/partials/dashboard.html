@@ -78,7 +78,7 @@
                                 <th class="col-md-5"><a ng-click="predicate = 'title'; reverse=!reverse">Titre</a></th>
                                 <th class="col-md-5">Présentateurs</th>
                                 <th class="col-md-2">Soumettre</th>
-                                <th class="col-md-2"><a ng-click="predicate = 'draft'; reverse=!reverse">Status</a></th>
+                                <th class="col-md-2"><a ng-click="predicate = 'status'; reverse=!reverse">Status</a></th>
                                 <th class="col-md-2"><li class="fa fa-comments-o"></li></th>
                                 <th class="col-md-2">Actions</th>
                             </tr>
@@ -94,20 +94,21 @@
                                     </p>
                                 </td>
                                 <td>
-                                    <p ng-show="proposal.draft">
+                                    <p ng-show="proposal.status=='DRAFT'">
                                         <a ng-click="submitProposal(proposal)">Soumettre</a>
                                     </p>
-                                    <p ng-show="!proposal.draft">
+                                    <p ng-show="proposal.status!='DRAFT'">
                                         <i class="fa fa-check"></i> Soumis
                                     </p>
                                 </td>
                                 <td>
-                                    <p ng-show="proposal.draft" class="label label-warning">
-                                        <i class="fa fa-warning"></i> Draft
+                                    <p ng-switch on="proposal.status">
+                                        <span class="label label-warning" ng-switch-when="DRAFT"> <i class="fa fa-warning"></i> Draft</span>
+                                        <span class="label label-default" ng-switch-when="SUBMITTED"> Soumis</span>
+                                        <span class="label label-danger" ng-switch-when="REJECTED"> Rejeté</span>
+                                        <span class="label label-success" ng-switch-when="ACCEPTED"> Acceptée</span>
+                                        <span class="label label-info"    ng-switch-when="WAITING"> En attente</span>
                                     </p>
-                                    <p ng-show="proposal.statusProposal=='R'" class="label label-default">Rejeté</p>
-                                    <p ng-show="proposal.statusProposal=='A'" class="label label-success">Accepté</p>
-                                    <p ng-show="proposal.statusProposal=='W'" class="label label-info">En attente</p>
                                 </td>
                                 <td>
                                     <p>
@@ -125,7 +126,7 @@
                             </tr>
                             </tbody>
                         </table>
-                        <p  ng-show="proposals.length == 0">Aucun Proposal</p>
+                        <p ng-show="proposals != undefined && proposals.length == 0">Aucun Proposal</p>
                     </div>
                 </div>
             </div>

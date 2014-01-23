@@ -1,7 +1,6 @@
 package controllers;
 
 import models.Proposal;
-import models.StatusProposal;
 import models.Track;
 import models.User;
 import models.utils.TransformValidationErrors;
@@ -35,9 +34,9 @@ public class TrackRestController extends BaseController {
             return noContent();
         }
 
-        StatusProposal statusProposal = StatusProposal.ACCEPTED;
+        Proposal.Status status = Proposal.Status.ACCEPTED;
 
-        List<Proposal> proposals = Proposal.findByTrackAndStatus(track, statusProposal);
+        List<Proposal> proposals = Proposal.findByTrackAndStatus(track, status);
         for (Proposal proposal : proposals) {
             proposal.fiteredCoSpeakers();
         }

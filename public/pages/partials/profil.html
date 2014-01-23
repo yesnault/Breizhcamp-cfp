@@ -80,8 +80,7 @@
                         <tr ng-repeat="proposal in proposals | orderBy:predicate:reverse">
                             <td><a href="/#/proposals/see/{{proposal.id}}">{{proposal.title}}</a></td>
                             <td>
-                                <div ng-show="proposal.statusProposal != undefined" ng-switch
-                                     on="proposal.statusProposal">
+                                <div ng-switch on="proposal.status">
                                     <span class="label label-important" ng-switch-when="REJETE">Rejeté</span>
                                     <span class="label label-warning" ng-switch-when="ATTENTE">Liste d'attente</span>
                                     <span class="label label-success" ng-switch-when="ACCEPTE">Accepté</span>
@@ -92,7 +91,7 @@
                         </tbody>
                     </table>
 
-                    <h3 ng-show="proposalsok.length > 0">Proposals acceptés</h3>
+                    <h3 ng-show="proposalsok.length > 0">Propositions acceptées</h3>
 
                     <p ng-repeat="proposal in proposalsok">- <a ng-href="/#/proposals/see/{{proposal.id}}"
                                                                 title="{{proposal.title}}">{{proposal.title}}</a></p>

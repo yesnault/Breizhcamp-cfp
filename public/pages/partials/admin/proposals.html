@@ -99,8 +99,8 @@
                                                                           data-dismiss="modal">{{proposalModal.title}}</a>
                                     </h3>
 
-                                    <div ng-show="proposalModal.statusProposal != undefined" ng-switch
-                                         on="proposalModal.statusProposal">
+                                    <div ng-show="proposalModal.status != undefined" ng-switch
+                                         on="proposalModal.status">
                                         <span class="label label-important" ng-switch-when="REJETE">Rejeté</span>
                                         <span class="label label-warning"
                                               ng-switch-when="ATTENTE">Liste d'attente</span>
@@ -170,7 +170,7 @@
                     <span class="label label-info" >{{proposal.format.libelle + ' (' + proposal.format.dureeMinutes + 'min)'}}</span>
                 </td>
                 <td>
-                    <div ng-show="proposal.statusProposal != undefined" ng-switch on="proposal.statusProposal">
+                    <div ng-show="proposal.status != undefined" ng-switch on="proposal.status">
                         <span class="label label-important" ng-switch-when="REJETE">Rejeté</span>
                         <span class="label label-warning" ng-switch-when="ATTENTE">Liste d'attente</span>
                         <span class="label label-success" ng-switch-when="ACCEPTE">Accepté</span>

@@ -23,6 +23,7 @@ import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.util.*;
 
+import static models.Proposal.Status.*;
 import static play.data.Form.form;
 import static play.libs.Json.toJson;
 
@@ -58,7 +59,7 @@ public class ProposalRestController extends BaseController {
             return forbidden(toJson(TransformValidationErrors.transform("Action non autorisée")));
         }
 
-        proposal.draft = false;
+        proposal.status = SUBMITTED;
         proposal.update();
 
         return ok(toJson(proposal));
@@ -106,7 +107,7 @@ public class ProposalRestController extends BaseController {
         List<Proposal> allProposals = Proposal.findBySpeaker(user);
         List<Proposal> proposals = new ArrayList<Proposal>();
         for (Proposal proposal : allProposals) {
-            if (proposal.draft) {
+            if (proposal.isDraft()) {
                 proposal.fiteredComments(user);
                 proposal.fiteredCoSpeakers();
                 proposal.filtereSpeaker();
@@ -118,9 +119,12 @@ public class ProposalRestController extends BaseController {
     }
 
     public static Result getProposalsByStatus(Long userId, String status) {
-        StatusProposal statusProposal = StatusProposal.fromCode(status);
+        return getProposalsByStatus(userId, Proposal.Status.fromCode(status));
+    }
+
+    public static Result getProposalsByStatus(Long userId, Proposal.Status status) {
         User user = User.find.byId(userId);
-        List<Proposal> proposals = Proposal.findBySpeakerAndStatus(user, statusProposal);
+        List<Proposal> proposals = Proposal.findBySpeakerAndStatus(user, status);
         for (Proposal proposal : proposals) {
             proposal.fiteredComments(user);
             proposal.fiteredCoSpeakers();
@@ -147,7 +151,7 @@ public class ProposalRestController extends BaseController {
         ArrayNode result = new ArrayNode(JsonNodeFactory.instance);
 
         for (Proposal proposal : proposals) {
-            if (proposal.draft == draft) {
+            if (proposal.isDraft() == draft) {
 
                 ObjectNode proposalJson = Json.newObject();
 
@@ -165,10 +169,10 @@ public class ProposalRestController extends BaseController {
                     proposalJson.putNull("format");
                 }
 
-                if (proposal.statusProposal != null) {
-                    proposalJson.put("statusProposal", proposal.statusProposal.name());
+                if (proposal.status != null) {
+                    proposalJson.put("status", proposal.status.name());
                 } else {
-                    proposalJson.putNull("statusProposal");
+                    proposalJson.putNull("status");
                 }
 
                 if (proposal.audience != null) {
@@ -229,7 +233,7 @@ public class ProposalRestController extends BaseController {
                 return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.proposal.already.exist"))));
             }
 
-            formProposal.draft = true;
+            formProposal.status = DRAFT;
             formProposal.save();
             List<User> coSpeakersInDb = new ArrayList<User>();
             for (User coSpeaker : formProposal.getCoSpeakers()) {
@@ -264,7 +268,7 @@ public class ProposalRestController extends BaseController {
             dbProposal.track = formProposal.track;
 
             dbProposal.indicationsOrganisateurs = formProposal.indicationsOrganisateurs;
-            dbProposal.draft = true;
+            dbProposal.status = DRAFT;
             dbProposal.save();
 
             dbProposal.track.getProposals().clear();
@@ -559,31 +563,31 @@ public class ProposalRestController extends BaseController {
 
         JsonNode node = request().body().asJson();
 
-        StatusProposal newStatus = StatusProposal.fromValue(node.get("status").asText());
+        Proposal.Status newStatus = Proposal.Status.fromValue(node.get("status").asText());
 
-        if (proposal.statusProposal != newStatus) {
-            proposal.statusProposal = newStatus;
+        if (proposal.status != newStatus) {
+            proposal.status = newStatus;
 
             proposal.save();
-            if (proposal.statusProposal != null) {
-                proposal.statusProposal.sendMail(proposal, proposal.speaker.email);
+            if (proposal.status != null) {
+                proposal.status.sendMail(proposal, proposal.speaker.email);
             }
         }
 
         return ok();
     }
 
-    public static Result rejectAllProposalWithoutStatus() throws MalformedURLException {
+    public static Result rejectAllRemainingProposals() throws MalformedURLException {
         User user = getLoggedUser();
         if (!user.admin) {
             return forbidden();
         }
 
-        for (Proposal proposal : Proposal.findByNoStatus()) {
-            proposal.statusProposal = StatusProposal.REJECTED;
+        for (Proposal proposal : Proposal.findByStatus(SUBMITTED)) {
+            proposal.status = REJECTED;
             proposal.save();
             if (proposal.speaker != null) {
-                proposal.statusProposal.sendMail(proposal, proposal.speaker.email);
+                proposal.status.sendMail(proposal, proposal.speaker.email);
             }
         }
         return ok();
@@ -623,10 +627,10 @@ public class ProposalRestController extends BaseController {
             return forbidden();
         }
         ObjectNode result = Json.newObject();
-        result.put("nbProposals", Proposal.findNbProposals(false));
-        result.put("nbProposalDraft", Proposal.findNbProposals(true));
-        result.put("nbAcceptes", Proposal.findNbProposalsAcceptes());
-        result.put("nbRejetes", Proposal.findNbProposalsRejetes());
+        result.put("nbProposals", Proposal.countProposals(false));
+        result.put("nbProposalDraft", Proposal.countProposals(true));
+        result.put("nbAcceptes", Proposal.countProposalsAcceptes());
+        result.put("nbRejetes", Proposal.countProposalsRejetes());
         result.put("nbVotesUser", Vote.findNbVotesUser(user));
         return ok(result);
     }
@@ -674,8 +678,8 @@ public class ProposalRestController extends BaseController {
 
 
             proposalCsv.title = proposal.title;
-            if (proposal.statusProposal != null) {
-                proposalCsv.status = proposal.statusProposal.name();
+            if (proposal.status != null) {
+                proposalCsv.status = proposal.status.name();
             }
 
             if (proposal.audience != null) {

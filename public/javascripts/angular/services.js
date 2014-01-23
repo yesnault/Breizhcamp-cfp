@@ -75,21 +75,10 @@ Services.factory('ProfilService', function($resource) {
             return $resource('/user/:userId/proposals').query({userId: userId});
         };
 
-        this.getDrafts = function(userId) {
-            return $resource('/user/:userId/drafts').query({userId: userId});
-        };
-
-        this.getProposalsAccepted = function(userId) {
+        this.getAcceptedProposals = function(userId) {
             return $resource('/user/:userId/proposals/A').query({userId: userId});
         };
 
-        this.getProposalsRefused = function(userId) {
-            return $resource('/user/:userId/proposals/R').query({userId: userId});
-        };
-
-        this.getProposalsWait = function(userId) {
-            return $resource('/user/:userId/proposals/W').query({userId: userId});
-        };
         this.getUser = function(idUser) {
             return $resource('/user/:id').get({id: idUser});
         }
