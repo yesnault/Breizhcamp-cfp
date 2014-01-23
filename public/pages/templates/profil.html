@@ -2,7 +2,7 @@
                 <h2><li class="fa fa-user"></li> Profil</h2>
 
                 <h4> <a href="/#/profil/{{user.id}}">{{user.fullname}}</a></h4>
-                <p>{{user.email}}</p>
+                <p ng-show="!publicView">{{user.email}}</p>
 
                 <p>
                     <img ng-src="{{user.avatar}}?s=100">

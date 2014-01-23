@@ -1,0 +1,50 @@
+<div class="row">
+    <div class="col-md-2" ng-show="comment.author!=null">
+        <img ng-src="{{comment.author.avatar}}?s=60" style="max-width:60px;max-height: 60px">
+    </div>
+
+
+    <div class="well col-md-9" id="show-{{comment.id}}">
+        <div class="row">
+            <div class="col-md-10">{{comment.comment}}</div>
+
+
+            <div class="col-md-2">
+                <a ng-click="deleteComment({{comment.id}})"
+                   ng-show="!comment.clos&&(userService.isAdmin()|| userService.getUserData().id == comment.author.id )"
+                   ng-disabled="comment.reponses.length"> <i class="fa fa-times-circle-o"></i></a>
+                <a ng-show="!comment.clos&&(userService.isAdmin()|| userService.getUserData().id == comment.author.id )"
+                   onclick="displayHide('edit-{{comment.id}}');displayHide('show-{{comment.id}}');"> <i
+                        class="fa fa-pencil"></i></a>
+            </div>
+
+            <div class="col-md-3" ng-show="comment.author!=null">
+                <br/>{{comment.author.fullname}}
+            </div>
+            <div class="col-md-3" ng-show="comment.author==null"><br/>compte supprimé</div>
+        </div>
+    </div>
+
+    <div class="well well col-md-9" id="edit-{{comment.id}}" style="display: none;">
+        <form ng-submit="editComment({{comment.id}})" method="POST" class="form-inline">
+            <div class="form-group {{{true:'error', false:''}[errors.commentE != undefined]}}">
+                <div class="controls">             <!--      -->
+                    <textarea name="comment" class="input-xlarge" ng-model="$parent.commentE[comment.id]"
+                              ng-init="$parent.commentE[comment.id]=comment.comment" rows="4" cols="60"
+                              maxlength="140">{{comment.comment}}</textarea>
+
+                    <p class="help-inline">Longueur maximum: 140, {{$parent.commentE[comment.id].length}}/140 </p>
+
+                    <p class="help-inline" ng-repeat="error in errors.comment">{{error}}</p>
+
+
+                </div>
+            </div>
+            <br/>
+            <input type="submit" class="btn btn-primary" value="Valider">
+            <input type="button" class="btn btn-primary" value="Annuler"
+                   onclick="displayHide('edit-{{comment.id}}');displayHide('show-{{comment.id}}');">
+        </form>
+    </div>
+
+</div>

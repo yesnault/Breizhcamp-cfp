@@ -84,9 +84,9 @@ directives.directive('reponse', function factory() {
     return directiveDefinitionObject;
 });
 
-directives.directive('new-commentaire', function factory() {
+directives.directive('comment', function factory() {
     var directiveDefinitionObject = {
-        templateUrl: 'assets/pages/templates/newCommentaire.html',
+        templateUrl: 'assets/pages/templates/comment.html',
         restrict: 'E',
         replace: true,
         require: 'ngModel',
@@ -97,6 +97,7 @@ directives.directive('new-commentaire', function factory() {
     };
     return directiveDefinitionObject;
 });
+
 
 //directives.directive('stars', function factory() {
 //    var directiveDefinitionObject = {

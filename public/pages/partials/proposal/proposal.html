@@ -1,235 +1,186 @@
 <div class="row" xmlns="http://www.w3.org/1999/html">
 
-<div class="col-md-8">
-<div class="well">
-    <h3>{{proposal.title}}
-        <p class="help-inline" ng-repeat="format in proposal.creneaux">
-            <span class="label" ng-show="proposal.format == null || format.id!=proposal.format.id">{{format.libelle + ' (' + format.dureeMinutes + 'min)'}}</span>
-            <span class="label label-info" ng-show="proposal.format != null &&  format.id==proposal.format.id">{{format.libelle + ' (' + format.dureeMinutes + 'min)'}}</span>
-        </p>
-        <a ng-show="proposal.speaker.id == user.id" href="#/editproposal/{{proposal.id}}"><i
-                class="fa fa-pencil"></i></a>
-        <a ng-repeat="coSpeaker in proposal.coSpeakers" ng-show="coSpeaker.id == user.id "
-           href="#/editproposal/{{proposal.id}}"><i class="fa fa-pencil"></i></a>
-    </h3>
-    <p>Soumis par <a ng-href="/#/profil/{{proposal.speaker.id}}">{{proposal.speaker.fullname}}</a>
-    </p>
+    <div class="col-md-8">
+        <div class="well">
+            <h3>{{proposal.title}} (track : <a href="#/track/{{proposal.track.id}}">{{proposal.track.shortTitle}}</a>)
+                <p class="help-inline" ng-repeat="format in proposal.creneaux">
+                    <span class="label" ng-show="proposal.format == null || format.id!=proposal.format.id">{{format.libelle + ' (' + format.dureeMinutes + 'min)'}}</span>
+                    <span class="label label-info" ng-show="proposal.format != null &&  format.id==proposal.format.id">{{format.libelle + ' (' + format.dureeMinutes + 'min)'}}</span>
+                </p>
+                <a ng-show="proposal.speaker.id == user.id" href="#/editproposal/{{proposal.id}}"><i
+                        class="fa fa-pencil"></i></a>
+                <a ng-repeat="coSpeaker in proposal.coSpeakers" ng-show="coSpeaker.id == user.id "
+                   href="#/editproposal/{{proposal.id}}"><i class="fa fa-pencil"></i></a>
+            </h3>
+            <p>Soumis par <a ng-href="/#/profil/{{proposal.speaker.id}}">{{proposal.speaker.fullname}}</a>
+            </p>
 
-    <p ng-show="proposal.coSpeakers && proposal.coSpeakers.length > 0">
-        Co-speakers :
-    <ul>
-        <li ng-repeat="coSpeaker in proposal.coSpeakers"><a
-                ng-href="/#/profil/{{coSpeaker.id}}">{{coSpeaker.fullname}}</a>
-        </li>
-    </ul>
-    </p>
-    <p>Description :</p>
+            <p ng-show="proposal.coSpeakers && proposal.coSpeakers.length > 0">
+                Co-speakers :
+            <ul>
+                <li ng-repeat="coSpeaker in proposal.coSpeakers"><a
+                        ng-href="/#/profil/{{coSpeaker.id}}">{{coSpeaker.fullname}}</a>
+                </li>
+            </ul>
+            </p>
+            <p>Format : {{proposal.format.libelle}}</p>
 
-    <div class="well" ng-bind-html-unsafe="getSafeDescription()"></div>
-</div>
-<div class="well" ng-show="userService.isAdmin()">
-    <p ng-show="proposal.indicationsOrganisateurs && userService.isAdmin()">Indications organisateurs :</p>
+            <p>Audience : {{proposal.audience}}</p>
+            <p>Description :</p>
 
-    <div class="well" ng-bind-html-unsafe="getSafeIndications()"
-         ng-show="proposal.indicationsOrganisateurs && userService.isAdmin()"></div>
-    <p></p>
+            <div class="well" ng-bind-html-unsafe="getSafeDescription()"></div>
+        </div>
+        <div class="well" ng-show="userService.isAdmin()">
+            <p ng-show="proposal.indicationsOrganisateurs && userService.isAdmin()">Indications organisateurs :</p>
 
-
-    <div class="well" ng-show="userService.isAdmin()">
-        <p>Format choisi par le speaker : {{proposal.format.libelle}}</p>
-
-        <p>Audience choisi par le speaker : {{proposal.audience}}</p>
-
-        <form ng-submit="postStatus()" method="POST" class="form-inline">
-
-            <div class="form-group {{{true:'error', false:''}[errors.status != undefined]}}">
-                <label for="status">Status du proposal</label>
-
-                <div class="controls">
-                    <select id="status" name="status" ng-model="proposal.status">
-                        <option value="null"></option>
-                        <option value="REJECTED">Rejeté</option>
-                        <option value="WAITING">Liste d'attente</option>
-                        <option value="ACCEPTED">Accepté</option>
-                    </select>
+            <div class="well" ng-bind-html-unsafe="getSafeIndications()"
+                 ng-show="proposal.indicationsOrganisateurs && userService.isAdmin()"></div>
+            <p></p>
 
 
-                    <p class="help-inline" ng-repeat="error in errors.status">{{error}}</p>
+            <div class="well" ng-show="userService.isAdmin()">
+
+
+                <form ng-submit="postStatus()" method="POST" class="form-inline">
+
+                    <div class="form-group {{{true:'error', false:''}[errors.status != undefined]}}">
+                        <label for="status">Status du proposal</label>
+
+                        <div class="controls">
+                            <select id="status" name="status" ng-model="proposal.status">
+                                <option value="null"></option>
+                                <option value="REJECTED">Rejeté</option>
+                                <option value="WAITING">Liste d'attente</option>
+                                <option value="ACCEPTED">Accepté</option>
+                            </select>
+
+
+                            <p class="help-inline" ng-repeat="error in errors.status">{{error}}</p>
+                        </div>
+                    </div>
+                    <input type="submit" class="btn btn-primary" value="Valider">
+                </form>
+            </div>
+
+            <div class="well" ng-show="!userService.isAdmin() && proposal.status != undefined" ng-switch
+                 on="proposal.status">
+                Status du proposal :
+                <span class="label label-important" ng-switch-when="REJECTED">Rejeté</span>
+                <span class="label label-warning" ng-switch-when="WAITING">Liste d'attente</span>
+                <span class="label label-success" ng-switch-when="ACCEPTED">Accepté</span>
+            </div>
+
+            <div class="well"
+                 ng-show="userService.isAdmin() && (voteStatus.status == 'OPEN' || voteStatus.status == 'NOT_BEGIN')">
+                <form ng-submit="postVote()" class="form-inline">
+                    <div class="form-group {{{true:'error', false:''}[errors.vote != undefined]}}">
+                        <label>Note du proposal</label>
+                        <star ng-model="proposal"/>
+                        note : {{proposal.note}}
+                    </div>
+                    <input type="submit" class="btn btn-primary" value="Valider">
+                </form>
+
+            </div>
+
+        </div>
+
+        <div class="well">
+            <h4>Tags</h4>
+
+            <p>{{proposal.tagsname}}</p>
+            <br/>
+        </div>
+        <script type="text/javascript">
+            function displayHide(id) {
+                var respStyle = document.getElementById(id).style;
+                if (respStyle.display == 'none') {
+                    document.getElementById(id).style.display = 'block';
+                } else {
+                    document.getElementById(id).style.display = 'none';
+                }
+            }
+
+
+        </script>
+
+        <div class="well">
+            <h3>Questions/Réponses</h3>
+
+            <div class="well {{{true:'privateComment',false:''}[comment.privateComment == true]}} {{{true:'closComment',false:''}[comment.clos == true]}}"
+                 ng-repeat="comment in proposal.comments">
+
+                <comment ng-model="comment"/>
+
+                <div class=" {{{true:'privateComment',false:''}[comment.privateComment == true]}}"
+                     ng-repeat="reponse in comment.reponses">
+                    <reponse ng-model="reponse"/>
+
                 </div>
-            </div>
-            <input type="submit" class="btn btn-primary" value="Valider">
-        </form>
-    </div>
+                <p class="help-inline" ng-repeat="error in errors.error">{{error}}</p>
 
-    <div class="well" ng-show="!userService.isAdmin() && proposal.status != undefined" ng-switch
-         on="proposal.status">
-        Status du proposal :
-        <span class="label label-important" ng-switch-when="REJECTED">Rejeté</span>
-        <span class="label label-warning" ng-switch-when="WAITING">Liste d'attente</span>
-        <span class="label label-success" ng-switch-when="ACCEPTED">Accepté</span>
-    </div>
-
-    <div class="well"
-         ng-show="userService.isAdmin() && (voteStatus.status == 'OPEN' || voteStatus.status == 'NOT_BEGIN')">
-        <form ng-submit="postVote()" class="form-inline">
-            <div class="form-group {{{true:'error', false:''}[errors.vote != undefined]}}">
-                <label>Note du proposal</label>
-                <star ng-model="proposal"/>
-                note : {{proposal.note}}
-            </div>
-            <input type="submit" class="btn btn-primary" value="Valider">
-        </form>
-
-    </div>
-
-</div>
-
-<div class="well">
-    <h4>Tags</h4>
-
-    <p>{{proposal.tagsname}}</p>
-    <br/>
-</div>
-<script type="text/javascript">
-    function displayHide(id) {
-        var respStyle = document.getElementById(id).style;
-        if (respStyle.display == 'none') {
-            document.getElementById(id).style.display = 'block';
-        } else {
-            document.getElementById(id).style.display = 'none';
-        }
-    }
-
-
-</script>
-
-<div class="well">
-    <h3>Questions/Réponses</h3>
-
-    <div class="well {{{true:'privateComment',false:''}[comment.privateComment == true]}} {{{true:'closComment',false:''}[comment.clos == true]}}"
-         ng-repeat="comment in proposal.comments">
-        <div class="row">
-            <div class="col-md-2" ng-show="comment.author!=null">
-                <img ng-src="{{comment.author.avatar}}?s=60" style="max-width:60px;max-height: 60px">
-            </div>
-
-
-            <div class="well col-md-9" id="show-{{comment.id}}">
                 <div class="row">
-                    <div class="col-md-10">{{comment.comment}}</div>
-
-
                     <div class="col-md-2">
-                        <a ng-click="deleteComment({{comment.id}})"
-                           ng-show="!comment.clos&&(userService.isAdmin()|| userService.getUserData().id == comment.author.id )"
-                           ng-disabled="comment.reponses.length"> <i class="fa fa-times-circle-o"></i></a>
-                        <a ng-show="!comment.clos&&(userService.isAdmin()|| userService.getUserData().id == comment.author.id )"
-                           onclick="displayHide('edit-{{comment.id}}');displayHide('show-{{comment.id}}');"> <i
-                                class="fa fa-pencil"></i></a>
+                        <input type="button" class="btn btn-primary" value="Repondre" ng-show="!comment.clos"
+                               onclick="displayHide('resp-{{comment.id}}')">
                     </div>
+                    <div class="col-md-3">
+                        <form ng-submit="postCloseComment({{comment.id}})" method="POST">
 
-                    <div class="col-md-3" ng-show="comment.author!=null">
-                        <br/>{{comment.author.fullname}}
+                            <input type="submit" class="btn btn-primary" value="Clore"
+                                   ng-show="!comment.clos&&(userService.isAdmin()|| userService.getUserData().id == comment.author.id )">
+                        </form>
                     </div>
-                    <div class="col-md-3" ng-show="comment.author==null"><br/>compte supprimé</div>
+                </div>
+
+
+                <div class="well" id="resp-{{comment.id}}" style="display: none;">
+                    <form ng-submit="postReponse({{comment.id}})" method="POST" class="form-inline">
+
+                        <div class="form-group {{{true:'error', false:''}[errors.commentR != undefined]}}">
+                            <div class="controls">
+                                <textarea name="commentR" ng-model="$parent.commentR" class="input-xlarge" rows="3"
+                                          placeholder="Repondre au commentaire" maxlength="140"></textarea>
+
+                                <p class="help-inline">Longueur maximum: 140, </p>
+
+                                <p class="help-inline" ng-repeat="error in errors.commentR">{{error}}</p>
+
+                                <p class="help-inline">{{$parent.commentR.length}}/140</p>
+                                <label class="checkbox" ng-show="userService.isAdmin()">
+                                    <br/><input type="checkbox" name="privateR" ng-model="$parent.privateR"
+                                                ng-show="userService.isAdmin()">Commentaire privé</input>
+                                </label>
+                            </div>
+                        </div>
+                        <br/>
+                        <input type="submit" class="btn btn-primary" value="Valider">
+                    </form>
                 </div>
             </div>
 
-            <div class="well well col-md-9" id="edit-{{comment.id}}" style="display: none;">
-                <form ng-submit="editComment({{comment.id}})" method="POST" class="form-inline">
-                    <div class="form-group {{{true:'error', false:''}[errors.commentE != undefined]}}">
-                        <div class="controls">             <!--      -->
-                            <textarea name="comment" class="input-xlarge" ng-model="$parent.commentE[comment.id]"
-                                      ng-init="$parent.commentE[comment.id]=comment.comment" rows="4" cols="60"
-                                      maxlength="140">{{comment.comment}}</textarea>
+            <div class="well">
+                <form ng-submit="postComment()" method="POST" class="form-inline">
 
-                            <p class="help-inline">Longueur maximum: 140, {{$parent.commentE[comment.id].length}}/140 </p>
+                    <div class="form-group {{{true:'error', false:''}[errors.comment != undefined]}}">
+                        <div class="controls">
+                            <textarea name="comment" class="input-xxlarge" ng-model="comment" rows="4" cols="60"
+                                      placeholder="Nouveau commentaire" maxlength="140"></textarea>
+
+                            <p class="help-inline">Longueur maximum: 140, {{comment.length}}/140</p>
 
                             <p class="help-inline" ng-repeat="error in errors.comment">{{error}}</p>
 
-
+                            <label class="checkbox" ng-show="userService.isAdmin()">
+                                <br/><input type="checkbox" id="private" name="private" ng-model="private"
+                                            ng-show="userService.isAdmin()">Commentaire privé</input>
+                            </label>
                         </div>
                     </div>
                     <br/>
                     <input type="submit" class="btn btn-primary" value="Valider">
-                    <input type="button" class="btn btn-primary" value="Annuler"
-                           onclick="displayHide('edit-{{comment.id}}');displayHide('show-{{comment.id}}');">
-                </form>
-            </div>
-
-        </div>
-
-
-        <div class=" {{{true:'privateComment',false:''}[comment.privateComment == true]}}"
-             ng-repeat="reponse in comment.reponses">
-            <reponse ng-model="reponse"/>
-
-        </div>
-        <p class="help-inline" ng-repeat="error in errors.error">{{error}}</p>
-
-        <div class="row">
-            <div class="col-md-2">
-                <input type="button" class="btn btn-primary" value="Repondre" ng-show="!comment.clos"
-                       onclick="displayHide('resp-{{comment.id}}')">
-            </div>
-            <div class="col-md-3">
-                <form ng-submit="postCloseComment({{comment.id}})" method="POST">
-
-                    <input type="submit" class="btn btn-primary" value="Clore"
-                           ng-show="!comment.clos&&(userService.isAdmin()|| userService.getUserData().id == comment.author.id )">
                 </form>
             </div>
         </div>
-
-
-        <div class="well" id="resp-{{comment.id}}" style="display: none;">
-            <form ng-submit="postReponse({{comment.id}})" method="POST" class="form-inline">
-
-                <div class="form-group {{{true:'error', false:''}[errors.commentR != undefined]}}">
-                    <div class="controls">
-                        <textarea name="commentR" ng-model="$parent.commentR" class="input-xlarge" rows="3"
-                                  placeholder="Repondre au commentaire" maxlength="140"></textarea>
-
-                        <p class="help-inline">Longueur maximum: 140, </p>
-
-                        <p class="help-inline" ng-repeat="error in errors.commentR">{{error}}</p>
-
-                        <p class="help-inline">{{$parent.commentR.length}}/140</p>
-                        <label class="checkbox" ng-show="userService.isAdmin()">
-                            <br/><input type="checkbox" name="privateR" ng-model="$parent.privateR"
-                                        ng-show="userService.isAdmin()">Commentaire privé</input>
-                        </label>
-                    </div>
-                </div>
-                <br/>
-                <input type="submit" class="btn btn-primary" value="Valider">
-            </form>
-        </div>
     </div>
-
-    <div class="well">
-        <form ng-submit="postComment()" method="POST" class="form-inline">
-
-            <div class="form-group {{{true:'error', false:''}[errors.comment != undefined]}}">
-                <div class="controls">
-                    <textarea name="comment" class="input-xxlarge" ng-model="comment" rows="4" cols="60"
-                              placeholder="Nouveau commentaire" maxlength="140"></textarea>
-
-                    <p class="help-inline">Longueur maximum: 140, {{comment.length}}/140</p>
-
-                    <p class="help-inline" ng-repeat="error in errors.comment">{{error}}</p>
-
-                    <label class="checkbox" ng-show="userService.isAdmin()">
-                        <br/><input type="checkbox" id="private" name="private" ng-model="private"
-                                    ng-show="userService.isAdmin()">Commentaire privé</input>
-                    </label>
-                </div>
-            </div>
-            <br/>
-            <input type="submit" class="btn btn-primary" value="Valider">
-        </form>
-    </div>
-    <new-commentaire/>
-</div>
-</div>
 </div>
