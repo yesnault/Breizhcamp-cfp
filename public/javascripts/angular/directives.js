@@ -54,6 +54,17 @@ directives.directive('star', function factory() {
     return directiveDefinitionObject;
 });
 
+directives.directive('profil', function factory() {
+    var directiveDefinitionObject = {
+        templateUrl: 'pages/templates/profil.html',
+        restrict: 'E',
+        replace: true,
+        require: 'ngModel',
+        transclude: true
+    };
+    return directiveDefinitionObject;
+});
+
 //directives.directive('stars', function factory() {
 //    var directiveDefinitionObject = {
 //        restrict: 'E',
