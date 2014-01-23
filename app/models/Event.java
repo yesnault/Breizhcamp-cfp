@@ -21,10 +21,26 @@ public class Event extends Model {
     private String name;
 
     @Constraints.Required
+    @Constraints.MaxLength(5)
+    @Formats.NonEmpty
+    @Column(unique = true, length = 5)
+    private String shortName;
+
+    @Constraints.Required
+    @Formats.NonEmpty
+    @Constraints.MaxLength(200)
+    @Column(length = 200)
+    public String url;
+
+    @Constraints.Required
     @Constraints.MaxLength(1000)
     @Formats.NonEmpty
     @Column(length = 1000)
     private String description;
+
+    @Constraints.MaxLength(1000)
+    @Column(length = 1000)
+    private String cgu;
 
     private boolean clos;
 
@@ -46,6 +62,7 @@ public class Event extends Model {
             if (Event.findByName("Evénement par défaut") == null) {
                 event = new Event();
                 event.setClos(false);
+                event.shortName ="DEF";
                 event.setName("Evénement par défaut");
                 event.save();
             } else {
@@ -58,6 +75,29 @@ public class Event extends Model {
         return event;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getCgu() {
+        return cgu;
+    }
+
+    public void setCgu(String cgu) {
+        this.cgu = cgu;
+    }
+
+    public String getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
+    }
 
     public Long getId() {
         return id;

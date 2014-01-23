@@ -22,6 +22,7 @@ App.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/proposals/see/:proposalId', {templateUrl: '/assets/pages/partials/proposal/proposal.html', controller: SeeProposalsController});
 
     $routeProvider.when('/admin/events', {templateUrl: 'assets/pages/partials/event/events.html', controller: EventController});
+    $routeProvider.when('/event/:id', {templateUrl: 'assets/pages/partials/event/event.html', controller: SeeEventController});
     $routeProvider.when('/admin/event/new', {templateUrl: 'assets/pages/partials/event/submit.html', controller: NewEventController});
     $routeProvider.when('/admin/event/edit/:eventId', {templateUrl: 'assets/pages/partials/event/submit.html', controller: EditEventController});
 

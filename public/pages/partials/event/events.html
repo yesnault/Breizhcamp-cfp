@@ -17,13 +17,14 @@
             </tr>
 
             <tr ng-repeat="event in events | orderBy:predicate:reverse ">
-                <td><div ng-show="event.name != null"><a ng-href="/#/admin/event/edit/{{event.id}}" >{{event.name}}</a></div></td>
+                <td><div ng-show="event.name != null"><a ng-href="/#/event/{{event.id}}" >{{event.name}}</a></div></td>
                 <td><p>{{event.description}}</p>
                     <p ng-bind-html-unsafe="getSafeDescription()"></p>
                 </td>
                 <td><a  class="btn" ng-click="closeEvent(event)">{{!event.clos}}</a>
                 </td>
-                <td><a  class="btn" ng-click="deleteEvent(event)" ><i class="icon-remove"></i></a></td>
+                <td><a ng-click="deleteEvent(event)" ><i class="fa fa-times-circle-o"></i></a>
+                     <a ng-href="/#/admin/event/edit/{{event.id}}" ><i class="fa fa-pencil"></i></a></td>
             </tr>
 
             </tbody>

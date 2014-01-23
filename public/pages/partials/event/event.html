@@ -1,0 +1,35 @@
+<div class="row">
+
+    <div class="col-md-10">
+        <div class="well">
+            <h3>Evénement : {{event.name}}<a ng-href="/#/admin/event/edit/{{event.id}}" ><i class="fa fa-pencil"></i></a></h3>
+        </div>
+        <div class="well">
+            <p>Agenda :</p>
+
+
+        </div>
+
+        <div class="well">
+            <p>Description :</p>
+
+            <div class="well" style="background-color:white;" ng-bind-html-unsafe="getSafeDescription()"></div>
+
+        </div>
+        <div class="well">
+            <p>Conditions générales d'utilisation :</p>
+
+            <div class="well" style="background-color:white;" ng-bind-html-unsafe="getSafeCGU()"></div>
+
+        </div>
+        <div class="well">
+            <p>Organisateurs :</p>
+
+               <!-- TODO gestion  des organisateurs de l'événement      -->
+
+        </div>
+
+
+
+    </div>
+</div>

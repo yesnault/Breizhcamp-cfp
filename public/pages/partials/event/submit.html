@@ -12,7 +12,23 @@
                         <div class="controls">
                             <input type="text" id="name" name="name" value="" class="input-large" ng-model="event.name" required>
                             <p class="help-inline">Longueur maximum: 50, Obligatoire</p>
-                            <p class="help-inline" ng-repeat="error in errors.event">{{error}}</p>
+                            <p class="help-inline" ng-repeat="error in errors.name">{{error}}</p>
+                        </div>
+                    </div>
+                    <div class="form-group {{{true:'error', false:''}[errors.shortName != undefined || formEvent.shortName.$error['required']]}}">
+                        <label class="control-label" for="shortName">Nom cours</label>
+                        <div class="controls">
+                            <input type="text" id="shortName" name="shortName" value="" class="input-large" ng-model="event.shortName" required>
+                            <p class="help-inline">Longueur maximum: 5, Obligatoire</p>
+                            <p class="help-inline" ng-repeat="error in errors.shortName">{{error}}</p>
+                        </div>
+                    </div>
+                    <div class="form-group {{{true:'error', false:''}[errors.url != undefined || formEvent.url.$error['required']]}}">
+                        <label class="control-label" for="url">Url</label>
+                        <div class="controls">
+                            <input type="text" id="url" name="url" value="" class="input-large" ng-model="event.url" required>
+                            <p class="help-inline">Longueur maximum: 5, Obligatoire</p>
+                            <p class="help-inline" ng-repeat="error in errors.url">{{error}}</p>
                         </div>
                     </div>
                     <div class="form-group">
@@ -24,7 +40,17 @@
                             <p class="help-inline" ng-repeat="error in errors.description">{{error}}</p>
                             <div id="wmd-preview" class="wmd-preview" pagedown-init="event.description"></div>
                         </div>
-                    </div>                    
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="wmd-input">Conditions générales d'utilisation</label>
+                        <div class="controls">
+                            <div id="wmd-button-bar-cgu"></div>
+                            <textarea id="wmd-input-cgu"  name="cgu" class="wmd-input" rows="5" ng-model="event.cgu"></textarea>
+                            <p class="help-inline">Longueur {{event.cgu.length}}/255</p>
+                            <p class="help-inline" ng-repeat="error in errors.cgu">{{error}}</p>
+                            <div id="wmd-preview-cgu" class="wmd-preview" pagedown-init="event.cgu"></div>
+                        </div>
+                    </div>
                     <span class="badge badge-important" ng-repeat="error in errors['']">{{error}}</span>
                 </fieldset>
                 <div class="form-actions">

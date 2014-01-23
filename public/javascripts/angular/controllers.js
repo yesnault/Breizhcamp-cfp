@@ -1226,6 +1226,9 @@ function EditEventController($scope, $log, EventService, $location, $routeParams
     $scope.editor = new Markdown.Editor($scope.converter);
     $scope.editor.run();
 
+    $scope.editorCgu = new Markdown.Editor($scope.converter,'-cgu');
+    $scope.editorCgu.run();
+
     $scope.saveEvent = function () {
         $log.info("Evénement \u00e0 sauvegarder");
         $log.info($scope.event);
@@ -1240,6 +1243,31 @@ function EditEventController($scope, $log, EventService, $location, $routeParams
         });
     }
 }
+
+SeeEventController.$inject = ['$scope', '$log', 'EventService', '$location', '$routeParams'];
+function SeeEventController($scope, $log, EventService, $location, $routeParams) {
+    $scope.checkloc(true);
+
+    var idEvent = $routeParams.id;
+
+    $scope.event = EventService.get({id:idEvent});
+
+    $scope.converter = new Markdown.getSanitizingConverter();
+
+    $scope.getSafeDescription = function () {
+        if ($scope.event.description) {
+            return $scope.converter.makeHtml($scope.event.description);
+        }
+    }
+
+    $scope.getSafeCGU = function () {
+        if ($scope.event.cgu) {
+            return $scope.converter.makeHtml($scope.event.cgu);
+        }
+    }
+
+}
+
 
 
 TrackController.$inject = ['$scope', '$log', 'TrackService', '$location'];

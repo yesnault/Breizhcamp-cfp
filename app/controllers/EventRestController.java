@@ -93,6 +93,9 @@ public class EventRestController extends BaseController {
                 return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.event.already.actif"))));
             }
 
+            dbEvent.setUrl(formEvent.getUrl());
+            dbEvent.setShortName(formEvent.getShortName());
+            dbEvent.setCgu(formEvent.getCgu());
             dbEvent.setClos(formEvent.isClos());
             dbEvent.setDescription(formEvent.getDescription());
             dbEvent.update();
