@@ -57,15 +57,43 @@ directives.directive('star', function factory() {
 directives.directive('profil', function factory() {
     var directiveDefinitionObject = {
         templateUrl: 'assets/pages/templates/profil.html',
-		scope: {settings: "@settings",
-				publicView:"@publicView"},
         restrict: 'E',
         replace: true,
         require: 'ngModel',
         transclude: true,
-		link: function ($scope, $element, attrs, ctrl) {
-		  // $scope.$apply();
-		}
+        link: function (scope, element, attrs) {
+            scope.settings= attrs.settings;
+            scope.publicView = attrs.publicView;
+        }
+    };
+    return directiveDefinitionObject;
+});
+
+
+directives.directive('reponse', function factory() {
+    var directiveDefinitionObject = {
+        templateUrl: 'assets/pages/templates/commentaireReponse.html',
+        restrict: 'E',
+        replace: true,
+        require: 'ngModel',
+        transclude: true,
+        link: function (scope, element, attrs) {
+
+        }
+    };
+    return directiveDefinitionObject;
+});
+
+directives.directive('new-commentaire', function factory() {
+    var directiveDefinitionObject = {
+        templateUrl: 'assets/pages/templates/newCommentaire.html',
+        restrict: 'E',
+        replace: true,
+        require: 'ngModel',
+        transclude: true,
+        link: function (scope, element, attrs) {
+
+        }
     };
     return directiveDefinitionObject;
 });

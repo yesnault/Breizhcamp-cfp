@@ -1,0 +1,23 @@
+<div class="well">
+    <form ng-submit="postComment()" method="POST" class="form-inline">
+
+        <div class="form-group {{{true:'error', false:''}[errors.comment != undefined]}}">
+            <div class="controls">
+                <textarea name="comment" class="input-xxlarge" ng-model="comment" rows="4" cols="60"
+                          placeholder="Nouveau commentaire" maxlength="140"></textarea>
+
+                <p class="help-inline">Longueur maximum: 140, </p>
+
+                <p class="help-inline" ng-repeat="error in errors.comment">{{error}}</p>
+
+                <p class="help-inline">{{comment.length}}/140</p>
+                <label class="checkbox" ng-show="userService.isAdmin()">
+                    <br/><input type="checkbox" id="private" name="private" ng-model="private"
+                                ng-show="userService.isAdmin()">Commentaire privÃ©</input>
+                </label>
+            </div>
+        </div>
+        <br/>
+        <input type="submit" class="btn btn-primary" value="Valider">
+    </form>
+</div>

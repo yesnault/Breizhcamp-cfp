@@ -1,0 +1,49 @@
+<div>
+    <div class="row" >
+        <div class="col-md-1"></div>
+        <div class="col-md-9 well" id="showReponse-{{reponse.id}}">
+            <div class="row">
+                <div class="col-md-11" >{{reponse.comment}}</div>
+                <div class="col-md-1" ng-show="reponse.author!=null">
+                    <a ng-show="!comment.clos&&(userService.isAdmin()|| userService.getUserData().id == reponse.author.id )"
+                       onclick="displayHide('editReponse-{{reponse.id}}');displayHide('showReponse-{{reponse.id}}');">
+                        <i class="fa fa-pencil"></i></a>
+                </div>
+
+                <div class="col-md-3" ng-show="reponse.author!=null"><br/>{{reponse.author.fullname}}</div>
+                <div class="col-md-3" ng-show="reponse.author==null">compte supprimé</div>
+            </div>
+        </div>
+
+        <div class="col-md-9 well" id="editReponse-{{reponse.id}}" style="display: none;">
+            <form ng-submit="editComment({{reponse.id}})" method="POST" class="form-inline">
+                <div class="form-group {{{true:'error', false:''}[errors.commentE != undefined]}}">
+                    <div class="controls">
+
+                        <textarea name="comment"
+                                  ng-model="$parent.commentE[reponse.id]"
+                                  ng-init="$parent.commentE[reponse.id]=reponse.comment" rows="4" cols="60"
+                                  maxlength="140">{{reponse.comment}}</textarea>
+
+                        <p class="help-inline">Longueur maximum: 140, {{$parent.commentE[reponse.id].length}}/140</p>
+
+                        <p class="help-inline" ng-repeat="error in errors.comment">{{error}}</p>
+                    </div>
+                </div>
+                <br/>
+                <input type="submit" class="btn btn-primary" value="Valider">
+                <input type="button" class="btn btn-primary" value="Annuler"
+                       onclick="displayHide('editReponse-{{reponse.id}}');displayHide('showReponse-{{reponse.id}}');">
+            </form>
+        </div>
+
+        <div class="col-md-2" ng-show="reponse.author!=null">
+            <img ng-src="{{reponse.author.avatar}}?s=50" style="max-width:60px;max-height: 60px">
+        </div>
+    </div>
+
+
+
+
+
+</div>

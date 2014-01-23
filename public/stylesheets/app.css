@@ -111,6 +111,7 @@ ul.social-stack {
     border-radius: 4px 0 4px 0;
 }
 
+
 .privateComment {
     position: relative;
 }
@@ -118,6 +119,30 @@ ul.social-stack {
 .well .privateComment {
     padding-top: 40px;
 }
+
+.well .closComment {
+    padding-top: 40px;
+}
+.closComment {
+    position: relative;
+}
+
+.closComment::after {
+    content: "Clos";
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    padding: 3px 7px;
+    font-size: 12px;
+    font-weight: bold;
+    background-color: #ffedbd;
+    border: 1px solid #DDD;
+    color: #9DA0A4;
+    -webkit-border-radius: 0 4px 0 4px;
+    -moz-border-radius: 0 4px 0 4px;
+    border-radius: 0 4px 0 4px;
+}
+
 
 .accordion-heading {
     font-size: 21px;
