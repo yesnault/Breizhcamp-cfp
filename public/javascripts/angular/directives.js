@@ -56,7 +56,7 @@ directives.directive('star', function factory() {
 
 directives.directive('profil', function factory() {
     var directiveDefinitionObject = {
-        templateUrl: 'pages/templates/profil.html',
+        templateUrl: 'assets/pages/templates/profil.html',
         restrict: 'E',
         replace: true,
         require: 'ngModel',
