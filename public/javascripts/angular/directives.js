@@ -57,11 +57,15 @@ directives.directive('star', function factory() {
 directives.directive('profil', function factory() {
     var directiveDefinitionObject = {
         templateUrl: 'assets/pages/templates/profil.html',
-		scope: {settings: "@"},
+		scope: {settings: "@settings",
+				publicView:"@publicView"},
         restrict: 'E',
         replace: true,
         require: 'ngModel',
-        transclude: true
+        transclude: true,
+		link: function ($scope, $element, attrs, ctrl) {
+		  // $scope.$apply();
+		}
     };
     return directiveDefinitionObject;
 });

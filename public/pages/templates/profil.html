@@ -7,7 +7,7 @@
                 <p>
                     <img ng-src="{{user.avatar}}?s=100">
                 </p>
-				<div ng-show="settings">
+				<div ng-show="!publicView && settings">
 					<hr/>
 					<a href="#/settings/account">Profil</a>
 					<br/>
@@ -37,4 +37,10 @@
                 <p ng-show="!settings">
                     <a href="#/settings/account" class="btn btn-primary">Editer votre profil</a>
                 </p>
+				<div ng-show="publicView">
+					<hr/>
+					<p ng-repeat="link in user.links"><i class="{{link.icon}}"></i> <a ng-href="{{link.url}}"
+																						target="_blank">{{link.label}}</a>
+					</p>
+				 </div>
             </div>

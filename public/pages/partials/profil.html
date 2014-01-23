@@ -14,13 +14,7 @@
     </script>
     <div class="container-fluid">
         <div class="row-fluid">
-            <div class="col-md-2 breadcrumb">
-                <img ng-src="{{pUser.avatar}}?s=100" style="max-width:100px;max-height: 100px"><br/>
-                <hr/>
-                <p ng-repeat="link in pUser.links"><i class="{{link.icon}}"></i> <a ng-href="{{link.url}}"
-                                                                                    target="_blank">{{link.label}}</a>
-                </p>
-            </div>
+            <profil ng-model="pUser" settings="false" public-view="true" />
             <div class="col-md-10">
                 <div class="well">
                     <h2>{{pUser.fullname}}</h2>
