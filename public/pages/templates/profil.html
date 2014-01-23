@@ -1,4 +1,4 @@
-<div ng-show="user" class="col-md-2 breadcrumb">
+ï»¿<div ng-show="user" class="col-md-2 breadcrumb">
                 <h2><li class="fa fa-user"></li> Profil</h2>
 
                 <h4> <a href="/#/profil/{{user.id}}">{{user.fullname}}</a></h4>
@@ -7,6 +7,16 @@
                 <p>
                     <img ng-src="{{user.avatar}}?s=100">
                 </p>
+				<div ng-show="settings">
+					<hr/>
+					<a href="#/settings/account">Profil</a>
+					<br/>
+					<a href="/#/settings/links">Liens</a>
+					<br/>
+					<a href="/#/settings/notifs">Notifications</a>
+					<br/>
+					<a href="/#/settings/mac">Adresse mac</a>
+				</div>
                 <hr/>
                 <p>
                     <i ng-show="user.avatar != null" class="fa fa-check-square" style="color:green"></i>
@@ -22,9 +32,9 @@
                 </p>
                 <p>
                     <i ng-show="user.adresseMac != null" class="fa fa-check-square" style="color:green"></i>
-                    <i ng-show="user.adresseMac == null" class="fa fa-warning" style="color:red"></i> Accès réseau
+                    <i ng-show="user.adresseMac == null" class="fa fa-warning" style="color:red"></i> AccÃ¨s rÃ©seau
                 </p>
-                <p>
+                <p ng-show="!settings">
                     <a href="#/settings/account" class="btn btn-primary">Editer votre profil</a>
                 </p>
             </div>
