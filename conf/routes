@@ -49,7 +49,7 @@ POST    /proposals/:idProposal/comment/:idComment/delete    controllers.proposal
 POST    /proposals/:idProposal/comment/:idComment/edit      controllers.proposals.ProposalRestController.editComment(idProposal:Long,idComment:Long)
 POST    /proposals/:idProposal/status       controllers.proposals.ProposalRestController.saveStatus(idProposal:Long)
 POST    /proposals/:idProposal/vote/:note   controllers.proposals.ProposalRestController.saveVote(idProposal:Long,note:java.lang.Integer)
-POST    /proposals/rejectall            controllers.proposals.ProposalRestController.rejectAllProposalWithoutStatus()
+POST    /proposals/rejectall            controllers.proposals.ProposalRestController.rejectAllRemainingProposals()
 GET     /proposal/all/csv               controllers.proposals.ProposalRestController.getAllProposalsInCsv()
 GET     /proposal/all                   controllers.proposals.ProposalRestController.all()
 GET     /proposal/:idProposal               controllers.proposals.ProposalRestController.getById(idProposal:Long)
