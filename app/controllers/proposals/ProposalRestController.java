@@ -381,10 +381,11 @@ public class ProposalRestController extends BaseController {
                 reponse.question = null;
                 reponse.delete();
             }
-            comment.update();
+            //comment.update();
             comment.reponses = new ArrayList<Comment>();
             comment.delete();
         }
+
 
         List<Tag> tagtmp = new ArrayList<Tag>(proposal.getTags());
         for (Tag tag : tagtmp) {

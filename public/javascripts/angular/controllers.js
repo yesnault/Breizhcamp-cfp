@@ -35,8 +35,8 @@ function RootController($scope, UserService, $log, $location) {
 }
 
 
-DashboardController.$inject = ['$rootScope', '$scope', '$http', 'ProfilService', 'AccountService', 'UserService', 'StatService', '$log'];
-function DashboardController($rootScope, $scope, $http, ProfilService, AccountService, UserService, StatService, $log) {
+DashboardController.$inject = ['$rootScope', '$scope', '$http', 'ProfilService', 'AccountService', 'UserService', 'StatService','ProposalService', '$log'];
+function DashboardController($rootScope, $scope, $http, ProfilService, AccountService, UserService, StatService,ProposalService, $log) {
 
     $scope.checkloc(false);
 
