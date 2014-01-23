@@ -33,9 +33,9 @@
                     <fieldset>
                         <form>
                             <select id="status" name="status" multiple="true" ng-model="status">
-                                <option value="REJETE">Rejeté</option>
-                                <option value="ACCEPTE">Accepté</option>
-                                <option value="ATTENTE">Attente</option>
+                                <option value="REJECTED">Rejeté</option>
+                                <option value="ACCEPTED">Accepté</option>
+                                <option value="WAITING">Attente</option>
                                 <option value="NULL">Sans status</option>
                             </select>
                         </form>
@@ -71,6 +71,7 @@
                 <th class="col-md-2"><a ng-click="predicate = 'speaker.fullname'; reverse=!reverse">Speaker</a></th>
                 <th class="col-md-6"><a ng-click="predicate = 'title'; reverse=!reverse">Titre</a></th>
                 <th class="col-md-1">Format</th>
+                <th class="col-md-1">Audience</th>
                 <th class="col-md-1">Statut</th>
                 <th class="col-md-1">Note</th>
                 <th class="col-md-1" ng-show="vote.status == 'CLOSED'"><a
@@ -101,10 +102,10 @@
 
                                     <div ng-show="proposalModal.status != undefined" ng-switch
                                          on="proposalModal.status">
-                                        <span class="label label-important" ng-switch-when="REJETE">Rejeté</span>
+                                        <span class="label label-important" ng-switch-when="REJECTED">Rejeté</span>
                                         <span class="label label-warning"
-                                              ng-switch-when="ATTENTE">Liste d'attente</span>
-                                        <span class="label label-success" ng-switch-when="ACCEPTE">Accepté</span>
+                                              ng-switch-when="WAITING">Liste d'attente</span>
+                                        <span class="label label-success" ng-switch-when="ACCEPTED">Accepté</span>
                                     </div>
                                 </div>
                                 <div class="modal-body">
@@ -170,10 +171,17 @@
                     <span class="label label-info" >{{proposal.format.libelle + ' (' + proposal.format.dureeMinutes + 'min)'}}</span>
                 </td>
                 <td>
+                    <p ng-switch on="proposal.audience">
+                        <span  ng-switch-when="BEGINNER">Débutant</span>
+                        <span  ng-switch-when="INTERMEDIATE">Intermédiaire</span>
+                        <span  ng-switch-when="ADVANCED">Avancé</span>
+                    </p>
+                </td>
+                <td>
                     <div ng-show="proposal.status != undefined" ng-switch on="proposal.status">
-                        <span class="label label-important" ng-switch-when="REJETE">Rejeté</span>
-                        <span class="label label-warning" ng-switch-when="ATTENTE">Liste d'attente</span>
-                        <span class="label label-success" ng-switch-when="ACCEPTE">Accepté</span>
+                        <span class="label label-important" ng-switch-when="REJECTED">Rejeté</span>
+                        <span class="label label-warning" ng-switch-when="WAITING">Liste d'attente</span>
+                        <span class="label label-success" ng-switch-when="ACCEPTED">Accepté</span>
                     </div>
                 </td>
 

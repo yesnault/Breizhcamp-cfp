@@ -49,6 +49,7 @@
                                 <th class="col-md-5"><a ng-click="predicate = 'title'; reverse=!reverse">Titre</a></th>
                                 <th class="col-md-5">Présentateurs</th>
                                 <th class="col-md-2">Soumettre</th>
+                                <th class="col-md-1">Audience</th>
                                 <th class="col-md-2"><a ng-click="predicate = 'status'; reverse=!reverse">Status</a></th>
                                 <th class="col-md-2"><li class="fa fa-comments-o"></li></th>
                                 <th class="col-md-2">Actions</th>
@@ -70,6 +71,13 @@
                                     </p>
                                     <p ng-show="proposal.status!='DRAFT'">
                                         <i class="fa fa-check"></i> Soumis
+                                    </p>
+                                </td>
+                                <td>
+                                    <p ng-switch on="proposal.audience">
+                                        <span  ng-switch-when="BEGINNER">Débutant</span>
+                                        <span  ng-switch-when="INTERMEDIATE">Intermédiaire</span>
+                                        <span  ng-switch-when="ADVANCED">Avancé</span>
                                     </p>
                                 </td>
                                 <td>
