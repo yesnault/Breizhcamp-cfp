@@ -21,7 +21,7 @@ public class BaseController extends Controller {
     protected static Event getEvent() {
         Event event = Event.findByUrl(request().host());
         if (event == null) {
-            event = Event.getDefaut();
+            event = Event.getDefaut(request().host());
         }
         return event;
     }

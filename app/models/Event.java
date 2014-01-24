@@ -4,9 +4,9 @@ import play.data.format.Formats;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Event extends Model {
@@ -42,7 +42,9 @@ public class Event extends Model {
     @Column(length = 1000)
     private String cgu;
 
-    private boolean clos;
+    @ManyToMany(mappedBy = "events")
+    @JsonIgnore
+    private List<User> organizers;
 
 
     public static Finder<Long, Event> find = new Finder<Long, Event>(Long.class, Event.class);
@@ -56,33 +58,28 @@ public class Event extends Model {
         return event;
     }
 
-    public static Event findActif() {
-        return findActif(false);
+    public List<User> getOrganizers() {
+        if (organizers == null) {
+            organizers = new ArrayList<User>();
+        }
+        return organizers;
     }
 
     public static Event getDefaut() {
-        Event event= null;
-        if (Event.findByName("Evénement par défaut") == null) {
+        return getDefaut("");
+    }
+
+    public static Event getDefaut(String url) {
+        Event event = Event.findByUrl(url);
+        if (event == null) {
             event = new Event();
-            event.setClos(false);
-            event.shortName ="DEF";
+            event.setUrl(url);
+            event.shortName = "DEF";
             event.setName("Evénement par défaut");
             event.save();
         } else {
-            event = Event.findByName("Evénement par défaut");
-            event.setClos(false);
             event.update();
         }
-        return event;
-    }
-
-    public static Event findActif(boolean edit) {
-        Event event = find.query().where().eq("clos", false).findUnique();
-
-        if (event == null && !edit) {
-            event = getDefaut();
-        }
-
         return event;
     }
 
@@ -132,14 +129,6 @@ public class Event extends Model {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public boolean isClos() {
-        return clos;
-    }
-
-    public void setClos(boolean clos) {
-        this.clos = clos;
     }
 
 

@@ -42,7 +42,9 @@ public class EventRestController extends BaseController {
 
         Event event = Event.find.byId(idEvent);
         if (event != null) {
-            event.setClos(!event.isClos());
+
+             //TODO gestion de l'agenda
+
             event.update();
             return ok(toJson(event));
         }
@@ -76,12 +78,7 @@ public class EventRestController extends BaseController {
                 return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.event.already.exist"))));
             }
 
-            Event eventAvtif = Event.findActif(true);
-            if (eventAvtif != null) {
-                formEvent.setClos(true);
-            } else {
-                formEvent.setClos(false);
-            }
+
 
             formEvent.save();
         } else {
@@ -92,15 +89,9 @@ public class EventRestController extends BaseController {
                 return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.event.already.exist"))));
             }
 
-            Event eventAvtif = Event.findActif(true);
-            if (!formEvent.isClos() && eventAvtif != null && eventAvtif.getId() != dbEvent.getId()) {
-                return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.event.already.actif"))));
-            }
-
             dbEvent.setUrl(formEvent.getUrl());
             dbEvent.setShortName(formEvent.getShortName());
             dbEvent.setCgu(formEvent.getCgu());
-            dbEvent.setClos(formEvent.isClos());
             dbEvent.setDescription(formEvent.getDescription());
             dbEvent.update();
         }
@@ -120,7 +111,7 @@ public class EventRestController extends BaseController {
         Event event = Event.find.byId(idEvent);
         if (event != null) {
             List<Proposal> proposals = Proposal.findByEvent(event);
-            if (proposals.isEmpty() && event.isClos()) {
+            if (proposals.isEmpty()) {
                 event.delete();
             } else {
                 Map<String, List<String>> errors = new HashMap<String, List<String>>();

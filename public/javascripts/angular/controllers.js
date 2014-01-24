@@ -1170,19 +1170,6 @@ function EventController($scope, $log, EventService, $location) {
         }
     }
 
-    $scope.closeEvent = function (eventToClose) {
-
-        eventToClose.clos = !eventToClose.clos;
-        EventService.save(eventToClose, function (data) {
-            $log.info("(Dés)Activation de l'événement ok");
-            $location.url('/admin/events');
-        }, function (err) {
-            $log.info("(Dés)Activation de l'événement ko");
-            $log.info(err.data);
-            eventToClose.clos = !eventToClose.clos;
-            $scope.errors = err.data;
-        });
-    }
 }
 
 

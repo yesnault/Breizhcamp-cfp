@@ -1,15 +1,19 @@
 package models;
 
-import org.apache.commons.codec.digest.DigestUtils;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import models.utils.BooleanUtils;
+import org.apache.commons.codec.digest.DigestUtils;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
 
 import javax.persistence.*;
 import java.util.*;
-import models.utils.BooleanUtils;
 
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
@@ -22,12 +26,12 @@ public class User extends Model {
 
     @Id
     public Long id;
-    
+
     @Constraints.Required
     @Formats.NonEmpty
     @Column(unique = true)
     public String email;
-    
+
     @Constraints.Required
     @Formats.NonEmpty
     public String fullName;
@@ -35,17 +39,17 @@ public class User extends Model {
     @OneToMany(cascade = CascadeType.ALL)
     @JsonIgnore
     public List<Credentials> credentials;
-    
+
     @Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date dateCreation;
 
     @Formats.NonEmpty
     public Boolean admin = false;
-    
+
     private Boolean notifOnMyProposal;
     private Boolean notifAdminOnAllProposal;
     private Boolean notifAdminOnProposalWithComment;
- 
+
     @Constraints.Pattern("^([0-9a-fA-F][0-9a-fA-F]:){5}([0-9a-fA-F][0-9a-fA-F])$")
     public String adresseMac;
 
@@ -71,11 +75,36 @@ public class User extends Model {
     @JsonIgnore
     private List<Track> tracksAdvice;
 
+    @ManyToMany
+    @JsonIgnore
+    private List<Event> events;
+
 
     @JsonIgnore
     public String avatar;
     private final static String GRAVATAR_URL = "http://www.gravatar.com/avatar/";
-    
+
+
+    public List<Event> getEvents() {
+        if (events == null) {
+            events = new ArrayList<Event>();
+        }
+        return events;
+    }
+
+    @JsonProperty("events")
+    public ArrayNode getEventsName() {
+        ArrayNode result = new ArrayNode(JsonNodeFactory.instance);
+
+        for (Event event : events) {
+            ObjectNode eventJson = Json.newObject();
+            eventJson.put("id", event.getId());
+            eventJson.put("shortName", event.getShortName());
+            result.add(eventJson);
+        }
+
+        return result;
+    }
 
     public List<DynamicFieldValue> getDynamicFieldValues() {
         if (dynamicFieldValues == null) {
@@ -96,7 +125,7 @@ public class User extends Model {
         }
         return jsonFields;
     }
-    
+
     @JsonProperty("isInfoValid")
     public boolean isInfoValid() {
         if (isEmpty(email) || isEmpty(fullName)) {
@@ -148,6 +177,7 @@ public class User extends Model {
         }
         return avatar;
     }
+
     // -- Queries (long id, user.class)
     public static Model.Finder<Long, User> find = new Model.Finder<Long, User>(Long.class, User.class);
 
@@ -180,13 +210,13 @@ public class User extends Model {
 
         // Bug de SecureSocial ? socialUser.id().providerId() renvoie parfois userPassword au lieu de userpass
         if (providerId.equals("userPassword")) providerId = "userpass";
-        
+
         return find.fetch("credentials").where()
-                    .eq("credentials.extUserId", userId)
-                    .eq("credentials.providerId", providerId)
-                    .findUnique();
+                .eq("credentials.extUserId", userId)
+                .eq("credentials.providerId", providerId)
+                .findUnique();
     }
-    
+
     public static List<User> findAll() {
         return find.all();
     }
