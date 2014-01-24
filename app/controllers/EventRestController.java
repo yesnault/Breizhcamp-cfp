@@ -28,6 +28,10 @@ public class EventRestController extends BaseController {
         return ok(toJson(event));
     }
 
+    public static Result getCurrentEvent() {
+        return ok(toJson(getEvent()));
+    }
+
     public static Result close(Long idEvent) {
 
         // Vérification du rôle d'admin

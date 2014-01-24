@@ -1,5 +1,6 @@
 package controllers;
 
+import models.Event;
 import models.User;
 import play.mvc.Controller;
 import securesocial.core.Identity;
@@ -16,4 +17,13 @@ public class BaseController extends Controller {
         return user;
     }
 
+
+    protected static Event getEvent() {
+        Event event = Event.findByUrl(request().host());
+        if (event == null) {
+            event = Event.getDefaut();
+        }
+        return event;
+    }
 }
+

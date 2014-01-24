@@ -67,6 +67,7 @@ DELETE	/format/:id         controllers.FormatRestController.delete(id:Long)
 
 GET	    /event/:id          controllers.EventRestController.get(id:Long)
 GET	    /event              controllers.EventRestController.all()
+GET	    /user/event         controllers.EventRestController.getCurrentEvent()
 POST	/event              controllers.EventRestController.save()
 POST	/event/close/:id    controllers.EventRestController.close(id:Long)
 DELETE	/event/:id          controllers.EventRestController.delete(id:Long)

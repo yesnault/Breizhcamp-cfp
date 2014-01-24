@@ -34,6 +34,10 @@ Services.factory('UserService', ['$http', '$log', '$location', '$cookieStore', f
                 return window.userData;
             };
 
+            this.getEvent = function() {
+                return $resource('/user/event').get();
+            };
+
 
             this.isAuthenticated = function() {
                 if (!authenticated) {
@@ -43,7 +47,15 @@ Services.factory('UserService', ['$http', '$log', '$location', '$cookieStore', f
                 return authenticated;
             };
 
+            this.isSuperAdmin = function() {
+                if (admin == null && this.getUserData() != null) {
+                    admin = this.getUserData().admin;
+                }
+                return admin;
+            };
+
             this.isAdmin = function() {
+                <!-- vérifier que l'utilisateur fait parti des membres de l'événement-->
                 if (admin == null && this.getUserData() != null) {
                     admin = this.getUserData().admin;
                 }

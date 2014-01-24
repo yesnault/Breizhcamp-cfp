@@ -49,6 +49,8 @@ public class ProposalRestController extends BaseController {
         return ok(toJson(proposal));
     }
 
+
+
     public static Result submitProposal(Long idProposal) {
         Proposal proposal = Proposal.find.byId(idProposal);
 
@@ -239,7 +241,7 @@ public class ProposalRestController extends BaseController {
             for (User coSpeaker : formProposal.getCoSpeakers()) {
                 coSpeakersInDb.add(User.findById(coSpeaker.id));
             }
-            formProposal.event = Event.findActif();
+            formProposal.event = getEvent();
             formProposal.getCoSpeakers().clear();
             formProposal.getCoSpeakers().addAll(coSpeakersInDb);
             formProposal.saveManyToManyAssociations("coSpeakers");

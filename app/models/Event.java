@@ -51,25 +51,36 @@ public class Event extends Model {
         return find.query().where().eq("name", name).findUnique();
     }
 
+    public static Event findByUrl(String url) {
+        Event event = find.query().where().eq("url", url).findUnique();
+        return event;
+    }
+
     public static Event findActif() {
         return findActif(false);
+    }
+
+    public static Event getDefaut() {
+        Event event= null;
+        if (Event.findByName("Evénement par défaut") == null) {
+            event = new Event();
+            event.setClos(false);
+            event.shortName ="DEF";
+            event.setName("Evénement par défaut");
+            event.save();
+        } else {
+            event = Event.findByName("Evénement par défaut");
+            event.setClos(false);
+            event.update();
+        }
+        return event;
     }
 
     public static Event findActif(boolean edit) {
         Event event = find.query().where().eq("clos", false).findUnique();
 
         if (event == null && !edit) {
-            if (Event.findByName("Evénement par défaut") == null) {
-                event = new Event();
-                event.setClos(false);
-                event.shortName ="DEF";
-                event.setName("Evénement par défaut");
-                event.save();
-            } else {
-                event = Event.findByName("Evénement par défaut");
-                event.setClos(false);
-                event.update();
-            }
+            event = getDefaut();
         }
 
         return event;
