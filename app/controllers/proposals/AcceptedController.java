@@ -61,10 +61,10 @@ public class AcceptedController extends Controller {
 
     private static ObjectNode proposalToJson(Proposal proposal) {
         ObjectNode proposalJson = Json.newObject();
-        proposalJson.put("id", proposal.id);
-        proposalJson.put("title", proposal.title);
-        proposalJson.put("description", proposal.description);
-        proposalJson.put("indicationsOrganisateurs", proposal.indicationsOrganisateurs);
+        proposalJson.put("id", proposal.getId());
+        proposalJson.put("title", proposal.getTitle());
+        proposalJson.put("description", proposal.getDescription());
+        proposalJson.put("indicationsOrganisateurs", proposal.getIndicationsOrganisateurs());
         ArrayNode tags = new ArrayNode(JsonNodeFactory.instance);
         for (Tag tag : proposal.getTags()) {
             tags.add(tag.nom);
@@ -72,8 +72,8 @@ public class AcceptedController extends Controller {
         proposalJson.put("tags", tags);
 
         ArrayNode speakers = new ArrayNode(JsonNodeFactory.instance);
-        if (proposal.speaker != null) {
-            speakers.add(getSpeakerInJson(proposal.speaker));
+        if (proposal.getSpeaker() != null) {
+            speakers.add(getSpeakerInJson(proposal.getSpeaker()));
         }
         for (User otherSpeaker : proposal.getCoSpeakers()) {
             speakers.add(getSpeakerInJson(otherSpeaker));
@@ -119,11 +119,11 @@ public class AcceptedController extends Controller {
         Map<User, List<Proposal>> speakers = new HashMap<User, List<Proposal>>();
 
         for (Proposal proposal : proposalsAccepted) {
-            if (proposal.speaker != null) {
-                if (!speakers.containsKey(proposal.speaker)) {
-                    speakers.put(proposal.speaker, new ArrayList<Proposal>());
+            if (proposal.getSpeaker() != null) {
+                if (!speakers.containsKey(proposal.getSpeaker())) {
+                    speakers.put(proposal.getSpeaker(), new ArrayList<Proposal>());
                 }
-                speakers.get(proposal.speaker).add(proposal);
+                speakers.get(proposal.getSpeaker()).add(proposal);
             }
             for (User speaker : proposal.getCoSpeakers()) {
                 if (!speakers.containsKey(speaker)) {
@@ -148,7 +148,7 @@ public class AcceptedController extends Controller {
                     Iterables.transform(speakers.get(speaker), new Function<Proposal, String>() {
                         @Override
                         public String apply(Proposal proposal) {
-                            return proposal.title;
+                            return proposal.getTitle();
                         }
                     }))));
         }
@@ -182,11 +182,11 @@ public class AcceptedController extends Controller {
         Map<User, List<Proposal>> speakers = new HashMap<User, List<Proposal>>();
 
         for (Proposal proposal : proposalsAccepted) {
-            if (proposal.speaker != null) {
-                if (!speakers.containsKey(proposal.speaker)) {
-                    speakers.put(proposal.speaker, new ArrayList<Proposal>());
+            if (proposal.getSpeaker() != null) {
+                if (!speakers.containsKey(proposal.getSpeaker())) {
+                    speakers.put(proposal.getSpeaker(), new ArrayList<Proposal>());
                 }
-                speakers.get(proposal.speaker).add(proposal);
+                speakers.get(proposal.getSpeaker()).add(proposal);
             }
             for (User speaker : proposal.getCoSpeakers()) {
                 if (!speakers.containsKey(speaker)) {
@@ -222,13 +222,13 @@ public class AcceptedController extends Controller {
             ArrayNode proposalsJson = new ArrayNode(JsonNodeFactory.instance);
             for (Proposal proposal : speakers.get(speaker)) {
                 ObjectNode proposalJson = Json.newObject();
-                proposalJson.put("id", proposal.id);
-                proposalJson.put("title", proposal.title);
-                proposalJson.put("description", proposal.description);
-                proposalJson.put("indicationsOrganisateurs", proposal.indicationsOrganisateurs);
+                proposalJson.put("id", proposal.getId());
+                proposalJson.put("title", proposal.getTitle());
+                proposalJson.put("description", proposal.getDescription());
+                proposalJson.put("indicationsOrganisateurs", proposal.getIndicationsOrganisateurs());
                 ArrayNode otherSpeakers = new ArrayNode(JsonNodeFactory.instance);
-                if (proposal.speaker != null && !speaker.equals(proposal.speaker)) {
-                    otherSpeakers.add(getSpeakerInJson(proposal.speaker));
+                if (proposal.getSpeaker() != null && !speaker.equals(proposal.getSpeaker())) {
+                    otherSpeakers.add(getSpeakerInJson(proposal.getSpeaker()));
                 }
                 for (User otherSpeaker : proposal.getCoSpeakers()) {
                     if (!otherSpeaker.equals(speaker)) {
@@ -261,13 +261,13 @@ public class AcceptedController extends Controller {
         ArrayNode result = new ArrayNode(JsonNodeFactory.instance);
         for (Proposal proposal : proposalsAccepted) {
             ObjectNode proposalJson = Json.newObject();
-            proposalJson.put("id", proposal.id);
-            proposalJson.put("title", proposal.title);
-            proposalJson.put("description", proposal.description);
-            proposalJson.put("indicationsOrganisateurs", proposal.indicationsOrganisateurs);
+            proposalJson.put("id", proposal.getId());
+            proposalJson.put("title", proposal.getTitle());
+            proposalJson.put("description", proposal.getDescription());
+            proposalJson.put("indicationsOrganisateurs", proposal.getIndicationsOrganisateurs());
 
-            if (proposal.speaker != null) {
-                proposalJson.put("speaker", getSpeakerInJson(proposal.speaker));
+            if (proposal.getSpeaker() != null) {
+                proposalJson.put("speaker", getSpeakerInJson(proposal.getSpeaker()));
             }
             ArrayNode coSpeakers = new ArrayNode(JsonNodeFactory.instance);
             for (User speaker : proposal.getCoSpeakers()) {

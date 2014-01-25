@@ -1,8 +1,8 @@
 package models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import models.utils.BooleanUtils;
 import models.utils.Mail;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import play.Configuration;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
@@ -12,7 +12,6 @@ import play.i18n.Messages;
 import javax.persistence.*;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -54,7 +53,7 @@ public class Comment extends Model {
     public void sendMail() throws MalformedURLException {
     	Set<String> emails = new HashSet<String>();
         if (BooleanUtils.isNotTrue(privateComment)) {
-    	    addMailIfNotAuthorAndWantReceive(proposal.speaker, emails);
+    	    addMailIfNotAuthorAndWantReceive(proposal.getSpeaker(), emails);
             for (User coSpeaker : proposal.getCoSpeakers()) {
                 addMailIfNotAuthorAndWantReceive(coSpeaker, emails);
             }
@@ -65,11 +64,11 @@ public class Comment extends Model {
 
         if (!emails.isEmpty()) {
             String urlString = "http://" + Configuration.root().getString("server.hostname");
-            urlString += "/#/proposals/see/" + proposal.id;
+            urlString += "/#/proposals/see/" + proposal.getId();
             URL url = new URL(urlString);
 
-            String subjet = Messages.get("proposals.comment.new.mail.subject", proposal.title);
-            String message = Messages.get("proposals.comment.new.mail.message", proposal.title, author.getFullname(), comment,url);
+            String subjet = Messages.get("proposals.comment.new.mail.subject", proposal.getTitle());
+            String message = Messages.get("proposals.comment.new.mail.message", proposal.getTitle(), author.getFullname(), comment,url);
 
             Mail.sendMail(new Mail.Envelop(subjet, message, emails));
         }
@@ -97,7 +96,7 @@ public class Comment extends Model {
 	}
 
 	private boolean isSpeakerOfProposalAndWantReceive(User contact) {
-		return contact.equals(proposal.speaker) && contact.getNotifOnMyProposal();
+		return contact.equals(proposal.getSpeaker()) && contact.getNotifOnMyProposal();
 	}
 
 	private boolean isNotAuthor(User contact) {

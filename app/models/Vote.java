@@ -2,17 +2,17 @@ package models;
 
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.SqlRow;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import play.db.ebean.Model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @SuppressWarnings("serial")
 @Entity
@@ -75,7 +75,7 @@ public class Vote extends Model {
         List<Vote> listeVotes = find.query().fetch("proposal").where().eq("user", user).findList();
         Map<Long, Vote> votes = new HashMap<Long, Vote>();
         for (Vote vote : listeVotes) {
-            votes.put(vote.proposal.id, vote);
+            votes.put(vote.proposal.getId(), vote);
         }
         return votes;
     }
