@@ -49,9 +49,12 @@ create table dynamic_field_value (
 create table event (
   id                        bigint auto_increment not null,
   name                      varchar(50),
+  short_name                varchar(5),
+  url                       varchar(200),
   description               varchar(1000),
-  clos                      tinyint(1) default 0,
+  cgu                       varchar(1000),
   constraint uq_event_name unique (name),
+  constraint uq_event_short_name unique (short_name),
   constraint pk_event primary key (id))
 ;
 
@@ -105,6 +108,7 @@ create table track (
   title                     varchar(50),
   short_title               varchar(5),
   description               varchar(1000),
+  event_id                  bigint,
   constraint uq_track_title unique (title),
   constraint uq_track_short_title unique (short_title),
   constraint pk_track primary key (id))
@@ -159,6 +163,13 @@ create table user_track (
   track_id                       bigint not null,
   constraint pk_user_track primary key (user_id, track_id))
 ;
+
+create table user_event (
+  user_id                        bigint not null,
+  event_id                       bigint not null,
+  constraint pk_user_event primary key (user_id, event_id))
+;
+
 alter table comment add constraint fk_comment_author_1 foreign key (author_id) references user (id) on delete restrict on update restrict;
 create index ix_comment_author_1 on comment (author_id);
 alter table comment add constraint fk_comment_proposal_2 foreign key (proposal_id) references proposal (id) on delete restrict on update restrict;
@@ -167,8 +178,8 @@ alter table comment add constraint fk_comment_question_3 foreign key (question_i
 create index ix_comment_question_3 on comment (question_id);
 alter table credentials add constraint fk_credentials_user_4 foreign key (user_id) references user (id) on delete restrict on update restrict;
 create index ix_credentials_user_4 on credentials (user_id);
-alter table dynamic_field_value add constraint fk_dynamic_field_value_dynamicField_5 foreign key (dynamic_field_id) references dynamic_field (id) on delete restrict on update restrict;
-create index ix_dynamic_field_value_dynamicField_5 on dynamic_field_value (dynamic_field_id);
+alter table dynamic_field_value add constraint fk_dynamic_field_value_dynamic_5 foreign key (dynamic_field_id) references dynamic_field (id) on delete restrict on update restrict;
+create index ix_dynamic_field_value_dynamic_5 on dynamic_field_value (dynamic_field_id);
 alter table dynamic_field_value add constraint fk_dynamic_field_value_user_6 foreign key (user_id) references user (id) on delete restrict on update restrict;
 create index ix_dynamic_field_value_user_6 on dynamic_field_value (user_id);
 alter table link add constraint fk_link_user_7 foreign key (user_id) references user (id) on delete restrict on update restrict;
@@ -183,10 +194,12 @@ alter table proposal add constraint fk_proposal_track_11 foreign key (track_id) 
 create index ix_proposal_track_11 on proposal (track_id);
 alter table talk_format add constraint fk_talk_format_event_12 foreign key (event_id) references event (id) on delete restrict on update restrict;
 create index ix_talk_format_event_12 on talk_format (event_id);
-alter table vote add constraint fk_vote_user_13 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_vote_user_13 on vote (user_id);
-alter table vote add constraint fk_vote_proposal_14 foreign key (proposal_id) references proposal (id) on delete restrict on update restrict;
-create index ix_vote_proposal_14 on vote (proposal_id);
+alter table track add constraint fk_track_event_13 foreign key (event_id) references event (id) on delete restrict on update restrict;
+create index ix_track_event_13 on track (event_id);
+alter table vote add constraint fk_vote_user_14 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_vote_user_14 on vote (user_id);
+alter table vote add constraint fk_vote_proposal_15 foreign key (proposal_id) references proposal (id) on delete restrict on update restrict;
+create index ix_vote_proposal_15 on vote (proposal_id);
 
 
 
@@ -202,41 +215,48 @@ alter table user_track add constraint fk_user_track_user_01 foreign key (user_id
 
 alter table user_track add constraint fk_user_track_track_02 foreign key (track_id) references track (id) on delete restrict on update restrict;
 
+alter table user_event add constraint fk_user_event_user_01 foreign key (user_id) references user (id) on delete restrict on update restrict;
+
+alter table user_event add constraint fk_user_event_event_02 foreign key (event_id) references event (id) on delete restrict on update restrict;
+
 # --- !Downs
 
 SET FOREIGN_KEY_CHECKS=0;
 
-drop table comment;
+drop table if exists comment;
 
-drop table credentials;
+drop table if exists credentials;
 
-drop table dynamic_field;
+drop table if exists dynamic_field;
 
-drop table dynamic_field_value;
+drop table if exists dynamic_field_value;
 
-drop table event;
+drop table if exists event;
 
-drop table link;
+drop table if exists user_event;
 
-drop table proposal;
+drop table if exists link;
 
-drop table user_proposal;
+drop table if exists proposal;
 
-drop table tag_proposal;
+drop table if exists user_proposal;
 
-drop table tag;
+drop table if exists tag_proposal;
 
-drop table talk_format;
+drop table if exists tag;
 
-drop table track;
+drop table if exists talk_format;
 
-drop table user_track;
+drop table if exists track;
 
-drop table user;
+drop table if exists user_track;
 
-drop table vote;
+drop table if exists user;
 
-drop table vote_status;
+drop table if exists vote;
+
+drop table if exists vote_status;
 
 SET FOREIGN_KEY_CHECKS=1;
+
 
