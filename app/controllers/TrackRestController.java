@@ -20,7 +20,7 @@ public class TrackRestController extends BaseController {
 
     public static Result get(Long id) {
         Track track = Track.find.byId(id);
-        if (track == null) {
+        if (track == null || !track.getEvent().equals(getEvent())) {
             return noContent();
         }
         return ok(toJson(track));
@@ -30,7 +30,7 @@ public class TrackRestController extends BaseController {
 
     public static Result getProposals(Long id) {
         Track track = Track.find.byId(id);
-        if (track == null) {
+        if (track == null || !track.getEvent().equals(getEvent())) {
             return noContent();
         }
 
@@ -44,6 +44,7 @@ public class TrackRestController extends BaseController {
     }
 
     public static Result all() {
+        //TODO recupérer les track de l'event
         return ok(toJson(Track.find.all()));
     }
 
@@ -56,7 +57,7 @@ public class TrackRestController extends BaseController {
         }
 
         Track track = Track.find.byId(id);
-        if (track != null) {
+        if (track != null && track.getEvent().equals(getEvent())) {
             track.delete();
         }
         // HTTP 204 en cas de succès (NO CONTENT)
@@ -84,7 +85,7 @@ public class TrackRestController extends BaseController {
             if (Track.findByTitle(formTrack.getTitle()) != null) {
                 return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.track.already.exist"))));
             }
-
+            formTrack.setEvent(getEvent());
             formTrack.save();
         } else {
             // Mise à jour d'un track

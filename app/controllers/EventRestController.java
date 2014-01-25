@@ -9,10 +9,7 @@ import play.i18n.Messages;
 import play.mvc.Result;
 import securesocial.core.java.SecureSocial;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static play.data.Form.form;
 import static play.libs.Json.toJson;
@@ -43,7 +40,7 @@ public class EventRestController extends BaseController {
         Event event = Event.find.byId(idEvent);
         if (event != null) {
 
-             //TODO gestion de l'agenda
+            //TODO gestion de l'agenda
 
             event.update();
             return ok(toJson(event));
@@ -77,10 +74,16 @@ public class EventRestController extends BaseController {
             if (Event.findByName(formEvent.getName()) != null) {
                 return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.event.already.exist"))));
             }
-
-
-
             formEvent.save();
+            List<User> organizersInDb = new ArrayList<User>();
+            for (User organizer : formEvent.getOrganizers()) {
+                organizersInDb.add(User.findById(organizer.id));
+            }
+            formEvent.getOrganizers().clear();
+            formEvent.getOrganizers().addAll(organizersInDb);
+            formEvent.saveManyToManyAssociations("organizers");
+            formEvent.update();
+
         } else {
             // Mise à jour d'un événement
             Event dbEvent = Event.find.byId(formEvent.getId());
@@ -94,10 +97,35 @@ public class EventRestController extends BaseController {
             dbEvent.setCgu(formEvent.getCgu());
             dbEvent.setDescription(formEvent.getDescription());
             dbEvent.update();
+
+            updateOrganizers(formEvent, dbEvent);
         }
 
         // HTTP 204 en cas de succès (NO CONTENT)
         return noContent();
+    }
+
+    private static void updateOrganizers(Event formEvent, Event dbEvent) {
+        Set<Long> organizersInForm = new HashSet<Long>();
+        for (User organizer : formEvent.getOrganizers()) {
+            organizersInForm.add(organizer.id);
+        }
+        List<User> organizersTmp = new ArrayList<User>(dbEvent.getOrganizers());
+        Set<Long> organizersInDb = new HashSet<Long>();
+        for (User organizer : organizersTmp) {
+            if (!organizersInForm.contains(organizer.id)) {
+                dbEvent.getOrganizers().remove(organizer);
+            } else {
+                organizersInDb.add(organizer.id);
+            }
+        }
+
+        for (Long organizer : organizersInForm) {
+            if (!organizersInDb.contains(organizer)) {
+                dbEvent.getOrganizers().add(User.findById(organizer));
+            }
+        }
+        dbEvent.saveManyToManyAssociations("organizers");
     }
 
     public static Result delete(Long idEvent) {

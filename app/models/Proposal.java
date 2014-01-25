@@ -28,30 +28,30 @@ import static models.Proposal.Status.*;
 public class Proposal extends Model {
 
     @Id
-    public Long id;
+    private Long id;
 
     @Constraints.Required
     @Constraints.MaxLength(50)
     @Formats.NonEmpty
     @Column(unique = true, length = 50)
-    public String title;
+    private String title;
 
     @Constraints.Required
     @Constraints.MaxLength(2000)
     @Formats.NonEmpty
     @Column(length = 2000)
-    public String description;
+    private String description;
 
     @Constraints.MaxLength(1000)
     @Formats.NonEmpty
     @Column(length = 1000)
-    public String indicationsOrganisateurs;
+    private String indicationsOrganisateurs;
 
     @ManyToOne
-    public User speaker;
+    private User speaker;
 
     @ManyToMany(mappedBy = "coSpeakedProposals")
-    public List<User> coSpeakers;
+    private List<User> coSpeakers;
 
     @ManyToOne
     public Event event;
@@ -336,5 +336,101 @@ public class Proposal extends Model {
 
             Mail.sendMail(new Mail.Envelop(getSubject(proposal.title), getMessage(url.toString(), proposal.title), emails));
         }
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getIndicationsOrganisateurs() {
+        return indicationsOrganisateurs;
+    }
+
+    public void setIndicationsOrganisateurs(String indicationsOrganisateurs) {
+        this.indicationsOrganisateurs = indicationsOrganisateurs;
+    }
+
+    public User getSpeaker() {
+        return speaker;
+    }
+
+    public void setSpeaker(User speaker) {
+        this.speaker = speaker;
+    }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public Track getTrack() {
+        return track;
+    }
+
+    public void setTrack(Track track) {
+        this.track = track;
+    }
+
+    public TalkFormat getFormat() {
+        return format;
+    }
+
+    public void setFormat(TalkFormat format) {
+        this.format = format;
+    }
+
+    public TalkAudience getAudience() {
+        return audience;
+    }
+
+    public void setAudience(TalkAudience audience) {
+        this.audience = audience;
+    }
+
+    public Vote getVote() {
+        return vote;
+    }
+
+    public void setVote(Vote vote) {
+        this.vote = vote;
+    }
+
+    public Double getMoyenne() {
+        return moyenne;
+    }
+
+    public void setMoyenne(Double moyenne) {
+        this.moyenne = moyenne;
     }
 }

@@ -4,7 +4,10 @@ import play.data.format.Formats;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +33,7 @@ public class Event extends Model {
     @Formats.NonEmpty
     @Constraints.MaxLength(200)
     @Column(length = 200)
-    public String url;
+    private String url;
 
     @Constraints.Required
     @Constraints.MaxLength(1000)
@@ -43,7 +46,6 @@ public class Event extends Model {
     private String cgu;
 
     @ManyToMany(mappedBy = "events")
-    @JsonIgnore
     private List<User> organizers;
 
 

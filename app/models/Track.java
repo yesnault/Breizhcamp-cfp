@@ -43,10 +43,21 @@ public class Track extends Model {
     @ManyToMany(mappedBy = "tracksAdvice")
     public List<User> advisors;
 
+    @ManyToOne
+    public Event event;
+
     public static Model.Finder<Long, Track> find = new Model.Finder<Long, Track>(Long.class, Track.class);
 
     public static Track findByTitle(String title) {
         return find.query().where().eq("title", title).findUnique();
+    }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
     }
 
     public List<Proposal> getProposals() {

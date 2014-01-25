@@ -1,18 +1,16 @@
 package controllers;
 
-import static play.libs.Json.toJson;
-
-import java.util.*;
-
-import models.*;
-
-import models.utils.Mail;
 import com.fasterxml.jackson.databind.JsonNode;
-
+import models.*;
+import models.utils.Mail;
 import org.pegdown.PegDownProcessor;
 import play.i18n.Messages;
 import play.mvc.Result;
 import securesocial.core.java.SecureSocial;
+
+import java.util.*;
+
+import static play.libs.Json.toJson;
 
 @SecureSocial.SecuredAction(ajaxCall = true)
 public class Admin extends BaseController {
@@ -55,7 +53,7 @@ public class Admin extends BaseController {
         List<Proposal> proposals = Proposal.findBySpeaker(userToDelete);
         for (Proposal proposal : proposals) {
             proposal.status = Proposal.Status.REJECTED;
-            proposal.speaker = null;
+            proposal.setSpeaker(null);
             proposal.save();
         }
 
@@ -141,8 +139,8 @@ public class Admin extends BaseController {
         Set<String> mailsOfSpeakers = new HashSet<String>();
 
         for (Proposal proposal : Proposal.findByStatus(status)) {
-            if (proposal.speaker != null && proposal.speaker.email != null) {
-                mailsOfSpeakers.add(proposal.speaker.email);
+            if (proposal.getSpeaker() != null && proposal.getSpeaker().email != null) {
+                mailsOfSpeakers.add(proposal.getSpeaker().email);
             }
             for (User coSpeakers : proposal.getCoSpeakers()) {
                 if (coSpeakers.email != null) {

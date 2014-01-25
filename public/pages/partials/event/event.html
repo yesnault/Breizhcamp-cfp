@@ -2,7 +2,8 @@
 
     <div class="col-md-10">
         <div class="well">
-            <h3>Evénement : {{event.name}}<a ng-href="/#/admin/event/edit/{{event.id}}" ><i class="fa fa-pencil"></i></a></h3>
+            <h3>Evénement : {{event.name}}<a ng-href="/#/admin/event/edit/{{event.id}}"><i class="fa fa-pencil"></i></a>
+            </h3>
         </div>
         <div class="well">
             <p>Agenda :</p>
@@ -25,10 +26,29 @@
         <div class="well">
             <p>Organisateurs :</p>
 
-               <!-- TODO gestion  des organisateurs de l'événement      -->
+            <form ng-submit="saveEvent()">
+                <!-- TODO gestion  des organisateurs de l'événement      -->
+                <div class="form-group">
+                    <label class="control-label" for="organiserNew">Ajouter un organisateur</label>
+
+                    <div class="controls">
+                        <input type="text" id="organiserNew" ng-model="organiserNew"
+                               ng-change="addOrganizer()"
+                               typeahead="organiser as organiser.fullname for organiser in  organizers | filter:$viewValue">
+
+                        <p class="help-inline" ng-repeat="organiserD in event.organizers">
+                                    <span class="label label-info">{{organiserD.fullname}} <a
+                                            class="badge badge-important"
+                                            ng-click="removeOrganiser(organiserD)">x</a></span>
+                        </p>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <input type="submit" class="btn btn-primary" value="Valider"/>
+                </div>
+            </form>
 
         </div>
-
 
 
     </div>

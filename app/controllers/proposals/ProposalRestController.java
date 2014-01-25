@@ -36,7 +36,7 @@ public class ProposalRestController extends BaseController {
 
         User user = getLoggedUser();
 
-        if (!user.admin && !user.id.equals(proposal.speaker.id)) {
+        if (!user.admin && !user.id.equals(proposal.getSpeaker().id)) {
             // On vérifie que le user est admin où le propriétaire du proposal
             return forbidden(toJson(TransformValidationErrors.transform("Action non autorisée")));
         }
@@ -56,7 +56,7 @@ public class ProposalRestController extends BaseController {
 
         User user = getLoggedUser();
 
-        if (!user.id.equals(proposal.speaker.id) && !proposal.getCoSpeakers().contains(user)) {
+        if (!user.id.equals(proposal.getSpeaker().id) && !proposal.getCoSpeakers().contains(user)) {
             // On vérifie que le user est admin où le propriétaire du proposal
             return forbidden(toJson(TransformValidationErrors.transform("Action non autorisée")));
         }
@@ -157,8 +157,8 @@ public class ProposalRestController extends BaseController {
 
                 ObjectNode proposalJson = Json.newObject();
 
-                proposalJson.put("id", proposal.id);
-                proposalJson.put("title", proposal.title);
+                proposalJson.put("id", proposal.getId());
+                proposalJson.put("title", proposal.getTitle());
 
 
                 if (proposal.format != null) {
@@ -183,22 +183,22 @@ public class ProposalRestController extends BaseController {
                     proposalJson.putNull("audience");
                 }
 
-                if (proposal.speaker != null) {
+                if (proposal.getSpeaker() != null) {
                     ObjectNode speakerJson = Json.newObject();
-                    speakerJson.put("id", proposal.speaker.id);
-                    speakerJson.put("fullname", proposal.speaker.getFullname());
-                    speakerJson.put("avatar", proposal.speaker.getAvatar());
+                    speakerJson.put("id", proposal.getSpeaker().id);
+                    speakerJson.put("fullname", proposal.getSpeaker().getFullname());
+                    speakerJson.put("avatar", proposal.getSpeaker().getAvatar());
                     proposalJson.put("speaker", speakerJson);
                 }
 
-                Vote voteUser = votes.get(proposal.id);
+                Vote voteUser = votes.get(proposal.getId());
                 if (voteUser != null) {
                     proposalJson.put("vote", voteUser.getNote());
                 } else {
                     proposalJson.putNull("vote");
                 }
 
-                Pair<Double, Integer> moyenne = moyennes.get(proposal.id);
+                Pair<Double, Integer> moyenne = moyennes.get(proposal.getId());
                 if (moyenne != null) {
                     proposalJson.put("moyenne", moyenne.getLeft());
                     proposalJson.put("nbvote", moyenne.getRight());
@@ -224,14 +224,14 @@ public class ProposalRestController extends BaseController {
 
         Proposal formProposal = proposalForm.get();
 
-        if (formProposal.id == null) {
+        if (formProposal.getId() == null) {
 
             if (VoteStatus.getVoteStatus() != VoteStatusEnum.NOT_BEGIN) {
                 return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.vote.begin"))));
             }
             // Nouveau proposal
-            formProposal.speaker = user;
-            if (Proposal.findByTitle(formProposal.title) != null) {
+            formProposal.setSpeaker(user);
+            if (Proposal.findByTitle(formProposal.getTitle()) != null) {
                 return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.proposal.already.exist"))));
             }
 
@@ -249,27 +249,27 @@ public class ProposalRestController extends BaseController {
             updateTags(proposalForm.data().get("tagsname"), formProposal);
         } else {
             // Mise à jour d'un proposal
-            Proposal dbProposal = Proposal.find.byId(formProposal.id);
+            Proposal dbProposal = Proposal.find.byId(formProposal.getId());
 
-            if (!(user.id.equals(dbProposal.speaker.id) || user.admin)) {
+            if (!(user.id.equals(dbProposal.getSpeaker().id) || user.admin)) {
                 // On vérifie que le user est admin où le propriétaire du proposal
-                Logger.info("Tentative de suppression de proposal sans les droits requis : " + dbProposal.id);
+                Logger.info("Tentative de suppression de proposal sans les droits requis : " + dbProposal.getId());
                 return unauthorized();
             }
 
 
-            if (!formProposal.title.equals(dbProposal.title)
-                    && Proposal.findByTitle(formProposal.title) != null) {
-                Logger.error("error.proposal.already.exist :" + formProposal.title);
+            if (!formProposal.getTitle().equals(dbProposal.getTitle())
+                    && Proposal.findByTitle(formProposal.getTitle()) != null) {
+                Logger.error("error.proposal.already.exist :" + formProposal.getTitle());
                 return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.proposal.already.exist"))));
             }
-            dbProposal.title = formProposal.title;
-            dbProposal.description = formProposal.description;
+            dbProposal.setTitle(  formProposal.getTitle()) ;
+            dbProposal.setDescription( formProposal.getDescription());
             dbProposal.format = formProposal.format;
             dbProposal.audience = formProposal.audience;
             dbProposal.track = formProposal.track;
 
-            dbProposal.indicationsOrganisateurs = formProposal.indicationsOrganisateurs;
+            dbProposal.setIndicationsOrganisateurs( formProposal.getIndicationsOrganisateurs());
             dbProposal.status = DRAFT;
             dbProposal.save();
 
@@ -346,7 +346,7 @@ public class ProposalRestController extends BaseController {
         User user = getLoggedUser();
         Proposal dbProposal = Proposal.find.byId(idProposal);
 
-        if (!user.admin && !user.id.equals(dbProposal.speaker.id)) {
+        if (!user.admin && !user.id.equals(dbProposal.getSpeaker().id)) {
             // On vérifie que le user est admin où le propriétaire du proposal
             return forbidden(toJson(TransformValidationErrors.transform("Action non autorisée")));
         }
@@ -369,9 +369,9 @@ public class ProposalRestController extends BaseController {
         Proposal proposal = Proposal.find.byId(idProposal);
 
         User user = getLoggedUser();
-        if (!user.admin && !(user.id.equals(proposal.speaker.id))) {
+        if (!user.admin && !(user.id.equals(proposal.getSpeaker().id))) {
             // On vérifie que le user est admin où le propriétaire du proposal
-            Logger.info("Tentative de suppression de proposal sans les droits requis : " + proposal.id);
+            Logger.info("Tentative de suppression de proposal sans les droits requis : " + proposal.getId());
             return unauthorized();
         }
 
@@ -423,7 +423,7 @@ public class ProposalRestController extends BaseController {
             return badRequest(toJson(errors));
         }
 
-        if (!user.admin && !user.id.equals(proposal.speaker.id)) {
+        if (!user.admin && !user.id.equals(proposal.getSpeaker().id)) {
             return forbidden(toJson(TransformValidationErrors.transform("Action non autorisée")));
         }
 
@@ -500,7 +500,7 @@ public class ProposalRestController extends BaseController {
             return badRequest(toJson(errors));
         }
 
-        if (!user.admin && !user.id.equals(proposal.speaker.id)) {
+        if (!user.admin && !user.id.equals(proposal.getSpeaker().id)) {
             return forbidden(toJson(TransformValidationErrors.transform("Action non autorisée")));
         }
 
@@ -543,7 +543,7 @@ public class ProposalRestController extends BaseController {
             return badRequest(toJson(errors));
         }
 
-        if (!user.admin && !user.id.equals(proposal.speaker.id)) {
+        if (!user.admin && !user.id.equals(proposal.getSpeaker().id)) {
             return forbidden(toJson(TransformValidationErrors.transform("Action non autorisée")));
         }
 
@@ -573,7 +573,7 @@ public class ProposalRestController extends BaseController {
 
             proposal.save();
             if (proposal.status != null) {
-                proposal.status.sendMail(proposal, proposal.speaker.email);
+                proposal.status.sendMail(proposal, proposal.getSpeaker().email);
             }
         }
 
@@ -589,8 +589,8 @@ public class ProposalRestController extends BaseController {
         for (Proposal proposal : Proposal.findByStatus(SUBMITTED)) {
             proposal.status = REJECTED;
             proposal.save();
-            if (proposal.speaker != null) {
-                proposal.status.sendMail(proposal, proposal.speaker.email);
+            if (proposal.getSpeaker() != null) {
+                proposal.status.sendMail(proposal, proposal.getSpeaker().email);
             }
         }
         return ok();
@@ -672,15 +672,15 @@ public class ProposalRestController extends BaseController {
 
         public static ProposalCsv fromProposal(Proposal proposal) {
             ProposalCsv proposalCsv = new ProposalCsv();
-            if (proposal.speaker != null) {
-                proposalCsv.speakerFullName = proposal.speaker.getFullname();
+            if (proposal.getSpeaker() != null) {
+                proposalCsv.speakerFullName = proposal.getSpeaker().getFullname();
                 for (User coSpeaker : proposal.getCoSpeakers()) {
                     proposalCsv.speakerFullName += "\n" + coSpeaker.getFullname();
                 }
             }
 
 
-            proposalCsv.title = proposal.title;
+            proposalCsv.title = proposal.getTitle();
             if (proposal.status != null) {
                 proposalCsv.status = proposal.status.name();
             }
@@ -698,8 +698,8 @@ public class ProposalRestController extends BaseController {
             }
 
 
-            proposalCsv.description = proposal.description;
-            proposalCsv.indicationsOrganisateurs = proposal.indicationsOrganisateurs;
+            proposalCsv.description = proposal.getDescription();
+            proposalCsv.indicationsOrganisateurs = proposal.getIndicationsOrganisateurs();
             return proposalCsv;
         }
     }

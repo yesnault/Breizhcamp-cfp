@@ -1231,8 +1231,8 @@ function EditEventController($scope, $log, EventService, $location, $routeParams
     }
 }
 
-SeeEventController.$inject = ['$scope', '$log', 'EventService', '$location', '$routeParams'];
-function SeeEventController($scope, $log, EventService, $location, $routeParams) {
+SeeEventController.$inject = ['$scope', '$log','$http', 'EventService', '$location', '$routeParams'];
+function SeeEventController($scope, $log,$http, EventService, $location, $routeParams) {
     $scope.checkloc(true);
 
     var idEvent = $routeParams.id;
@@ -1252,6 +1252,52 @@ function SeeEventController($scope, $log, EventService, $location, $routeParams)
             return $scope.converter.makeHtml($scope.event.cgu);
         }
     }
+
+    $http.get("/admin/users/get").success(function (data) {
+        $scope.organizers = data;
+    });
+
+    $scope.addOrganizer = function () {
+
+        $log.info('orga '+$scope.event.organizers.length);
+        if ($scope.organiserNew !== undefined) {
+
+            var found = false;
+
+            angular.forEach($scope.event.organizers, function (organizerItem) {
+
+                if (organizerItem.id === $scope.organiserNew.id) {
+
+                    found = true;
+                }
+            });
+
+            if (!found) {
+                $log.info('item '+ $scope.organiserNew.fullname);
+                $scope.event.organizers.push($scope.organiserNew);
+            }
+            $scope.organiserNew = undefined;
+            $log.info('orga '+$scope.event.organizers.length);
+        }
+    };
+
+    $scope.removeOrganizer = function (organizer) {
+        $scope.event.organizers.splice($scope.event.organizers.indexOf(organizer), 1);
+    };
+
+    $scope.saveEvent = function () {
+        $log.info("Sauvegarde de l'event : " + $routeParams.id);
+
+        EventService.save($scope.event, function (data) {
+            $log.info("Soummission de l'event ok");
+            $location.url('/event/'+$routeParams.id);
+        }, function (err) {
+            $log.info("Soummission de l'event ko");
+            $log.info(err.data);
+            $scope.errors = err.data;
+        });
+    };
+
 
 }
 

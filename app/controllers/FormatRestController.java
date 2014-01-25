@@ -1,12 +1,7 @@
 package controllers;
 
-import static play.libs.Json.toJson;
-import static play.data.Form.form;
-
-import java.util.ArrayList;
-
-import models.TalkFormat;
 import models.Proposal;
+import models.TalkFormat;
 import models.User;
 import models.utils.TransformValidationErrors;
 import play.data.Form;
@@ -14,18 +9,24 @@ import play.i18n.Messages;
 import play.mvc.Result;
 import securesocial.core.java.SecureSocial;
 
+import java.util.ArrayList;
+
+import static play.data.Form.form;
+import static play.libs.Json.toJson;
+
 @SecureSocial.SecuredAction(ajaxCall = true)
 public class FormatRestController extends BaseController {
 
     public static Result get(Long id) {
         TalkFormat format = TalkFormat.find.byId(id);
-        if (format == null) {
+        if (format == null || !format.getEvent().equals(getEvent())) {
             return noContent();
         }
         return ok(toJson(format));
     }
 
     public static Result all() {
+        //TODO selectionner les formats de l'event
         return ok(toJson(TalkFormat.find.all()));
     }
 
@@ -50,6 +51,7 @@ public class FormatRestController extends BaseController {
             if (TalkFormat.findByLibelle(formFormat.getLibelle()) != null) {
                 return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.creneau.already.exist"))));
             }
+            formFormat.setEvent(getEvent());
             formFormat.save();
         } else {
             // Mise à jour d'un format
@@ -78,7 +80,7 @@ public class FormatRestController extends BaseController {
         }
 
         TalkFormat format = TalkFormat.find.byId(id);
-        if (format != null) {
+        if (format != null && format.getEvent().equals(getEvent())) {
             for (Proposal proposal : new ArrayList<Proposal>(format.getProposals())) {
                 format.getProposals().remove(proposal);
             }

@@ -97,4 +97,12 @@ public class TalkFormat extends Model {
     public void setNbInstance(Integer nbInstance) {
         this.nbInstance = nbInstance;
     }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
+    }
 }

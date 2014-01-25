@@ -1,16 +1,16 @@
 package models;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import models.utils.BooleanUtils;
 import org.apache.commons.codec.digest.DigestUtils;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
+import play.libs.Json;
 
 import javax.persistence.*;
 import java.util.*;
