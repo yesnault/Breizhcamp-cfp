@@ -244,12 +244,13 @@ public class ProposalRestController extends BaseController {
             }
 
             formProposal.status = DRAFT;
+            formProposal.event = getEvent();
             formProposal.save();
             List<User> coSpeakersInDb = new ArrayList<User>();
             for (User coSpeaker : formProposal.getCoSpeakers()) {
                 coSpeakersInDb.add(User.findById(coSpeaker.id));
             }
-            formProposal.event = getEvent();
+
             formProposal.getCoSpeakers().clear();
             formProposal.getCoSpeakers().addAll(coSpeakersInDb);
             formProposal.saveManyToManyAssociations("coSpeakers");
@@ -279,12 +280,12 @@ public class ProposalRestController extends BaseController {
 
             dbProposal.setIndicationsOrganisateurs( formProposal.getIndicationsOrganisateurs());
             dbProposal.status = DRAFT;
-            dbProposal.save();
+            dbProposal.update();
 
             dbProposal.track.getProposals().clear();
             dbProposal.track.getProposals().add(dbProposal);
             dbProposal.track.saveManyToManyAssociations("proposals");
-            dbProposal.track.save();
+            dbProposal.track.update();
 
             updateCoSpeakers(formProposal, dbProposal);
             updateTags(proposalForm.data().get("tagsname"), dbProposal);
