@@ -8,6 +8,7 @@ create table comment (
   author_id                 bigint,
   proposal_id               bigint,
   comment                   varchar(140),
+  date_creation             datetime,
   clos                      tinyint(1) default 0,
   private_comment           tinyint(1) default 0,
   question_id               bigint,
@@ -99,7 +100,6 @@ create table talk_format (
   description               varchar(255),
   nb_instance               integer,
   event_id                  bigint,
-  constraint uq_talk_format_libelle unique (libelle),
   constraint pk_talk_format primary key (id))
 ;
 
@@ -109,8 +109,6 @@ create table track (
   short_title               varchar(5),
   description               varchar(1000),
   event_id                  bigint,
-  constraint uq_track_title unique (title),
-  constraint uq_track_short_title unique (short_title),
   constraint pk_track primary key (id))
 ;
 

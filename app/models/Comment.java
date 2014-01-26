@@ -12,6 +12,7 @@ import play.i18n.Messages;
 import javax.persistence.*;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,6 +26,8 @@ public class Comment extends Model {
 
     @ManyToOne
     public User author;
+
+    public Date dateCreation;
     
     @ManyToOne
     @JsonIgnore

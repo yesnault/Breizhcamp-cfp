@@ -84,14 +84,15 @@ directives.directive('reponse', function factory() {
     return directiveDefinitionObject;
 });
 
-directives.directive('comment', function factory() {
+
+directives.directive('comment', function ($compile) {
     var directiveDefinitionObject = {
         templateUrl: 'assets/pages/templates/comment.html',
         restrict: 'E',
         replace: true,
         require: 'ngModel',
         transclude: true,
-        link: function (scope, element, attrs) {
+        link: function (scope, element, attrs,controller) {
 
         }
     };

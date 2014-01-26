@@ -25,6 +25,14 @@ public class EventRestController extends BaseController {
         return ok(toJson(event));
     }
 
+    public static Result organizers(Long idEvent) {
+        Event event = Event.find.byId(idEvent);
+        if (event == null) {
+            return noContent();
+        }
+        return ok(toJson(event.getOrganizers()));
+    }
+
     public static Result getCurrentEvent() {
         return ok(toJson(getEvent()));
     }

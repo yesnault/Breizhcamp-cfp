@@ -4,21 +4,22 @@
     </div>
 
 
-    <div class="well col-md-9" id="show-{{comment.id}}">
+    <div class="well col-md-9 {{{true:'privateComment',false:''}[comment.privateComment == true]}} " id="show-{{comment.id}}">
         <div class="row">
             <div class="col-md-10">{{comment.comment}}</div>
 
 
             <div class="col-md-2">
-                <a ng-click="deleteComment({{comment.id}})"
+                <a ng-click="$parent.deleteComment(comment.id);"
                    ng-show="!comment.clos&&(userService.isAdmin()|| userService.getUserData().id == comment.author.id )"
-                   ng-disabled="comment.reponses.length"> <i class="fa fa-times-circle-o"></i></a>
+                   ng-disabled="comment.reponses.length>0"> <i class="fa fa-times-circle-o"></i></a>
+
                 <a ng-show="!comment.clos&&(userService.isAdmin()|| userService.getUserData().id == comment.author.id )"
                    onclick="displayHide('edit-{{comment.id}}');displayHide('show-{{comment.id}}');"> <i
                         class="fa fa-pencil"></i></a>
             </div>
 
-            <div class="col-md-3" ng-show="comment.author!=null">
+            <div class="col-md-4" ng-show="comment.author!=null">
                 <br/>{{comment.author.fullname}}
             </div>
             <div class="col-md-3" ng-show="comment.author==null"><br/>compte supprimé</div>

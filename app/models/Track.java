@@ -18,13 +18,13 @@ public class Track extends Model {
     @Constraints.Required
     @Constraints.MaxLength(50)
     @Formats.NonEmpty
-    @Column(unique = true, length = 50)
+    @Column(length = 50)
     private String title;
 
     @Constraints.Required
     @Constraints.MaxLength(5)
     @Formats.NonEmpty
-    @Column(unique = true, length = 5)
+    @Column( length = 5)
     private String shortTitle;
 
     @Constraints.Required
@@ -48,8 +48,16 @@ public class Track extends Model {
 
     public static Model.Finder<Long, Track> find = new Model.Finder<Long, Track>(Long.class, Track.class);
 
-    public static Track findByTitle(String title) {
-        return find.query().where().eq("title", title).findUnique();
+    public static Track findByTitleAndEvent(String title, Event event) {
+        return find.query().where().eq("title", title).eq("event", event).findUnique();
+    }
+
+    public static Object findByShortTitleAndEvent(String shortTitle, Event event) {
+        return find.query().where().eq("shortTitle", shortTitle).eq("event", event).findUnique();
+    }
+
+    public static List<Track> findByEvent(Event event) {
+        return find.query().where().eq("event", event).findList();
     }
 
     public Event getEvent() {
@@ -98,6 +106,7 @@ public class Track extends Model {
     public void setDescription(String description) {
         this.description = description;
     }
+
 
 
 }

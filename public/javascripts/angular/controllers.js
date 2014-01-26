@@ -537,6 +537,13 @@ function SeeProposalsController($scope, $log, $routeParams, ProposalService, htt
             });
     };
 
+    $scope.hi=function()
+    {
+        alert('parent');
+    }
+
+    $scope.data = {name :'Bob'};
+
     $scope.deleteComment = function (id) {
         $log.info("suppression du commentaire " + id);
 
@@ -1231,13 +1238,14 @@ function EditEventController($scope, $log, EventService, $location, $routeParams
     }
 }
 
-SeeEventController.$inject = ['$scope', '$log','$http', 'EventService', '$location', '$routeParams'];
-function SeeEventController($scope, $log,$http, EventService, $location, $routeParams) {
+SeeEventController.$inject = ['$scope', '$log','$http', 'EventService','EventOrganizersService', '$location', '$routeParams'];
+function SeeEventController($scope, $log,$http, EventService,EventOrganizersService, $location, $routeParams) {
     $scope.checkloc(true);
 
     var idEvent = $routeParams.id;
 
     $scope.event = EventService.get({id:idEvent});
+    $scope.organizersEvent = EventOrganizersService.query({id:idEvent});
 
     $scope.converter = new Markdown.getSanitizingConverter();
 
@@ -1259,12 +1267,12 @@ function SeeEventController($scope, $log,$http, EventService, $location, $routeP
 
     $scope.addOrganizer = function () {
 
-        $log.info('orga '+$scope.event.organizers.length);
+        $log.info('orga '+$scope.organizersEvent.length);
         if ($scope.organiserNew !== undefined) {
 
             var found = false;
 
-            angular.forEach($scope.event.organizers, function (organizerItem) {
+            angular.forEach($scope.organizersEvent, function (organizerItem) {
 
                 if (organizerItem.id === $scope.organiserNew.id) {
 
@@ -1274,7 +1282,8 @@ function SeeEventController($scope, $log,$http, EventService, $location, $routeP
 
             if (!found) {
                 $log.info('item '+ $scope.organiserNew.fullname);
-                $scope.event.organizers.push($scope.organiserNew);
+                $scope.organizersEvent.push($scope.organiserNew);
+                $scope.event.organizers= $scope.organizersEvent;
             }
             $scope.organiserNew = undefined;
             $log.info('orga '+$scope.event.organizers.length);
@@ -1282,7 +1291,9 @@ function SeeEventController($scope, $log,$http, EventService, $location, $routeP
     };
 
     $scope.removeOrganizer = function (organizer) {
-        $scope.event.organizers.splice($scope.event.organizers.indexOf(organizer), 1);
+        $log.info('remove '+ organizer.fullname);
+        $scope.organizersEvent.splice($scope.organizersEvent.indexOf(organizer), 1);
+        $scope.event.organizers= $scope.organizersEvent;
     };
 
     $scope.saveEvent = function () {

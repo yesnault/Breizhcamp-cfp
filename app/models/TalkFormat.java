@@ -20,7 +20,7 @@ public class TalkFormat extends Model {
     @Constraints.Required
     @Constraints.MaxLength(50)
     @Formats.NonEmpty
-    @Column(unique = true, length = 50)
+    @Column(length = 50)
     private String libelle;
 
     @Constraints.Required
@@ -86,8 +86,12 @@ public class TalkFormat extends Model {
     
     public static Finder<Long, TalkFormat> find = new Finder<Long, TalkFormat>(Long.class, TalkFormat.class);
 
-    public static TalkFormat findByLibelle(String libelle) {
-        return find.query().where().eq("libelle", libelle).findUnique();
+    public static TalkFormat findByLibelle(String libelle, Event event) {
+        return find.query().where().eq("libelle", libelle).eq("event", event).findUnique();
+    }
+
+    public static List<TalkFormat> findByEvent(Event event) {
+        return find.query().where().eq("event", event).findList();
     }
 
     public Integer getNbInstance() {

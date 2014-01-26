@@ -44,15 +44,14 @@ public class TrackRestController extends BaseController {
     }
 
     public static Result all() {
-        //TODO recupérer les track de l'event
-        return ok(toJson(Track.find.all()));
+        return ok(toJson(Track.findByEvent(getEvent())));
     }
 
     public static Result delete(Long id) {
 
         // Vérification du rôle d'admin
         User user = getLoggedUser();
-        if (!user.admin) {
+        if (!user.admin && !user.hasEvent(getEvent())) {
             return forbidden();
         }
 
@@ -68,7 +67,7 @@ public class TrackRestController extends BaseController {
 
         // Vérification du rôle d'admin
         User user = getLoggedUser();
-        if (!user.admin) {
+        if (!user.admin && !user.hasEvent(getEvent())) {
             return forbidden();
         }
 
@@ -82,8 +81,11 @@ public class TrackRestController extends BaseController {
 
         if (formTrack.getId() == null) {
             // Nouveau Track
-            if (Track.findByTitle(formTrack.getTitle()) != null) {
+            if (Track.findByTitleAndEvent(formTrack.getTitle(),getEvent()) != null) {
                 return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.track.already.exist"))));
+            }
+            if (Track.findByShortTitleAndEvent(formTrack.getShortTitle(),getEvent()) != null) {
+                return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.track.shortTitle.already.exist"))));
             }
             formTrack.setEvent(getEvent());
             formTrack.save();
@@ -91,8 +93,13 @@ public class TrackRestController extends BaseController {
             // Mise à jour d'un track
             Track dbTrack = Track.find.byId(formTrack.getId());
             if (!formTrack.getTitle().equals(dbTrack.getTitle())
-                    && Track.findByTitle(formTrack.getTitle()) != null) {
+                    && Track.findByTitleAndEvent(formTrack.getTitle(),getEvent()) != null) {
                 return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.track.already.exist"))));
+            }
+
+            if (!formTrack.getShortTitle().equals(dbTrack.getShortTitle())
+                    && Track.findByShortTitleAndEvent(formTrack.getShortTitle(),getEvent()) != null) {
+                return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.track.shortTitle.already.exist"))));
             }
 
             dbTrack.setDescription(formTrack.getDescription());

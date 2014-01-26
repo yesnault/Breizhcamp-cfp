@@ -1,7 +1,7 @@
 <div>
     <div class="row" >
         <div class="col-md-1"></div>
-        <div class="col-md-9 well" id="showReponse-{{reponse.id}}">
+        <div class="col-md-9 well {{{true:'privateComment',false:''}[reponse.privateComment == true]}}" id="showReponse-{{reponse.id}}">
             <div class="row">
                 <div class="col-md-11" >{{reponse.comment}}</div>
                 <div class="col-md-1" ng-show="reponse.author!=null">
@@ -10,7 +10,7 @@
                         <i class="fa fa-pencil"></i></a>
                 </div>
 
-                <div class="col-md-3" ng-show="reponse.author!=null"><br/>{{reponse.author.fullname}}</div>
+                <div class="col-md-4" ng-show="reponse.author!=null"><br/>{{reponse.author.fullname}}</div>
                 <div class="col-md-3" ng-show="reponse.author==null">compte supprimé</div>
             </div>
         </div>

@@ -36,7 +36,11 @@ public class ProposalRestController extends BaseController {
 
         User user = getLoggedUser();
 
-        if (!user.admin && !user.id.equals(proposal.getSpeaker().id)) {
+        if (proposal == null || !proposal.getEvent().equals(getEvent())) {
+            return noContent();
+        }
+
+        if ((!user.admin && !user.hasEvent(getEvent())) && !user.id.equals(proposal.getSpeaker().id)) {
             // On vérifie que le user est admin où le propriétaire du proposal
             return forbidden(toJson(TransformValidationErrors.transform("Action non autorisée")));
         }
@@ -56,6 +60,10 @@ public class ProposalRestController extends BaseController {
 
         User user = getLoggedUser();
 
+        if (proposal == null || !proposal.getEvent().equals(getEvent())) {
+            return noContent();
+        }
+
         if (!user.id.equals(proposal.getSpeaker().id) && !proposal.getCoSpeakers().contains(user)) {
             // On vérifie que le user est admin où le propriétaire du proposal
             return forbidden(toJson(TransformValidationErrors.transform("Action non autorisée")));
@@ -70,7 +78,7 @@ public class ProposalRestController extends BaseController {
     public static Result get() {
         User user = getLoggedUser();
 
-        List<Proposal> proposals = Proposal.findBySpeaker(user);
+        List<Proposal> proposals = Proposal.findBySpeakerAndEvent(user,getEvent());
 
         for (Proposal proposal : proposals) {
             if (user.admin) {
@@ -89,7 +97,7 @@ public class ProposalRestController extends BaseController {
     public static Result getProposals(Long userId) {
         User user = User.find.byId(userId);
 
-        List<Proposal> allProposals = Proposal.findBySpeaker(user);
+        List<Proposal> allProposals = Proposal.findBySpeakerAndEvent(user,getEvent());
         List<Proposal> proposals = new ArrayList<Proposal>();
         for (Proposal proposal : allProposals) {
             proposal.fiteredComments(user);
@@ -106,7 +114,7 @@ public class ProposalRestController extends BaseController {
         User user = User.find.byId(userId);
 
 
-        List<Proposal> allProposals = Proposal.findBySpeaker(user);
+        List<Proposal> allProposals = Proposal.findBySpeakerAndEvent(user,getEvent());
         List<Proposal> proposals = new ArrayList<Proposal>();
         for (Proposal proposal : allProposals) {
             if (proposal.isDraft()) {
@@ -141,10 +149,10 @@ public class ProposalRestController extends BaseController {
 
     public static Result all(boolean draft) {
         User user = getLoggedUser();
-        if (!user.admin) {
+        if ((!user.admin && !user.hasEvent(getEvent()))) {
             return forbidden();
         }
-        List<Proposal> proposals = Proposal.findAllForDisplay();
+        List<Proposal> proposals = Proposal.findAllForDisplay(getEvent());
 
         Map<Long, Vote> votes = Vote.findVotesUserByProposalId(user);
 
@@ -346,7 +354,7 @@ public class ProposalRestController extends BaseController {
         User user = getLoggedUser();
         Proposal dbProposal = Proposal.find.byId(idProposal);
 
-        if (!user.admin && !user.id.equals(dbProposal.getSpeaker().id)) {
+        if ((!user.admin && !user.hasEvent(getEvent())) && !user.id.equals(dbProposal.getSpeaker().id)) {
             // On vérifie que le user est admin où le propriétaire du proposal
             return forbidden(toJson(TransformValidationErrors.transform("Action non autorisée")));
         }
@@ -369,7 +377,7 @@ public class ProposalRestController extends BaseController {
         Proposal proposal = Proposal.find.byId(idProposal);
 
         User user = getLoggedUser();
-        if (!user.admin && !(user.id.equals(proposal.getSpeaker().id))) {
+        if ((!user.admin && !user.hasEvent(getEvent())) && !(user.id.equals(proposal.getSpeaker().id))) {
             // On vérifie que le user est admin où le propriétaire du proposal
             Logger.info("Tentative de suppression de proposal sans les droits requis : " + proposal.getId());
             return unauthorized();
@@ -431,6 +439,7 @@ public class ProposalRestController extends BaseController {
             Comment comment = new Comment();
             comment.author = user;
             comment.comment = commentForm;
+            comment.dateCreation = new Date();
             comment.privateComment = privateComment;
             comment.proposal = proposal;
             comment.save();
@@ -508,6 +517,7 @@ public class ProposalRestController extends BaseController {
             Comment comment = new Comment();
             comment.author = user;
             comment.comment = commentForm;
+            comment.dateCreation = new Date();
             comment.privateComment = privateComment;
             comment.proposal = proposal;
 
@@ -558,7 +568,7 @@ public class ProposalRestController extends BaseController {
 
     public static Result saveStatus(Long idProposal) throws MalformedURLException {
         User user = getLoggedUser();
-        if (!user.admin) {
+        if ((!user.admin && !user.hasEvent(getEvent()))) {
             return forbidden();
         }
 
@@ -582,11 +592,11 @@ public class ProposalRestController extends BaseController {
 
     public static Result rejectAllRemainingProposals() throws MalformedURLException {
         User user = getLoggedUser();
-        if (!user.admin) {
+        if ((!user.admin && !user.hasEvent(getEvent()))) {
             return forbidden();
         }
 
-        for (Proposal proposal : Proposal.findByStatus(SUBMITTED)) {
+        for (Proposal proposal : Proposal.findByStatus(SUBMITTED,getEvent())) {
             proposal.status = REJECTED;
             proposal.save();
             if (proposal.getSpeaker() != null) {
@@ -598,7 +608,7 @@ public class ProposalRestController extends BaseController {
 
     public static Result saveVote(Long idProposal, Integer note) {
         User user = getLoggedUser();
-        if (!user.admin) {
+        if ((!user.admin && !user.hasEvent(getEvent()))) {
             return forbidden();
         }
 
@@ -626,7 +636,7 @@ public class ProposalRestController extends BaseController {
     public static Result proposalStat() {
 
         User user = getLoggedUser();
-        if (!user.admin) {
+        if ((!user.admin && !user.hasEvent(getEvent()))) {
             return forbidden();
         }
         ObjectNode result = Json.newObject();

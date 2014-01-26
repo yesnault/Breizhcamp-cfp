@@ -70,6 +70,7 @@ GET	    /event              controllers.EventRestController.all()
 GET	    /user/event         controllers.EventRestController.getCurrentEvent()
 POST	/event              controllers.EventRestController.save()
 DELETE	/event/:id          controllers.EventRestController.delete(id:Long)
+GET	    /event/:id/organizers     controllers.EventRestController.organizers(id:Long)
 
 GET	    /track/:id            controllers.TrackRestController.get(id:Long)
 GET	    /track/proposals/:id  controllers.TrackRestController.getProposals(id:Long)

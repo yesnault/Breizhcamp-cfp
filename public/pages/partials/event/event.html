@@ -36,7 +36,7 @@
                                ng-change="addOrganizer()"
                                typeahead="organiser as organiser.fullname for organiser in  organizers | filter:$viewValue">
 
-                        <p class="help-inline" ng-repeat="organiserD in event.organizers">
+                        <p class="help-inline" ng-repeat="organiserD in organizersEvent">
                                     <span class="label label-info">{{organiserD.fullname}} <a
                                             class="badge badge-important"
                                             ng-click="removeOrganiser(organiserD)">x</a></span>

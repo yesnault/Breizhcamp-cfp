@@ -26,15 +26,14 @@ public class FormatRestController extends BaseController {
     }
 
     public static Result all() {
-        //TODO selectionner les formats de l'event
-        return ok(toJson(TalkFormat.find.all()));
+        return ok(toJson(TalkFormat.findByEvent(getEvent())));
     }
 
     public static Result save() {
 
         // Vérification du rôle d'admin
         User user = getLoggedUser();
-        if (!user.admin) {
+        if (!user.admin && !user.hasEvent(getEvent())) {
             return forbidden();
         }
 
@@ -48,8 +47,8 @@ public class FormatRestController extends BaseController {
 
         if (formFormat.getId() == null) {
             // Nouveau format
-            if (TalkFormat.findByLibelle(formFormat.getLibelle()) != null) {
-                return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.creneau.already.exist"))));
+            if (TalkFormat.findByLibelle(formFormat.getLibelle(),getEvent()) != null) {
+                return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.format.already.exist"))));
             }
             formFormat.setEvent(getEvent());
             formFormat.save();
@@ -57,8 +56,8 @@ public class FormatRestController extends BaseController {
             // Mise à jour d'un format
             TalkFormat dbFormat = TalkFormat.find.byId(formFormat.getId());
             if (!formFormat.getLibelle().equals(dbFormat.getLibelle())
-                    && TalkFormat.findByLibelle(formFormat.getLibelle()) != null) {
-                return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.creneau.already.exist"))));
+                    && TalkFormat.findByLibelle(formFormat.getLibelle(),getEvent()) != null) {
+                return badRequest(toJson(TransformValidationErrors.transform(Messages.get("error.format.already.exist"))));
             }
             dbFormat.setLibelle(formFormat.getLibelle());
             dbFormat.setDureeMinutes(formFormat.getDureeMinutes());
@@ -75,7 +74,7 @@ public class FormatRestController extends BaseController {
         
         // Vérification du rôle d'admin
         User user = getLoggedUser();
-        if (!user.admin) {
+        if (!user.admin && !user.hasEvent(getEvent())) {
             return forbidden();
         }
 

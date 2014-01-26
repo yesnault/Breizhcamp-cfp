@@ -165,3 +165,6 @@ error.dynamicField.already.exist=Ce champ dynamique existe déjà.
 error.event.already.exist=Cet Evénement existe déjà.
 error.event.already.actif=un Evénement est déjà actif
 error.event.hasElement=Cet Evénement est actif ou associé à d\'autres éléments
+
+error.track.already.exist=Ce Track existe déjà.
+error.track.shortTitle.already.exist=Un Track avec ce titre court existe déjà.

@@ -51,7 +51,7 @@ public class Proposal extends Model {
     private User speaker;
 
     @ManyToMany(mappedBy = "coSpeakedProposals")
-    private List<User> coSpeakers;
+    private List<User> coSpeakers = new ArrayList<User>();
 
     @ManyToOne
     public Event event;
@@ -62,6 +62,7 @@ public class Proposal extends Model {
         }
         return coSpeakers;
     }
+
     @OneToMany(mappedBy = "proposal")
     @JsonIgnore
     public List<Comment> comments;
@@ -92,6 +93,7 @@ public class Proposal extends Model {
     public String getTagsName() {
         return Joiner.on(",").join(tags);
     }
+
     @JsonIgnore
     public transient List<Comment> commentsFiltered;
 
@@ -128,9 +130,9 @@ public class Proposal extends Model {
 
     public static Finder<Long, Proposal> find = new Finder<Long, Proposal>(Long.class, Proposal.class);
 
-    public static List<Proposal> findAllForDisplay() {
+    public static List<Proposal> findAllForDisplay(Event event) {
         return find.select("id, title,  format, status, speaker.id, speaker.fullname, speaker.avatar")
-                .fetch("speaker").fetch("format").findList();
+                .fetch("speaker").fetch("format").where().eq("event", event).findList();
     }
 
     public static int countProposals(boolean draft) {
@@ -156,6 +158,11 @@ public class Proposal extends Model {
         return find.where().eq("speaker", speaker).findList();
     }
 
+    public static List<Proposal> findBySpeakerAndEvent(User speaker, Event event) {
+        return find.where().eq("speaker", speaker).eq("event", event).findList();
+    }
+
+
     public static List<Proposal> findByEvent(Event event) {
         return find.where().eq("event", event).findList();
     }
@@ -168,8 +175,8 @@ public class Proposal extends Model {
         return find.where().eq("status", status.getInterne()).eq("track", track).findList();
     }
 
-    public static List<Proposal> findByStatus(Status status) {
-        return find.where().eq("status", status.getInterne()).findList();
+    public static List<Proposal> findByStatus(Status status,Event event) {
+        return find.where().eq("status", status.getInterne()).eq("event", event).findList();
     }
 
     public static List<Proposal> findByStatusForMinimalData(Status status) {

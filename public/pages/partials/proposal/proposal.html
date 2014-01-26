@@ -107,15 +107,13 @@
         <div class="well">
             <h3>Questions/Réponses</h3>
 
-            <div class="well {{{true:'privateComment',false:''}[comment.privateComment == true]}} {{{true:'closComment',false:''}[comment.clos == true]}}"
+            <div class="well {{{true:'closComment',false:''}[comment.clos == true]}}"
                  ng-repeat="comment in proposal.comments">
 
-                <comment ng-model="comment"/>
+                <comment ng-model="comment"></comment>
 
-                <div class=" {{{true:'privateComment',false:''}[comment.privateComment == true]}}"
-                     ng-repeat="reponse in comment.reponses">
-                    <reponse ng-model="reponse"/>
-
+                <div ng-repeat="reponse in comment.reponses">
+                    <reponse ng-model="reponse" ng-hide="!userService.isAdmin() && reponse.privateComment" />
                 </div>
                 <p class="help-inline" ng-repeat="error in errors.error">{{error}}</p>
 
@@ -139,14 +137,14 @@
 
                         <div class="form-group {{{true:'error', false:''}[errors.commentR != undefined]}}">
                             <div class="controls">
-                                <textarea name="commentR" ng-model="$parent.commentR" class="input-xlarge" rows="3"
+                                <textarea name="commentR" ng-model="$parent.commentR" class="input-xlarge" rows="3"  cols="60"
                                           placeholder="Repondre au commentaire" maxlength="140"></textarea>
 
-                                <p class="help-inline">Longueur maximum: 140, </p>
+                                <p class="help-inline">Longueur maximum: 140, {{$parent.commentR.length}}/140</p>
 
                                 <p class="help-inline" ng-repeat="error in errors.commentR">{{error}}</p>
 
-                                <p class="help-inline">{{$parent.commentR.length}}/140</p>
+
                                 <label class="checkbox" ng-show="userService.isAdmin()">
                                     <br/><input type="checkbox" name="privateR" ng-model="$parent.privateR"
                                                 ng-show="userService.isAdmin()">Commentaire privé</input>

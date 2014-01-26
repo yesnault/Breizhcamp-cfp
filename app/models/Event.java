@@ -1,5 +1,6 @@
 package models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
@@ -46,7 +47,8 @@ public class Event extends Model {
     private String cgu;
 
     @ManyToMany(mappedBy = "events")
-    private List<User> organizers;
+    @JsonIgnore
+    private List<User> organizers = new ArrayList<User>();
 
 
     public static Finder<Long, Event> find = new Finder<Long, Event>(Long.class, Event.class);

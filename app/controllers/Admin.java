@@ -138,7 +138,7 @@ public class Admin extends BaseController {
 
         Set<String> mailsOfSpeakers = new HashSet<String>();
 
-        for (Proposal proposal : Proposal.findByStatus(status)) {
+        for (Proposal proposal : Proposal.findByStatus(status,getEvent())) {
             if (proposal.getSpeaker() != null && proposal.getSpeaker().email != null) {
                 mailsOfSpeakers.add(proposal.getSpeaker().email);
             }

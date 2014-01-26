@@ -131,9 +131,12 @@ talks.status.accepted=Accepted
 talks.status.waiting=Waiting
 talks.status.null=Without status
 
-error.creneau.already.exist=This slot already exists.
+error.format.already.exist=This slot already exists.
 error.dynamicField.already.exist=This dynamic field already exists.
 
 error.event.already.exist=This event already exists.
 error.event.already.actif=An event is already active.
 error.event.hasElement=This event is active or in combination with other elements
+
+error.track.already.exist=This Trackalready exists.
+error.track.shortTitle.already.exist=A Track with this short title already exists.

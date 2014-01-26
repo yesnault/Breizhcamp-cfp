@@ -92,6 +92,15 @@ public class User extends Model {
         return events;
     }
 
+    public boolean hasEvent(Event event) {
+        for(Event eventL : events){
+         if(eventL.getId() == event.getId()){
+             return true;
+         }
+        }
+        return false;
+    }
+
     @JsonProperty("events")
     public ArrayNode getEventsName() {
         ArrayNode result = new ArrayNode(JsonNodeFactory.instance);
@@ -221,6 +230,7 @@ public class User extends Model {
         return find.all();
     }
 
+
     public static List<User> findAllAdmin() {
         return find.where().eq("admin", Boolean.TRUE).findList();
     }
@@ -260,4 +270,7 @@ public class User extends Model {
     public String getFullname() {
         return fullName;
     }
+
+
+
 }

@@ -4,12 +4,14 @@
 
 var Services = angular.module('breizhCampCFP.services', ['ngResource', 'ngCookies']);
 
-Services.factory('UserService', ['$http', '$log', '$location', '$cookieStore', function(http, logger, location, $cookieStore) {
+Services.factory('UserService', ['$http', '$log', '$location','$resource', '$cookieStore', function(http, logger, location,$resource, $cookieStore) {
 
         // Service pour gérer les utilisateurs
         function UserService(http, logger) {
             var authenticated;
             var admin;
+            var superAdmin;
+            var currentEvent;
 
             this.logout = function() {
                 var user = this.getUserData();
@@ -35,7 +37,10 @@ Services.factory('UserService', ['$http', '$log', '$location', '$cookieStore', f
             };
 
             this.getEvent = function() {
-                return $resource('/user/event').get();
+                if(currentEvent == null){
+                    currentEvent = $resource('/user/event').get();
+                }
+                return currentEvent;
             };
 
 
@@ -48,16 +53,21 @@ Services.factory('UserService', ['$http', '$log', '$location', '$cookieStore', f
             };
 
             this.isSuperAdmin = function() {
-                if (admin == null && this.getUserData() != null) {
-                    admin = this.getUserData().admin;
+                if (superAdmin == null && this.getUserData() != null) {
+                    superAdmin = this.getUserData().admin;
                 }
-                return admin;
+                return superAdmin;
             };
 
             this.isAdmin = function() {
-                <!-- vérifier que l'utilisateur fait parti des membres de l'événement-->
                 if (admin == null && this.getUserData() != null) {
-                    admin = this.getUserData().admin;
+                    this.getEvent();
+                    angular.forEach(this.getUserData().events, function (event) {
+
+                        if (event.id === currentEvent.id) {
+                            admin = true;
+                        }
+                    });
                 }
                 return admin;
             };
@@ -128,6 +138,12 @@ Services.factory('DynamicFieldsService', function($resource) {
 Services.factory('EventService', function($resource) {
       return $resource('/event/:id', {});
 });
+
+Services.factory('EventOrganizersService', function($resource) {
+    return $resource('/event/:id/organizers', {});
+});
+
+
 
 Services.factory('TrackService', function($resource) {
     return $resource('/track/:id', {});
